@@ -7,5 +7,5 @@
 
 [build]
   base    = "frontend"
-  command = "yarn generate"
+  command = "yarn generate && yarn build"
   publish = "dist"
