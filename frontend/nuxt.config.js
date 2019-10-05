@@ -2,6 +2,9 @@ require("dotenv").config();
 
 export default {
   mode: "universal",
+  generate: {
+    routes: ["/", "/account"]
+  },
   /*
    ** Headers of the page
    */
