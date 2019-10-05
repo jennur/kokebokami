@@ -1,3 +1,5 @@
+require("dotenv").config();
+
 export default {
   mode: "universal",
   /*
@@ -49,9 +51,21 @@ export default {
             icons: ["fab"]
           }
         ]
-      }
+      },
+      "@nuxtjs/dotenv"
     ]
   ],
+  env: {
+    baseUrl: process.env.BASE_URL || "http://localhost:3000",
+    apiKey: process.env.API_KEY,
+    authDomain: process.env.AUTH_DOMAIN,
+    databaseUrl: process.env.DATABASE_URL,
+    projectId: process.env.PROJECT_ID,
+    storageBucket: process.env.STORAGE_BUCKET,
+    messagingSenderId: process.env.MESSAGING_SENDER_ID,
+    appId: process.env.APP_ID,
+    measurementId: process.env.MEASUREMENT_ID
+  },
   /*
    ** Build configuration
    */
@@ -59,6 +73,10 @@ export default {
     /*
      ** You can extend webpack config here
      */
-    extend(config, ctx) {}
+    extend(config, ctx) {
+      config.node = {
+        fs: "empty"
+      };
+    }
   }
 };
