@@ -1,4 +1,4 @@
-import { auth } from "~/services/firebase.js";
+import { auth } from "~/plugins/firebase.js";
 
 export default context => {
   const { store } = context;

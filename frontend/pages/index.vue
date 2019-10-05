@@ -9,16 +9,12 @@
 
 <script>
 import firebase from "firebase";
-import { mapMutations } from "vuex";
-
-import { GoogleProvider, auth } from "~/services/firebase.js";
+import { GoogleProvider, auth } from "~/plugins/firebase.js";
 import Logo from "~/components/Logo.vue";
-import fontawesome from "nuxt-fontawesome";
 import googleLogo from "~/static/btn_google_light_normal_ios.svg";
 
 export default {
   components: {
-    fontawesome,
     googleLogo,
     Logo
   },

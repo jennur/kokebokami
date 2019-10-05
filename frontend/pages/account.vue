@@ -9,7 +9,6 @@
 
 <script>
 import firebase from "firebase";
-import context from "~/plugins/fireauth.js";
 
 import Logo from "~/components/Logo.vue";
 

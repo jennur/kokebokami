@@ -1,10 +1,9 @@
 require("dotenv").config();
 
 export default {
-  mode: "universal",
-  generate: {
-    fallback: true
-  },
+  mode: "spa",
+  generate: {},
+
   /*
    ** Headers of the page
    */
@@ -32,7 +31,7 @@ export default {
   /*
    ** Plugins to load before mounting the App
    */
-  plugins: ["~/services/firebase.js"],
+  plugins: ["~/plugins/firebase.js", "~/plugins/fireauth.js"],
   router: {
     middleware: "router-auth"
   },
@@ -43,21 +42,7 @@ export default {
   /*
    ** Nuxt.js modules
    */
-  modules: [
-    [
-      "nuxt-svg-loader",
-      "nuxt-fontawesome",
-      {
-        imports: [
-          {
-            set: "@fortawesome/free-brands-svg-icons",
-            icons: ["fab"]
-          }
-        ]
-      },
-      "@nuxtjs/dotenv"
-    ]
-  ],
+  modules: [["nuxt-svg-loader", "@nuxtjs/dotenv"]],
   env: {
     baseUrl: process.env.BASE_URL || "http://localhost:3000",
     apiKey: process.env.API_KEY,
