@@ -1,4 +1,4 @@
-import { GoogleProvider, auth } from "~/plugins/firebase.js";
+import { GoogleProvider, FacebookProvider, auth } from "~/plugins/firebase.js";
 
 export const state = {
   user: null
@@ -22,6 +22,21 @@ export const actions = {
   GOOGLE_SIGN_IN: ({ commit }) => {
     auth
       .signInWithPopup(GoogleProvider)
+      .then(response => {
+        let user = {
+          id: response.user.uid,
+          profileImg: response.user.photoURL,
+          name: response.user.displayName
+        };
+        commit("setUser", user);
+      })
+      .catch(e => {
+        console.log(e);
+      });
+  },
+  FACEBOOK_SIGN_IN: ({ commit }) => {
+    auth
+      .signInWithPopup(FacebookProvider)
       .then(response => {
         let user = {
           id: response.user.uid,

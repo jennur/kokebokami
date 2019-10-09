@@ -1,23 +1,23 @@
 <template>
   <div class="container">
     <div class="login-container">
-      <button outline fab @click="googleSignIn" class="google-btn">
-        <googleLogo />
-        <span class="google-btn__text">Sign in with Google</span>
-      </button>
+      <GoogleLogin />
+      <FacebookLogin />
     </div>
   </div>
 </template>
 
 <script>
 import firebase from "firebase";
-import googleLogo from "~/static/btn_google_light_normal_ios.svg";
+import GoogleLogin from "~/components/GoogleLogin.vue";
+import FacebookLogin from "~/components/FacebookLogin.vue";
 import { user } from "~/mixins/getCurrentUser.js";
 
 export default {
   name: "Login",
   components: {
-    googleLogo
+    GoogleLogin,
+    FacebookLogin
   },
   mixins: [user],
   watch: {
@@ -25,12 +25,6 @@ export default {
       if (value !== undefined && value !== null) {
         this.$router.push("/account");
       }
-    }
-  },
-  methods: {
-    googleSignIn() {
-      this.$store.dispatch("GOOGLE_SIGN_IN");
-      this.$router.push("/account");
     }
   }
 };
