@@ -1,11 +1,20 @@
 <template>
   <nav class="navigation-menu">
+    <h1 class="navigation-menu__logo">
+      <nuxt-link class="navigation-menu__logo-link" to="/">Kokebokami</nuxt-link>
+    </h1>
     <ul class="navigation-menu__list">
       <li v-for="menuItem in menuItems" :key="menuItem.name">
+        <img
+          v-if="menuItem.img"
+          class="google-profile-picture"
+          :src="menuItem.img"
+          alt="Google profile picture"
+        />
         <nuxt-link class="navigation-menu__link" :to="menuItem.link">{{menuItem.name}}</nuxt-link>
       </li>
       <li v-if="user">
-        <button class="logut-button" @click="logOut">Log out</button>
+        <button class="logout-button" @click="logOut">Log out</button>
       </li>
     </ul>
   </nav>
@@ -22,8 +31,7 @@ export default {
       let menuItems = [];
       if (this.user !== null && this.user !== undefined) {
         menuItems = [
-          { link: "/", name: "Home" },
-          { link: "/account", name: "Account" }
+          { link: "/account", name: this.user.name, img: this.user.profileImg }
         ];
       } else {
         menuItems = [
@@ -46,33 +54,68 @@ export default {
 .navigation-menu {
   display: flex;
   align-items: center;
+  justify-content: space-around;
   width: 100%;
   height: 70px;
 }
 
+.navigation-menu__logo {
+  padding: 0px 25px;
+}
+
+.navigation-menu__logo-link {
+  color: #ff7300 !important;
+  font-size: 25px;
+  cursor: pointer !important;
+  text-decoration: none;
+  font-family: "Delius Swash Caps", cursive;
+}
+
 .navigation-menu__list {
-  display: block;
+  display: flex;
+  align-items: center;
   list-style: none;
 }
 .navigation-menu__list li {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-around;
+  height: 30px;
   margin-left: 25px;
 }
 
 .navigation-menu__link {
   color: rgb(9, 70, 110);
   text-decoration: none;
-  border-bottom: 2px solid #289128;
+  margin-bottom: 2px;
+  border-bottom: 2px solid #00e78f;
 }
 
 .navigation-menu__link:hover {
-  border-bottom: 4px solid #289128;
+  margin-bottom: 0px;
+
+  border-bottom: 4px solid #00e78f;
 }
-.logut-button {
-  border: 2px solid #289128;
+.google-profile-picture {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+.logout-button {
+  display: inline-block;
+  border: 2px solid #00e78f;
+  border-radius: 5px;
+  padding: 5px 10px 8px 10px;
+  box-sizing: border-box;
   font-size: inherit;
   font-family: inherit;
+  line-height: 1em;
   cursor: pointer;
+  background-color: #fff;
+}
+.logout-button:hover {
+  background-color: #00e78f !important;
 }
 .active-link {
   text-decoration: none;
@@ -82,5 +125,6 @@ export default {
 }
 .active-link:hover {
   border-bottom: none;
+  margin-bottom: 2px;
 }
 </style>

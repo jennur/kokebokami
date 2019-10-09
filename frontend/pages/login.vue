@@ -1,7 +1,6 @@
 <template>
   <div class="container">
     <div class="login-container">
-      <h2>Log in</h2>
       <button outline fab @click="googleSignIn" class="google-btn">
         <googleLogo />
         <span class="google-btn__text">Sign in with Google</span>
@@ -40,27 +39,16 @@ export default {
 <style>
 @import url("https://fonts.googleapis.com/css?family=Roboto&display=swap");
 
-.container {
-  margin: 0 auto;
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-}
 .login-container {
   display: block;
-  width: 300px;
-  height: 500px;
   padding: 25px;
-  border-radius: 10px;
-  background-color: #f3f3f3;
+  width: 300px;
+  border-bottom: 2px solid #00e78f;
 }
 .google-btn {
   display: inline-flex;
   align-items: center;
   padding: 0px;
-  margin-top: 25px;
   box-sizing: border-box;
   border: none;
   border-radius: 2px;

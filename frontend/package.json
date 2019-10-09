@@ -1,7 +1,7 @@
 {
   "name": "kokebokami",
   "version": "1.0.0",
-  "description": "My tiptop Nuxt.js project",
+  "description": "Kokebokami is your online cookbook. Store all your favourite recipes or create new ones!",
   "author": "Jenny Bonsak",
   "private": true,
   "scripts": {
