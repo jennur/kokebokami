@@ -1,27 +1,19 @@
 <template>
   <div class="container">
-    <div class="google-profile">
-      <img class="google-profile__picture" :src="user.photoURL" alt="Google profile picture" />
-      <p>{{ user.displayName }}</p>
+    <div class="google-profile" v-if="user">
+      <img class="google-profile__picture" :src="user.profileImg" alt="Google profile picture" />
+      <p>{{ user.name }}</p>
     </div>
   </div>
 </template>
 
 <script>
-import firebase from "firebase";
-
-import Logo from "~/components/Logo.vue";
+import { user } from "~/mixins/getCurrentUser.js";
 
 export default {
-  components: {
-    Logo
-  },
-  computed: {
-    user() {
-      console.log(this.$store.state.user.user);
-      return this.$store.state.user.user;
-    }
-  }
+  name: "Account",
+  components: {},
+  mixins: [user]
 };
 </script>
 

@@ -1,40 +1,22 @@
 <template>
   <div class="container">
-    <button outline fab @click="googleSignIn" class="google-btn">
-      <googleLogo />
-      <span class="google-btn__text">Sign with Google</span>
-    </button>
+    <h1 v-if="!user">Welcome to Kokebokami!</h1>
   </div>
 </template>
 
 <script>
 import firebase from "firebase";
 import { GoogleProvider, auth } from "~/plugins/firebase.js";
-import Logo from "~/components/Logo.vue";
+import { Navigation } from "~/components/Navigation.vue";
 import googleLogo from "~/static/btn_google_light_normal_ios.svg";
+import { user } from "~/mixins/getCurrentUser.js";
 
 export default {
-  components: {
-    googleLogo,
-    Logo
-  },
-  methods: {
-    googleSignIn() {
-      auth
-        .signInWithPopup(GoogleProvider)
-        .then(result => {
-          this.$store.dispatch("SET_USER", result);
-          return result;
-        })
-        .then(user => {
-          this.$router.push("/account");
-          console.log("COUNT::: " + this.$store.state.count);
-          console.log("USER::: " + this.$store.state.user);
-        })
-        .catch(e => {
-          console.log(e);
-        });
-    }
+  name: "Home",
+  components: {},
+  mixins: [user],
+  created: function() {
+    console.log("INDEX USER::: " + this.user);
   }
 };
 </script>
@@ -49,23 +31,5 @@ export default {
   justify-content: center;
   align-items: center;
   text-align: center;
-}
-
-.google-btn {
-  display: inline-flex;
-  align-items: center;
-  padding: 0px;
-  box-sizing: border-box;
-  border: none;
-  border-radius: 2px;
-  font-size: 16px;
-  font-family: "Roboto", sans-serif;
-  background-color: #4285f4;
-  color: #fff;
-  cursor: pointer;
-}
-
-.google-btn__text {
-  margin: 0px 15px;
 }
 </style>
