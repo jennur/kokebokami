@@ -31,7 +31,11 @@ export default {
   /*
    ** Plugins to load before mounting the App
    */
-  plugins: ["~/plugins/globalComponents.js", "~/plugins/firebase.js"],
+  plugins: [
+    "~/plugins/globalComponents.js",
+    "~/plugins/firebase.js",
+    "~/plugins/fireauth.js"
+  ],
 
   router: { linkExactActiveClass: "active-link" },
 

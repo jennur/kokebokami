@@ -16,7 +16,7 @@ export const mutations = {
 };
 
 export const actions = {
-  SET_USER: ({ commit }) => {
+  SET_USER: ({ commit }, user) => {
     commit("setUser", user);
   },
   GOOGLE_SIGN_IN: ({ commit }) => {
