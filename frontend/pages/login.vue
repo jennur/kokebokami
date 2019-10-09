@@ -35,31 +35,3 @@ export default {
   }
 };
 </script>
-
-<style>
-@import url("https://fonts.googleapis.com/css?family=Roboto&display=swap");
-
-.login-container {
-  display: block;
-  padding: 25px;
-  width: 300px;
-  border-bottom: 2px solid #00e78f;
-}
-.google-btn {
-  display: inline-flex;
-  align-items: center;
-  padding: 0px;
-  box-sizing: border-box;
-  border: none;
-  border-radius: 2px;
-  font-size: 16px;
-  font-family: "Roboto", sans-serif;
-  background-color: #4285f4;
-  color: #fff;
-  cursor: pointer;
-}
-
-.google-btn__text {
-  margin: 0px 15px;
-}
-</style>
