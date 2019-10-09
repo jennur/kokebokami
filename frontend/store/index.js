@@ -1,7 +1,8 @@
 import { GoogleProvider, FacebookProvider, auth } from "~/plugins/firebase.js";
 
 export const state = {
-  user: null
+  user: null,
+  systemMessage: null
 };
 
 console.log("STATE USER::: " + state.user);
@@ -12,6 +13,9 @@ export const mutations = {
   },
   removeUser(state) {
     state.user = null;
+  },
+  setSystemMessage(state, payload) {
+    state.systemMessage = payload;
   }
 };
 
@@ -46,7 +50,8 @@ export const actions = {
         commit("setUser", user);
       })
       .catch(e => {
-        console.log(e);
+        commit("setSystemMessage", e.message);
+        console.log(e.message);
       });
   },
   USER_SIGN_OUT: ({ commit }) => {
@@ -64,5 +69,8 @@ export const actions = {
 export const getters = {
   user(state) {
     return state.user;
+  },
+  systemMessage(state) {
+    return state.systemMessage;
   }
 };

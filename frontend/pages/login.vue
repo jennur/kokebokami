@@ -3,6 +3,9 @@
     <div class="login-container">
       <GoogleLogin />
       <FacebookLogin />
+      <div v-if="systemMessage">
+        <p>{{systemMessage}}</p>
+      </div>
     </div>
   </div>
 </template>
@@ -20,6 +23,11 @@ export default {
     FacebookLogin
   },
   mixins: [user],
+  computed: {
+    systemMessage() {
+      return this.$store.getters.systemMessage;
+    }
+  },
   watch: {
     user(value) {
       if (value !== undefined && value !== null) {
