@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="flex-center-container">
     <div class="login-container">
       <GoogleLogin />
       <FacebookLogin />

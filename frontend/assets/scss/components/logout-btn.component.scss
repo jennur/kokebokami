@@ -1,6 +1,6 @@
 .logout-button {
   display: inline-block;
-  border: 2px solid #00e78f;
+  border: 2px solid $gray;
   border-radius: 5px;
   padding: 5px 10px 8px 10px;
   box-sizing: border-box;
@@ -11,6 +11,10 @@
   background-color: #fff;
 
   &:hover {
-    background-color: #00e78f !important;
+    border: 2px solid $green;
+  }
+  &:active {
+    border: 2px solid $green;
+    background-color: $green;
   }
 }
