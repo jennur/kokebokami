@@ -43,7 +43,32 @@ export default {
     "~/plugins/fireauth.js"
   ],
 
-  router: { middleware: "router-auth", linkExactActiveClass: "active-link" },
+  router: {
+    middleware: "router-auth",
+    linkExactActiveClass: "active-link",
+    routes: [
+      {
+        name: "index",
+        path: "/",
+        component: "pages/index.vue"
+      },
+      {
+        name: "recipe",
+        path: ":recipe?",
+        component: "pages/_recipe.vue"
+      },
+      {
+        name: "login",
+        path: "/login",
+        component: "pages/login.vue"
+      },
+      {
+        name: "account",
+        path: "/account",
+        component: "pages/account.vue"
+      }
+    ]
+  },
 
   /*
    ** Nuxt.js dev-modules

@@ -1,8 +1,8 @@
 <template>
-  <div class="recipe-display">
+  <nuxt-link :to="recipeUrl" class="recipe-display">
     <h3 class="recipe-display__title">{{recipe.title}}</h3>
     <p class="recipe-display__description">{{recipe.description}}</p>
-  </div>
+  </nuxt-link>
 </template>
 
 <script>
@@ -12,6 +12,13 @@ export default {
     recipe: {
       type: Object,
       default: {}
+    }
+  },
+  computed: {
+    recipeUrl() {
+      return this.recipe.title
+        .toLowerCase()
+        .replace(new RegExp(/\s/, "g"), "-");
     }
   }
 };
