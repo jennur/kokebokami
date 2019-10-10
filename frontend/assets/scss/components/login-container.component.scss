@@ -1,0 +1,17 @@
+@import url("https://fonts.googleapis.com/css?family=Roboto&display=swap");
+
+.login-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 25px;
+  width: 300px;
+  border-bottom: 2px solid $green;
+  text-align: left;
+
+  &__system-message {
+    width: 250px;
+    font-size: $fontSizeSmall;
+    color: $pink;
+  }
+}

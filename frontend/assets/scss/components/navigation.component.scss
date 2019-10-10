@@ -9,11 +9,11 @@
     padding: 0px 25px;
 
     &-link {
-      color: #ff7300 !important;
+      color: $orange !important;
       font-size: 25px;
       cursor: pointer !important;
       text-decoration: none;
-      font-family: "Delius Swash Caps", cursive;
+      font-family: $displayFont;
     }
   }
 
@@ -31,14 +31,14 @@
   }
 
   &__link {
-    color: rgb(9, 70, 110);
+    color: $blue;
     text-decoration: none;
     margin-bottom: 2px;
-    border-bottom: 2px solid #00e78f;
+    border-bottom: 2px solid $green;
     &:hover {
       margin-bottom: 0px;
 
-      border-bottom: 4px solid #00e78f;
+      border-bottom: 4px solid $green;
     }
   }
 }
@@ -52,7 +52,7 @@
 
 .active-link {
   text-decoration: none;
-  color: gray;
+  color: $gray;
   border-bottom: none;
   cursor: default;
 }

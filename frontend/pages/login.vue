@@ -3,7 +3,7 @@
     <div class="login-container">
       <GoogleLogin />
       <FacebookLogin />
-      <div v-if="systemMessage">
+      <div class="login-container__system-message" v-if="systemMessage">
         <p>{{systemMessage}}</p>
       </div>
     </div>

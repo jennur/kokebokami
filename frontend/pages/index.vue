@@ -14,9 +14,6 @@ import { user } from "~/mixins/getCurrentUser.js";
 export default {
   name: "Home",
   components: {},
-  mixins: [user],
-  created: function() {
-    console.log("INDEX USER::: " + this.user);
-  }
+  mixins: [user]
 };
 </script>

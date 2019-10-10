@@ -43,7 +43,7 @@ export default {
     "~/plugins/fireauth.js"
   ],
 
-  router: { linkExactActiveClass: "active-link" },
+  router: { middleware: "router-auth", linkExactActiveClass: "active-link" },
 
   /*
    ** Nuxt.js dev-modules
