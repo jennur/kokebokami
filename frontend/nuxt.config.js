@@ -54,7 +54,7 @@ export default {
       },
       {
         name: "recipe",
-        path: ":recipe?",
+        path: "/:recipe?",
         component: "pages/_recipe.vue"
       },
       {
