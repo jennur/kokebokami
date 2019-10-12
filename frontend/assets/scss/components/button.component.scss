@@ -1,0 +1,27 @@
+.button {
+  display: inline-block;
+  width: 5 * $spacingXLarge;
+  background-color: $blue;
+  color: $white;
+  font-size: $fontSizeMedium;
+  font-family: $displayFont;
+  padding: 0px $spacingMedium;
+  height: 40px;
+  border-radius: $spacingSmall;
+  border: none;
+  box-sizing: content-box;
+  cursor: pointer;
+
+  &:hover {
+    background-color: $green;
+    color: $blue;
+  }
+
+  &--small {
+    width: 4 * $spacingXLarge;
+    height: 35px;
+    padding: 0px $spacingSmall;
+    font-size: $fontSizeSmall;
+    font-family: $bodyFont;
+  }
+}

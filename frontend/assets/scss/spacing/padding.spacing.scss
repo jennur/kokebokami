@@ -1,0 +1,21 @@
+.padding {
+  &--small {
+    padding: $spacingSmall;
+    box-sizing: border-box;
+  }
+
+  &--medium {
+    padding: $spacingMedium;
+    box-sizing: border-box;
+  }
+
+  &--large {
+    padding: $spacingLarge;
+    box-sizing: border-box;
+  }
+
+  &--xlarge {
+    padding: $spacingXLarge;
+    box-sizing: border-box;
+  }
+}

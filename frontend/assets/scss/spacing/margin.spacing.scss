@@ -1,0 +1,20 @@
+.margin {
+  &--auto {
+    margin: auto;
+  }
+  &--small {
+    margin: $spacingSmall;
+  }
+
+  &--medium {
+    margin: $spacingMedium;
+  }
+
+  &--large {
+    margin: $spacingLarge;
+  }
+
+  &--xlarge {
+    margin: $spacingXLarge;
+  }
+}

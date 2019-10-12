@@ -8,12 +8,22 @@
 @import "./elements/heading.element.scss";
 
 /* Components */
-@import "./components/container.component.scss";
+@import "./components/add-recipe-form.component.scss";
+@import "./components/button.component.scss";
 @import "./components/facebook-btn.component.scss";
-@import "./components/flex-center-container.component.scss";
 @import "./components/google-btn.component.scss";
 @import "./components/login-container.component.scss";
 @import "./components/logout-btn.component.scss";
 @import "./components/navigation.component.scss";
 @import "./components/recipe-display.component.scss";
 @import "./components/recipes-list-container.component.scss";
+
+/* Containers */
+@import "./containers/container.container.scss";
+@import "./containers/flex-center-container.container.scss";
+@import "./containers/flex-column.container.scss";
+
+/* Spacing */
+@import "./spacing/margin.spacing.scss";
+@import "./spacing/padding.spacing.scss";
+@import "./spacing/width.spacing.scss";

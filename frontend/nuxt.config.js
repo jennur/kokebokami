@@ -53,9 +53,16 @@ export default {
         component: "pages/index.vue"
       },
       {
-        name: "recipe",
-        path: "/:recipe?",
-        component: "pages/_recipe.vue"
+        name: "recipes",
+        path: "/recipes",
+        component: "pages/recipes.vue",
+        children: [
+          {
+            name: "recipe",
+            path: "/recipes/:recipe?",
+            component: "pages/recipes/_recipe.vue"
+          }
+        ]
       },
       {
         name: "login",

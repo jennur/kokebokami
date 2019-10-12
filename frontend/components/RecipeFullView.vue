@@ -11,11 +11,13 @@
 
 <script>
 export default {
-  name: "recipe-component",
+  name: "recipe-full-view",
   props: {
     recipe: {
       type: Object,
-      default: {}
+      default: () => {
+        return {};
+      }
     }
   }
 };
