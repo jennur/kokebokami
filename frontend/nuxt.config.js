@@ -2,7 +2,17 @@ require("dotenv").config();
 
 export default {
   mode: "spa",
-  generate: {},
+  generate: {
+    routes: context => {
+      const { store } = context;
+      const recipes = store.getters.recipes;
+
+      const routes = recipes.map(recipe => {
+        return "/recipes/" + recipe.id;
+      });
+      return routes;
+    }
+  },
 
   /*
    ** Headers of the page
