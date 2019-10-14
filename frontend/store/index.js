@@ -1,4 +1,9 @@
-import { GoogleProvider, FacebookProvider, auth } from "~/plugins/firebase.js";
+import {
+  GoogleProvider,
+  FacebookProvider,
+  auth,
+  db
+} from "~/plugins/firebase.js";
 
 export const state = {
   user: null,

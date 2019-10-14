@@ -23,13 +23,23 @@
         </label>
       </fieldset>
       <fieldset id="ingredientList" class="flex-row flex-row--nowrap">
-        <input
-          type="text"
-          placeholder="3 dl joy"
+        <span
+          class="flex-row flex-row--align-center"
           v-for="ingredientNumber in ingredientNumberList"
           :key="ingredientNumber"
-          :id="'ingredient' + ingredientNumber"
-        />
+        >
+          <input
+            type="text"
+            placeholder="Amount of something"
+            :id="'ingredient' + ingredientNumber"
+          />
+          <button
+            :data-ingredient-ref="ingredientNumber"
+            class="remove-icon"
+            title="Remove ingredient"
+            @click="(event)=>removeIngredient(event)"
+          ></button>
+        </span>
         <button
           class="button button--small margin-top--medium"
           @click="incrementIngredientNumber"
@@ -66,8 +76,16 @@ export default {
   computed: {},
   methods: {
     incrementIngredientNumber() {
-      let lastIngredientNumber = this.ingredientNumberList.length;
-      this.ingredientNumberList.push(lastIngredientNumber + 1);
+      let list = this.ingredientNumberList;
+      let ingredientNumber = Math.max.apply(null, list);
+      this.ingredientNumberList.push(ingredientNumber + 1);
+    },
+    removeIngredient(event) {
+      let ingredientNumber = event.target.getAttribute("data-ingredient-ref");
+      this.ingredientNumberList.splice(
+        this.ingredientNumberList.indexOf(parseInt(ingredientNumber)),
+        1
+      );
     },
     saveRecipe() {
       let ingredients = document.getElementById("ingredientList").children;
