@@ -88,11 +88,13 @@ export default {
       );
     },
     saveRecipe() {
-      let ingredients = document.getElementById("ingredientList").children;
+      let ingredients = document.querySelectorAll("#ingredientList input");
       let ingredientList = [];
 
       for (let i = 0; i < ingredients.length; i++) {
-        ingredientList.push(ingredients[i].value);
+        if (ingredients[i].value) {
+          ingredientList.push(ingredients[i].value);
+        }
       }
 
       const recipes = db.ref("recipes");
