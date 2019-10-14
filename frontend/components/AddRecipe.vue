@@ -77,7 +77,7 @@ export default {
   methods: {
     incrementIngredientNumber() {
       let list = this.ingredientNumberList;
-      let ingredientNumber = Math.max.apply(null, list);
+      let ingredientNumber = list.length === 0 ? 1 : Math.max.apply(null, list);
       this.ingredientNumberList.push(ingredientNumber + 1);
     },
     removeIngredient(event) {
