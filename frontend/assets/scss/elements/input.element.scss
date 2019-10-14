@@ -1,0 +1,23 @@
+label {
+  font-family: $displayFont;
+  font-weight: bold;
+  margin: $spacingXLarge $spacingMedium;
+}
+
+input,
+textarea {
+  display: block;
+  padding: $spacingMedium $spacingMedium $spacingMedium 0px;
+  margin-top: $spacingSmall;
+  border: none;
+  border-bottom: 2px solid $green;
+  font-size: $fontSizeMedium;
+
+  &:focus {
+    outline: none;
+    border-bottom: 2px solid $orange;
+  }
+}
+
+input {
+}

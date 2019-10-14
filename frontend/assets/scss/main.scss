@@ -5,7 +5,9 @@
 
 /* Elements */
 @import "./elements/base.element.scss";
+@import "./elements/fieldset.element.scss";
 @import "./elements/heading.element.scss";
+@import "./elements/input.element.scss";
 
 /* Components */
 @import "./components/add-recipe-form.component.scss";
@@ -22,6 +24,7 @@
 @import "./containers/container.container.scss";
 @import "./containers/flex-center-container.container.scss";
 @import "./containers/flex-column.container.scss";
+@import "./containers/flex-row.container.scss";
 
 /* Spacing */
 @import "./spacing/margin.spacing.scss";

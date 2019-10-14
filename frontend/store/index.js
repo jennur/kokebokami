@@ -3,42 +3,8 @@ import { GoogleProvider, FacebookProvider, auth } from "~/plugins/firebase.js";
 export const state = {
   user: null,
   systemMessage: null,
-  recipes: [
-    {
-      id: "recipeno1",
-      title: "The most boring omelette",
-      description: `This is the simplest omelette you can possibly make.
-      Although it does have flour`,
-      ingredients: ["100 g flour", "3 eggs", "3 dl water"],
-      instructions: `Mix everything together.
-    Put inside oven.
-    Bake for 3 hours.
-    Enjoy!`
-    },
-    {
-      id: "recipeno2",
-      title: "Coconut tomatoes",
-      description: `A dish for coconut and tomato lovers.
-      If you also like water, it's your new favourite.`,
-      ingredients: ["200 g coconut milk", "3 tomatoes", "3 dl water"],
-      instructions: `Mix everything together.
-    Fry in a big pan for 10 minutes.
-    Enjoy!`
-    },
-    {
-      id: "recipeno3",
-      title: "Coconut tomatoes",
-      description: `A dish for coconut and tomato lovers.
-      If you also like water, it's your new favourite.`,
-      ingredients: ["200 g coconut milk", "3 tomatoes", "3 dl water"],
-      instructions: `Mix everything together.
-    Fry in a big pan for 10 minutes.
-    Enjoy!`
-    }
-  ]
+  recipes: []
 };
-
-console.log("STATE USER::: " + state.user);
 
 export const mutations = {
   setUser(state, payload) {

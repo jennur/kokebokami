@@ -16,9 +16,11 @@
     background-color: $green;
     color: $blue;
   }
+  &--block {
+    display: block;
+  }
 
   &--small {
-    width: 4 * $spacingXLarge;
     height: 35px;
     padding: 0px $spacingSmall;
     font-size: $fontSizeSmall;

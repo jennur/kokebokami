@@ -17,4 +17,13 @@
   &--xlarge {
     margin: $spacingXLarge;
   }
+
+  &-top {
+    &--small {
+      margin-top: $spacingSmall;
+    }
+    &--medium {
+      margin-top: $spacingMedium;
+    }
+  }
 }
