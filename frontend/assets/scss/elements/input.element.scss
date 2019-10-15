@@ -7,15 +7,21 @@ label {
 input,
 textarea {
   display: block;
-  padding: $spacingMedium $spacingMedium $spacingMedium 0px;
+  padding: $spacingMedium 0px $spacingMedium 0px;
   margin-top: $spacingSmall;
+  background-color: transparent;
   border: none;
   border-bottom: 2px solid $green;
   font-size: $fontSizeMedium;
+  color: $white;
+  caret-color: $orange;
 
   &:focus {
     outline: none;
     border-bottom: 2px solid $orange;
+  }
+  &::placeholder {
+    color: $green;
   }
 }
 

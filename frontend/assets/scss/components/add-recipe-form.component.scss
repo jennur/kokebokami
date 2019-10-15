@@ -2,6 +2,11 @@
   display: block;
   width: 100%;
   max-width: 500px;
+  border-radius: $spacingLarge;
+  background-color: $blue;
+  padding: $spacingLarge;
+  box-sizing: border-box;
+  color: $white;
   text-align: left;
 
   &__title {

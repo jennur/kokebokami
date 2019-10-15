@@ -20,10 +20,59 @@
     display: block;
   }
 
+  &--round {
+    border-radius: $spacingXLarge;
+  }
+
+  &--orange {
+    background-color: $orange;
+    color: $blue;
+    &:hover {
+      font-weight: bold;
+    }
+  }
+
+  &--green {
+    background-color: $green;
+    color: $blue;
+
+    &:hover {
+      font-weight: bold;
+    }
+  }
+
+  &--green-border {
+    border: 2px solid $green;
+
+    &:hover {
+      background-color: $green;
+      color: $blue;
+    }
+  }
+
   &--small {
     height: 35px;
     padding: 0px $spacingSmall;
     font-size: $fontSizeSmall;
     font-family: $bodyFont;
+  }
+
+  &--large {
+    height: 48px;
+    padding: 0px $spacingLarge;
+  }
+
+  &--cancel {
+    padding: 0px;
+    background-color: transparent;
+    color: $pink;
+    font-family: $bodyFont;
+    border-radius: 50%;
+    line-height: 1em;
+
+    &:hover {
+      background-color: transparent;
+      color: $orange;
+    }
   }
 }

@@ -8,29 +8,18 @@
   padding: 0px;
   margin: $spacingSmall 0px 0px $spacingSmall;
   font-size: $fontSizeSmall;
-  font-weight: bold;
-  color: $white;
-  background-color: $pink;
+  color: $orange;
+  background-color: transparent;
   cursor: pointer;
 
   &:hover {
-    background-color: $orange;
+    color: $pink;
   }
 
-  &:before,
   &:after {
-    content: "";
-    width: 1px;
-    height: $spacingMedium;
-    background-color: $white;
+    content: "✕";
     position: absolute;
-    top: $spacingSmall;
-    left: 9px;
-  }
-  &:before {
-    transform: rotate(45deg);
-  }
-  &:after {
-    transform: rotate(-45deg);
+    top: 0px;
+    left: 6px;
   }
 }

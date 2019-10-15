@@ -23,37 +23,47 @@
         </label>
       </fieldset>
       <fieldset id="ingredientList" class="flex-row flex-row--nowrap">
-        <span
-          class="flex-row flex-row--align-center"
-          v-for="ingredientNumber in ingredientNumberList"
-          :key="ingredientNumber"
-        >
-          <input
-            type="text"
-            placeholder="Amount of something"
-            :id="'ingredient' + ingredientNumber"
-          />
+        <label>
+          Ingredients
+          <span
+            class="flex-row flex-row--align-center"
+            v-for="ingredientNumber in ingredientNumberList"
+            :key="ingredientNumber"
+          >
+            <input
+              type="text"
+              placeholder="Amount of something"
+              :id="'ingredient' + ingredientNumber"
+            />
+            <button
+              :data-ingredient-ref="ingredientNumber"
+              class="remove-icon"
+              title="Remove ingredient"
+              @click="(event)=>removeIngredient(event)"
+            ></button>
+          </span>
+
           <button
-            :data-ingredient-ref="ingredientNumber"
-            class="remove-icon"
-            title="Remove ingredient"
-            @click="(event)=>removeIngredient(event)"
-          ></button>
-        </span>
-        <button
-          class="button button--small margin-top--medium"
-          @click="incrementIngredientNumber"
-        >Add ingredient</button>
+            class="button button--small button--green margin-top--medium"
+            @click="incrementIngredientNumber"
+          >Add ingredient</button>
+        </label>
       </fieldset>
-      <fieldset>
-        <textarea
-          class="add-recipe-form__instructions"
-          id="instructions"
-          placeholder="Recipe instructions"
-          v-model="instructions"
-        />
+      <fieldset class="flex-column">
+        <label>
+          Instructions
+          <textarea
+            class="add-recipe-form__instructions"
+            id="instructions"
+            placeholder="Recipe instructions"
+            v-model="instructions"
+          />
+        </label>
       </fieldset>
-      <button class="button button--block margin--auto" @click="saveRecipe">Save recipe</button>
+      <button
+        class="button button--block button--green-border margin--auto"
+        @click="saveRecipe"
+      >Save recipe</button>
     </form>
     <div class="system-message">{{ systemMessage }}</div>
   </section>

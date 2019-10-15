@@ -1,7 +1,10 @@
 <template>
   <div class="container">
     <h2>Welcome back, {{this.firstName}}!</h2>
-    <button @click="toggleRecipeAdder" class="button margin--auto">Add new recipe</button>
+    <button
+      @click="toggleRecipeAdder"
+      :class="'button button--large button--round margin--auto ' + (addingRecipe ? 'button--cancel' : '')"
+    >{{ addRecipeButtonText}}</button>
     <add-recipe v-if="addingRecipe" @saving="toggleRecipeAdder" />
     <recipes-list class="padding--large" :headline="headline" />
   </div>
@@ -15,7 +18,7 @@ import RecipesList from "~/components/RecipesList.vue";
 export default {
   name: "account",
   data() {
-    return { addingRecipe: false };
+    return { addingRecipe: false, addRecipeButtonText: "Add new recipe" };
   },
   components: { AddRecipe, RecipesList },
   mixins: [user],
@@ -33,6 +36,9 @@ export default {
   methods: {
     toggleRecipeAdder() {
       this.addingRecipe = !this.addingRecipe;
+      this.addRecipeButtonText = this.addingRecipe
+        ? "✕ Cancel"
+        : "Add new Recipe";
     }
   }
 };
