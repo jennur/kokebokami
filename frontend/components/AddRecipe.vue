@@ -1,6 +1,8 @@
 <template>
   <section class="full-width padding--xlarge">
     <form class="add-recipe-form margin--auto" v-on:submit.prevent>
+      <h2 class="add-recipe-form__headline">Add new recipe</h2>
+
       <fieldset class="flex-column">
         <label>
           Recipe title

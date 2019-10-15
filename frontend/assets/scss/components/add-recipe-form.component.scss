@@ -9,6 +9,11 @@
   color: $white;
   text-align: left;
 
+  &__headline {
+    font-family: $displayFont;
+    text-align: center;
+  }
+
   &__title {
     width: 100%;
     max-width: 250px;
