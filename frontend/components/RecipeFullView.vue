@@ -1,23 +1,34 @@
 <template>
-  <div class="recipe">
-    <h3 class="recipe__title">{{recipe.title}}</h3>
-    <ul class="recipe__ingredients">
+  <section class="recipe">
+    <h3 class="recipe__title">{{recipe.title ? recipe.title : "Recipe has no title"}}</h3>
+    <div
+      class="recipe__description"
+    >{{recipe.description ? recipe.description : "Recipe has no description"}}</div>
+
+    <h4 v-if="recipe.ingredients">Ingredients</h4>
+    <ul class="recipe__ingredients" v-if="recipe.ingredients">
       <li v-for="ingredient in recipe.ingredients" :key="ingredient">{{ingredient}}</li>
     </ul>
-    <div class="recipe__description">{{recipe.description}}</div>
-    <div class="recipe__instructions">{{recipe.instructions}}</div>
-  </div>
+    <h4 v-if="recipe.instructions">Instructions</h4>
+
+    <div
+      class="recipe__instructions"
+    >{{recipe.instructions ? recipe.instructions : "Recipe has no instructions"}}</div>
+  </section>
 </template>
 
 <script>
 export default {
   name: "recipe-full-view",
-  props: {
-    recipe: {
-      type: Object,
-      default: () => {
-        return {};
-      }
+  computed: {
+    recipe() {
+      let recipeID = this.$route.params.recipe;
+      let recipes = this.$store.getters.recipes;
+      let currentRecipe = recipes.filter(recipe => {
+        return recipe[0] === recipeID;
+      });
+      //console.log("RECIPE ::: " + currentRecipe[0][1]);
+      return currentRecipe.length ? currentRecipe[0][1] : {};
     }
   }
 };

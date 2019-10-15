@@ -20,6 +20,9 @@ export const mutations = {
   },
   setSystemMessage(state, payload) {
     state.systemMessage = payload;
+  },
+  setRecipes(state, payload) {
+    state.recipes = payload;
   }
 };
 
@@ -67,6 +70,25 @@ export const actions = {
       .catch(error => {
         console.log(error);
       });
+  },
+  SET_USER_RECIPES: ({ commit }, user) => {
+    const recipesRef = db.ref("recipes");
+    let recipesArray = [];
+    recipesRef.once(
+      "value",
+      recipes => {
+        recipes.forEach(recipe => {
+          if (recipe.val().ownerID === user.id)
+            recipesArray.push([recipe.key, recipe.val()]);
+        });
+        commit("setRecipes", recipesArray);
+      },
+      error => {
+        console.log(
+          "Something failed when attempting to set recipes: " + error
+        );
+      }
+    );
   }
 };
 

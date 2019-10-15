@@ -1,0 +1,27 @@
+.recipe {
+  text-align: left;
+  &__title {
+    font-family: $displayFont;
+    font-size: $fontSizeXXLarge;
+  }
+  &__description {
+    margin-bottom: $spacingXXLarge;
+    font-size: $fontSizeLarge;
+    color: $blue;
+  }
+  &__ingredients {
+    padding: 0px;
+    & li {
+      list-style: none;
+
+      &::before {
+        content: "➔";
+        margin-right: $spacingLarge;
+        color: $green;
+      }
+    }
+  }
+
+  &__instructions {
+  }
+}

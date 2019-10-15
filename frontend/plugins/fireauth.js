@@ -12,9 +12,13 @@ export default context => {
           profileImg: user.photoURL,
           name: user.displayName
         };
-        return resolve(store.dispatch("SET_USER", loggedinUser));
+        store.dispatch("SET_USER", loggedinUser);
+        store.dispatch("SET_USER_RECIPES", loggedinUser);
+        return resolve();
       }
-      return resolve();
+      return reject(error =>
+        console.log("Something went wrong in fireauth: " + error)
+      );
     });
   });
 };

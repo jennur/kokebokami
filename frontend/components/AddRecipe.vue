@@ -67,10 +67,9 @@ export default {
   components: {},
   mixins: [user],
   data() {
-    return { title: "", description: "", instructions: "" };
+    return { title: "", description: "", instructions: "", systemMessage: "" };
   },
   props: {
-    systemMessage: { type: String, default: "" },
     ingredientNumberList: { type: Array, default: () => [1] }
   },
   computed: {},
@@ -98,15 +97,18 @@ export default {
       }
 
       const recipes = db.ref("recipes");
-      const newRecipe = recipes.push({
+      const newRecipeKey = recipes.push({
         title: this.title,
         ingredients: ingredientList,
         description: this.description,
         instructions: this.instructions,
         ownerID: this.user.id
-      });
-      if (newRecipe !== null) {
+      }).key;
+      if (newRecipeKey !== null) {
+        this.$store.dispatch("SET_USER_RECIPES", this.user);
+
         this.$emit("saving");
+        this.systemMessage = "Your recipe was saved successfully!";
       } else
         this.systemMessage =
           "Unable to save recipe. Try again later or contact support if issue continues.";

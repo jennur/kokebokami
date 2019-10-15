@@ -16,7 +16,6 @@ export default {
   methods: {
     googleSignIn() {
       this.$store.dispatch("GOOGLE_SIGN_IN");
-      //this.$router.push("/account");
     }
   }
 };
