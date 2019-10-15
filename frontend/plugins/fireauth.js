@@ -1,7 +1,6 @@
 import { auth } from "~/plugins/firebase.js";
 
 export default context => {
-  console.log("CONTEXT::: " + context);
   const { store } = context;
 
   return new Promise((resolve, reject) => {
@@ -13,12 +12,9 @@ export default context => {
           name: user.displayName
         };
         store.dispatch("SET_USER", loggedinUser);
-        store.dispatch("SET_USER_RECIPES", loggedinUser);
-        return resolve();
+        return resolve(store.dispatch("SET_USER_RECIPES", loggedinUser));
       }
-      return reject(error =>
-        console.log("Something went wrong in fireauth: " + error)
-      );
+      return resolve();
     });
   });
 };

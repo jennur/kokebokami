@@ -72,7 +72,7 @@ export const actions = {
       });
   },
   SET_USER_RECIPES: ({ commit }, user) => {
-    const recipesRef = db.ref("recipes");
+    const recipesRef = db.ref("recipes").orderByKey();
     let recipesArray = [];
     recipesRef.once(
       "value",
