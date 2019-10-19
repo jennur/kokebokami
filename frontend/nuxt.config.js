@@ -5,15 +5,15 @@ const axios = require("axios");
 // Initialize the service account key object.
 const serviceAccount = {
   type: "service_account",
-  project_id: process.env.NUXT_PROJECT_ID,
-  private_key_id: process.env.NUXT_PRIVATE_KEY_ID,
-  private_key: process.env.NUXT_PRIVATE_KEY,
-  client_email: process.env.NUXT_CLIENT_EMAIL,
-  client_id: process.env.NUXT_CLIENT_ID,
-  auth_uri: process.env.NUXT_AUTH_URI,
-  token_uri: process.env.NUXT_TOKEN_URI,
-  auth_provider_x509_cert_url: process.env.NUXT_AUTH_PROVIDER_CERT_URL,
-  client_x509_cert_url: process.env.NUXT_CLIENT_CERT_URL
+  project_id: process.env.NUXT_ENV_PROJECT_ID,
+  private_key_id: process.env.NUXT_ENV_PRIVATE_KEY_ID,
+  private_key: process.env.NUXT_ENV_PRIVATE_KEY,
+  client_email: process.env.NUXT_ENV_CLIENT_EMAIL,
+  client_id: process.env.NUXT_ENV_CLIENT_ID,
+  auth_uri: process.env.NUXT_ENV_AUTH_URI,
+  token_uri: process.env.NUXT_ENV_TOKEN_URI,
+  auth_provider_x509_cert_url: process.env.NUXT_ENV_AUTH_PROVIDER_CERT_URL,
+  client_x509_cert_url: process.env.NUXT_ENV_CLIENT_CERT_URL
 };
 // Define the required scopes.
 var scopes = [
@@ -38,7 +38,7 @@ let routesPromise = new Promise((resolve, reject) => {
     else {
       axios
         .get(
-          process.env.NUXT_DATABASE_URL +
+          process.env.NUXT_ENV_DATABASE_URL +
             "/recipes.json?access_token=" +
             tokens.access_token
         )
@@ -151,23 +151,23 @@ export default {
    */
   modules: [["nuxt-svg-loader", "@nuxtjs/dotenv", "@nuxtjs/svg"]],
   env: {
-    baseURL: process.env.NUXT_BASE_URL || "http://localhost:3000",
-    apiKey: process.env.NUXT_API_KEY,
-    authDomain: process.env.NUXT_AUTH_DOMAIN,
-    databaseURL: process.env.NUXT_DATABASE_URL,
-    projectId: process.env.NUXT_PROJECT_ID,
-    storageBucket: process.env.NUXT_STORAGE_BUCKET,
-    messagingSenderId: process.env.NUXT_MESSAGING_SENDER_ID,
-    appId: process.env.NUXT_APP_ID,
-    measurementId: process.env.NUXT_MEASUREMENT_ID,
-    privateKeyId: process.env.NUXT_PRIVATE_KEY_ID,
-    privateKey: process.env.NUXT_PRIVATE_KEY,
-    clientEmail: process.env.NUXT_CLIENT_EMAIL,
-    clientId: process.env.NUXT_CLIENT_ID,
-    authURI: process.env.NUXT_AUTH_URI,
-    tokenURI: process.env.NUXT_TOKEN_URI,
-    authProviderCertURL: process.env.NUXT_AUTH_PROVIDER_CERT_URL,
-    clientCertURL: process.env.NUXT_CLIENT_CERT_URL
+    baseURL: process.env.NUXT_ENV_BASE_URL || "http://localhost:3000",
+    apiKey: process.env.NUXT_ENV_API_KEY,
+    authDomain: process.env.NUXT_ENV_AUTH_DOMAIN,
+    databaseURL: process.env.NUXT_ENV_DATABASE_URL,
+    projectId: process.env.NUXT_ENV_PROJECT_ID,
+    storageBucket: process.env.NUXT_ENV_STORAGE_BUCKET,
+    messagingSenderId: process.env.NUXT_ENV_MESSAGING_SENDER_ID,
+    appId: process.env.NUXT_ENV_APP_ID,
+    measurementId: process.env.NUXT_ENV_MEASUREMENT_ID,
+    privateKeyId: process.env.NUXT_ENV_PRIVATE_KEY_ID,
+    privateKey: process.env.NUXT_ENV_PRIVATE_KEY,
+    clientEmail: process.env.NUXT_ENV_CLIENT_EMAIL,
+    clientId: process.env.NUXT_ENV_CLIENT_ID,
+    authURI: process.env.NUXT_ENV_AUTH_URI,
+    tokenURI: process.env.NUXT_ENV_TOKEN_URI,
+    authProviderCertURL: process.env.NUXT_ENV_AUTH_PROVIDER_CERT_URL,
+    clientCertURL: process.env.NUXT_ENV_CLIENT_CERT_URL
   },
   /*
    ** Build configuration
