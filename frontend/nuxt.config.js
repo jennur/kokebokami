@@ -55,15 +55,15 @@ let routesPromise = new Promise((resolve, reject) => {
 export default {
   mode: "spa",
   generate: {
-    fallback: true,
-
+    fallback: true
+    /*
     routes: function(callback) {
       routesPromise
         .then(routes => {
           callback(null, routes);
         })
         .catch(callback);
-    }
+    }*/
   },
 
   /*
