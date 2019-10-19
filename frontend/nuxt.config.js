@@ -52,14 +52,16 @@ let routesPromise = new Promise((resolve, reject) => {
   });
 });
 
+const dynamicRoutes = () => {
+  return routesPromise.then(result => {
+    return result;
+  });
+};
+
 export default {
   mode: "spa",
   generate: {
-    routes: function() {
-      return routesPromise.then(result => {
-        return result;
-      });
-    },
+    routes: dynamicRoutes,
     fallback: true
   },
 
