@@ -32,7 +32,7 @@ var jwtClient = new google.auth.JWT(
 // Use the JWT client to generate an access token.
 let routesPromise = new Promise((resolve, reject) => {
   jwtClient.authorize((error, tokens) => {
-    let routes = ["/", "/account", "/login"];
+    let routes = [];
 
     if (error) return error;
     else {
@@ -55,14 +55,12 @@ let routesPromise = new Promise((resolve, reject) => {
 export default {
   mode: "spa",
   generate: {
-    routes: async () => {
-      return routesPromise
-        .then(result => {
-          return result;
+    routes: function(callback) {
+      routesPromise
+        .then(routes => {
+          callback(null, routes);
         })
-        .catch(error => {
-          console.log("ROUTES ERROR::: " + error);
-        });
+        .catch(callback);
     },
     fallback: true
   },
