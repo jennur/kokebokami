@@ -53,9 +53,9 @@ let routesPromise = new Promise((resolve, reject) => {
 });
 
 export default {
-  mode: "spa",
+  mode: "universal",
   generate: {
-    fallback: false,
+    fallback: true,
 
     routes: function(callback) {
       routesPromise
