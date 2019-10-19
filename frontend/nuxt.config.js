@@ -56,9 +56,13 @@ export default {
   mode: "spa",
   generate: {
     routes: async () => {
-      return await routesPromise.then(result => {
-        return result;
-      });
+      return routesPromise
+        .then(result => {
+          return result;
+        })
+        .catch(error => {
+          console.log("ROUTES ERROR::: " + error);
+        });
     },
     fallback: true
   },
