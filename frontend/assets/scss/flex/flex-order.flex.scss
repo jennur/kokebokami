@@ -1,0 +1,33 @@
+.flex-order {
+  &--one {
+    order: 1;
+  }
+
+  &--two {
+    order: 2;
+  }
+
+  &--tablet-one {
+    @media screen and (min-width: $tabletWidth) {
+      order: 1;
+    }
+  }
+
+  &--desktop-one {
+    @media screen and (min-width: $desktopWidth) {
+      order: 1;
+    }
+  }
+
+  &--tablet-two {
+    @media screen and (min-width: $tabletWidth) {
+      order: 2;
+    }
+  }
+
+  &--desktop-two {
+    @media screen and (min-width: $desktopWidth) {
+      order: 2;
+    }
+  }
+}

@@ -3,7 +3,11 @@
 /* Settings */
 @import "./settings/variables.settings.scss";
 
+/* Flex */
+@import "./flex/flex-order.flex.scss";
+
 /* Elements */
+@import "./elements/anchor.element.scss";
 @import "./elements/base.element.scss";
 @import "./elements/fieldset.element.scss";
 @import "./elements/heading.element.scss";
@@ -13,6 +17,7 @@
 @import "./components/add-recipe-form.component.scss";
 @import "./components/button.component.scss";
 @import "./components/facebook-btn.component.scss";
+@import "./components/footer.component.scss";
 @import "./components/google-btn.component.scss";
 @import "./components/login-container.component.scss";
 @import "./components/logout-btn.component.scss";

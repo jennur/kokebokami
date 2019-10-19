@@ -1,0 +1,10 @@
+.footer {
+  border-top: 2px solid $green;
+  &__nav {
+    list-style: none;
+    padding: 0px;
+  }
+
+  &__copyright {
+  }
+}

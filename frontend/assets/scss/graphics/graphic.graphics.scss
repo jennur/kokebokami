@@ -10,6 +10,10 @@
   }
 
   &--kokebokapen {
-    max-width: 300px;
+    display: none;
+    @media screen and (min-width: $tabletWidth) {
+      max-width: 300px;
+      display: block;
+    }
   }
 }
