@@ -61,7 +61,7 @@ const dynamicRoutes = () => {
 export default {
   mode: "spa",
   generate: {
-    routes: dynamicRoutes,
+    routes: ["/recipes/test"],
     fallback: true
   },
 
