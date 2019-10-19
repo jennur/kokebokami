@@ -30,33 +30,33 @@ var jwtClient = new google.auth.JWT(
 );
 
 // Use the JWT client to generate an access token.
+let routesPromise = new Promise((resolve, reject) => {
+  let routes = [];
+  jwtClient.authorize((error, tokens) => {
+    if (error) return error;
+    else {
+      axios
+        .get(
+          "https://kokebokami-e788f.firebaseio.com/recipes.json?access_token=" +
+            tokens.access_token
+        )
+        .then(response => {
+          Object.keys(response.data).forEach(key => {
+            routes.push("/recipes/" + key);
+          });
+          console.log("ROUTES::: " + routes);
+          resolve(routes);
+        })
+        .catch(error => console.log("AXIOS ERROR::: " + error));
+    }
+  });
+});
 
 export default {
   mode: "spa",
   generate: {
     fallback: true,
     routes: function() {
-      let routesPromise = new Promise((resolve, reject) => {
-        let routes = [];
-        jwtClient.authorize((error, tokens) => {
-          if (error) return error;
-          else {
-            axios
-              .get(
-                "https://kokebokami-e788f.firebaseio.com/recipes.json?access_token=" +
-                  tokens.access_token
-              )
-              .then(response => {
-                Object.keys(response.data).forEach(key => {
-                  routes.push("/recipes/" + key);
-                });
-                resolve(routes);
-              })
-              .catch(error => console.log("AXIOS ERROR::: " + error));
-          }
-        });
-      });
-
       return routesPromise.then(result => {
         return result;
       });
