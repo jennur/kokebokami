@@ -55,12 +55,12 @@ let routesPromise = new Promise((resolve, reject) => {
 export default {
   mode: "spa",
   generate: {
-    fallback: true,
     routes: function() {
       return routesPromise.then(result => {
         return result;
       });
-    }
+    },
+    fallback: true
   },
 
   /*
