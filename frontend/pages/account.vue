@@ -1,11 +1,11 @@
 <template>
   <div class="container">
-    <h2>Welcome back, {{this.firstName}}!</h2>
+    <h2>Here's kokeboka di, {{this.firstName}}!</h2>
     <button
       @click="toggleRecipeAdder"
       :class="'button button--large button--round margin--auto ' + (addingRecipe ? 'button--cancel' : '')"
     >{{ addRecipeButtonText}}</button>
-    <add-recipe v-if="addingRecipe" @saving="toggleRecipeAdder" />
+    <add-recipe v-if="addingRecipe" :addingRecipe="addingRecipe" @toggle="toggleRecipeAdder" />
     <recipes-list class="padding--large" :headline="headline" />
   </div>
 </template>

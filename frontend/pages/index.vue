@@ -1,8 +1,11 @@
 <template>
   <div class="container">
-    <h1 class="heading--display-font" v-if="!user">Welcome to your online cook book!</h1>
+    <h1 class="heading--display-font">Welcome to your online cook book!</h1>
     <div class="flex-center-container">
-      <kokeboka class="graphic--kokeboka" />
+      <nuxt-link to="/login" class="button button--large" v-if="!user">Get started ➔</nuxt-link>
+    </div>
+    <div class="flex-center-container">
+      <kokeboka class="graphic graphic--kokeboka" />
     </div>
   </div>
 </template>

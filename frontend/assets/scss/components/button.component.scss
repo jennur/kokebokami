@@ -1,15 +1,18 @@
 .button {
-  display: inline-block;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
   width: 5 * $spacingXLarge;
-  background-color: $blue;
-  color: $white;
-  font-size: $fontSizeMedium;
-  font-family: $displayFont;
   padding: 0px $spacingMedium;
   height: 40px;
   border-radius: $spacingSmall;
   border: none;
   box-sizing: content-box;
+  background-color: $blue;
+  color: $white;
+  font-size: $fontSizeMedium;
+  font-family: $displayFont;
+  text-decoration: none;
   cursor: pointer;
 
   &:hover {
@@ -73,6 +76,15 @@
     &:hover {
       background-color: transparent;
       color: $orange;
+    }
+
+    &-dark-bg {
+      color: $orange;
+
+      &:hover {
+        background-color: transparent;
+        color: $green;
+      }
     }
   }
 }

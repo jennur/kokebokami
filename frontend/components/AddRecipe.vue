@@ -1,7 +1,7 @@
 <template>
   <section class="full-width padding--xlarge">
     <form class="add-recipe-form margin--auto" v-on:submit.prevent>
-      <h2 class="add-recipe-form__headline">Add new recipe</h2>
+      <h2 class="add-recipe-form__headline" v-if="!addingRecipe">Add new recipe</h2>
 
       <fieldset class="flex-column">
         <label>
@@ -62,10 +62,16 @@
           />
         </label>
       </fieldset>
-      <button
-        class="button button--block button--green-border margin--auto"
-        @click="saveRecipe"
-      >Save recipe</button>
+      <fieldset>
+        <button
+          class="button button--block button--green-border margin--auto"
+          @click="saveRecipe"
+        >Save recipe</button>
+        <button
+          class="button button--block button--cancel-dark-bg margin--auto margin-top--medium"
+          @click="cancel"
+        >✕ Cancel</button>
+      </fieldset>
     </form>
     <div class="system-message">{{ systemMessage }}</div>
   </section>
@@ -98,6 +104,9 @@ export default {
         1
       );
     },
+    cancel() {
+      this.$emit("toggle");
+    },
     saveRecipe() {
       let ingredients = document.querySelectorAll("#ingredientList input");
       let ingredientList = [];
@@ -119,7 +128,7 @@ export default {
       if (newRecipeKey !== null) {
         this.$store.dispatch("SET_USER_RECIPES", this.user);
 
-        this.$emit("saving");
+        this.$emit("toggle");
         this.systemMessage = "Your recipe was saved successfully!";
       } else
         this.systemMessage =

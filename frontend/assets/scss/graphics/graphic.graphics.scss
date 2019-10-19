@@ -1,0 +1,15 @@
+.graphic {
+  display: block;
+  width: 100%;
+  height: auto;
+  position: relative;
+  margin: $spacingXXLarge auto;
+
+  &--kokeboka {
+    max-width: 600px;
+  }
+
+  &--kokebokapen {
+    max-width: 300px;
+  }
+}
