@@ -8,4 +8,3 @@
 [build]
   base    = "frontend"
   command = "npm run build && npm run generate"
-  publish = "dist"
