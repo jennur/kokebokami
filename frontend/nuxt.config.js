@@ -31,8 +31,9 @@ var jwtClient = new google.auth.JWT(
 
 // Use the JWT client to generate an access token.
 let routesPromise = new Promise((resolve, reject) => {
-  let routes = [];
   jwtClient.authorize((error, tokens) => {
+    let routes = [];
+
     if (error) return error;
     else {
       axios
@@ -44,7 +45,6 @@ let routesPromise = new Promise((resolve, reject) => {
           Object.keys(response.data).forEach(key => {
             routes.push("/recipes/" + key);
           });
-          console.log("ROUTES::: " + routes);
           resolve(routes);
         })
         .catch(error => console.log("AXIOS ERROR::: " + error));
@@ -52,16 +52,14 @@ let routesPromise = new Promise((resolve, reject) => {
   });
 });
 
-const dynamicRoutes = () => {
-  return routesPromise.then(result => {
-    return result;
-  });
-};
-
 export default {
   mode: "spa",
   generate: {
-    routes: ["/recipes/test"],
+    routes: async () => {
+      return routesPromise.then(result => {
+        return result;
+      });
+    },
     fallback: true
   },
 
