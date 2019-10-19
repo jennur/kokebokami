@@ -53,7 +53,7 @@ let routesPromise = new Promise((resolve, reject) => {
 });
 
 export default {
-  mode: "universal",
+  mode: "spa",
   generate: {
     fallback: true,
 
