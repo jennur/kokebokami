@@ -56,7 +56,7 @@ export default {
   mode: "spa",
   generate: {
     routes: async () => {
-      return routesPromise.then(result => {
+      return await routesPromise.then(result => {
         return result;
       });
     },
