@@ -5,7 +5,7 @@
       @click="toggleRecipeAdder"
       :class="'button button--large button--round margin--auto ' + (addingRecipe ? 'button--cancel' : '')"
     >{{ addRecipeButtonText}}</button>
-    <add-recipe v-if="addingRecipe" :addingRecipe="addingRecipe" @toggle="toggleRecipeAdder" />
+    <add-recipe v-if="addingRecipe" @toggle="toggleRecipeAdder" />
     <recipes-list class="padding--large" :headline="headline" />
   </div>
 </template>
