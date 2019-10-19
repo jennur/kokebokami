@@ -1,7 +1,7 @@
 <template>
   <section class="full-width padding--xlarge">
     <form class="add-recipe-form margin--auto" v-on:submit.prevent>
-      <h2 class="add-recipe-form__headline">Add new recipe</h2>
+      <h2 class="add-recipe-form__headline">Add new recipe to kokeboka di</h2>
 
       <fieldset class="flex-column">
         <label>
@@ -105,7 +105,9 @@ export default {
       );
     },
     cancel() {
-      this.$emit("toggle");
+      if (confirm("Are you sure you want to discard your new recipe?")) {
+        this.$emit("toggle");
+      }
     },
     saveRecipe() {
       let ingredients = document.querySelectorAll("#ingredientList input");

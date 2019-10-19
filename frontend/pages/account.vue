@@ -1,9 +1,9 @@
 <template>
-  <div class="container">
-    <h2>Here's kokeboka di, {{this.firstName}}!</h2>
+  <div class="container container--tablet-width">
+    <h2 class="heading--display-font margin-bottom--large">{{this.firstName}}'s kokebok</h2>
     <button
       @click="toggleRecipeAdder"
-      :class="'button button--large button--round margin--auto ' + (addingRecipe ? 'button--cancel' : '')"
+      :class="'button button--large button--round margin--auto margin-top--medium ' + (addingRecipe ? 'button--cancel' : '')"
     >{{ addRecipeButtonText}}</button>
     <add-recipe v-if="addingRecipe" @toggle="toggleRecipeAdder" />
     <recipes-list class="padding--large" :headline="headline" />

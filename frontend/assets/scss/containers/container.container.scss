@@ -10,4 +10,8 @@
   @media screen and (min-width: 600px) {
     padding: $spacingXLarge;
   }
+
+  &--tablet-width {
+    max-width: $tabletWidth;
+  }
 }

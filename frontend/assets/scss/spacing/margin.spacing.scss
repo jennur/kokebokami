@@ -26,4 +26,16 @@
       margin-top: $spacingMedium;
     }
   }
+
+  &-bottom {
+    &--small {
+      margin-bottom: $spacingSmall;
+    }
+    &--medium {
+      margin-bottom: $spacingMedium;
+    }
+    &--large {
+      margin-bottom: $spacingLarge;
+    }
+  }
 }
