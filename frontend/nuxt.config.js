@@ -2,7 +2,9 @@ require("dotenv").config();
 
 export default {
   mode: "spa",
-  generate: {},
+  generate: {
+    fallback: true
+  },
 
   /*
    ** Headers of the page
@@ -84,7 +86,7 @@ export default {
   /*
    ** Nuxt.js modules
    */
-  modules: [["nuxt-svg-loader", "@nuxtjs/dotenv"]],
+  modules: [["nuxt-svg-loader", "@nuxtjs/dotenv", "@nuxtjs/svg"]],
   env: {
     baseUrl: process.env.BASE_URL || "http://localhost:3000",
     apiKey: process.env.API_KEY,

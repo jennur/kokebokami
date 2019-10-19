@@ -2,3 +2,9 @@ h1,
 h2 {
   font-family: $bodyFont;
 }
+
+.heading {
+  &--display-font {
+    font-family: $displayFont;
+  }
+}

@@ -1,0 +1,10 @@
+.graphic {
+  &--kokeboka {
+    display: block;
+    width: 100%;
+    max-width: 750px;
+    height: auto;
+    position: relative;
+    margin: $spacingXLarge auto;
+  }
+}
