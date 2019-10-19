@@ -32,7 +32,7 @@ var jwtClient = new google.auth.JWT(
 // Use the JWT client to generate an access token.
 let routesPromise = new Promise((resolve, reject) => {
   jwtClient.authorize((error, tokens) => {
-    let routes = [];
+    let routes = ["/", "/account", "/login"];
 
     if (error) return error;
     else {
