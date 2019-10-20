@@ -1,4 +1,3 @@
-require("dotenv").config();
 var { google } = require("googleapis");
 const axios = require("axios");
 
@@ -34,7 +33,7 @@ let routesPromise = new Promise((resolve, reject) => {
   jwtClient.authorize((error, tokens) => {
     let routes = [];
 
-    if (error) return error;
+    if (error) return "FAILED IN JWT CLIENT::: + " + error;
     else {
       axios
         .get(
@@ -50,11 +49,12 @@ let routesPromise = new Promise((resolve, reject) => {
           resolve(routes);
         })
         .catch(error => {
-          reject(error);
+          reject("AXIOS PROMISE REJECTED::: " + error);
         });
     }
   });
 });
+require("dotenv").config();
 
 export default {
   mode: "spa",
@@ -63,13 +63,9 @@ export default {
     routes: function() {
       return routesPromise
         .then(routes => {
-          console.log("INSIDE ROUTES PROMISE!! " + routes);
-
           return routes;
         })
-        .catch(error => {
-          console.log("ROUTES PROMISE ERROR::: " + error);
-        });
+        .catch(error => "FAILED IN ROUTES PROMISE::: " + error);
     }
   },
 
