@@ -1,5 +1,5 @@
 require("dotenv").config();
-
+/*
 var { google } = require("googleapis");
 const axios = require("axios");
 
@@ -55,18 +55,18 @@ let routesPromise = new Promise((resolve, reject) => {
     }
   });
 });
-
+*/
 export default {
   mode: "spa",
   generate: {
-    fallback: true,
-    routes: function() {
+    fallback: true
+    /*routes: function() {
       return routesPromise
         .then(routes => {
           return routes;
         })
         .catch(error => "FAILED AT ROUTES PROMISE::: " + error);
-    }
+    }*/
   },
 
   /*
