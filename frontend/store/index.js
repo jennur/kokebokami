@@ -31,9 +31,14 @@ export const actions = {
     commit("setUser", user);
   },
   GOOGLE_SIGN_IN: ({ commit }) => {
+    auth.signInWithRedirect(GoogleProvider);
+
     auth
-      .signInWithPopup(GoogleProvider)
+      .getRedirectResult()
       .then(response => {
+        if (response.credential) {
+          const token = response.credential.accessToken;
+        }
         let user = {
           id: response.user.uid,
           profileImg: response.user.photoURL,
