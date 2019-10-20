@@ -1,5 +1,5 @@
 <template>
-  <section class="tablet-width margin--auto">
+  <section class="mobile-width margin--auto">
     <form class="add-recipe-form" v-on:submit.prevent>
       <fieldset class="flex-column">
         <label>
@@ -20,7 +20,7 @@
           />
         </label>
       </fieldset>
-      <fieldset id="ingredientList" class="flex-column">
+      <fieldset id="ingredientList" class="add-recipe-form__ingredients flex-column">
         <label>
           <h4>Ingredients</h4>
           <span
@@ -39,20 +39,23 @@
               class="remove-icon"
               title="Remove ingredient"
               @click="(event)=>removeIngredient(event)"
-            ></button>
+            >Remove ingredient</button>
           </span>
-
-          <button
-            class="add-recipe-form__add-input-btn margin-top--medium"
-            @click="incrementIngredientNumber"
-          >Add another ingredient</button>
         </label>
+        <button
+          class="add-recipe-form__add-input-btn margin-top--medium"
+          @click="incrementIngredientNumber"
+        >Add ingredient</button>
       </fieldset>
       <fieldset id="instructionList" class="flex-column">
         <label>
           <h4>Instructions</h4>
           <ol class="add-recipe-form__instructions">
-            <li v-for="instructionStep in instructionStepList" :key="instructionStep">
+            <li
+              class="margin-bottom--large"
+              v-for="instructionStep in instructionStepList"
+              :key="instructionStep"
+            >
               <span class="flex-row flex-row--align-center">
                 <textarea
                   class="add-recipe-form__instruction"
@@ -64,19 +67,19 @@
                   class="remove-icon"
                   title="Remove instruction step"
                   @click="(event)=>removeInstructionStep(event)"
-                ></button>
+                >Remove step</button>
               </span>
             </li>
-            <button
-              class="add-recipe-form__add-input-btn margin-top--medium"
-              @click="incrementInstructionStepsNumber"
-            >Add another step</button>
           </ol>
         </label>
+        <button
+          class="add-recipe-form__add-input-btn margin-top--medium"
+          @click="incrementInstructionStepsNumber"
+        >Add step</button>
       </fieldset>
-      <fieldset v-if="!saved">
+      <fieldset class="margin-top--large" v-if="!saved">
         <div class="flex-row flex-row--align-center flex-row--justify-center">
-          <button class="button button--green-border" @click="saveRecipe">Save recipe</button>
+          <button class="button" @click="saveRecipe">Save recipe</button>
           <button class="button button--cancel" @click="cancel">✕ Cancel</button>
         </div>
       </fieldset>

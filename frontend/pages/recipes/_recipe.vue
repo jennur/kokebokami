@@ -1,7 +1,5 @@
 <template>
-  <div class="container">
-    <recipe-full-view :recipe="recipe" />
-  </div>
+  <recipe-full-view :recipe="recipe" />
 </template>
 
 <script>

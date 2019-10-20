@@ -1,5 +1,5 @@
 <template>
-  <section class="tablet-width margin--auto">
+  <section class="mobile-width margin--auto">
     <div class="recipe">
       <h3 class="recipe__title">{{recipe.title ? recipe.title : "Recipe has no title"}}</h3>
       <div
