@@ -36,9 +36,6 @@ export const actions = {
     auth
       .getRedirectResult()
       .then(response => {
-        if (response.credential) {
-          const token = response.credential.accessToken;
-        }
         let user = {
           id: response.user.uid,
           profileImg: response.user.photoURL,
@@ -51,8 +48,9 @@ export const actions = {
       });
   },
   FACEBOOK_SIGN_IN: ({ commit }) => {
+    auth.signInWithRedirect(FacebookProvider);
     auth
-      .signInWithPopup(FacebookProvider)
+      .getRedirectResult()
       .then(response => {
         let user = {
           id: response.user.uid,
