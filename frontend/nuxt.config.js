@@ -1,3 +1,5 @@
+require("dotenv").config();
+
 var { google } = require("googleapis");
 const axios = require("axios");
 
@@ -42,7 +44,6 @@ let routesPromise = new Promise((resolve, reject) => {
             tokens.access_token
         )
         .then(response => {
-          console.log("INSIDE AXIOS PROMISE!! " + response);
           Object.keys(response.data).forEach(key => {
             routes.push("/recipes/" + key);
           });
@@ -54,7 +55,6 @@ let routesPromise = new Promise((resolve, reject) => {
     }
   });
 });
-require("dotenv").config();
 
 export default {
   mode: "spa",
@@ -65,7 +65,7 @@ export default {
         .then(routes => {
           return routes;
         })
-        .catch(error => "FAILED IN ROUTES PROMISE::: " + error);
+        .catch(error => "FAILED AT ROUTES PROMISE::: " + error);
     }
   },
 
