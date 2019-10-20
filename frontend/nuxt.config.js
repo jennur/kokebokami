@@ -1,5 +1,5 @@
 require("dotenv").config();
-var { google } = require("googleapis");
+/*var { google } = require("googleapis");
 const axios = require("axios");
 
 // Initialize the service account key object.
@@ -53,20 +53,20 @@ let routesPromise = new Promise((resolve, reject) => {
         });
     }
   });
-});
+});*/
 
 export default {
   mode: "universal",
   generate: {
-    fallback: true,
+    fallback: true
 
-    routes: function(callback) {
+    /*routes: function(callback) {
       routesPromise
         .then(routes => {
           callback(null, routes);
         })
         .catch(callback);
-    }
+    }*/
   },
 
   /*
