@@ -1,13 +1,15 @@
 <template>
-  <recipe-full-view :recipe="recipe" />
+  <div class="container">
+    <add-recipe-form :recipe="recipe" />
+  </div>
 </template>
 
 <script>
-import RecipeFullView from "~/components/RecipeFullView.vue";
+import AddRecipeForm from "~/components/AddRecipeForm.vue";
 
 export default {
   name: "recipe",
-  components: { RecipeFullView },
+  components: { AddRecipeForm },
   props: {},
   computed: {
     recipe() {

@@ -1,18 +1,16 @@
 <template>
   <div class="container container--tablet-width">
     <h2 class="heading--display-font margin-bottom--large">{{this.firstName}}'s kokebok</h2>
-    <button
-      @click="toggleRecipeAdder"
-      :class="'button button--large button--round margin--auto margin-top--medium ' + (addingRecipe ? 'button--cancel' : '')"
-    >{{ addRecipeButtonText}}</button>
-    <add-recipe v-if="addingRecipe" @toggle="toggleRecipeAdder" />
+    <nuxt-link
+      to="/add-recipe"
+      class="button button--large button--round margin--auto margin-top--medium"
+    >Add new recipe</nuxt-link>
     <recipes-list class="padding--large" :headline="headline" />
   </div>
 </template>
 
 <script>
 import { user } from "~/mixins/getCurrentUser.js";
-import AddRecipe from "~/components/AddRecipe.vue";
 import RecipesList from "~/components/RecipesList.vue";
 
 export default {
@@ -20,7 +18,7 @@ export default {
   data() {
     return { addingRecipe: false, addRecipeButtonText: "Add new recipe" };
   },
-  components: { AddRecipe, RecipesList },
+  components: { RecipesList },
   mixins: [user],
   computed: {
     firstName() {
@@ -34,12 +32,12 @@ export default {
     }
   },
   methods: {
-    toggleRecipeAdder() {
+    /*toggleRecipeAdder() {
       this.addingRecipe = !this.addingRecipe;
       this.addRecipeButtonText = this.addingRecipe
         ? "✕ Cancel"
         : "Add new Recipe";
-    }
+    }*/
   }
 };
 </script>

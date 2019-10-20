@@ -1,6 +1,7 @@
 .flex-row {
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
 
   &--nowrap {
     flex-wrap: nowrap;
@@ -8,5 +9,8 @@
 
   &--align-center {
     align-items: center;
+  }
+  &--justify-center {
+    justify-content: center;
   }
 }

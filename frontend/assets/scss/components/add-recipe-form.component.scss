@@ -1,32 +1,90 @@
 .add-recipe-form {
   display: block;
   width: 100%;
-  max-width: 500px;
-  border-radius: $spacingLarge;
-  background-color: $blue;
-  padding: $spacingLarge;
-  box-sizing: border-box;
-  color: $white;
   text-align: left;
 
+  &__title,
+  &__ingredient,
+  &__description,
+  &__instruction {
+    display: block;
+    padding: $spacingLarge + 1px;
+    margin-top: $spacingSmall;
+    background-color: transparent;
+    border: none;
+    font-size: $fontSizeMedium;
+    border: 1px solid rgba(0, 231, 143, 0.3);
+    box-sizing: border-box;
+    border-radius: $spacingSmall;
+
+    caret-color: $green;
+
+    &:focus {
+      outline: none;
+      border: 2px solid $green;
+      padding: $spacingLarge;
+    }
+  }
+
   &__headline {
-    font-family: $displayFont;
-    text-align: center;
+    font-family: $bodyFont;
+    text-align: left;
+    font-size: $fontSizeSmall;
   }
 
   &__title {
     width: 100%;
-    max-width: 250px;
+    font-family: $displayFont;
+    font-size: $fontSizeXXLarge;
   }
   &__description {
     width: 100%;
-    height: 50px;
+    height: 150px;
     resize: none;
+    margin-bottom: $spacingXXLarge;
+    font-size: $fontSizeLarge;
+    color: $blue;
   }
 
+  &__add-input-btn {
+    display: inline-block;
+    position: relative;
+    height: $spacingXLarge;
+    border: none;
+    border-radius: $spacingLarge;
+    padding: 0px $spacingLarge 0px $spacingXLarge;
+    font-size: $fontSizeSmall;
+    color: $blue;
+    background-color: $green;
+    cursor: pointer;
+
+    &:hover {
+      background-color: $blue;
+      color: $green;
+    }
+    &::before {
+      content: "+";
+      font-weight: bold;
+      position: absolute;
+      left: $spacingMedium;
+      top: $spacingSmall;
+    }
+  }
+  &__ingredients {
+    margin-bottom: $spacingXLarge;
+  }
+
+  &__ingredient {
+    width: 200px;
+  }
   &__instructions {
+    padding: 0px;
+    margin-bottom: $spacingXLarge;
+  }
+
+  &__instruction {
     width: 100%;
-    height: 150px;
+    height: 120px;
     resize: none;
   }
 }

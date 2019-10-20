@@ -1,9 +1,11 @@
-label {
-  font-family: $displayFont;
+/*label {
+  font-family: $bodyFont;
   font-weight: bold;
+  font-size: $fontSizeSmall;
+  color: $gray;
   margin: $spacingXLarge $spacingMedium;
-}
-
+}*/
+/*
 input,
 textarea {
   display: block;
@@ -11,19 +13,15 @@ textarea {
   margin-top: $spacingSmall;
   background-color: transparent;
   border: none;
-  border-bottom: 2px solid $green;
   font-size: $fontSizeMedium;
-  color: $white;
-  caret-color: $orange;
+  color: $black;
+  caret-color: $green;
 
   &:focus {
     outline: none;
-    border-bottom: 2px solid $orange;
-  }
-  &::placeholder {
-    color: $green;
+    border-left: 2px solid $green;
   }
 }
 
 input {
-}
+}*/

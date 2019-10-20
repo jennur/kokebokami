@@ -1,12 +1,11 @@
 .remove-icon {
   display: inline-block;
   position: relative;
-  width: $spacingLarge;
   height: $spacingLarge;
   border: none;
   border-radius: 50%;
   padding: 0px;
-  margin: $spacingSmall 0px 0px $spacingSmall;
+  margin: $spacingSmall 0px 0px $spacingMedium;
   font-size: $fontSizeSmall;
   color: $orange;
   background-color: transparent;
@@ -16,10 +15,10 @@
     color: $pink;
   }
 
-  &:after {
+  &:before {
     content: "✕";
-    position: absolute;
+    position: relative;
     top: 0px;
-    left: 6px;
+    padding-right: $spacingSmall;
   }
 }
