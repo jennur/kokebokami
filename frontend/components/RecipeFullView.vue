@@ -24,14 +24,20 @@
 </template>
 
 <script>
+import AddRecipeForm from "~/components/AddRecipeForm/AddRecipeForm.vue";
 export default {
   name: "recipe-full-view",
+  components: {
+    AddRecipeForm
+  },
   computed: {
+    recipeKey() {
+      return this.$route.params.recipe;
+    },
     recipe() {
-      let recipeID = this.$route.params.recipe;
       let recipes = this.$store.getters.recipes;
       let currentRecipe = recipes.filter(recipe => {
-        return recipe[0] === recipeID;
+        return recipe[0] === this.recipeKey;
       });
       //console.log("RECIPE ::: " + currentRecipe[0][1]);
       return currentRecipe.length ? currentRecipe[0][1] : {};
