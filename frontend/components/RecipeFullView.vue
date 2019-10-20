@@ -11,9 +11,14 @@
     </ul>
     <h4 v-if="recipe.instructions">Instructions</h4>
 
-    <div
-      class="recipe__instructions"
-    >{{recipe.instructions ? recipe.instructions : "Recipe has no instructions"}}</div>
+    <div class="recipe__instructions">
+      <ol>
+        <li
+          v-for="step in recipe.instructions"
+          :key="step"
+        >{{step ? step : "Recipe has no instructions"}}</li>
+      </ol>
+    </div>
   </section>
 </template>
 
