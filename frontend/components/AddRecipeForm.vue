@@ -23,26 +23,29 @@
 
       <fieldset id="ingredientList" class="add-recipe-form__ingredients flex-column">
         <h4>Ingredients</h4>
-        <label>
-          <span
-            class="flex-row flex-row--align-center"
-            v-for="ingredientNumber in ingredientNumberList"
-            :key="ingredientNumber"
-          >
+        <span
+          class="flex-row flex-row--align-center"
+          v-for="ingredientNumber in ingredientNumberList"
+          :key="ingredientNumber"
+        >
+          <label>
             <input
               class="add-recipe-form__ingredient"
               type="text"
               placeholder="Amount of something"
               :id="'ingredient' + ingredientNumber"
             />
-            <button
-              :data-ingredient-ref="ingredientNumber"
-              class="remove-icon"
-              title="Remove ingredient"
-              @click="(event)=>removeIngredient(event)"
-            >Remove ingredient</button>
-          </span>
-        </label>
+          </label>
+
+          <button
+            :data-ingredient-ref="ingredientNumber"
+            class="remove-icon"
+            title="Remove ingredient"
+            @click="(event)=>removeIngredient(event)"
+          >
+            <!--Remove ingredient-->
+          </button>
+        </span>
         <button
           class="add-recipe-form__add-input-btn margin-top--medium"
           @click="incrementIngredientNumber"
