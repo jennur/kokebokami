@@ -43,6 +43,7 @@ let routesPromise = new Promise((resolve, reject) => {
             tokens.access_token
         )
         .then(response => {
+          console.log("INSIDE AXIOS PROMISE!! " + response);
           Object.keys(response.data).forEach(key => {
             routes.push("/recipes/" + key);
           });
@@ -62,6 +63,8 @@ export default {
     routes: function() {
       return routesPromise
         .then(routes => {
+          console.log("INSIDE ROUTES PROMISE!! " + routes);
+
           return routes;
         })
         .catch(error => {
