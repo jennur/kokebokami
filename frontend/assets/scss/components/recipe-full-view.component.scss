@@ -21,4 +21,16 @@
       }
     }
   }
+
+  &__instructions {
+    padding-left: $spacingLarge;
+    &-step {
+      margin-bottom: $spacingMedium;
+
+      &::before {
+        content: "";
+        padding-right: $spacingSmall;
+      }
+    }
+  }
 }
