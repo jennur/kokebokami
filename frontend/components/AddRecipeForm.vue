@@ -1,5 +1,5 @@
 <template>
-  <section class="full-width">
+  <section class="tablet-width margin--auto">
     <form class="add-recipe-form" v-on:submit.prevent>
       <fieldset class="flex-column">
         <label>

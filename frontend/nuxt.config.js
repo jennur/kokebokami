@@ -59,13 +59,14 @@ export default {
   mode: "spa",
   generate: {
     fallback: true,
-
-    routes: function(callback) {
-      routesPromise
+    routes: function() {
+      return routesPromise
         .then(routes => {
-          callback(null, routes);
+          return routes;
         })
-        .catch(callback);
+        .catch(error => {
+          console.log("ROUTES PROMISE ERROR::: " + error);
+        });
     }
   },
 
