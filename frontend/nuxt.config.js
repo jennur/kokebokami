@@ -1,10 +1,7 @@
 require("dotenv").config();
-<<<<<<< HEAD
-=======
 
 /*var { google } = require("googleapis");
 const axios = require("axios");
->>>>>>> 65103be4f1cb1d9ee1cdf0a42f04d262f046487c
 
 /*var { google } = require("googleapis");
 const axios = require("axios");
@@ -56,10 +53,6 @@ let routesPromise = new Promise((resolve, reject) => {
         });
     }
   });
-<<<<<<< HEAD
-=======
-
->>>>>>> 65103be4f1cb1d9ee1cdf0a42f04d262f046487c
 });*/
 
 export default {
@@ -67,19 +60,11 @@ export default {
   generate: {
     fallback: true
 
-<<<<<<< HEAD
-=======
-
->>>>>>> 65103be4f1cb1d9ee1cdf0a42f04d262f046487c
     /*routes: function(callback) {
       routesPromise
         .then(routes => {
           return routes;
         })
-<<<<<<< HEAD
-=======
-
->>>>>>> 65103be4f1cb1d9ee1cdf0a42f04d262f046487c
         .catch(callback);
     }*/
   },
