@@ -1,8 +1,7 @@
 require("dotenv").config();
-/*
-var { google } = require("googleapis");
-const axios = require("axios");
 
+/*var { google } = require("googleapis");
+const axios = require("axios");
 // Initialize the service account key object.
 const serviceAccount = {
   type: "service_account",
@@ -21,7 +20,6 @@ var scopes = [
   "https://www.googleapis.com/auth/userinfo.email",
   "https://www.googleapis.com/auth/firebase.database"
 ];
-
 // Authenticate a JWT client with the service account.
 var jwtClient = new google.auth.JWT(
   serviceAccount.client_email,
@@ -29,12 +27,10 @@ var jwtClient = new google.auth.JWT(
   serviceAccount.private_key,
   scopes
 );
-
 // Use the JWT client to generate an access token.
 let routesPromise = new Promise((resolve, reject) => {
   jwtClient.authorize((error, tokens) => {
     let routes = [];
-
     if (error) return "FAILED IN JWT CLIENT::: + " + error;
     else {
       axios
@@ -54,18 +50,19 @@ let routesPromise = new Promise((resolve, reject) => {
         });
     }
   });
-});
-*/
+});*/
+
 export default {
   mode: "spa",
   generate: {
     fallback: true
-    /*routes: function() {
-      return routesPromise
+
+    /*routes: function(callback) {
+      routesPromise
         .then(routes => {
           return routes;
         })
-        .catch(error => "FAILED AT ROUTES PROMISE::: " + error);
+        .catch(callback);
     }*/
   },
 
