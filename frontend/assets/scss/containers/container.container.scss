@@ -3,13 +3,8 @@
   flex-direction: column;
   margin: 0 auto;
   width: 100%;
-  padding: $spacingSmall;
   box-sizing: border-box;
   text-align: center;
-
-  @media screen and (min-width: 600px) {
-    padding: $spacingXLarge;
-  }
 
   &--tablet-width {
     max-width: $tabletWidth;

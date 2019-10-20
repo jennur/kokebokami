@@ -8,9 +8,10 @@
   &__description,
   &__instruction {
     display: block;
-    padding: $spacingLarge + 1px;
     margin-top: $spacingSmall;
     background-color: transparent;
+    padding: $spacingLargeMobile + 1px;
+
     border: none;
     font-size: $fontSizeMedium;
     border: 1px solid rgba(0, 231, 143, 0.3);
@@ -18,11 +19,16 @@
     border-radius: $spacingSmall;
 
     caret-color: $green;
-
+    @media screen and (min-width: $tabletWidth) {
+      padding: $spacingLarge + 1px;
+    }
     &:focus {
       outline: none;
       border: 2px solid $green;
-      padding: $spacingLarge;
+      padding: $spacingLargeMobile;
+      @media screen and (min-width: $tabletWidth) {
+        padding: $spacingLarge;
+      }
     }
   }
 
@@ -35,15 +41,21 @@
   &__title {
     width: 100%;
     font-family: $displayFont;
-    font-size: $fontSizeXXLarge;
+    font-size: $fontSizeXXLargeMobile;
+    @media screen and (min-width: $tabletWidth) {
+      font-size: $fontSizeXXLarge;
+    }
   }
   &__description {
     width: 100%;
     height: 150px;
     resize: none;
     margin-bottom: $spacingXXLarge;
-    font-size: $fontSizeLarge;
+    font-size: $fontSizeLargeMobile;
     color: $blue;
+    @media screen and (min-width: $tabletWidth) {
+      font-size: $fontSizeXXLarge;
+    }
   }
 
   &__add-input-btn {

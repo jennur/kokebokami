@@ -1,5 +1,5 @@
 <template>
-  <section class="mobile-width margin--auto">
+  <section class="mobile-width margin--auto margin-top--large">
     <form class="add-recipe-form" v-on:submit.prevent>
       <fieldset class="flex-column">
         <label>
@@ -20,9 +20,10 @@
           />
         </label>
       </fieldset>
+
       <fieldset id="ingredientList" class="add-recipe-form__ingredients flex-column">
+        <h4>Ingredients</h4>
         <label>
-          <h4>Ingredients</h4>
           <span
             class="flex-row flex-row--align-center"
             v-for="ingredientNumber in ingredientNumberList"
@@ -47,21 +48,23 @@
           @click="incrementIngredientNumber"
         >Add ingredient</button>
       </fieldset>
+
       <fieldset id="instructionList" class="flex-column">
-        <label>
-          <h4>Instructions</h4>
-          <ol class="add-recipe-form__instructions">
-            <li
-              class="margin-bottom--large"
-              v-for="instructionStep in instructionStepList"
-              :key="instructionStep"
-            >
+        <h4>Instructions</h4>
+        <ol class="add-recipe-form__instructions">
+          <li
+            class="margin-bottom--large"
+            v-for="instructionStep in instructionStepList"
+            :key="instructionStep"
+          >
+            <label>
               <span class="flex-row flex-row--align-center">
                 <textarea
                   class="add-recipe-form__instruction"
                   placeholder="Explain what to do"
                   :id="'instruction' + instructionStep"
                 />
+
                 <button
                   :data-instruction-ref="instructionStep"
                   class="remove-icon"
@@ -69,14 +72,16 @@
                   @click="(event)=>removeInstructionStep(event)"
                 >Remove step</button>
               </span>
-            </li>
-          </ol>
-        </label>
+            </label>
+          </li>
+        </ol>
+
         <button
           class="add-recipe-form__add-input-btn margin-top--medium"
           @click="incrementInstructionStepsNumber"
         >Add step</button>
       </fieldset>
+
       <fieldset class="margin-top--large" v-if="!saved">
         <div class="flex-row flex-row--align-center flex-row--justify-center">
           <button class="button" @click="saveRecipe">Save recipe</button>
