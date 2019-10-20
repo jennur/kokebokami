@@ -24,7 +24,7 @@
       <fieldset id="ingredientList" class="add-recipe-form__ingredients flex-column">
         <h4>Ingredients</h4>
         <span
-          class="flex-row flex-row--align-center"
+          class="flex-row flex-row--align-center margin-bottom--large"
           v-for="ingredientNumber in ingredientNumberList"
           :key="ingredientNumber"
         >
@@ -61,7 +61,7 @@
             :key="instructionStep"
           >
             <label>
-              <span class="flex-row flex-row--align-center">
+              <span class="flex-row flex-row--nowrap flex-row--align-center">
                 <textarea
                   class="add-recipe-form__instruction"
                   placeholder="Explain what to do"
@@ -73,19 +73,20 @@
                   class="remove-icon"
                   title="Remove instruction step"
                   @click="(event)=>removeInstructionStep(event)"
-                >Remove step</button>
+                >
+                  <!--Remove step-->
+                </button>
               </span>
             </label>
           </li>
+          <button
+            class="add-recipe-form__add-input-btn"
+            @click="incrementInstructionStepsNumber"
+          >Add step</button>
         </ol>
-
-        <button
-          class="add-recipe-form__add-input-btn margin-top--medium"
-          @click="incrementInstructionStepsNumber"
-        >Add step</button>
       </fieldset>
 
-      <fieldset class="margin-top--large" v-if="!saved">
+      <fieldset class="margin-top--xxlarge" v-if="!saved">
         <div class="flex-row flex-row--align-center flex-row--justify-center">
           <button class="button" @click="saveRecipe">Save recipe</button>
           <button class="button button--cancel" @click="cancel">✕ Cancel</button>

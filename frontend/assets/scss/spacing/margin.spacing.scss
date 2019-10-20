@@ -2,37 +2,29 @@
   &--auto {
     margin: auto;
   }
-
   &--none {
     margin: 0px;
   }
   &--small {
     margin: $spacingSmallMobile;
-
     @media screen and (min-width: $tabletWidth) {
       margin: $spacingSmallMobile;
     }
   }
-
   &--medium {
     margin: $spacingMediumMobile;
-
     @media screen and (min-width: $tabletWidth) {
       margin: $spacingMedium;
     }
   }
-
   &--large {
     margin: $spacingLargeMobile;
-
     @media screen and (min-width: $tabletWidth) {
       margin: $spacingLarge;
     }
   }
-
   &--xlarge {
     margin: $spacingXLargeMobile;
-
     @media screen and (min-width: $tabletWidth) {
       margin: $spacingXLarge;
     }
@@ -60,6 +52,20 @@
         margin-top: $spacingLarge;
       }
     }
+    &--xlarge {
+      margin-top: $spacingXLargeMobile;
+
+      @media screen and (min-width: $tabletWidth) {
+        margin-top: $spacingXLarge;
+      }
+    }
+    &--xxlarge {
+      margin-top: $spacingXXLargeMobile;
+
+      @media screen and (min-width: $tabletWidth) {
+        margin-top: $spacingXXLarge;
+      }
+    }
   }
 
   &-bottom {
@@ -82,6 +88,23 @@
 
       @media screen and (min-width: $tabletWidth) {
         margin-bottom: $spacingLarge;
+      }
+    }
+    &--xlarge {
+      margin-bottom: $spacingXLargeMobile;
+
+      @media screen and (min-width: $tabletWidth) {
+        margin-bottom: $spacingXLarge;
+      }
+    }
+  }
+
+  &-left {
+    &--large {
+      margin-left: $spacingLargeMobile;
+
+      @media screen and (min-width: $tabletWidth) {
+        margin-left: $spacingLarge;
       }
     }
   }
