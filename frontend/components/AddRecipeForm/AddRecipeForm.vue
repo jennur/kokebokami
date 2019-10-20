@@ -13,7 +13,7 @@
       <fieldset id="ingredientList" class="add-recipe-form__ingredients flex-column">
         <h4>Ingredients</h4>
         <span
-          class="flex-row flex-row--align-center margin-bottom--large"
+          class="flex-row flex-row--align-center margin-bottom--small"
           v-for="ingredientNumber in ingredientNumberList"
           :key="ingredientNumber"
         >
@@ -23,7 +23,10 @@
             @decrement="(event)=>{removeIngredient(event)}"
           ></decrement-button>
         </span>
-        <increment-button @increment="incrementIngredientNumber">Add ingredient</increment-button>
+        <increment-button
+          class="margin-top--medium"
+          @increment="incrementIngredientNumber"
+        >Add ingredient</increment-button>
       </fieldset>
 
       <!-- INSTRUCTIONS -->
@@ -36,11 +39,13 @@
             v-for="instructionStepNumber in instructionStepNumberList"
             :key="instructionStepNumber"
           >
-            <instruction :id="'instruction' + instructionStepNumber" />
-            <decrement-button
-              :data-instruction-ref="instructionStepNumber"
-              @decrement="(event) => removeInstructionStep(event)"
-            ></decrement-button>
+            <span class="flex-row flex-row--nowrap flex-row--align-center">
+              <instruction :id="'instruction' + instructionStepNumber" />
+              <decrement-button
+                :data-instruction-ref="instructionStepNumber"
+                @decrement="(event) => removeInstructionStep(event)"
+              ></decrement-button>
+            </span>
           </li>
           <increment-button @increment="incrementInstructionStepsNumber">Add step</increment-button>
         </ol>
