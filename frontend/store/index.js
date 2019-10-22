@@ -31,8 +31,10 @@ export const actions = {
     commit("setUser", user);
   },
   GOOGLE_SIGN_IN: ({ commit }) => {
+    auth.signInWithRedirect(GoogleProvider);
+
     auth
-      .signInWithPopup(GoogleProvider)
+      .getRedirectResult()
       .then(response => {
         let user = {
           id: response.user.uid,
@@ -46,8 +48,9 @@ export const actions = {
       });
   },
   FACEBOOK_SIGN_IN: ({ commit }) => {
+    auth.signInWithRedirect(FacebookProvider);
     auth
-      .signInWithPopup(FacebookProvider)
+      .getRedirectResult()
       .then(response => {
         let user = {
           id: response.user.uid,

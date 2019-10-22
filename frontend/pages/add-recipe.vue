@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import AddRecipeForm from "~/components/AddRecipeForm.vue";
+import AddRecipeForm from "~/components/AddRecipeForm/AddRecipeForm.vue";
 
 export default {
   name: "recipe",

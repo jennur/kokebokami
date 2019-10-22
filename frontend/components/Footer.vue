@@ -1,5 +1,5 @@
 <template>
-  <footer class="footer flex-center-container flex-center-container--column">
+  <footer class="footer flex-center-container flex-center-container--column margin-top--xxlarge">
     <ul class="footer__nav">
       <li></li>
     </ul>

@@ -1,21 +1,37 @@
 .padding {
   &--small {
-    padding: $spacingSmall;
+    padding: $spacingSmallMobile;
     box-sizing: border-box;
+
+    @media screen and (min-width: $tabletWidth) {
+      padding: $spacingSmall;
+    }
   }
 
   &--medium {
-    padding: $spacingMedium;
+    padding: $spacingMediumMobile;
     box-sizing: border-box;
+
+    @media screen and (min-width: $tabletWidth) {
+      padding: $spacingMedium;
+    }
   }
 
   &--large {
-    padding: $spacingLarge;
+    padding: $spacingLargeMobile;
     box-sizing: border-box;
+
+    @media screen and (min-width: $tabletWidth) {
+      padding: $spacingLarge;
+    }
   }
 
   &--xlarge {
-    padding: $spacingXLarge;
+    padding: $spacingXLargeMobile;
     box-sizing: border-box;
+
+    @media screen and (min-width: $tabletWidth) {
+      padding: $spacingXLarge;
+    }
   }
 }

@@ -2,47 +2,110 @@
   &--auto {
     margin: auto;
   }
-
   &--none {
     margin: 0px;
   }
   &--small {
-    margin: $spacingSmall;
+    margin: $spacingSmallMobile;
+    @media screen and (min-width: $tabletWidth) {
+      margin: $spacingSmallMobile;
+    }
   }
-
   &--medium {
-    margin: $spacingMedium;
+    margin: $spacingMediumMobile;
+    @media screen and (min-width: $tabletWidth) {
+      margin: $spacingMedium;
+    }
   }
-
   &--large {
-    margin: $spacingLarge;
+    margin: $spacingLargeMobile;
+    @media screen and (min-width: $tabletWidth) {
+      margin: $spacingLarge;
+    }
   }
-
   &--xlarge {
-    margin: $spacingXLarge;
+    margin: $spacingXLargeMobile;
+    @media screen and (min-width: $tabletWidth) {
+      margin: $spacingXLarge;
+    }
   }
 
   &-top {
     &--small {
-      margin-top: $spacingSmall;
+      margin-top: $spacingSmallMobile;
+
+      @media screen and (min-width: $tabletWidth) {
+        margin-top: $spacingSmall;
+      }
     }
     &--medium {
-      margin-top: $spacingMedium;
+      margin-top: $spacingMediumMobile;
+
+      @media screen and (min-width: $tabletWidth) {
+        margin-top: $spacingMedium;
+      }
     }
     &--large {
-      margin-top: $spacingLarge;
+      margin-top: $spacingLargeMobile;
+
+      @media screen and (min-width: $tabletWidth) {
+        margin-top: $spacingLarge;
+      }
+    }
+    &--xlarge {
+      margin-top: $spacingXLargeMobile;
+
+      @media screen and (min-width: $tabletWidth) {
+        margin-top: $spacingXLarge;
+      }
+    }
+    &--xxlarge {
+      margin-top: $spacingXXLargeMobile;
+
+      @media screen and (min-width: $tabletWidth) {
+        margin-top: $spacingXXLarge;
+      }
     }
   }
 
   &-bottom {
     &--small {
-      margin-bottom: $spacingSmall;
+      margin-bottom: $spacingSmallMobile;
+
+      @media screen and (min-width: $tabletWidth) {
+        margin-bottom: $spacingSmall;
+      }
     }
     &--medium {
-      margin-bottom: $spacingMedium;
+      margin-bottom: $spacingMediumMobile;
+
+      @media screen and (min-width: $tabletWidth) {
+        margin-bottom: $spacingMedium;
+      }
     }
     &--large {
-      margin-bottom: $spacingLarge;
+      margin-bottom: $spacingLargeMobile;
+
+      @media screen and (min-width: $tabletWidth) {
+        margin-bottom: $spacingLarge;
+      }
+    }
+    &--xlarge {
+      margin-bottom: $spacingXLargeMobile;
+
+      @media screen and (min-width: $tabletWidth) {
+        margin-bottom: $spacingXLarge;
+      }
+    }
+  }
+
+  &-left {
+    &--large {
+      margin-left: $spacingLargeMobile;
+
+      @media screen and (min-width: $tabletWidth) {
+        margin-left: $spacingLarge;
+      }
     }
   }
 }

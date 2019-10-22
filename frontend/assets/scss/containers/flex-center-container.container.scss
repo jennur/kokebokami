@@ -3,8 +3,12 @@
   justify-content: center;
   align-items: center;
   flex-wrap: wrap;
-  padding: $spacingLarge;
+  padding: $spacingLargeMobile;
   box-sizing: border-box;
+
+  @media screen and (min-width: $tabletWidth) {
+    padding: $spacingLarge;
+  }
 
   &--column {
     flex-direction: column;
