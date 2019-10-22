@@ -6,11 +6,22 @@
   &--nowrap {
     flex-wrap: nowrap;
   }
-
-  &--align-center {
-    align-items: center;
+  &--justify-left {
+    justify-content: flex-start;
+  }
+  &--align-top {
+    align-items: flex-start;
   }
   &--justify-center {
     justify-content: center;
+  }
+  &--align-center {
+    align-items: center;
+  }
+  &--justify-right {
+    justify-content: flex-end;
+  }
+  &--align-bottom {
+    align-items: flex-end;
   }
 }

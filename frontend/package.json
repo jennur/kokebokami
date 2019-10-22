@@ -20,6 +20,7 @@
     "firebase": "^7.1.0",
     "firebase-admin": "^8.6.0",
     "googleapis": "^44.0.0",
+    "jspdf": "^1.5.3",
     "node-fetch": "^2.6.0",
     "nuxt": "2.9.2",
     "nuxt-svg-loader": "^1.0.1",
