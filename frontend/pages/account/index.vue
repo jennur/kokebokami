@@ -1,5 +1,7 @@
 <template>
   <div class="container container--tablet-width">
+    <nuxt-link class="margin--large" to="/account/manage-account">Manage my account</nuxt-link>
+
     <h2 class="heading--display-font margin-bottom--large">{{this.firstName}}'s kokebok</h2>
     <nuxt-link
       to="/add-recipe"

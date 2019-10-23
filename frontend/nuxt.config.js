@@ -137,7 +137,17 @@ export default {
       {
         name: "account",
         path: "/account",
-        component: "pages/account.vue"
+        component: "pages/account/index.vue"
+      },
+      {
+        name: "manage-account",
+        path: "/account/manage-account",
+        component: "pages/manage-account.vue"
+      },
+      {
+        name: "successful-delete",
+        path: "/account/successful-delete",
+        component: "pages/successful-delete.vue"
       }
     ]
   },

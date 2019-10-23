@@ -30,6 +30,9 @@ export const actions = {
   SET_USER: ({ commit }, user) => {
     commit("setUser", user);
   },
+  REMOVE_USER: ({ commit }) => {
+    commit("removeUser");
+  },
   GOOGLE_SIGN_IN: ({ commit }) => {
     auth.signInWithRedirect(GoogleProvider);
 
