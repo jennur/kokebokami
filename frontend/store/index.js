@@ -7,7 +7,7 @@ import {
 
 export const state = {
   user: null,
-  systemMessage: null,
+  loginSystemMessage: "",
   recipes: []
 };
 
@@ -18,8 +18,8 @@ export const mutations = {
   removeUser(state) {
     state.user = null;
   },
-  setSystemMessage(state, payload) {
-    state.systemMessage = payload;
+  setLoginSystemMessage(state, payload) {
+    state.loginSystemMessage = payload;
   },
   setRecipes(state, payload) {
     state.recipes = payload;
@@ -36,7 +36,7 @@ export const actions = {
   GOOGLE_SIGN_IN: ({ commit }) => {
     auth.signInWithRedirect(GoogleProvider);
 
-    auth
+    /*auth
       .getRedirectResult()
       .then(response => {
         let user = {
@@ -47,25 +47,11 @@ export const actions = {
         commit("setUser", user);
       })
       .catch(e => {
-        console.log(e);
-      });
+        console.log(e.message);
+      });*/
   },
   FACEBOOK_SIGN_IN: ({ commit }) => {
     auth.signInWithRedirect(FacebookProvider);
-    auth
-      .getRedirectResult()
-      .then(response => {
-        let user = {
-          id: response.user.uid,
-          profileImg: response.user.photoURL,
-          name: response.user.displayName
-        };
-        commit("setUser", user);
-      })
-      .catch(e => {
-        commit("setSystemMessage", e.message);
-        console.log(e.message);
-      });
   },
   USER_SIGN_OUT: ({ commit }) => {
     auth
@@ -102,8 +88,8 @@ export const getters = {
   user(state) {
     return state.user;
   },
-  systemMessage(state) {
-    return state.systemMessage;
+  loginSystemMessage(state) {
+    return state.loginSystemMessage;
   },
   recipes(state) {
     return state.recipes;
