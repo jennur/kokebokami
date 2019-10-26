@@ -100,6 +100,20 @@
   }
 
   &-left {
+    &--small {
+      margin-left: $spacingSmallMobile;
+
+      @media screen and (min-width: $tabletWidth) {
+        margin-left: $spacingSmall;
+      }
+    }
+    &--medium {
+      margin-left: $spacingMediumMobile;
+
+      @media screen and (min-width: $tabletWidth) {
+        margin-left: $spacingMedium;
+      }
+    }
     &--large {
       margin-left: $spacingLargeMobile;
 

@@ -53,11 +53,37 @@
       background-color: $green;
       color: $blue;
     }
+
+    &-dark-bg {
+      color: $green;
+    }
   }
 
+  &--transparent {
+    border: none;
+    background-color: transparent;
+    color: $blue;
+    width: auto;
+    text-align: left;
+    font-family: $bodyFont;
+
+    &:hover {
+      background-color: transparent;
+      color: $blue;
+      text-decoration: underline;
+    }
+  }
+  &--xsmall {
+    height: 35px;
+    width: auto;
+    padding: 0px $spacingMedium;
+    font-size: $fontSizeSmall;
+    font-family: $bodyFont;
+  }
   &--small {
     height: 35px;
-    padding: 0px $spacingSmall;
+    width: auto;
+    padding: 0px $spacingXLarge;
     font-size: $fontSizeSmall;
     font-family: $bodyFont;
   }
@@ -72,7 +98,6 @@
     background-color: transparent;
     color: $pink;
     font-family: $bodyFont;
-    border-radius: 50%;
     line-height: 1em;
 
     &:hover {

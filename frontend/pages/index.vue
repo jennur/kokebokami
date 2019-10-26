@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="flex-center-container flex-center-container--column margin--auto">
-      <h1 class="heading--display-font">Welcome to your online cook book!</h1>
+      <h1 class="heading--display-font">Your online cook book!</h1>
 
       <nuxt-link
         to="/login"
