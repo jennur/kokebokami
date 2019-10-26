@@ -2,32 +2,38 @@
   <form class="sign-up-form margin--auto" v-on:submit.prevent>
     <label class="flex-column margin-bottom--medium">
       Name
-      <input id="name" type="text" v-model="name" />
+      <input class="margin-top--small" id="name" type="text" v-model="name" />
       <span class="system-message">{{nameError}}</span>
     </label>
     <label class="flex-column margin-bottom--medium">
       E-mail address
-      <input id="email" type="email" v-model="email" />
+      <input class="margin-top--small" id="email" type="email" v-model="email" />
       <span class="system-message">{{emailError}}</span>
     </label>
     <label class="flex-column margin-bottom--medium">
       Password
-      <input id="password" type="password" v-model="password" />
+      <input class="margin-top--small" id="password" type="password" v-model="password" />
       <span class="system-message">{{passwordError}}</span>
     </label>
     <label class="flex-column margin-bottom--medium">
       Repeat password
-      <input id="password-repeated" type="password" v-model="passwordRepeat" />
+      <input
+        class="margin-top--small"
+        id="password-repeated"
+        type="password"
+        v-model="passwordRepeat"
+      />
       <span class="system-message">{{passwordRepeatError}}</span>
     </label>
-    <button
-      @click="validateForm"
-      class="button button--small button--green margin-top--large"
-    >Sign up</button>
+
+    <div class="flex-column margin-bottom--medium">
+      <button @click="validateForm" class="button button--small button--green">Sign up</button>
+      <span class="system-message">{{systemMessage}}</span>
+    </div>
   </form>
 </template>
 <script>
-import { auth } from "~/plugins/firebase.js";
+import { auth, db } from "~/plugins/firebase.js";
 export default {
   name: "sign-up-form",
   data() {
@@ -39,13 +45,39 @@ export default {
       password: "",
       passwordError: "",
       passwordRepeat: "",
-      passwordRepeatError: ""
+      passwordRepeatError: "",
+      systemMessage: ""
     };
   },
   methods: {
+    signUp() {
+      const realThis = this;
+      auth
+        .createUserWithEmailAndPassword(realThis.email, realThis.password)
+        .then(response => {
+          let user = {
+            id: response.user.uid,
+            name: realThis.name
+          };
+          db.ref("users/" + response.user.uid)
+            .child("displayName")
+            .set(realThis.name);
+          realThis.$store.dispatch("SET_USER", user);
+          if (response.user.uid !== undefined) {
+            realThis.$router.push("/account");
+          }
+        })
+        .catch(function(error) {
+          realThis.systemMessage = error.message;
+          console.log(
+            "Failed with error code: " + error.code + " " + error.message
+          );
+        });
+    },
     validateForm() {
       const emailRegex = /.{1,}@[^.]{1,}/;
       let validated = 1;
+
       if (this.name === "") {
         validated = validated * 0;
         this.nameError = "This field cannot be empty";
@@ -67,28 +99,9 @@ export default {
       } else this.passwordRepeatError = "";
 
       if (validated === 1) {
-        this.signup();
+        this.signUp();
       }
     }
-  },
-  signUp() {
-    firebase
-      .auth()
-      .createUserWithEmailAndPassword(this.email, this.password)
-      .then(response => {
-        let user = {
-          id: response.user.uid,
-          profileImg: response.user.photoURL,
-          name: response.user.displayName
-        };
-        this.$store.dispatch("SET_USER", user);
-      })
-      .catch(function(error) {
-        this.systemMessage = error.message;
-        console.log(
-          "Failed with error code: " + error.code + " " + error.message
-        );
-      });
   }
 };
 </script>

@@ -1,4 +1,9 @@
 .system-message {
+  height: 1.4em;
   font-size: $fontSizeSmall;
   color: $pink;
+
+  &--dark-bg {
+    color: $orange;
+  }
 }

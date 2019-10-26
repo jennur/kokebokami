@@ -4,16 +4,18 @@
       <button @click="() => this.$emit('toggle')" class="remove-icon kokebokami-login-modal--close"></button>
       <form class="kokebokami-login-modal-form" v-on:submit.prevent>
         <label>
-          Username
+          Username (e-mail)
           <input type="text" v-model="email" required />
         </label>
         <label>
           Password
           <input type="password" v-model="password" required />
         </label>
-        <span class="system-message">{{systemMessage}}</span>
-        <button class="button button--small button--green margin-top--large">Log in</button>
-        <div class="system-message">{{systemMessage}}</div>
+        <button
+          @click="kokebokamiSignIn"
+          class="button button--small button--green margin-top--large"
+        >Log in</button>
+        <div class="system-message system-message--dark-bg margin-top--medium">{{systemMessage}}</div>
         <div class="kokebokami-login-modal-signup margin-top--large">
           Don't already have an account?
           <nuxt-link to="/sign-up">Sign up</nuxt-link>
@@ -24,6 +26,7 @@
 </template>
 <script>
 import { user } from "~/mixins/getCurrentUser.js";
+import { auth, db } from "~/plugins/firebase.js";
 
 export default {
   name: "kokebokami-login",
@@ -38,27 +41,32 @@ export default {
   },
   methods: {
     kokebokamiSignIn() {
+      const realThis = this;
       auth
-        .signInWithEmailAndPassword(email, password)
+        .signInWithEmailAndPassword(this.email, this.password)
         .then(response => {
-          console.log("RESPONSE SIGN IN::: " + JSON.stringify(response));
+          var displayName = "";
+          console.log("RESPONSE. ENTERING DB::: ");
+
           if (response.user !== null) {
-            let user = {
-              id: response.user.uid,
-              profileImg: response.user.photoURL,
-              name: response.user.displayName
-            };
-            this.$store.dispatch("SET_USER", user);
+            db.ref("users/" + response.user.uid).on("value", snapshot => {
+              displayName = snapshot.val().displayName;
+              let user = {
+                id: response.user.uid,
+                name: displayName
+              };
+              realThis.$store.dispatch("SET_USER", user);
+            });
           }
         })
-        .catch(e => {
+        .catch(error => {
           console.log(
             "Sign in failed with error code: " +
               error.code +
               " " +
               error.message
           );
-          this.systemMessage = e.message;
+          realThis.systemMessage = error.message;
         });
     }
   }

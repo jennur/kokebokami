@@ -6,9 +6,9 @@ textarea {
   border: 2px solid transparent;
   border-bottom: 2px solid $green;
   box-sizing: border-box;
-
   &:focus {
     outline: none;
     border: 2px solid $green;
+    border-radius: $spacingSmall;
   }
 }

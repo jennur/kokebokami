@@ -1,7 +1,8 @@
 export default function({ store, redirect, route }) {
-  store.getters.user !== null &&
-  store.getters.user !== undefined &&
-  route.name == "login"
+  const userExists =
+    store.getters.user !== null && store.getters.user !== undefined;
+
+  userExists && (route.name == "login" || route.name == "sign-up")
     ? redirect("/account")
     : "";
   store.getters.user === null && isAdminRoute(route) ? redirect("/login") : "";

@@ -7,7 +7,8 @@
       to="/add-recipe"
       class="button button--large button--round margin--auto margin-top--medium"
     >Add new recipe</nuxt-link>
-    <recipes-list class="padding--large" :headline="headline" />
+    <h3 v-if="!recipesLength">It seems like your cook book is empty!</h3>
+    <recipes-list class="padding--large" />
   </div>
 </template>
 
@@ -18,27 +19,25 @@ import RecipesList from "~/components/RecipesList.vue";
 export default {
   name: "account",
   data() {
-    return { addingRecipe: false, addRecipeButtonText: "Add new recipe" };
+    return { addingRecipe: false };
   },
   components: { RecipesList },
   mixins: [user],
   computed: {
     firstName() {
-      return this.user ? this.user.name.split(" ")[0] : null;
+      let firstName = null;
+
+      if (this.user && this.user.name) {
+        let username = this.user.name;
+        firstName = /\s/.test(username) ? username.split(" ")[0] : username;
+      }
+      return firstName;
     },
-    headline() {
-      const numRecipes = this.$store.getters.recipes.length;
-      return numRecipes ? null : "It seems like your cook book is empty!";
+    recipesLength() {
+      return this.$store.getters.recipes.length;
     }
   },
-  methods: {
-    /*toggleRecipeAdder() {
-      this.addingRecipe = !this.addingRecipe;
-      this.addRecipeButtonText = this.addingRecipe
-        ? "✕ Cancel"
-        : "Add new Recipe";
-    }*/
-  }
+  methods: {}
 };
 </script>
 

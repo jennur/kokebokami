@@ -14,7 +14,7 @@
 <script>
 import { user } from "~/mixins/getCurrentUser.js";
 import RecipesList from "~/components/RecipesList.vue";
-import { auth } from "~/plugins/firebase.js";
+import { auth, db } from "~/plugins/firebase.js";
 export default {
   name: "manage-account",
   data() {
@@ -36,9 +36,17 @@ export default {
         user
           .delete()
           .then(function() {
+            db.ref("users/" + user.uid)
+              .remove()
+              .then(function() {
+                console.log("REMOVE SUCCEEDED!!! ");
+              })
+              .catch(function(error) {
+                console.log("USER REMOVE FAILED::: " + error.message);
+              });
             realThis.systemMessage = "Your account was deleted successfully.";
             realThis.$store.dispatch("REMOVE_USER");
-            realThis.$router.push("/account/sucessful-delete");
+            realThis.$router.push("/account/goodbye");
           })
           .catch(function(error) {
             realThis.systemMessage = error;

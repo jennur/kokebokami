@@ -146,9 +146,9 @@ export default {
         component: "pages/manage-account.vue"
       },
       {
-        name: "successful-delete",
-        path: "/account/successful-delete",
-        component: "pages/successful-delete.vue"
+        name: "goodbye",
+        path: "/account/goodbye",
+        component: "pages/goodbye.vue"
       },
       {
         name: "cookies-policy",
