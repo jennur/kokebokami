@@ -1,0 +1,12 @@
+.arrow-list {
+  & li {
+    list-style: none;
+
+    &::before {
+      content: "➔";
+      position: absolute;
+      margin-left: -$spacingXLarge;
+      color: $green;
+    }
+  }
+}

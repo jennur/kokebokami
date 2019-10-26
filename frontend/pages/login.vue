@@ -1,5 +1,5 @@
 <template>
-  <div class="container margin--auto">
+  <div class="container container--center margin--auto">
     <h2>Log in to see kokeboka di</h2>
 
     <div class="flex-center-container flex-center-container--tablet-width margin--auto">

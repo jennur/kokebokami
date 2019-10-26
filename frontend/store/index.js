@@ -6,12 +6,16 @@ import {
 } from "~/plugins/firebase.js";
 
 export const state = {
+  cookieConsent: false,
   user: null,
   loginSystemMessage: "",
   recipes: []
 };
 
 export const mutations = {
+  acceptCookies(state) {
+    state.cookieConsent = true;
+  },
   setUser(state, payload) {
     state.user = payload;
   },
@@ -27,6 +31,9 @@ export const mutations = {
 };
 
 export const actions = {
+  ACCEPT_COOKIES: ({ commit }) => {
+    commit("acceptCookies");
+  },
   SET_USER: ({ commit }, user) => {
     commit("setUser", user);
   },
@@ -35,20 +42,6 @@ export const actions = {
   },
   GOOGLE_SIGN_IN: ({ commit }) => {
     auth.signInWithRedirect(GoogleProvider);
-
-    /*auth
-      .getRedirectResult()
-      .then(response => {
-        let user = {
-          id: response.user.uid,
-          profileImg: response.user.photoURL,
-          name: response.user.displayName
-        };
-        commit("setUser", user);
-      })
-      .catch(e => {
-        console.log(e.message);
-      });*/
   },
   FACEBOOK_SIGN_IN: ({ commit }) => {
     auth.signInWithRedirect(FacebookProvider);
@@ -85,6 +78,9 @@ export const actions = {
 };
 
 export const getters = {
+  cookieConsent(state) {
+    return state.cookieConsent;
+  },
   user(state) {
     return state.user;
   },

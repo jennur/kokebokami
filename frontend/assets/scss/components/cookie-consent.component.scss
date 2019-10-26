@@ -1,0 +1,31 @@
+.cookie-consent {
+  &-container {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: $orange;
+    color: $white;
+    padding: $spacingSmall $spacingXLarge;
+    box-sizing: border-box;
+    & a:hover {
+      text-decoration: underline;
+      color: $blue;
+    }
+
+    & button:hover {
+      color: $green;
+      background-color: $blue;
+    }
+  }
+
+  &__text {
+    text-align: left;
+  }
+
+  &--accepted {
+    display: none;
+  }
+}
