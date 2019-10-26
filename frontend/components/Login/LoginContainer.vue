@@ -9,7 +9,7 @@
       >➔ Sign in with username and password</button>
       <kokebokami-login :open="loginModalOpen" @toggle="toggleLoginModal" />
     </div>
-    <div class="login-container__system-message" v-if="systemMessage">
+    <div class="system-message margin-top--medium" v-if="systemMessage">
       <p>{{systemMessage}}</p>
     </div>
   </div>

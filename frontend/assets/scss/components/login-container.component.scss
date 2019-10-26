@@ -10,12 +10,6 @@
   box-sizing: border-box;
 
   @media screen and (min-width: $tabletWidth) {
-    margin-left: $spacingMedium;
-  }
-
-  &__system-message {
-    width: 250px;
-    font-size: $fontSizeSmall;
-    color: $pink;
+    margin-left: $spacingXLarge;
   }
 }

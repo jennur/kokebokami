@@ -7,29 +7,31 @@
 @import "./flex/flex-order.flex.scss";
 
 /* Elements */
+@import "./elements/add-icon.element.scss";
 @import "./elements/anchor.element.scss";
+@import "./elements/arrow-list.element.scss";
 @import "./elements/base.element.scss";
+@import "./elements/button.element.scss";
+@import "./elements/facebook-btn.element.scss";
 @import "./elements/fieldset.element.scss";
+@import "./elements/google-btn.element.scss";
 @import "./elements/heading.element.scss";
 @import "./elements/input.element.scss";
+@import "./elements/logout-btn.element.scss";
+@import "./elements/remove-icon.element.scss";
+@import "./elements/system-message.element.scss";
 
 /* Components */
-@import "./components/add-icon.component.scss";
 @import "./components/add-recipe-form.component.scss";
-@import "./components/arrow-list.component.scss";
-@import "./components/button.component.scss";
 @import "./components/cookie-consent.component.scss";
-@import "./components/facebook-btn.component.scss";
 @import "./components/footer.component.scss";
-@import "./components/google-btn.component.scss";
 @import "./components/kokebokami-login.component.scss";
 @import "./components/login-container.component.scss";
-@import "./components/logout-btn.component.scss";
 @import "./components/navigation.component.scss";
 @import "./components/recipe-display.component.scss";
 @import "./components/recipe-full-view.component.scss";
 @import "./components/recipes-list-container.component.scss";
-@import "./components/remove-icon.component.scss";
+@import "./components/sign-up-form.component.scss";
 
 /* Graphics */
 @import "./graphics/graphic.graphics.scss";

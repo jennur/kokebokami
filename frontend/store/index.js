@@ -40,12 +40,13 @@ export const actions = {
   REMOVE_USER: ({ commit }) => {
     commit("removeUser");
   },
-  GOOGLE_SIGN_IN: ({ commit }) => {
+  GOOGLE_SIGN_IN: () => {
     auth.signInWithRedirect(GoogleProvider);
   },
-  FACEBOOK_SIGN_IN: ({ commit }) => {
+  FACEBOOK_SIGN_IN: () => {
     auth.signInWithRedirect(FacebookProvider);
   },
+  KOKEBOKAMI_SIGN_IN: (email, password) => {},
   USER_SIGN_OUT: ({ commit }) => {
     auth
       .signOut()
