@@ -1,8 +1,13 @@
 <template>
   <div class="container">
-    <h1 class="heading--display-font">Welcome to your online cook book!</h1>
-    <div class="flex-center-container">
-      <nuxt-link to="/login" class="button button--large" v-if="!user">Get started ➔</nuxt-link>
+    <div class="flex-center-container flex-center-container--column margin--auto">
+      <h1 class="heading--display-font">Welcome to your online cook book!</h1>
+
+      <nuxt-link
+        to="/login"
+        class="button button--large margin-top--large"
+        v-if="!user"
+      >Get started ➔</nuxt-link>
     </div>
     <div class="flex-center-container">
       <kokeboka class="graphic graphic--kokeboka" />

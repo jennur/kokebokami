@@ -148,6 +148,11 @@ export default {
         name: "successful-delete",
         path: "/account/successful-delete",
         component: "pages/successful-delete.vue"
+      },
+      {
+        name: "cookies-policy",
+        path: "/cookies-policy",
+        component: "pages/cookies-policy.vue"
       }
     ]
   },
