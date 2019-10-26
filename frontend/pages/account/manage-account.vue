@@ -1,9 +1,9 @@
 <template>
-  <div class="container container--tablet-width">
+  <div class="container mobile-width">
     <h2 class="heading--display-font margin-bottom--large">Your account details</h2>
     <div class="flex-row-container">
       <button
-        class="button button--transparent margin--large"
+        class="button button--transparent margin-top--large"
         @click="deleteAccount"
       >Delete my account</button>
       <p>{{systemMessage}}</p>

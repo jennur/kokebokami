@@ -24,7 +24,7 @@
           ></decrement-button>
         </span>
         <increment-button
-          class="margin-top--medium"
+          class="margin-top--large"
           @increment="incrementIngredientNumber"
         >Add ingredient</increment-button>
       </fieldset>
@@ -47,8 +47,11 @@
               ></decrement-button>
             </span>
           </li>
-          <increment-button @increment="incrementInstructionStepsNumber">Add step</increment-button>
         </ol>
+        <increment-button
+          class="margin-top--large"
+          @increment="incrementInstructionStepsNumber"
+        >Add step</increment-button>
       </fieldset>
 
       <!-- SAVE / UPDATE -->

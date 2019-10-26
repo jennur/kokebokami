@@ -28,9 +28,7 @@ export default {
     },
     headline() {
       const numRecipes = this.$store.getters.recipes.length;
-      return numRecipes
-        ? "Here are your recipes"
-        : "You have no recipes at the moment";
+      return numRecipes ? null : "It seems like your cook book is empty!";
     }
   },
   methods: {

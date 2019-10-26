@@ -16,6 +16,9 @@
       cursor: pointer !important;
       text-decoration: none;
       font-family: $displayFont;
+      &:hover {
+        text-decoration: none;
+      }
     }
   }
 
