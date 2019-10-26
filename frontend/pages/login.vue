@@ -12,7 +12,7 @@
 
 <script>
 import kokebokapen from "~/assets/graphics/kokebokapen.svg";
-import LoginContainer from "~/components/LoginContainer.vue";
+import LoginContainer from "~/components/Login/LoginContainer.vue";
 
 export default {
   name: "Login",

@@ -134,6 +134,7 @@ export default {
         path: "/login",
         component: "pages/login.vue"
       },
+      { name: "sign-up", path: "/sign-up", component: "pages/sign-up.vue" },
       {
         name: "account",
         path: "/account",
