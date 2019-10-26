@@ -1,24 +1,24 @@
 <template>
   <form class="sign-up-form margin--auto" v-on:submit.prevent>
-    <label class="flex-column">
+    <label class="flex-column margin-bottom--medium">
       Name
       <input id="name" type="text" v-model="name" />
-      <span class="error">{{nameError}}</span>
+      <span class="system-message">{{nameError}}</span>
     </label>
-    <label class="flex-column">
+    <label class="flex-column margin-bottom--medium">
       E-mail address
       <input id="email" type="email" v-model="email" />
-      <span class="error">{{emailError}}</span>
+      <span class="system-message">{{emailError}}</span>
     </label>
-    <label class="flex-column">
+    <label class="flex-column margin-bottom--medium">
       Password
       <input id="password" type="password" v-model="password" />
-      <span class="error">{{passwordError}}</span>
+      <span class="system-message">{{passwordError}}</span>
     </label>
-    <label class="flex-column">
+    <label class="flex-column margin-bottom--medium">
       Repeat password
       <input id="password-repeated" type="password" v-model="passwordRepeat" />
-      <span class="error">{{passwordRepeatError}}</span>
+      <span class="system-message">{{passwordRepeatError}}</span>
     </label>
     <button
       @click="validateForm"
@@ -48,7 +48,7 @@ export default {
       let validated = 1;
       if (this.name === "") {
         validated = validated * 0;
-        this.nameError = "Please enter a name";
+        this.nameError = "This field cannot be empty";
       } else this.nameError = "";
 
       if (!this.email.match(emailRegex)) {
@@ -84,6 +84,7 @@ export default {
         this.$store.dispatch("SET_USER", user);
       })
       .catch(function(error) {
+        this.systemMessage = error.message;
         console.log(
           "Failed with error code: " + error.code + " " + error.message
         );

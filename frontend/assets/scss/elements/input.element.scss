@@ -1,27 +1,14 @@
-/*label {
-  font-family: $bodyFont;
-  font-weight: bold;
-  font-size: $fontSizeSmall;
-  color: $gray;
-  margin: $spacingXLarge $spacingMedium;
-}*/
-/*
 input,
 textarea {
-  display: block;
-  padding: $spacingMedium 0px $spacingMedium 0px;
-  margin-top: $spacingSmall;
-  background-color: transparent;
-  border: none;
   font-size: $fontSizeMedium;
-  color: $black;
-  caret-color: $green;
+  padding: $spacingSmall;
+  background-color: transparent;
+  border: 2px solid transparent;
+  border-bottom: 2px solid $green;
+  box-sizing: border-box;
 
   &:focus {
     outline: none;
-    border-left: 2px solid $green;
+    border: 2px solid $green;
   }
 }
-
-input {
-}*/

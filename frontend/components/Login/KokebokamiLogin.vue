@@ -11,7 +11,7 @@
           Password
           <input type="password" v-model="password" required />
         </label>
-
+        <span class="system-message">{{systemMessage}}</span>
         <button class="button button--small button--green margin-top--large">Log in</button>
         <div class="system-message">{{systemMessage}}</div>
         <div class="kokebokami-login-modal-signup margin-top--large">
@@ -40,14 +40,6 @@ export default {
     kokebokamiSignIn() {
       auth
         .signInWithEmailAndPassword(email, password)
-        .catch(function(error) {
-          console.log(
-            "Sign in failed with error code: " +
-              error.code +
-              " " +
-              error.message
-          );
-        })
         .then(response => {
           console.log("RESPONSE SIGN IN::: " + JSON.stringify(response));
           if (response.user !== null) {
@@ -60,7 +52,12 @@ export default {
           }
         })
         .catch(e => {
-          console.log(e.message);
+          console.log(
+            "Sign in failed with error code: " +
+              error.code +
+              " " +
+              error.message
+          );
           this.systemMessage = e.message;
         });
     }

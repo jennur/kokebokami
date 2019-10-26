@@ -8,21 +8,8 @@
   &__description,
   &__instruction {
     display: block;
-    margin-top: $spacingSmall;
-    background-color: transparent;
     padding: $spacingMediumMobile;
-
-    border: 2px solid transparent;
-    font-size: $fontSizeMedium;
-    border-bottom: 2px solid $green;
-    box-sizing: border-box;
-
     caret-color: $green;
-
-    &:focus {
-      outline: none;
-      border: 2px solid $green;
-    }
   }
 
   &__headline {

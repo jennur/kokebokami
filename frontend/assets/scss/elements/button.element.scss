@@ -97,11 +97,13 @@
   }
 
   &--cancel {
-    padding: 0px;
+    width: auto;
+    padding: 0px $spacingXLarge;
     background-color: transparent;
     color: $pink;
     font-family: $bodyFont;
     line-height: 1em;
+    border-radius: 0px;
 
     &:hover {
       background-color: transparent;

@@ -1,11 +1,11 @@
 <template>
-  <section class="mobile-width margin--auto margin-top--large">
+  <section class="mobile-width margin--auto margin-top--xlarge">
     <form class="add-recipe-form" v-on:submit.prevent>
       <!-- TITLE / DESCRIPTION -->
 
       <fieldset class="flex-column">
-        <title-component id="recipeTitle" />
-        <description id="recipeDescription" />
+        <title-component id="recipeTitle" class="margin-bottom--medium" />
+        <description id="recipeDescription" class="margin-bottom--medium" />
       </fieldset>
 
       <!-- INGREDIENTS -->
@@ -35,7 +35,7 @@
         <h4>Instructions</h4>
         <ol class="add-recipe-form__instructions">
           <li
-            class="margin-bottom--large"
+            class="margin-bottom--medium"
             v-for="instructionStepNumber in instructionStepNumberList"
             :key="instructionStepNumber"
           >
@@ -60,7 +60,10 @@
         <save-section @save="saveRecipe" @cancel="cancel" />
       </fieldset>
 
-      <div v-else-if="saved && recipeKey">
+      <div
+        class="flex-center-container flex-center-container--column margin--auto"
+        v-else-if="saved && recipeKey"
+      >
         <div class="system-message">{{ systemMessage }}</div>
         <nuxt-link v-if="recipeKey !== ''" :to="'/recipes/' + recipeKey">Look at your new recipe ➔</nuxt-link>
       </div>
