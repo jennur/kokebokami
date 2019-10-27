@@ -20,7 +20,6 @@ export default context => {
 
             return resolve(store.dispatch("SET_USER_RECIPES", loggedinUser));
           } else {
-            console.log("SNAPSHOT DOES NOT EXIST::: " + snapshot);
             //Assuming that user is coming via Google/Facebook (custom users are added on signup)
             let databaseUser = {
               displayName: user.displayName,

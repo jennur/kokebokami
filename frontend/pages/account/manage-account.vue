@@ -33,24 +33,50 @@ export default {
           "Are you sure you want to delete your account and all your recipes?\nThis operation cannot be undone."
         )
       ) {
-        user
-          .delete()
-          .then(function() {
+        let recipesRef = db.ref("recipes").orderByChild("ownerID");
+
+        recipesRef
+          .once("value", recipes => {
+            recipes.forEach(recipe => {
+              if (recipe.val().ownerID === user.uid)
+                db.ref("recipes/" + recipe.key)
+                  .remove()
+                  .then(() => {
+                    console.log("Successfully deleted recipe::: " + recipe.key);
+                  })
+                  .catch(error => {
+                    console.log(error.message);
+                  });
+            });
+          })
+          .then(() => {
             db.ref("users/" + user.uid)
               .remove()
               .then(function() {
-                console.log("REMOVE SUCCEEDED!!! ");
+                console.log("USER REMOVE SUCCEEDED!!! ");
               })
               .catch(function(error) {
                 console.log("USER REMOVE FAILED::: " + error.message);
+                realThis.systemMessage = error.message;
               });
-            realThis.systemMessage = "Your account was deleted successfully.";
-            realThis.$store.dispatch("REMOVE_USER");
-            realThis.$router.push("/account/goodbye");
+          })
+          .then(() => {
+            user
+              .delete()
+              .then(() => {
+                realThis.systemMessage =
+                  "Your account was deleted successfully.";
+                realThis.$store.dispatch("REMOVE_USER");
+                realThis.$router.push("/account/goodbye");
+              })
+              .catch(function(error) {
+                realThis.systemMessage = error.message;
+                console.log("ERROR DELETING USER::: " + error);
+              });
           })
           .catch(function(error) {
-            realThis.systemMessage = error;
-            console.log("ERROR DELETING USER::: " + error);
+            realThis.systemMessage = error.message;
+            console.log("ERROR DURING DELETING PROCESS::: " + error);
           });
       }
     }
