@@ -1,6 +1,6 @@
 <template>
   <div class="flex-row flex-row--align-center flex-row--justify-center">
-    <div class="margin-right--large">
+    <div class="margin-top--xlarge margin-right--xlarge margin-bottom--xlarge">
       <button
         v-if="editMode"
         @click="() => {this.$emit('deleteRecipe')}"

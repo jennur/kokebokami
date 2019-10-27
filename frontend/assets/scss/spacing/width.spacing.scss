@@ -1,7 +1,10 @@
 .full-width {
   width: 100%;
 }
-
+.desktop-width {
+  width: 100%;
+  max-width: $desktopWidth;
+}
 .tablet-width {
   width: 100%;
   max-width: $tabletWidth;

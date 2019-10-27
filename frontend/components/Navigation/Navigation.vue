@@ -1,5 +1,7 @@
 <template>
-  <nav class="navigation-menu margin--auto margin-bottom--xlarge">
+  <nav
+    class="navigation-menu padding-horizontal--large margin--auto margin-bottom--xlarge desktop-width"
+  >
     <h1 class="navigation-menu__logo">
       <nuxt-link class="navigation-menu__logo-link" to="/">Kokebokami</nuxt-link>
     </h1>

@@ -1,5 +1,5 @@
 <template>
-  <div class="container mobile-width">
+  <div class="container mobile-width padding-horizontal--large">
     <h2 class="heading--display-font margin-bottom--large">Your account details</h2>
     <div class="flex-row-container">
       <dl>

@@ -3,8 +3,6 @@
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  max-width: $desktopWidth;
-  padding: 0px $spacingLarge;
   box-sizing: border-box;
   @media screen and (min-width: $tabletWidth) {
     height: 50px;

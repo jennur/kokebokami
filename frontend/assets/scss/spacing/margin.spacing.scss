@@ -121,6 +121,13 @@
         margin-left: $spacingLarge;
       }
     }
+    &--xlarge {
+      margin-left: $spacingXLargeMobile;
+
+      @media screen and (min-width: $tabletWidth) {
+        margin-left: $spacingXLarge;
+      }
+    }
   }
 
   &-right {
@@ -143,6 +150,14 @@
 
       @media screen and (min-width: $tabletWidth) {
         margin-right: $spacingLarge;
+      }
+    }
+
+    &--xlarge {
+      margin-right: $spacingXLargeMobile;
+
+      @media screen and (min-width: $tabletWidth) {
+        margin-right: $spacingXLarge;
       }
     }
   }
