@@ -38,7 +38,7 @@ export default {
   watch: {
     user(value) {
       if (value !== undefined && value !== null) {
-        this.$router.push("/account");
+        this.$router.push("/account/my-recipes");
       }
     }
   },

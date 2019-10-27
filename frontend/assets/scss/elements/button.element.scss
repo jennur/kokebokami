@@ -89,6 +89,14 @@
       color: $blue;
       text-decoration: underline;
     }
+
+    &-red {
+      color: $pink;
+
+      &:hover {
+        color: $pink;
+      }
+    }
   }
   &--xsmall {
     height: 35px;

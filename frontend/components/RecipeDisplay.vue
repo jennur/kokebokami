@@ -1,5 +1,5 @@
 <template>
-  <nuxt-link :to="'recipes/' + recipeUrl" class="recipe-display">
+  <nuxt-link :to="'/recipes/' + recipeUrl" class="recipe-display">
     <h3 class="recipe-display__title">{{recipe.title ? recipe.title : "Recipe has no title"}}</h3>
     <p
       class="recipe-display__description"

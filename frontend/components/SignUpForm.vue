@@ -64,7 +64,7 @@ export default {
             .set(realThis.name);
           realThis.$store.dispatch("SET_USER", user);
           if (response.user.uid !== undefined) {
-            realThis.$router.push("/account");
+            realThis.$router.push("/account/my-recipes");
           }
         })
         .catch(function(error) {

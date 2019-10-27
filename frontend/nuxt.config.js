@@ -138,18 +138,26 @@ export default {
       {
         name: "account",
         path: "/account",
-        component: "pages/account/index.vue"
+        component: "pages/account/index.vue",
+        children: [
+          {
+            name: "my-recipes",
+            path: "/account/my-recipes",
+            component: "pages/account/my-recipes.vue"
+          },
+          {
+            name: "add-recipe",
+            path: "/account/add-recipe",
+            component: "pages/account/add-recipe.vue"
+          },
+          {
+            name: "goodbye",
+            path: "/account/goodbye",
+            component: "pages/goodbye.vue"
+          }
+        ]
       },
-      {
-        name: "manage-account",
-        path: "/account/manage-account",
-        component: "pages/manage-account.vue"
-      },
-      {
-        name: "goodbye",
-        path: "/account/goodbye",
-        component: "pages/goodbye.vue"
-      },
+
       {
         name: "cookies-policy",
         path: "/cookies-policy",

@@ -1,5 +1,5 @@
 <template>
-  <section class="mobile-width margin--auto margin-top--xlarge">
+  <section class="mobile-width margin--auto">
     <div class="flex-row">
       <button
         class="button button--block button--small button--green-border"

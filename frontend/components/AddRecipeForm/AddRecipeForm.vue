@@ -72,7 +72,7 @@
           :editMode="editMode"
         />
         <div class="system-message">{{ systemMessage }}</div>
-        <nuxt-link v-if="deleted" to="/account">Go back to your cook book</nuxt-link>
+        <nuxt-link v-if="deleted" to="/account/my-recipes">Go back to your cook book</nuxt-link>
       </fieldset>
 
       <div
@@ -192,7 +192,7 @@ export default {
         ? "Are you sure you want to discard the changes?"
         : "Are you sure you want to discard your new recipe?";
       if (confirm(confirmText)) {
-        this.$router.push("/account");
+        this.$router.push("/account/my-recipes");
       }
     },
     deleteRecipe() {

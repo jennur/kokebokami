@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="layout">
     <navigation />
     <nuxt />
     <footer-component />
