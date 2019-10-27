@@ -188,7 +188,10 @@ export default {
       );
     },
     cancel() {
-      if (confirm("Are you sure you want to discard your new recipe?")) {
+      let confirmText = this.editMode
+        ? "Are you sure you want to discard the changes?"
+        : "Are you sure you want to discard your new recipe?";
+      if (confirm(confirmText)) {
         this.$router.push("/account");
       }
     },
