@@ -4,8 +4,12 @@
       <!-- TITLE / DESCRIPTION -->
 
       <fieldset class="flex-column">
-        <title-component id="recipeTitle" class="margin-bottom--medium" />
-        <description id="recipeDescription" class="margin-bottom--medium" />
+        <title-component id="recipeTitle" class="margin-bottom--medium" :existingTitle="title" />
+        <description
+          id="recipeDescription"
+          class="margin-bottom--medium"
+          :existingDescription="description"
+        />
       </fieldset>
 
       <!-- INGREDIENTS -->
@@ -17,7 +21,10 @@
           v-for="ingredientNumber in ingredientNumberList"
           :key="ingredientNumber"
         >
-          <ingredient :id="'ingredient' + ingredientNumber" />
+          <ingredient
+            :id="'ingredient' + ingredientNumber"
+            :existingIngredient="ingredients[ingredientNumber]"
+          />
           <decrement-button
             :data-ingredient-ref="ingredientNumber"
             @decrement="(event)=>{removeIngredient(event)}"
@@ -36,22 +43,22 @@
         <ol class="add-recipe-form__instructions">
           <li
             class="margin-bottom--medium"
-            v-for="instructionStepNumber in instructionStepNumberList"
-            :key="instructionStepNumber"
+            v-for="instructionNumber in instructionNumberList"
+            :key="instructionNumber"
           >
             <span class="flex-row flex-row--nowrap flex-row--align-center">
-              <instruction :id="'instruction' + instructionStepNumber" />
+              <instruction
+                :id="'instruction' + instructionNumber"
+                :existingInstruction="instructions[instructionNumber]"
+              />
               <decrement-button
-                :data-instruction-ref="instructionStepNumber"
-                @decrement="(event) => removeInstructionStep(event)"
+                :data-instruction-ref="instructionNumber"
+                @decrement="(event) => removeInstruction(event)"
               ></decrement-button>
             </span>
           </li>
         </ol>
-        <increment-button
-          class="margin-top--large"
-          @increment="incrementInstructionStepsNumber"
-        >Add step</increment-button>
+        <increment-button class="margin-top--large" @increment="incrementInstructionNumber">Add step</increment-button>
       </fieldset>
 
       <!-- SAVE / UPDATE -->
@@ -98,14 +105,52 @@ export default {
     return {
       systemMessage: "",
       saved: false,
-      recipeKey: ""
+      recipeKey: "",
+      title: "",
+      description: "",
+      ingredients: [],
+      instructions: []
     };
   },
   props: {
-    ingredientNumberList: { type: Array, default: () => [1] },
-    instructionStepNumberList: { type: Array, default: () => [1] }
+    ingredientNumberList: { type: Array, default: () => [] },
+    instructionNumberList: { type: Array, default: () => [] },
+    existingRecipe: { type: Object, default: () => null }
   },
   computed: {},
+  created: function() {
+    let recipeKey = this.$route.params.recipe;
+    if (this.existingRecipe !== null && recipeKey !== undefined) {
+      this.recipeKey = recipeKey;
+      let recipe = this.existingRecipe;
+
+      if (recipe.title !== undefined) {
+        this.title = recipe.title;
+      }
+
+      if (recipe.description !== undefined) {
+        this.description = recipe.description;
+      }
+
+      let counter = 0;
+
+      if (recipe.ingredients !== undefined) {
+        recipe.ingredients.forEach(ingredient => {
+          this.ingredientNumberList.push(counter++);
+          this.ingredients.push(ingredient);
+        });
+      }
+
+      counter = 0;
+
+      if (recipe.instructions !== undefined) {
+        recipe.instructions.forEach(instruction => {
+          this.instructionNumberList.push(counter++);
+          this.instructions.push(instruction);
+        });
+      }
+    }
+  },
   methods: {
     incrementIngredientNumber() {
       let list = this.ingredientNumberList;
@@ -119,18 +164,16 @@ export default {
         1
       );
     },
-    incrementInstructionStepsNumber() {
-      let list = this.instructionStepNumberList;
-      let instructionStepNumber =
+    incrementInstructionNumber() {
+      let list = this.instructionNumberList;
+      let instructionNumber =
         list.length === 0 ? 1 : Math.max.apply(null, list);
-      this.instructionStepNumberList.push(instructionStepNumber + 1);
+      this.instructionNumberList.push(instructionNumber + 1);
     },
-    removeInstructionStep(event) {
-      let instructionStepNumber = event.target.getAttribute(
-        "data-instruction-ref"
-      );
-      this.instructionStepNumberList.splice(
-        this.instructionStepNumberList.indexOf(parseInt(instructionStepNumber)),
+    removeInstruction(event) {
+      let instructionNumber = event.target.getAttribute("data-instruction-ref");
+      this.instructionNumberList.splice(
+        this.instructionNumberList.indexOf(parseInt(instructionNumber)),
         1
       );
     },
@@ -158,23 +201,32 @@ export default {
         instructionList.push(instruction.value);
       });
 
-      const recipes = db.ref("recipes");
-      const newRecipeKey = recipes.push({
+      let recipeObject = {
         title: recipeTitle.value,
         ingredients: ingredientList,
         description: recipeDescription.value,
         instructions: instructionList,
         ownerID: this.user.id
-      }).key;
+      };
 
-      if (newRecipeKey !== null) {
+      if (this.recipeKey !== "") {
+        const recipeRef = db.ref("recipes/" + this.recipeKey);
+        recipeRef.update(recipeObject);
         this.$store.dispatch("SET_USER_RECIPES", this.user);
         this.systemMessage = "Your recipe was saved successfully!";
-        this.saved = true;
-        this.recipeKey = newRecipeKey;
-      } else
-        this.systemMessage =
-          "Unable to save recipe. Try again later or contact support if issue continues.";
+      } else {
+        const recipes = db.ref("recipes");
+        const newRecipeKey = recipes.push(recipeObject).key;
+
+        if (newRecipeKey !== null) {
+          this.$store.dispatch("SET_USER_RECIPES", this.user);
+          this.systemMessage = "Your recipe was saved successfully!";
+          this.saved = true;
+          this.recipeKey = newRecipeKey;
+        } else
+          this.systemMessage =
+            "Unable to save recipe. Try again later or contact support if issue continues.";
+      }
     }
   }
 };

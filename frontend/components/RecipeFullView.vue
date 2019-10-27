@@ -1,12 +1,16 @@
 <template>
   <section class="mobile-width margin--auto margin-top--xlarge">
-    <div class="container">
+    <div class="flex-row">
       <button
         class="button button--block button--small button--green-border"
         @click="pdfExport"
       >⤓ Download as PDF</button>
+      <div class="margin-left--large">
+        <button @click="toggleEditMode" class="button button--transparent">{{editModeButtonText}}</button>
+      </div>
     </div>
-    <div id="recipe" class="recipe">
+
+    <div v-if="!editMode" id="recipe" class="recipe">
       <h3 class="recipe__title">{{recipe.title ? recipe.title : "Recipe has no title"}}</h3>
       <div
         class="recipe__description"
@@ -26,6 +30,9 @@
         >{{step ? step : "Recipe has no instructions"}}</li>
       </ol>
     </div>
+    <div v-if="editMode">
+      <add-recipe-form :existingRecipe="recipe" />
+    </div>
   </section>
 </template>
 
@@ -39,7 +46,9 @@ export default {
   components: {
     AddRecipeForm
   },
-
+  data() {
+    return { editMode: false };
+  },
   computed: {
     recipeKey() {
       return this.$route.params.recipe;
@@ -50,10 +59,16 @@ export default {
         return recipe[0] === this.recipeKey;
       });
       return currentRecipe.length ? currentRecipe[0][1] : {};
+    },
+    editModeButtonText() {
+      return this.editMode ? "Exit edit mode" : "Edit mode";
     }
   },
 
   methods: {
+    toggleEditMode() {
+      this.editMode = !this.editMode;
+    },
     pdfExport() {
       if (this.recipe.title !== undefined) {
         let recipe = document.getElementById("recipe");
