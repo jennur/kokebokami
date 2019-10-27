@@ -8,7 +8,7 @@
     width: 100%;
     background-color: $orange;
     color: $white;
-    padding: $spacingSmall $spacingXLarge;
+    padding: $spacingLarge;
     box-sizing: border-box;
     & a:hover {
       text-decoration: underline;
@@ -23,6 +23,8 @@
 
   &__text {
     text-align: left;
+    padding: 0px;
+    margin: 0px;
   }
 
   &--accepted {

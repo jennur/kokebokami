@@ -8,14 +8,13 @@
 import { user } from "~/mixins/getCurrentUser.js";
 import { facebookLogo } from "~/static/f_logo_RGB-White_72.png";
 export default {
-  name: "FacebookLogin",
+  name: "facebook-login",
   components: {
     facebookLogo
   },
   methods: {
     facebookSignIn() {
       this.$store.dispatch("FACEBOOK_SIGN_IN");
-      //this.$router.push("/account");
     }
   }
 };

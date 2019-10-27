@@ -8,28 +8,8 @@
   &__description,
   &__instruction {
     display: block;
-    margin-top: $spacingSmall;
-    background-color: transparent;
-    padding: $spacingMediumMobile + 1px;
-
-    border: none;
-    font-size: $fontSizeMedium;
-    border: 1px solid rgba(0, 231, 143, 0.3);
-    box-sizing: border-box;
-    border-radius: $spacingSmall;
-
+    padding: $spacingMediumMobile;
     caret-color: $green;
-    @media screen and (min-width: $tabletWidth) {
-      padding: $spacingMedium + 1px;
-    }
-    &:focus {
-      outline: none;
-      border: 2px solid $green;
-      padding: $spacingMediumMobile;
-      @media screen and (min-width: $tabletWidth) {
-        padding: $spacingMedium;
-      }
-    }
   }
 
   &__headline {
@@ -39,7 +19,6 @@
   }
 
   &__title {
-    width: 100%;
     font-family: $displayFont;
     font-size: $fontSizeXXLargeMobile;
     @media screen and (min-width: $tabletWidth) {

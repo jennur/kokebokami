@@ -18,6 +18,7 @@
   &:hover {
     background-color: $green;
     color: $blue;
+    text-decoration: none;
   }
   &--block {
     display: block;
@@ -53,11 +54,63 @@
       background-color: $green;
       color: $blue;
     }
+
+    &-dark-bg {
+      color: $green;
+    }
   }
 
+  &--red-border {
+    background-color: transparent;
+    border: 2px solid $pink;
+    color: $pink;
+
+    &:hover {
+      background-color: $pink;
+      color: $cream;
+    }
+
+    &-dark-bg {
+      color: $cream;
+    }
+  }
+
+  &--transparent {
+    padding: 0px;
+    width: auto;
+    border: none;
+    background-color: transparent;
+    color: $blue;
+    text-align: left;
+    font-family: $bodyFont;
+    padding: 0px !important;
+
+    &:hover {
+      background-color: transparent;
+      color: $blue;
+      text-decoration: underline;
+    }
+
+    &-red {
+      color: $pink;
+
+      &:hover {
+        color: $pink;
+      }
+    }
+  }
+  &--xsmall {
+    height: 35px;
+    width: auto;
+    padding: 0px $spacingMedium;
+    font-size: $fontSizeSmall;
+    font-family: $bodyFont;
+  }
   &--small {
     height: 35px;
-    padding: 0px $spacingSmall;
+    width: auto;
+    max-width: 200px;
+    padding: 0px $spacingXLarge;
     font-size: $fontSizeSmall;
     font-family: $bodyFont;
   }
@@ -68,12 +121,13 @@
   }
 
   &--cancel {
-    padding: 0px;
+    width: auto;
+    padding: 0px $spacingXLarge;
     background-color: transparent;
     color: $pink;
     font-family: $bodyFont;
-    border-radius: 50%;
     line-height: 1em;
+    border-radius: 0px;
 
     &:hover {
       background-color: transparent;

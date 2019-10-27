@@ -1,11 +1,15 @@
 <template>
-  <section class="mobile-width margin--auto margin-top--large">
+  <section class="mobile-width margin--auto margin-top--xlarge">
     <form class="add-recipe-form" v-on:submit.prevent>
       <!-- TITLE / DESCRIPTION -->
 
       <fieldset class="flex-column">
-        <title-component id="recipeTitle" />
-        <description id="recipeDescription" />
+        <title-component id="recipeTitle" class="margin-bottom--medium" :existingTitle="title" />
+        <description
+          id="recipeDescription"
+          class="margin-bottom--medium"
+          :existingDescription="description"
+        />
       </fieldset>
 
       <!-- INGREDIENTS -->
@@ -17,14 +21,17 @@
           v-for="ingredientNumber in ingredientNumberList"
           :key="ingredientNumber"
         >
-          <ingredient :id="'ingredient' + ingredientNumber" />
+          <ingredient
+            :id="'ingredient' + ingredientNumber"
+            :existingIngredient="ingredients[ingredientNumber]"
+          />
           <decrement-button
             :data-ingredient-ref="ingredientNumber"
             @decrement="(event)=>{removeIngredient(event)}"
           ></decrement-button>
         </span>
         <increment-button
-          class="margin-top--medium"
+          class="margin-top--large"
           @increment="incrementIngredientNumber"
         >Add ingredient</increment-button>
       </fieldset>
@@ -35,29 +42,43 @@
         <h4>Instructions</h4>
         <ol class="add-recipe-form__instructions">
           <li
-            class="margin-bottom--large"
-            v-for="instructionStepNumber in instructionStepNumberList"
-            :key="instructionStepNumber"
+            class="margin-bottom--medium"
+            v-for="instructionNumber in instructionNumberList"
+            :key="instructionNumber"
           >
             <span class="flex-row flex-row--nowrap flex-row--align-center">
-              <instruction :id="'instruction' + instructionStepNumber" />
+              <instruction
+                :id="'instruction' + instructionNumber"
+                :existingInstruction="instructions[instructionNumber]"
+              />
               <decrement-button
-                :data-instruction-ref="instructionStepNumber"
-                @decrement="(event) => removeInstructionStep(event)"
+                :data-instruction-ref="instructionNumber"
+                @decrement="(event) => removeInstruction(event)"
               ></decrement-button>
             </span>
           </li>
-          <increment-button @increment="incrementInstructionStepsNumber">Add step</increment-button>
         </ol>
+        <increment-button class="margin-top--large" @increment="incrementInstructionNumber">Add step</increment-button>
       </fieldset>
 
       <!-- SAVE / UPDATE -->
 
       <fieldset class="margin-top--xxlarge" v-if="!saved">
-        <save-section @save="saveRecipe" @cancel="cancel" />
+        <save-section
+          v-if="!deleted"
+          @save="saveRecipe"
+          @cancel="cancel"
+          @deleteRecipe="deleteRecipe"
+          :editMode="editMode"
+        />
+        <div class="system-message">{{ systemMessage }}</div>
+        <nuxt-link v-if="deleted" to="/account/my-recipes">Go back to your cook book</nuxt-link>
       </fieldset>
 
-      <div v-else-if="saved && recipeKey">
+      <div
+        class="flex-center-container flex-center-container--column margin--auto"
+        v-else-if="saved && recipeKey"
+      >
         <div class="system-message">{{ systemMessage }}</div>
         <nuxt-link v-if="recipeKey !== ''" :to="'/recipes/' + recipeKey">Look at your new recipe ➔</nuxt-link>
       </div>
@@ -92,14 +113,54 @@ export default {
     return {
       systemMessage: "",
       saved: false,
-      recipeKey: ""
+      recipeKey: "",
+      title: "",
+      description: "",
+      ingredients: [],
+      instructions: [],
+      deleted: false
     };
   },
   props: {
-    ingredientNumberList: { type: Array, default: () => [1] },
-    instructionStepNumberList: { type: Array, default: () => [1] }
+    ingredientNumberList: { type: Array, default: () => [] },
+    instructionNumberList: { type: Array, default: () => [] },
+    existingRecipe: { type: Object, default: () => null },
+    editMode: { type: Boolean, default: false }
   },
   computed: {},
+  created: function() {
+    let recipeKey = this.$route.params.recipe;
+    if (this.existingRecipe !== null && recipeKey !== undefined) {
+      this.recipeKey = recipeKey;
+      let recipe = this.existingRecipe;
+
+      if (recipe.title !== undefined) {
+        this.title = recipe.title;
+      }
+
+      if (recipe.description !== undefined) {
+        this.description = recipe.description;
+      }
+
+      let counter = 0;
+
+      if (recipe.ingredients !== undefined) {
+        recipe.ingredients.forEach(ingredient => {
+          this.ingredientNumberList.push(counter++);
+          this.ingredients.push(ingredient);
+        });
+      }
+
+      counter = 0;
+
+      if (recipe.instructions !== undefined) {
+        recipe.instructions.forEach(instruction => {
+          this.instructionNumberList.push(counter++);
+          this.instructions.push(instruction);
+        });
+      }
+    }
+  },
   methods: {
     incrementIngredientNumber() {
       let list = this.ingredientNumberList;
@@ -113,24 +174,45 @@ export default {
         1
       );
     },
-    incrementInstructionStepsNumber() {
-      let list = this.instructionStepNumberList;
-      let instructionStepNumber =
+    incrementInstructionNumber() {
+      let list = this.instructionNumberList;
+      let instructionNumber =
         list.length === 0 ? 1 : Math.max.apply(null, list);
-      this.instructionStepNumberList.push(instructionStepNumber + 1);
+      this.instructionNumberList.push(instructionNumber + 1);
     },
-    removeInstructionStep(event) {
-      let instructionStepNumber = event.target.getAttribute(
-        "data-instruction-ref"
-      );
-      this.instructionStepNumberList.splice(
-        this.instructionStepNumberList.indexOf(parseInt(instructionStepNumber)),
+    removeInstruction(event) {
+      let instructionNumber = event.target.getAttribute("data-instruction-ref");
+      this.instructionNumberList.splice(
+        this.instructionNumberList.indexOf(parseInt(instructionNumber)),
         1
       );
     },
     cancel() {
-      if (confirm("Are you sure you want to discard your new recipe?")) {
-        this.$router.push("/account");
+      let confirmText = this.editMode
+        ? "Are you sure you want to discard the changes?"
+        : "Are you sure you want to discard your new recipe?";
+      if (confirm(confirmText)) {
+        this.$router.push("/account/my-recipes");
+      }
+    },
+    deleteRecipe() {
+      if (
+        confirm(
+          "Are you sure you want to delete this recipe? This operation cannot be undone."
+        )
+      ) {
+        const recipeRef = db.ref("recipes/" + this.recipeKey);
+        recipeRef
+          .remove()
+          .then(() => {
+            this.$store.dispatch("SET_USER_RECIPES", this.user);
+            this.systemMessage = "Your recipe was deleted successfully!";
+            this.deleted = true;
+          })
+          .catch(error => {
+            this.systemMessage = error.message;
+            console.log(error);
+          });
       }
     },
 
@@ -152,23 +234,39 @@ export default {
         instructionList.push(instruction.value);
       });
 
-      const recipes = db.ref("recipes");
-      const newRecipeKey = recipes.push({
+      let recipeObject = {
         title: recipeTitle.value,
         ingredients: ingredientList,
         description: recipeDescription.value,
         instructions: instructionList,
         ownerID: this.user.id
-      }).key;
+      };
 
-      if (newRecipeKey !== null) {
-        this.$store.dispatch("SET_USER_RECIPES", this.user);
-        this.systemMessage = "Your recipe was saved successfully!";
-        this.saved = true;
-        this.recipeKey = newRecipeKey;
-      } else
-        this.systemMessage =
-          "Unable to save recipe. Try again later or contact support if issue continues.";
+      if (this.recipeKey !== "") {
+        const recipeRef = db.ref("recipes/" + this.recipeKey);
+        recipeRef
+          .update(recipeObject)
+          .then(() => {
+            this.$emit("exitEditMode");
+            this.$store.dispatch("SET_USER_RECIPES", this.user);
+          })
+          .catch(error => {
+            this.systemMessage = error.message;
+            console.log(error);
+          });
+      } else {
+        const recipes = db.ref("recipes");
+        const newRecipeKey = recipes.push(recipeObject).key;
+
+        if (newRecipeKey !== null) {
+          this.$store.dispatch("SET_USER_RECIPES", this.user);
+          this.systemMessage = "Your recipe was saved successfully!";
+          this.saved = true;
+          this.recipeKey = newRecipeKey;
+        } else
+          this.systemMessage =
+            "Unable to save recipe. Try again later or contact support if issue continues.";
+      }
     }
   }
 };

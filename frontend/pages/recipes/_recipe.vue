@@ -1,5 +1,5 @@
 <template>
-  <recipe-full-view class="padding--medium" :recipe="recipe" />
+  <recipe-full-view class="padding-horizontal--large" :recipe="recipe" />
 </template>
 
 <script>

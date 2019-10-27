@@ -1,33 +1,44 @@
 <template>
   <div class="login-container">
-    <GoogleLogin />
-    <FacebookLogin />
-    <div class="login-container__system-message" v-if="systemMessage">
+    <google-login />
+    <facebook-login />
+    <div class="margin-top--medium">
+      <button
+        class="button button--transparent"
+        @click="toggleLoginModal"
+      >➔ Sign in with username and password</button>
+      <kokebokami-login :open="loginModalOpen" @toggle="toggleLoginModal" />
+    </div>
+    <div class="system-message margin-top--medium" v-if="systemMessage">
       <p>{{systemMessage}}</p>
     </div>
   </div>
 </template>
 
 <script>
-import GoogleLogin from "~/components/GoogleLogin.vue";
-import FacebookLogin from "~/components/FacebookLogin.vue";
+import GoogleLogin from "./GoogleLogin.vue";
+import FacebookLogin from "./FacebookLogin.vue";
+import KokebokamiLogin from "./KokebokamiLogin.vue";
+
 import { user } from "~/mixins/getCurrentUser.js";
 import { auth } from "~/plugins/firebase.js";
+
 export default {
   name: "login-container",
   components: {
     GoogleLogin,
-    FacebookLogin
+    FacebookLogin,
+    KokebokamiLogin
   },
   data() {
-    return { systemMessage: "" };
+    return { systemMessage: "", loginModalOpen: false };
   },
   computed: {},
   mixins: [user],
   watch: {
     user(value) {
       if (value !== undefined && value !== null) {
-        this.$router.push("/account");
+        this.$router.push("/account/my-recipes");
       }
     }
   },
@@ -48,6 +59,11 @@ export default {
         console.log(e.message);
         this.systemMessage = e.message;
       });
+  },
+  methods: {
+    toggleLoginModal() {
+      this.loginModalOpen = !this.loginModalOpen;
+    }
   }
 };
 </script>

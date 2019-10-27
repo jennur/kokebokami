@@ -9,7 +9,7 @@ import googleLogo from "~/static/btn_google_light_normal_ios.svg";
 import { user } from "~/mixins/getCurrentUser.js";
 
 export default {
-  name: "GoogleLogin",
+  name: "google-login",
   components: {
     googleLogo
   },

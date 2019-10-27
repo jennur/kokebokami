@@ -1,5 +1,5 @@
 import Vue from "vue";
-import Navigation from "~/components/Navigation.vue";
+import Navigation from "~/components/Navigation/Navigation.vue";
 import Footer from "~/components/Footer.vue";
 import CookieConsent from "~/components/CookieConsent.vue";
 

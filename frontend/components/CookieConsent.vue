@@ -3,7 +3,7 @@
     :class="'cookie-consent-container ' + (cookieConsentAccepted || cookieInitialAccept ? 'cookie-consent--accepted': '')"
   >
     <p
-      class="cookie-consent__text"
+      class="cookie-consent__text margin-bottom--medium"
     >Kokebokami uses cookies to provide and improve the service. By using this website, you consent to cookies.</p>
     <div class="flex-row-container">
       <nuxt-link to="/cookies-policy">Learn more</nuxt-link>
