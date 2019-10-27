@@ -11,7 +11,7 @@
     </div>
 
     <div v-if="!editMode" id="recipe" class="recipe">
-      <h3 class="recipe__title">{{recipe.title ? recipe.title : "Recipe has no title"}}</h3>
+      <h2 class="recipe__title">{{recipe.title ? recipe.title : "Recipe has no title"}}</h2>
       <div
         class="recipe__description"
       >{{recipe.description ? recipe.description : "Recipe has no description"}}</div>

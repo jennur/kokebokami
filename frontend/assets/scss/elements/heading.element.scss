@@ -3,6 +3,27 @@ h2 {
   font-family: $bodyFont;
 }
 
+h1 {
+  font-size: $fontSizeXXLargeMobile;
+  @media screen and (min-width: $tabletWidth) {
+    font-size: $fontSizeXXLarge;
+  }
+}
+
+h2 {
+  font-size: $fontSizeXLargeMobile;
+  @media screen and (min-width: $tabletWidth) {
+    font-size: $fontSizeXLarge;
+  }
+}
+
+h3 {
+  font-size: $fontSizeLargeMobile;
+  @media screen and (min-width: $tabletWidth) {
+    font-size: $fontSizeLarge;
+  }
+}
+
 .heading {
   &--display-font {
     font-family: $displayFont;

@@ -2,11 +2,17 @@
   text-align: left;
   &__title {
     font-family: $displayFont;
-    font-size: $fontSizeXXLarge;
+    font-size: $fontSizeXXLargeMobile;
+    @media screen and (min-width: $tabletWidth) {
+      font-size: $fontSizeXXLarge;
+    }
   }
   &__description {
     margin-bottom: $spacingXXLarge;
-    font-size: $fontSizeLarge;
+    font-size: $fontSizeLargeMobile;
+    @media screen and (min-width: $tabletWidth) {
+      font-size: $fontSizeLarge;
+    }
     color: $blue;
   }
   &__ingredients {
