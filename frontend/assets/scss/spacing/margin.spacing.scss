@@ -97,6 +97,13 @@
         margin-bottom: $spacingXLarge;
       }
     }
+    &--xxlarge {
+      margin-bottom: $spacingXXLargeMobile;
+
+      @media screen and (min-width: $tabletWidth) {
+        margin-bottom: $spacingXXLarge;
+      }
+    }
   }
 
   &-left {
