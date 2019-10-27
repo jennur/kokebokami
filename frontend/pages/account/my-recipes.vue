@@ -1,6 +1,5 @@
 <template>
   <div class="container">
-    <breadcrumbs :routes="breadcrumbs" />
     <div class="container container--center tablet-width">
       <h2 class="heading--display-font margin-bottom--large">{{this.firstName}}'s kokebok</h2>
       <nuxt-link

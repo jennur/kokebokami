@@ -1,6 +1,6 @@
 <template>
   <nav
-    class="navigation-menu padding-horizontal--large margin--auto margin-bottom--xlarge desktop-width"
+    class="navigation-menu padding-horizontal--large margin--auto margin-bottom--xxlarge tablet-width"
   >
     <h1 class="navigation-menu__logo">
       <nuxt-link class="navigation-menu__logo-link" to="/">Kokebokami</nuxt-link>
@@ -58,7 +58,7 @@ export default {
         ];
       } else {
         menuItems = [
-          { link: "/", name: "Home" },
+          { link: "/sign-up", name: "Sign up" },
           { link: "/login", name: "Log in" }
         ];
       }
