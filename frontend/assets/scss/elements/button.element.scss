@@ -60,6 +60,21 @@
     }
   }
 
+  &--red-border {
+    background-color: transparent;
+    border: 2px solid $pink;
+    color: $pink;
+
+    &:hover {
+      background-color: $pink;
+      color: $cream;
+    }
+
+    &-dark-bg {
+      color: $cream;
+    }
+  }
+
   &--transparent {
     padding: 0px;
     width: auto;

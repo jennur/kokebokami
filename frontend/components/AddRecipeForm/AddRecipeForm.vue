@@ -64,7 +64,15 @@
       <!-- SAVE / UPDATE -->
 
       <fieldset class="margin-top--xxlarge" v-if="!saved">
-        <save-section @save="saveRecipe" @cancel="cancel" />
+        <save-section
+          v-if="!deleted"
+          @save="saveRecipe"
+          @cancel="cancel"
+          @deleteRecipe="deleteRecipe"
+          :editMode="editMode"
+        />
+        <div class="system-message">{{ systemMessage }}</div>
+        <nuxt-link v-if="deleted" to="/account">Go back to your cook book</nuxt-link>
       </fieldset>
 
       <div
@@ -109,13 +117,15 @@ export default {
       title: "",
       description: "",
       ingredients: [],
-      instructions: []
+      instructions: [],
+      deleted: false
     };
   },
   props: {
     ingredientNumberList: { type: Array, default: () => [] },
     instructionNumberList: { type: Array, default: () => [] },
-    existingRecipe: { type: Object, default: () => null }
+    existingRecipe: { type: Object, default: () => null },
+    editMode: { type: Boolean, default: false }
   },
   computed: {},
   created: function() {
@@ -182,6 +192,26 @@ export default {
         this.$router.push("/account");
       }
     },
+    deleteRecipe() {
+      if (
+        confirm(
+          "Are you sure you want to delete this recipe? This operation cannot be undone."
+        )
+      ) {
+        const recipeRef = db.ref("recipes/" + this.recipeKey);
+        recipeRef
+          .remove()
+          .then(() => {
+            this.$store.dispatch("SET_USER_RECIPES", this.user);
+            this.systemMessage = "Your recipe was deleted successfully!";
+            this.deleted = true;
+          })
+          .catch(error => {
+            this.systemMessage = error.message;
+            console.log(error);
+          });
+      }
+    },
 
     saveRecipe() {
       const recipeTitle = document.querySelector("#recipeTitle input");
@@ -211,9 +241,16 @@ export default {
 
       if (this.recipeKey !== "") {
         const recipeRef = db.ref("recipes/" + this.recipeKey);
-        recipeRef.update(recipeObject);
-        this.$store.dispatch("SET_USER_RECIPES", this.user);
-        this.systemMessage = "Your recipe was saved successfully!";
+        recipeRef
+          .update(recipeObject)
+          .then(() => {
+            this.$emit("exitEditMode");
+            this.$store.dispatch("SET_USER_RECIPES", this.user);
+          })
+          .catch(error => {
+            this.systemMessage = error.message;
+            console.log(error);
+          });
       } else {
         const recipes = db.ref("recipes");
         const newRecipeKey = recipes.push(recipeObject).key;

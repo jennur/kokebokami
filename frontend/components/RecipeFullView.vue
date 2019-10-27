@@ -31,7 +31,11 @@
       </ol>
     </div>
     <div v-if="editMode">
-      <add-recipe-form :existingRecipe="recipe" />
+      <add-recipe-form
+        :existingRecipe="recipe"
+        @exitEditMode="toggleEditMode"
+        :editMode="editMode"
+      />
     </div>
   </section>
 </template>

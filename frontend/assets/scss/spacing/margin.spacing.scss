@@ -122,4 +122,28 @@
       }
     }
   }
+
+  &-right {
+    &--small {
+      margin-right: $spacingSmallMobile;
+
+      @media screen and (min-width: $tabletWidth) {
+        margin-right: $spacingSmall;
+      }
+    }
+    &--medium {
+      margin-right: $spacingMediumMobile;
+
+      @media screen and (min-width: $tabletWidth) {
+        margin-right: $spacingMedium;
+      }
+    }
+    &--large {
+      margin-right: $spacingLargeMobile;
+
+      @media screen and (min-width: $tabletWidth) {
+        margin-right: $spacingLarge;
+      }
+    }
+  }
 }
