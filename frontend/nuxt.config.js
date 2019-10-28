@@ -169,7 +169,14 @@ export default {
   /*
    ** Nuxt.js dev-modules
    */
-  buildModules: [],
+  buildModules: [
+    [
+      "@nuxtjs/google-gtag",
+      {
+        id: process.env.GOOGLE_PROPERTY_ID
+      }
+    ]
+  ],
   /*
    ** Nuxt.js modules
    */
