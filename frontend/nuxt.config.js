@@ -171,7 +171,7 @@ export default {
    */
   buildModules: [
     [
-      "@nuxtjs/google-analytics",
+      "@nuxtjs/google-gtag",
       {
         id: process.env.GOOGLE_PROPERTY_ID
       }

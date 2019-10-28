@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@nuxtjs/dotenv": "^1.4.1",
+    "@nuxtjs/google-gtag": "^1.0.4",
     "@nuxtjs/svg": "^0.1.6",
     "@sanity/client": "^0.142.6",
     "axios": "^0.19.0",
