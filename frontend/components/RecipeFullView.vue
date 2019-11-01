@@ -14,8 +14,11 @@
         {{shareButtonText}}
       </span>
 
-      <div v-if="currentUsersRecipe">
-        <button @click="toggleEditMode" class="button button--transparent">{{editModeButtonText}}</button>
+      <div v-if="recipeOwner">
+        <button
+          @click="toggleEditMode"
+          class="button button--small button--transparent"
+        >{{editModeButtonText}}</button>
       </div>
     </div>
     <share-form v-if="sharing" :recipeKey="recipeKey" />
@@ -67,12 +70,13 @@ export default {
   },
   data() {
     return {
-      currentUsersRecipe: false,
+      recipeOwner: false,
       editMode: false,
       sharing: false,
       shareButtonText: "Share recipe"
     };
   },
+
   mixins: [user],
   computed: {
     recipeKey() {
@@ -84,9 +88,13 @@ export default {
       let allAvailableRecipes = userRecipes.concat(sharedRecipes);
 
       let currentRecipe = allAvailableRecipes.filter(recipe => {
-        return recipe[0] === this.recipeKey;
+        let recipeCheck = recipe[0] === this.recipeKey;
+        if (recipeCheck) {
+          this.recipeOwner = recipe[1].ownerID === this.user.id;
+        }
+        return recipeCheck;
       });
-
+      //console.log("OWNER ID::: " + currentRecipe[0][0]);
       return currentRecipe.length ? currentRecipe[0][1] : {};
     },
     editModeButtonText() {
