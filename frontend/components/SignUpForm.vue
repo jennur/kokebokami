@@ -57,11 +57,13 @@ export default {
         .then(response => {
           let user = {
             id: response.user.uid,
-            name: realThis.name
+            name: realThis.name,
+            email: realThis.email
           };
-          db.ref("users/" + response.user.uid)
-            .child("displayName")
-            .set(realThis.name);
+          const userRef = db.ref("users/" + response.user.uid);
+          userRef.child("displayName").set(realThis.name);
+          userRef.child("email").set(realThis.email);
+
           realThis.$store.dispatch("SET_USER", user);
           if (response.user.uid !== undefined) {
             realThis.$router.push("/account/my-recipes");
