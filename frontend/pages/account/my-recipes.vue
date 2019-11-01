@@ -6,8 +6,12 @@
         to="/account/add-recipe"
         class="button button--large button--round margin--auto margin-top--medium"
       >Add new recipe</nuxt-link>
-      <h3 v-if="!recipesLength">It seems like your cook book is empty!</h3>
-      <recipes-list class="padding--large" />
+      <recipes-list headline="Your recipes" class="padding--large" :recipes="userRecipes" />
+      <recipes-list
+        headline="Recipes shared with you"
+        class="padding--large"
+        :recipes="sharedRecipes"
+      />
     </div>
   </div>
 </template>
@@ -40,8 +44,11 @@ export default {
       }
       return firstName;
     },
-    recipesLength() {
-      return this.$store.getters.recipes.length;
+    userRecipes() {
+      return this.$store.getters.recipes;
+    },
+    sharedRecipes() {
+      return this.$store.getters.sharedRecipes;
     }
   },
   methods: {}

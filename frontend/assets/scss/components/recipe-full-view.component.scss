@@ -40,4 +40,10 @@
       }
     }
   }
+
+  &__share-icon {
+    width: 15px;
+    height: 15px;
+    margin-left: -$spacingSmall;
+  }
 }

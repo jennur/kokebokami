@@ -17,6 +17,7 @@ export default context => {
               email: snapshot.val().email
             };
             store.dispatch("SET_USER", loggedinUser);
+            store.dispatch("SET_SHARED_RECIPES", loggedinUser);
 
             return resolve(store.dispatch("SET_USER_RECIPES", loggedinUser));
           } else {
@@ -35,6 +36,7 @@ export default context => {
               email: user.email
             };
             store.dispatch("SET_USER", loggedinUser);
+            store.dispatch("SET_SHARED_RECIPES", loggedinUser);
 
             return resolve(store.dispatch("SET_USER_RECIPES", loggedinUser));
           }
