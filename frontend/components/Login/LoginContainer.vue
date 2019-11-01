@@ -1,10 +1,12 @@
 <template>
   <div class="login-container">
-    <google-login />
-    <facebook-login />
+    <h2 class="heading--display-font margin-bottom--xlarge">Log in to see kokeboka di</h2>
+
+    <google-login class="margin-bottom--medium" />
+    <facebook-login class="margin-bottom--medium" />
     <div class="margin-top--medium">
       <button
-        class="button button--transparent"
+        class="button button--large button--transparent"
         @click="toggleLoginModal"
       >➔ Sign in with username and password</button>
       <kokebokami-login :open="loginModalOpen" @toggle="toggleLoginModal" />

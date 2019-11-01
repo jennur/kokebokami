@@ -11,6 +11,7 @@
 @import "./elements/anchor.element.scss";
 @import "./elements/arrow-list.element.scss";
 @import "./elements/base.element.scss";
+@import "./elements/border-box.element.scss";
 @import "./elements/button.element.scss";
 @import "./elements/facebook-btn.element.scss";
 @import "./elements/fieldset.element.scss";
@@ -22,6 +23,7 @@
 @import "./elements/system-message.element.scss";
 
 /* Components */
+@import "./components/account.component.scss";
 @import "./components/add-recipe-form.component.scss";
 @import "./components/burger-icon.component.scss";
 @import "./components/cookie-consent.component.scss";

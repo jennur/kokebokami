@@ -1,0 +1,9 @@
+.border-box {
+  border: 1px solid $green;
+  padding: $spacingXXLarge;
+  box-sizing: border-box;
+
+  &--rounded {
+    border-radius: $spacingMedium;
+  }
+}
