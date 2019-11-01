@@ -7,7 +7,7 @@
         class="button button--small button--red-border"
       >Delete recipe</button>
     </div>
-    <button @click="() => {this.$emit('save')}" class="button">Save recipe</button>
+    <button @click="() => {this.$emit('save')}" class="button button--small">Save recipe</button>
     <button
       @click="() => {this.$emit('cancel')}"
       class="button button--cancel margin--large"

@@ -16,7 +16,7 @@
 
       <div v-if="recipeOwner">
         <button
-          @click="toggleEditMode"
+          @click="toggleWarning"
           class="button button--small button--transparent"
         >{{editModeButtonText}}</button>
       </div>
@@ -105,6 +105,15 @@ export default {
   methods: {
     toggleEditMode() {
       this.editMode = !this.editMode;
+    },
+    toggleWarning() {
+      if (this.editMode) {
+        if (confirm("Are you sure you want to discard the changes?")) {
+          this.editMode = false;
+        }
+      } else {
+        this.editMode = true;
+      }
     },
     toggleShareBox() {
       this.sharing = !this.sharing;
