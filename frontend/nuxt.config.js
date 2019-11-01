@@ -1,72 +1,9 @@
 require("dotenv").config();
 
-/*var { google } = require("googleapis");
-const axios = require("axios");
-
-/*var { google } = require("googleapis");
-const axios = require("axios");
-// Initialize the service account key object.
-const serviceAccount = {
-  type: "service_account",
-  project_id: process.env.PROJECT_ID,
-  private_key_id: process.env.PRIVATE_KEY_ID,
-  private_key: process.env.PRIVATE_KEY,
-  client_email: process.env.CLIENT_EMAIL,
-  client_id: process.env.CLIENT_ID,
-  auth_uri: process.env.AUTH_URI,
-  token_uri: process.env.TOKEN_URI,
-  auth_provider_x509_cert_url: process.env.AUTH_PROVIDER_CERT_URL,
-  client_x509_cert_url: process.env.CLIENT_CERT_URL
-};
-// Define the required scopes.
-var scopes = [
-  "https://www.googleapis.com/auth/userinfo.email",
-  "https://www.googleapis.com/auth/firebase.database"
-];
-// Authenticate a JWT client with the service account.
-var jwtClient = new google.auth.JWT(
-  serviceAccount.client_email,
-  null,
-  serviceAccount.private_key,
-  scopes
-);
-// Use the JWT client to generate an access token.
-let routesPromise = new Promise((resolve, reject) => {
-  jwtClient.authorize((error, tokens) => {
-    let routes = [];
-    if (error) return "FAILED IN JWT CLIENT::: + " + error;
-    else {
-      axios
-        .get(
-          process.env.DATABASE_URL +
-            "/recipes.json?access_token=" +
-            tokens.access_token
-        )
-        .then(response => {
-          Object.keys(response.data).forEach(key => {
-            routes.push("/recipes/" + key);
-          });
-          resolve(routes);
-        })
-        .catch(error => {
-          reject("AXIOS PROMISE REJECTED::: " + error);
-        });
-    }
-  });
-});*/
-
 export default {
   mode: "spa",
   generate: {
     fallback: true
-
-    /*routes: function(callback) {
-      routesPromise
-        .then(routes => {
-          return routes;
-        })
-        .catch(callback);
-    }*/
   },
 
   /*
@@ -174,6 +111,12 @@ export default {
       "@nuxtjs/google-gtag",
       {
         id: process.env.GOOGLE_PROPERTY_ID
+      }
+    ],
+    [
+      "@nuxtjs/google-analytics",
+      {
+        id: "UA-108483738-5"
       }
     ]
   ],
