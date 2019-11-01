@@ -10,7 +10,7 @@
     <button @click="() => {this.$emit('save')}" class="button button--small">Save recipe</button>
     <button
       @click="() => {this.$emit('cancel')}"
-      class="button button--cancel margin--large"
+      class="button button--large button--cancel margin--large"
     >✕ Cancel</button>
   </div>
 </template>
