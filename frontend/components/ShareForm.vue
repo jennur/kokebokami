@@ -44,9 +44,11 @@ export default {
                 const recipeRef = db.ref(
                   "recipes/" + recipeKey + "/sharedWith"
                 );
+
                 recipeRef.once("value", shares => {
                   if (shares.exists()) {
                     let sharedWith = Object.values(shares.val());
+
                     if (sharedWith.indexOf(userID) === -1) {
                       let numShares = Object.keys(shares.val()).length;
                       recipeRef.update({ [numShares]: userID });

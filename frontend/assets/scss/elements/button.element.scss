@@ -2,10 +2,7 @@
   display: inline-flex;
   justify-content: center;
   align-items: center;
-  width: 6 * $spacingXLarge;
   padding: 0px $spacingMedium;
-  min-height: 40px;
-  height: auto;
   border-radius: $spacingSmall;
   border: none;
   box-sizing: border-box;
@@ -102,14 +99,14 @@
   }
   &--xsmall {
     height: 35px;
-    width: auto;
+    width: max-content;
     padding: 0px $spacingMedium;
     font-size: $fontSizeSmall;
     font-family: $bodyFont;
   }
   &--small {
     height: 35px;
-    width: auto;
+    width: max-content;
     max-width: 200px;
     padding: 0px $spacingXLarge;
     font-size: $fontSizeSmall;
@@ -118,6 +115,7 @@
 
   &--large {
     height: 48px;
+    width: max-content;
     padding: 0px $spacingLarge;
   }
 
