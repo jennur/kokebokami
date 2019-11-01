@@ -8,8 +8,8 @@
     }
   }
   &__description {
-    margin-bottom: $spacingXXLarge;
     font-size: $fontSizeLargeMobile;
+    margin-bottom: $spacingXXLarge;
     @media screen and (min-width: $tabletWidth) {
       font-size: $fontSizeLarge;
     }
@@ -17,8 +17,11 @@
   }
   &__ingredients {
     padding: 0px;
+    margin-bottom: $spacingXXLarge;
+
     & li {
       list-style: none;
+      margin-bottom: $spacingSmall;
 
       &::before {
         content: "➔";
@@ -32,7 +35,7 @@
     padding-left: $spacingLarge;
 
     &-step {
-      margin-bottom: $spacingMedium;
+      margin-bottom: $spacingLarge;
 
       &::before {
         content: "";

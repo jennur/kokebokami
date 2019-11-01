@@ -1,14 +1,32 @@
 <template>
-  <div class="container mobile-width padding-horizontal--large">
-    <h2 class="heading--display-font margin-bottom--large">Your account details</h2>
+  <div class="account container mobile-width padding-horizontal--large">
+    <h2 class="heading--display-font margin-bottom--large">My account details</h2>
     <div class="flex-row-container">
       <dl>
-        <dt>Name: {{user && user.name ? user.name : null}}</dt>
-        <dt>E-mail: {{user && user.email ? user.email : null}}</dt>
-        <dt>Total amount of recipes: {{ recipes ? recipes.length : null}}</dt>
+        <dt>
+          <span class="account__detail">Name:</span>
+          {{user && user.name ? user.name : null}}
+        </dt>
+        <dt>
+          <span class="account__detail">E-mail:</span>
+          {{user && user.email ? user.email : null}}
+        </dt>
+        <dt>
+          <span class="account__detail">Total amount of recipes:</span>
+          {{ recipes ? recipes.length : null}}
+        </dt>
         <dt>
           <ol>
             <li v-for="recipe in recipes" :key="recipe[1].title">{{recipe[1].title}}</li>
+          </ol>
+        </dt>
+        <dt>
+          <span class="account__detail">Total amount of recipes shared with me:</span>
+          {{ sharedRecipes ? sharedRecipes.length : null}}
+        </dt>
+        <dt>
+          <ol>
+            <li v-for="recipe in sharedRecipes" :key="recipe[1].title">{{recipe[1].title}}</li>
           </ol>
         </dt>
       </dl>
@@ -35,6 +53,9 @@ export default {
   computed: {
     recipes() {
       return this.$store.getters.recipes;
+    },
+    sharedRecipes() {
+      return this.$store.getters.sharedRecipes;
     }
   },
   methods: {

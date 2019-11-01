@@ -1,0 +1,10 @@
+.account {
+  &__detail {
+    font-weight: bold;
+    color: $blue;
+    padding-right: $spacingMedium;
+  }
+  & dt {
+    margin-bottom: $spacingSmall;
+  }
+}
