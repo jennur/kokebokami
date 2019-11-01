@@ -9,7 +9,8 @@ export const state = {
   cookieConsent: false,
   user: null,
   loginSystemMessage: "",
-  recipes: []
+  recipes: [],
+  sharedRecipes: []
 };
 
 export const mutations = {
@@ -27,6 +28,9 @@ export const mutations = {
   },
   setRecipes(state, payload) {
     state.recipes = payload;
+  },
+  setSharedRecipes(state, payload) {
+    state.sharedRecipes = payload;
   }
 };
 
@@ -75,6 +79,31 @@ export const actions = {
         );
       }
     );
+  },
+  SET_SHARED_RECIPES: ({ commit }, user) => {
+    const recipesRef = db.ref("recipes").orderByChild("sharedWith");
+    let recipesArray = [];
+    recipesRef.once(
+      "value",
+      recipes => {
+        recipes.forEach(recipe => {
+          if (recipe.exists()) {
+            const shares = recipe.val().sharedWith
+              ? recipe.val().sharedWith
+              : [];
+            if (shares.indexOf(user.id) !== -1) {
+              recipesArray.push([recipe.key, recipe.val()]);
+            }
+          }
+        });
+        commit("setSharedRecipes", recipesArray);
+      },
+      error => {
+        console.log(
+          "Something failed when attempting to set shared recipes: " + error
+        );
+      }
+    );
   }
 };
 
@@ -90,5 +119,8 @@ export const getters = {
   },
   recipes(state) {
     return state.recipes;
+  },
+  sharedRecipes(state) {
+    return state.sharedRecipes;
   }
 };

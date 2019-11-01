@@ -79,8 +79,11 @@ export default {
       return this.$route.params.recipe;
     },
     recipe() {
-      let recipes = this.$store.getters.recipes;
-      let currentRecipe = recipes.filter(recipe => {
+      let userRecipes = this.$store.getters.recipes;
+      let sharedRecipes = this.$store.getters.sharedRecipes;
+      let allAvailableRecipes = userRecipes.concat(sharedRecipes);
+
+      let currentRecipe = allAvailableRecipes.filter(recipe => {
         return recipe[0] === this.recipeKey;
       });
 
