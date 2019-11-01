@@ -2,13 +2,23 @@
   <section class="mobile-width margin--auto">
     <div class="flex-row">
       <button
-        class="button button--block button--small button--green-border"
+        class="button button--block button--small button--green-border margin-bottom--large margin-right--large"
         @click="pdfExport"
       >⤓ Download as PDF</button>
-      <div class="margin-left--large">
+      <span
+        role="button"
+        @click="toggleShareBox"
+        class="button button--small button--green-border margin-right--large"
+      >
+        <shareIcon class="recipe__share-icon margin-right--medium" />
+        {{shareButtonText}}
+      </span>
+
+      <div v-if="currentUsersRecipe">
         <button @click="toggleEditMode" class="button button--transparent">{{editModeButtonText}}</button>
       </div>
     </div>
+    <share-form v-if="sharing" :recipeKey="recipeKey" />
 
     <div v-if="!editMode" id="recipe" class="recipe">
       <h2 class="recipe__title">{{recipe.title ? recipe.title : "Recipe has no title"}}</h2>
@@ -41,18 +51,29 @@
 </template>
 
 <script>
+import { user } from "~/mixins/getCurrentUser.js";
+import ShareForm from "~/components/ShareForm.vue";
 import AddRecipeForm from "~/components/AddRecipeForm/AddRecipeForm.vue";
 import * as jsPDF from "jspdf";
 import logo from "~/assets/graphics/kokebokamilogo.png";
+import shareIcon from "~/assets/graphics/shareicon.svg";
 
 export default {
   name: "recipe-full-view",
   components: {
-    AddRecipeForm
+    ShareForm,
+    AddRecipeForm,
+    shareIcon
   },
   data() {
-    return { editMode: false };
+    return {
+      currentUsersRecipe: false,
+      editMode: false,
+      sharing: false,
+      shareButtonText: "Share recipe"
+    };
   },
+  mixins: [user],
   computed: {
     recipeKey() {
       return this.$route.params.recipe;
@@ -62,6 +83,7 @@ export default {
       let currentRecipe = recipes.filter(recipe => {
         return recipe[0] === this.recipeKey;
       });
+
       return currentRecipe.length ? currentRecipe[0][1] : {};
     },
     editModeButtonText() {
@@ -72,6 +94,10 @@ export default {
   methods: {
     toggleEditMode() {
       this.editMode = !this.editMode;
+    },
+    toggleShareBox() {
+      this.sharing = !this.sharing;
+      this.shareButtonText = this.sharing ? "Close share box" : "Share recipe";
     },
     pdfExport() {
       if (this.recipe.title !== undefined) {
