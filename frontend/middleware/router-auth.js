@@ -9,7 +9,15 @@ export default function({ store, redirect, route }) {
 }
 
 function isAdminRoute(route) {
-  if (route.matched.some(record => record.path == "/account/my-recipes")) {
+  if (route.matched.some(record => record.path == "/account")) {
+    return true;
+  } else if (
+    route.matched.some(record => record.path == "/account/my-recipes")
+  ) {
+    return true;
+  } else if (
+    route.matched.some(record => record.path == "/account/add-recipe")
+  ) {
     return true;
   }
 }
