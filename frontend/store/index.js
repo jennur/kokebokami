@@ -11,7 +11,8 @@ export const state = {
   loginSystemMessage: "",
   recipes: [],
   sharedRecipes: [],
-  publicRecipes: []
+  publicRecipes: [],
+  categories: ["breakfast", "lunch", "dinner", "dessert", "vegetarian", "vegan"]
 };
 
 export const mutations = {
@@ -151,5 +152,8 @@ export const getters = {
   },
   publicRecipes(state) {
     return state.publicRecipes;
+  },
+  categories(state) {
+    return state.categories;
   }
 };

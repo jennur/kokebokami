@@ -24,6 +24,13 @@
     <share-form v-if="sharing" :recipeKey="recipeKey" />
 
     <div v-if="!editMode" id="recipe" class="recipe">
+      <div class="recipe__categories margin-top--large">
+        <span
+          class="recipe__category margin-right--large"
+          v-for="category in recipe.categories"
+          :key="category"
+        >{{category}}</span>
+      </div>
       <h2 class="recipe__title">{{recipe.title ? recipe.title : "Recipe has no title"}}</h2>
       <div
         class="recipe__description"

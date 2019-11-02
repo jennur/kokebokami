@@ -44,6 +44,15 @@
     }
   }
 
+  &__category {
+    display: inline-block;
+    background-color: $orange;
+    color: $white;
+    padding: $spacingXSmall $spacingLarge $spacingSmall $spacingLarge;
+    border-radius: $spacingLarge;
+    text-transform: capitalize;
+  }
+
   &__share-icon {
     width: 15px;
     height: 15px;
