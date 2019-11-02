@@ -22,11 +22,23 @@
     padding: $spacingXLarge;
     padding-top: 0;
   }
+  &__categories {
+    display: block;
+  }
+  &__category {
+    display: inline-block;
+    background-color: $orange;
+    color: $white;
+    padding: 0px $spacingMedium $spacingXSmall $spacingMedium;
+    border-radius: $spacingLarge;
+    text-transform: capitalize;
+    font-size: $fontSizeSmall;
+  }
 
   &__published-by {
     display: block;
     position: absolute;
-    bottom: 0;
+    bottom: $spacingSmall;
     right: $spacingXLarge;
     font-size: $fontSizeSmall;
     color: $blue;
