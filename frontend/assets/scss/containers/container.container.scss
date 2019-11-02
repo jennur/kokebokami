@@ -10,7 +10,8 @@
     text-align: center;
   }
 
-  &--tablet-width {
-    max-width: $tabletWidth;
+  &--blue {
+    background-color: $blue;
+    color: $white;
   }
 }

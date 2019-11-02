@@ -123,7 +123,16 @@ export default {
   /*
    ** Nuxt.js modules
    */
-  modules: [["nuxt-svg-loader", "@nuxtjs/dotenv", "@nuxtjs/svg"]],
+  modules: [
+    ["nuxt-svg-loader", "@nuxtjs/dotenv", "@nuxtjs/svg"],
+    [
+      "@nuxtjs/sitemap",
+      {
+        path: "/sitemap.xml",
+        generate: true
+      }
+    ]
+  ],
   env: {
     baseURL: process.env.BASE_URL || "http://localhost:3000",
     apiKey: process.env.API_KEY,

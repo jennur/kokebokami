@@ -61,6 +61,11 @@
         <increment-button class="margin-top--large" @increment="incrementInstructionNumber">Add step</increment-button>
       </fieldset>
 
+      <fieldset class="container margin-top--xxlarge">
+        <label>
+          <input type="checkbox" id="publicCheck" v-model="publicCheck" /> Make recipe public
+        </label>
+      </fieldset>
       <!-- SAVE / UPDATE -->
 
       <fieldset class="margin-top--xxlarge" v-if="!saved">
@@ -118,6 +123,7 @@ export default {
       description: "",
       ingredients: [],
       instructions: [],
+      publicCheck: false,
       deleted: false
     };
   },
@@ -140,6 +146,10 @@ export default {
 
       if (recipe.description !== undefined) {
         this.description = recipe.description;
+      }
+
+      if (recipe.public !== undefined) {
+        this.publicCheck = recipe.public;
       }
 
       let counter = 0;
@@ -239,6 +249,7 @@ export default {
         ingredients: ingredientList,
         description: recipeDescription.value,
         instructions: instructionList,
+        public: this.publicCheck,
         ownerID: this.user.id
       };
 
