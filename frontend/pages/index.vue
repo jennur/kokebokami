@@ -7,7 +7,7 @@
         <h1 class="heading--display-font">It's time to digitalize your cook book!</h1>
         <p
           class="padding-horizontal--large color--blue font-size--medium text-align--center"
-        >Start storing your personal recipes online to make sure they never get lost. Share them with the public or your friends only.</p>
+        >Start storing your personal recipes online to make sure they never get lost. Keep them private, share them with the public or your friends only.</p>
         <nuxt-link
           to="/sign-up"
           class="button button--large padding-horizontal--xlarge margin-top--large"
