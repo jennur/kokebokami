@@ -4,7 +4,7 @@
       <div
         class="flex-row__half flex-column max-width--300-600 margin-right--xlarge margin-top--large"
       >
-        <h3>Sign up to start building your own cook book.</h3>
+        <h3 v-if="headline">{{headline}}</h3>
         <p
           class="margin-bottom--xlarge"
         >If you have a Google or Facebook account, there is no need to sign up - just login directly.</p>
@@ -34,6 +34,10 @@ export default {
     darkBg: {
       type: Boolean,
       default: false
+    },
+    headline: {
+      type: String,
+      default: null
     }
   }
 };

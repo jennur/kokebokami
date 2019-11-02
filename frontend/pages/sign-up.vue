@@ -1,5 +1,6 @@
 <template>
   <div class="container container--center padding-horizontal--large margin--auto">
+    <h2 class="heading--display-font">Sign up to start building your own cook book.</h2>
     <sign-up-section :darkBg="darkBg" />
   </div>
 </template>

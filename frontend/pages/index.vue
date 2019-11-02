@@ -18,9 +18,14 @@
         <kokeboka class="graphic graphic--kokeboka" />
       </div>
     </section>
-    <sign-up-section class="container--blue" :darkBg="true" />
+    <sign-up-section
+      class="container--blue"
+      :darkBg="true"
+      headline="Sign up to start building your own cook book."
+    />
   </div>
-  <div v-else>
+  <div class="tablet-width padding-horizontal--large margin--auto" v-else>
+    <search-form class="tablet-width margin-bottom--xlarge margin--auto" />
     <recipes-list :recipes="publicRecipes" :publicRecipe="true" />
   </div>
 </template>
@@ -33,6 +38,7 @@ import { user } from "~/mixins/getCurrentUser.js";
 import kokeboka from "~/assets/graphics/kokeboka.svg";
 import SignUpSection from "~/components/SignUp/SignUpSection.vue";
 
+import SearchForm from "~/components/Search/SearchForm.vue";
 import RecipesList from "~/components/RecipesList.vue";
 
 export default {
@@ -40,6 +46,7 @@ export default {
   components: {
     kokeboka,
     SignUpSection,
+    SearchForm,
     RecipesList
   },
   mixins: [user],
