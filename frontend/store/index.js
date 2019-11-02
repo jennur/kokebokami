@@ -10,7 +10,9 @@ export const state = {
   user: null,
   loginSystemMessage: "",
   recipes: [],
-  sharedRecipes: []
+  sharedRecipes: [],
+  publicRecipes: [],
+  categories: ["breakfast", "lunch", "dinner", "dessert", "vegetarian", "vegan"]
 };
 
 export const mutations = {
@@ -31,6 +33,9 @@ export const mutations = {
   },
   setSharedRecipes(state, payload) {
     state.sharedRecipes = payload;
+  },
+  setPublicRecipes(state, payload) {
+    state.publicRecipes = payload;
   }
 };
 
@@ -104,6 +109,28 @@ export const actions = {
         );
       }
     );
+  },
+  SET_PUBLIC_RECIPES: ({ commit }) => {
+    const recipesRef = db.ref("recipes").orderByChild("public");
+    let recipesArray = [];
+    recipesRef.once(
+      "value",
+      recipes => {
+        recipes.forEach(recipe => {
+          if (recipe.exists()) {
+            if (recipe.val().public) {
+              recipesArray.push([recipe.key, recipe.val()]);
+            }
+          }
+        });
+        commit("setPublicRecipes", recipesArray);
+      },
+      error => {
+        console.log(
+          "Something failed when attempting to set public recipes: " + error
+        );
+      }
+    );
   }
 };
 
@@ -122,5 +149,11 @@ export const getters = {
   },
   sharedRecipes(state) {
     return state.sharedRecipes;
+  },
+  publicRecipes(state) {
+    return state.publicRecipes;
+  },
+  categories(state) {
+    return state.categories;
   }
 };

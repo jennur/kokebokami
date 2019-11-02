@@ -1,12 +1,12 @@
 <template>
-  <form class="sign-up-form margin--auto" v-on:submit.prevent>
+  <form class="sign-up-form" v-on:submit.prevent>
     <label class="flex-column margin-bottom--medium">
       Name
       <input class="margin-top--small" id="name" type="text" v-model="name" />
       <span class="system-message">{{nameError}}</span>
     </label>
     <label class="flex-column margin-bottom--medium">
-      E-mail address
+      E-mail
       <input class="margin-top--small" id="email" type="email" v-model="email" />
       <span class="system-message">{{emailError}}</span>
     </label>

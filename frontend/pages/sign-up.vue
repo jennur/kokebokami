@@ -1,21 +1,32 @@
 <template>
   <div class="container container--center padding-horizontal--large margin--auto">
-    <div class="mobile-width border-box border-box--rounded margin--auto">
-      <h3
-        class="heading--display-font margin-bottom--xxlarge"
-      >Sign up to start building your own cook book</h3>
-      <sign-up-form />
-    </div>
+    <h2 class="heading--display-font">Sign up to start building your own cook book.</h2>
+    <sign-up-section :darkBg="darkBg" />
   </div>
 </template>
 
 <script>
-import SignUpForm from "~/components/SignUpForm.vue";
+import SignUpSection from "~/components/SignUp/SignUpSection.vue";
+import { user } from "~/mixins/getCurrentUser.js";
 
 export default {
   name: "sign-up",
   components: {
-    SignUpForm
+    SignUpSection
+  },
+  mixins: [user],
+  props: {
+    darkBg: {
+      type: Boolean,
+      default: false
+    }
+  },
+  watch: {
+    user(value) {
+      if (value !== undefined && value !== null) {
+        this.$router.push("/account/my-recipes");
+      }
+    }
   }
 };
 </script>

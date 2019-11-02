@@ -18,6 +18,7 @@ export default context => {
             };
             store.dispatch("SET_USER", loggedinUser);
             store.dispatch("SET_SHARED_RECIPES", loggedinUser);
+            store.dispatch("SET_PUBLIC_RECIPES");
 
             return resolve(store.dispatch("SET_USER_RECIPES", loggedinUser));
           } else {
@@ -37,7 +38,7 @@ export default context => {
             };
             store.dispatch("SET_USER", loggedinUser);
             store.dispatch("SET_SHARED_RECIPES", loggedinUser);
-
+            store.dispatch("SET_PUBLIC_RECIPES");
             return resolve(store.dispatch("SET_USER_RECIPES", loggedinUser));
           }
         });

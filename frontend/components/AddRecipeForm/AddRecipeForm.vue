@@ -1,6 +1,10 @@
 <template>
   <section class="mobile-width margin--auto margin-top--xlarge">
     <form class="add-recipe-form" v-on:submit.prevent>
+      <!-- CATEGORIES -->
+
+      <categories id="categories" class="margin-bottom--xlarge" :existingCategories="categories" />
+
       <!-- TITLE / DESCRIPTION -->
 
       <fieldset class="flex-column">
@@ -38,7 +42,7 @@
 
       <!-- INSTRUCTIONS -->
 
-      <fieldset id="instructionList" class="flex-column">
+      <fieldset id="instructionList" class="flex-column margin-bottom--xxlarge">
         <h4>Instructions</h4>
         <ol class="add-recipe-form__instructions">
           <li
@@ -61,11 +65,14 @@
         <increment-button class="margin-top--large" @increment="incrementInstructionNumber">Add step</increment-button>
       </fieldset>
 
-      <fieldset class="container margin-top--xxlarge">
+      <!-- PUBLIC CHECK -->
+
+      <fieldset class="container">
         <label>
-          <input type="checkbox" id="publicCheck" v-model="publicCheck" /> Make recipe public
+          <input type="checkbox" id="publicCheck" v-model="publicCheck" /> Make recipe public (share with all users of Kokebokami)
         </label>
       </fieldset>
+
       <!-- SAVE / UPDATE -->
 
       <fieldset class="margin-top--xxlarge" v-if="!saved">
@@ -98,6 +105,7 @@ import TitleComponent from "./Input/TitleComponent.vue";
 import Description from "./Input/Description.vue";
 import Ingredient from "./Input/Ingredient.vue";
 import Instruction from "./Input/Instruction.vue";
+import Categories from "./Input/Categories";
 import SaveSection from "./Input/SaveSection.vue";
 import IncrementButton from "./Input/IncrementButton.vue";
 import DecrementButton from "./Input/DecrementButton.vue";
@@ -109,6 +117,7 @@ export default {
     Description,
     Ingredient,
     Instruction,
+    Categories,
     IncrementButton,
     DecrementButton,
     SaveSection
@@ -123,6 +132,7 @@ export default {
       description: "",
       ingredients: [],
       instructions: [],
+      categories: [],
       publicCheck: false,
       deleted: false
     };
@@ -168,6 +178,13 @@ export default {
           this.instructionNumberList.push(counter++);
           this.instructions.push(instruction);
         });
+      }
+      counter = 0;
+      if (recipe.categories !== undefined) {
+        recipe.categories.forEach(category => {
+          this.categories.push(category);
+        });
+        console.log("CATEGORIES::: " + this.categories);
       }
     }
   },
@@ -244,13 +261,22 @@ export default {
         instructionList.push(instruction.value);
       });
 
+      let categories = document.querySelectorAll("#categories input");
+      let categoryList = [];
+      categories.forEach(category => {
+        category.checked ? categoryList.push(category.value) : null;
+      });
+      console.log("CATEGORIES FOR SAVE::: " + categoryList);
+
       let recipeObject = {
         title: recipeTitle.value,
         ingredients: ingredientList,
         description: recipeDescription.value,
         instructions: instructionList,
+        categories: categoryList,
         public: this.publicCheck,
-        ownerID: this.user.id
+        ownerID: this.user.id,
+        ownerName: this.user.name
       };
 
       if (this.recipeKey !== "") {

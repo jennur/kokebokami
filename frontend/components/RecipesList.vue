@@ -6,6 +6,7 @@
       :key="recipe[0]"
       :recipeID="recipe[0]"
       :recipe="recipe[1]"
+      :publicRecipe="publicRecipe"
     />
     <div v-if="!recipesLength">It looks like there's nothing here atm!</div>
   </div>
@@ -35,6 +36,10 @@ export default {
     headline: {
       type: String,
       default: null
+    },
+    publicRecipe: {
+      type: Boolean,
+      default: false
     }
   },
   computed: {
