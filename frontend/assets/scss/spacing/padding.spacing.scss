@@ -1,4 +1,8 @@
 .padding {
+  &--none {
+    padding: 0px;
+  }
+
   &--small {
     padding: $spacingSmallMobile;
     box-sizing: border-box;

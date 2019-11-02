@@ -24,4 +24,9 @@
   &--align-bottom {
     align-items: flex-end;
   }
+
+  &__half {
+    flex-basis: 50%;
+    width: 100%;
+  }
 }

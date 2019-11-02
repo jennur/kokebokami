@@ -26,7 +26,7 @@
       <span class="system-message">{{passwordRepeatError}}</span>
     </label>
 
-    <div class="flex-column margin-bottom--medium">
+    <div class="flex-column">
       <button @click="validateForm" class="button button--small button--green">Sign up</button>
       <span class="system-message">{{systemMessage}}</span>
     </div>
