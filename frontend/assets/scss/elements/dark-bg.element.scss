@@ -1,3 +1,9 @@
 .dark-bg {
   color: $white;
+
+  & input,
+  textarea {
+    color: $white;
+    caret-color: $green;
+  }
 }

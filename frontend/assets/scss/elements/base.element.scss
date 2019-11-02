@@ -19,3 +19,24 @@ body {
   overflow-x: hidden;
   margin: 0px;
 }
+
+.color {
+  &--blue {
+    color: $blue;
+  }
+}
+
+.font-size {
+  &--medium {
+    font-size: $fontSizeMedium;
+  }
+  &--large {
+    font-size: $fontSizeLarge;
+  }
+}
+
+.text-align {
+  &--center {
+    text-align: center;
+  }
+}
