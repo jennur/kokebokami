@@ -26,7 +26,10 @@
   }
 
   &__half {
-    flex-basis: 50%;
+    flex-basis: 100%;
     width: 100%;
+    @media screen and (min-width: $tabletWidth) {
+      flex-basis: 50%;
+    }
   }
 }

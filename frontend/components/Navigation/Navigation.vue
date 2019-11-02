@@ -68,7 +68,6 @@ export default {
   methods: {
     toggleMenu() {
       this.open = !this.open;
-      document.getElementById("layout").classList.toggle("translate-with-menu");
     },
     logOut() {
       this.$store.dispatch("USER_SIGN_OUT");

@@ -63,7 +63,7 @@
 
       <fieldset class="container margin-top--xxlarge">
         <label>
-          <input type="checkbox" id="publicCheck" v-model="publicCheck" /> Make recipe public
+          <input type="checkbox" id="publicCheck" v-model="publicCheck" /> Make recipe public (share with all users of Kokebokami)
         </label>
       </fieldset>
       <!-- SAVE / UPDATE -->

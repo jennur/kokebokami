@@ -22,7 +22,7 @@
   &__list-container {
     display: flex;
     justify-content: center;
-    position: absolute;
+    position: fixed;
     top: 0;
     right: 0;
     transform: translateX(330px);

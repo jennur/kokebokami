@@ -16,9 +16,12 @@
         <kokeboka class="graphic graphic--kokeboka" />
       </div>
     </section>
+
     <section class="container container--blue padding--xlarge" v-if="!user">
-      <div class="flex-row tablet-width margin--auto">
-        <div class="flex-row__half">
+      <div class="flex-row flex-row--justify-center tablet-width margin--auto">
+        <div
+          class="flex-row__half flex-column max-width--300-600 margin-right--xlarge margin-top--large"
+        >
           <h3>Sign up to start building your own cook book.</h3>
           <p
             class="margin-bottom--xlarge"
@@ -26,7 +29,7 @@
           <google-login class="margin-bottom--medium" />
           <facebook-login class="margin-bottom--medium" />
         </div>
-        <sign-up-form class="flex-row__half dark-bg" />
+        <sign-up-form class="flex-row__half dark-bg margin-top--xxlarge" />
       </div>
     </section>
   </div>
@@ -41,10 +44,14 @@ import kokeboka from "~/assets/graphics/kokeboka.svg";
 import SignUpForm from "~/components/SignUpForm.vue";
 import GoogleLogin from "~/components/Login/GoogleLogin.vue";
 import FacebookLogin from "~/components/Login/FacebookLogin.vue";
-
 export default {
   name: "Home",
-  components: { kokeboka, GoogleLogin, FacebookLogin, SignUpForm },
+  components: {
+    kokeboka,
+    GoogleLogin,
+    FacebookLogin,
+    SignUpForm
+  },
   mixins: [user]
 };
 </script>
