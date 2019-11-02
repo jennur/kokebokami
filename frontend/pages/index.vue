@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="!user">
     <section class="container">
       <div
         class="flex-center-container flex-center-container--column mobile-width padding--none margin--auto"
@@ -17,7 +17,7 @@
       </div>
     </section>
 
-    <section class="container container--blue padding--xlarge" v-if="!user">
+    <section class="container container--blue padding--xlarge">
       <div class="flex-row flex-row--justify-center tablet-width margin--auto">
         <div
           class="flex-row__half flex-column max-width--300-600 margin-right--xlarge margin-top--large"
@@ -33,6 +33,9 @@
       </div>
     </section>
   </div>
+  <div v-else>
+    <recipes-list :recipes="publicRecipes" :publicRecipe="true" />
+  </div>
 </template>
 
 <script>
@@ -44,14 +47,24 @@ import kokeboka from "~/assets/graphics/kokeboka.svg";
 import SignUpForm from "~/components/SignUpForm.vue";
 import GoogleLogin from "~/components/Login/GoogleLogin.vue";
 import FacebookLogin from "~/components/Login/FacebookLogin.vue";
+
+import RecipesList from "~/components/RecipesList.vue";
+
 export default {
   name: "Home",
   components: {
     kokeboka,
     GoogleLogin,
     FacebookLogin,
-    SignUpForm
+    SignUpForm,
+    RecipesList
   },
-  mixins: [user]
+  mixins: [user],
+  computed: {
+    publicRecipes() {
+      let recipes = this.$store.getters.publicRecipes;
+      return recipes;
+    }
+  }
 };
 </script>

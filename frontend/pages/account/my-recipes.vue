@@ -11,6 +11,7 @@
         headline="Recipes shared with you"
         class="padding--large"
         :recipes="sharedRecipes"
+        :publicRecipe="true"
       />
     </div>
   </div>

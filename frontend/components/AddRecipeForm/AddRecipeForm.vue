@@ -250,7 +250,8 @@ export default {
         description: recipeDescription.value,
         instructions: instructionList,
         public: this.publicCheck,
-        ownerID: this.user.id
+        ownerID: this.user.id,
+        ownerName: this.user.name
       };
 
       if (this.recipeKey !== "") {

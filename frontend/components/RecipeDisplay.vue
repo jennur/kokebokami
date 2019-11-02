@@ -4,6 +4,10 @@
     <p
       class="recipe-display__description"
     >{{recipe.description ? recipe.description : "Recipe has no description"}}</p>
+    <p
+      class="recipe-display__published-by"
+      v-if="publicRecipe"
+    >Published by: {{recipe.ownerName ? recipe.ownerName : "Unknown"}}</p>
   </nuxt-link>
 </template>
 
@@ -18,6 +22,10 @@ export default {
     recipeID: {
       type: String,
       default: ""
+    },
+    publicRecipe: {
+      type: Boolean,
+      default: false
     }
   },
   computed: {
