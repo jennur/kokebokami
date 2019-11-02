@@ -123,7 +123,6 @@ export const actions = {
           }
         });
         commit("setPublicRecipes", recipesArray);
-        console.log("PUBLIC RECIPES SET::: " + JSON.stringify(recipesArray[0]));
       },
       error => {
         console.log(
