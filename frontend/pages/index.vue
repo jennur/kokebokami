@@ -4,7 +4,9 @@
       <div
         class="flex-center-container flex-center-container--column mobile-width padding--none margin--auto"
       >
-        <h1 class="heading--display-font">It's time to digitalize your cook book!</h1>
+        <h1
+          class="heading--display-font padding-horizontal--large"
+        >It's time to digitalize your cook book!</h1>
         <p
           class="padding-horizontal--large color--blue font-size--medium text-align--center"
         >Start storing your personal recipes online to make sure they never get lost. Keep them private, share them with the public or your friends only.</p>
@@ -35,7 +37,7 @@ import firebase from "firebase";
 import { GoogleProvider, auth } from "~/plugins/firebase.js";
 import googleLogo from "~/static/btn_google_light_normal_ios.svg";
 import { user } from "~/mixins/getCurrentUser.js";
-import kokeboka from "~/assets/graphics/kokeboka.svg";
+import kokeboka from "~/assets/graphics/veggies.svg";
 import SignUpSection from "~/components/SignUp/SignUpSection.vue";
 
 import SearchForm from "~/components/Search/SearchForm.vue";
