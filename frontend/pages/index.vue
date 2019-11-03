@@ -35,7 +35,7 @@ import firebase from "firebase";
 import { GoogleProvider, auth } from "~/plugins/firebase.js";
 import googleLogo from "~/static/btn_google_light_normal_ios.svg";
 import { user } from "~/mixins/getCurrentUser.js";
-import kokeboka from "~/assets/graphics/kokeboka.svg";
+import kokeboka from "~/assets/graphics/veggies.svg";
 import SignUpSection from "~/components/SignUp/SignUpSection.vue";
 
 import SearchForm from "~/components/Search/SearchForm.vue";
