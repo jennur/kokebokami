@@ -129,10 +129,16 @@ export default {
       "@nuxtjs/sitemap",
       {
         path: "/sitemap.xml",
-        generate: true
+        generate: false
       }
     ]
   ],
+  sitemap: {
+    hostname: "https://kokebokami.com",
+    gzip: true,
+    exclude: ["/account", "/account/**", "/recipes"],
+    routes: ["/", "/login", "/sign-up", "/cookies-policy"]
+  },
   env: {
     baseURL: process.env.BASE_URL || "http://localhost:3000",
     apiKey: process.env.API_KEY,

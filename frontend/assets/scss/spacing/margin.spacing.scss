@@ -207,4 +207,42 @@
       }
     }
   }
+  &-vertical {
+    &--small {
+      margin-top: $spacingSmallMobile;
+      margin-bottom: $spacingSmallMobile;
+
+      @media screen and (min-width: $tabletWidth) {
+        margin-top: $spacingSmall;
+        margin-bottom: $spacingSmall;
+      }
+    }
+    &--medium {
+      margin-top: $spacingMediumMobile;
+      margin-bottom: $spacingMediumMobile;
+
+      @media screen and (min-width: $tabletWidth) {
+        margin-top: $spacingMedium;
+        margin-bottom: $spacingMedium;
+      }
+    }
+    &--large {
+      margin-top: $spacingLargeMobile;
+      margin-bottom: $spacingLargeMobile;
+
+      @media screen and (min-width: $tabletWidth) {
+        margin-top: $spacingLarge;
+        margin-bottom: $spacingLarge;
+      }
+    }
+    &--xlarge {
+      margin-top: $spacingXLargeMobile;
+      margin-bottom: $spacingXLargeMobile;
+
+      @media screen and (min-width: $tabletWidth) {
+        margin-top: $spacingXLarge;
+        margin-bottom: $spacingXLarge;
+      }
+    }
+  }
 }

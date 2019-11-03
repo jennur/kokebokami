@@ -9,7 +9,7 @@
 
     <div class="recipe-display__categories">
       <span
-        class="recipe-display__category margin-horizontal--small"
+        class="recipe-display__category margin-vertical--large margin-horizontal--small"
         v-for="category in recipe.categories"
         :key="category"
       >{{category}}</span>
