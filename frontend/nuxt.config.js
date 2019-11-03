@@ -136,7 +136,7 @@ export default {
   sitemap: {
     hostname: "https://kokebokami.com",
     gzip: true,
-    exclude: ["/account", "/account/**"],
+    exclude: ["/account", "/account/**", "/recipes"],
     routes: ["/", "/login", "/sign-up", "/cookies-policy"]
   },
   env: {
