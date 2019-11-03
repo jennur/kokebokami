@@ -92,7 +92,10 @@ export default {
     recipe() {
       let userRecipes = this.$store.getters.recipes;
       let sharedRecipes = this.$store.getters.sharedRecipes;
-      let allAvailableRecipes = userRecipes.concat(sharedRecipes);
+      let publicRecipes = this.$store.getters.publicRecipes;
+      let allAvailableRecipes = userRecipes
+        .concat(sharedRecipes)
+        .concat(publicRecipes);
 
       let currentRecipe = allAvailableRecipes.filter(recipe => {
         let recipeCheck = recipe[0] === this.recipeKey;
