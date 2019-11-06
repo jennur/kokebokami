@@ -20,6 +20,7 @@
         <kokeboka class="graphic graphic--kokeboka" />
       </div>
     </section>
+
     <sign-up-section
       class="container--blue"
       :darkBg="true"
@@ -27,8 +28,12 @@
     />
   </div>
   <div class="tablet-width padding-horizontal--large margin--auto" v-else>
-    <search-form class="tablet-width margin-bottom--xlarge margin--auto" />
-    <recipes-list :recipes="publicRecipes" :publicRecipe="true" />
+    <search-form
+      class="tablet-width margin-bottom--xlarge margin--auto"
+      @filterBySearchTerm="setSearchTerm"
+      @filterByCategory="setCategory"
+    />
+    <recipes-list :recipes="visibleRecipes" :publicRecipe="true" />
   </div>
 </template>
 
@@ -51,11 +56,59 @@ export default {
     SearchForm,
     RecipesList
   },
+  data() {
+    return {
+      categories: [],
+      searchTerm: "",
+      filteredRecipes: []
+    };
+  },
   mixins: [user],
   computed: {
-    publicRecipes() {
-      let recipes = this.$store.getters.publicRecipes;
-      return recipes;
+    visibleRecipes() {
+      let publicRecipes = this.$store.getters.publicRecipes;
+      let categories = this.categories;
+      let searchTerm = this.searchTerm;
+      let filteredRecipes = [];
+      let recipesToBeFiltered = publicRecipes;
+
+      if (categories.length) {
+        categories.forEach(category => {
+          let oneOrMoreRecipesOfCategory = -1;
+          recipesToBeFiltered.forEach(recipe => {
+            if (recipe[1].categories.indexOf(category) !== -1) {
+              oneOrMoreRecipesOfCategory *= 0;
+              filteredRecipes.push(recipe);
+            }
+          });
+        });
+        recipesToBeFiltered = filteredRecipes;
+      }
+
+      if (searchTerm !== "") {
+        recipesToBeFiltered = recipesToBeFiltered.filter(recipe => {
+          return (
+            recipe[1].title.includes(searchTerm) ||
+            recipe[1].description.includes(searchTerm)
+          );
+        });
+      }
+
+      return recipesToBeFiltered;
+    }
+  },
+  methods: {
+    setCategory(category) {
+      let categoryIndex = this.categories.indexOf(category.value);
+
+      if (category.checked) {
+        this.categories.push(category.value);
+      } else if (!category.checked && categoryIndex !== -1) {
+        this.categories.splice(categoryIndex, 1);
+      }
+    },
+    setSearchTerm(value) {
+      this.searchTerm = value;
     }
   }
 };
