@@ -88,8 +88,10 @@ export default {
       if (searchTerm !== "") {
         recipesToBeFiltered = recipesToBeFiltered.filter(recipe => {
           return (
-            recipe[1].title.includes(searchTerm) ||
-            recipe[1].description.includes(searchTerm)
+            recipe[1].title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            recipe[1].description
+              .toLowerCase()
+              .includes(searchTerm.toLowerCase())
           );
         });
       }
