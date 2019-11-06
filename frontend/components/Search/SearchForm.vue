@@ -3,19 +3,25 @@
     <fieldset>
       <label class="search-form__search-field">
         <searchIcon class="search-form__search-icon" />
-        <input type="text" placeholder="Search among recipes" v-model="searchTerm" />
+        <input
+          id="search"
+          type="text"
+          placeholder="Search among recipes"
+          @input="(event) =>{handleSearchTerm(event.target.value)}"
+        />
       </label>
     </fieldset>
 
-    <fieldset>
+    <fieldset id="categories">
       <h4 class="margin-bottom--medium">Categories</h4>
 
       <label
         class="search-form__category margin-right--large"
         v-for="category in categories"
         :key="category"
+        :id="category"
       >
-        <input type="checkbox" :value="category" />
+        <input type="checkbox" :value="category" @change="(event) =>{handleCategory(event.target)}" />
         {{category}}
       </label>
     </fieldset>
@@ -28,13 +34,18 @@ export default {
   components: {
     searchIcon
   },
-  data() {
-    return { searchTerm: "" };
-  },
   props: {},
   computed: {
     categories() {
       return this.$store.getters.categories;
+    }
+  },
+  methods: {
+    handleSearchTerm(value) {
+      this.$emit("filterBySearchTerm", value);
+    },
+    handleCategory(target) {
+      this.$emit("filterByCategory", target);
     }
   }
 };
