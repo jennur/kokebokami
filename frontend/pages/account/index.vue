@@ -3,28 +3,88 @@
     <h2 class="heading--display-font margin-bottom--large">My account details</h2>
     <div class="flex-row-container">
       <dl>
-        <dt>
-          <span class="account__detail">Name:</span>
-          {{user && user.name ? user.name : null}}
+        <dt class="account__detail">
+          <div class="account__detail-title">
+            <span>
+              Username
+              <span class="system-message">(visible to other users)</span>
+            </span>
+            <button
+              @click="toggleEditUsername"
+              class="button button--small button--transparent"
+            >{{editBtnText}}</button>
+          </div>
+          <span
+            class="account__detail-value"
+            v-if="!editUsername"
+          >{{user && user.name ? user.name : null}}</span>
+          <form class="account__detail-edit" v-else>
+            <label>
+              <input type="text" :value="user.name" />
+            </label>
+          </form>
         </dt>
-        <dt>
-          <span class="account__detail">E-mail:</span>
-          {{user && user.email ? user.email : null}}
+        <dt class="account__detail">
+          <div class="account__detail-title">
+            <span>E-mail</span>
+            <button
+              @click="toggleEditEmail"
+              class="button button--small button--transparent"
+            >{{editBtnText}}</button>
+          </div>
+
+          <span
+            class="account__detail-value"
+            v-if="!editEmail"
+          >{{user && user.email ? user.email : null}}</span>
+          <form class="account__detail-edit" v-else>
+            <label>
+              <input type="email" :value="user.email" />
+            </label>
+          </form>
         </dt>
-        <dt>
-          <span class="account__detail">Total amount of recipes:</span>
-          {{ recipes ? recipes.length : null}}
+        <dt class="account__detail">
+          <div class="account__detail-title">
+            <span>
+              Biography
+              <span class="system-message">(visible to other users)</span>
+            </span>
+            <button
+              @click="toggleEditBiography"
+              class="button button--small button--transparent"
+            >{{editBtnText}}</button>
+          </div>
+          <span
+            class="account__detail-value"
+            v-if="!editBiography"
+          >{{user && user.biography ? user.biography : "Not set"}}</span>
+          <form class="account__detail-edit" v-else>
+            <label>
+              <textarea type="text" :value="user.biography" />
+            </label>
+          </form>
         </dt>
-        <dt>
+        <dt class="account__detail">
+          <div class="account__detail-title">
+            <span>
+              Total amount of recipes:
+              <span>{{ recipes ? recipes.length : null}}</span>
+            </span>
+          </div>
           <ol>
-            <li v-for="recipe in recipes" :key="recipe[1].title">{{recipe[1].title}}</li>
+            <li v-for="recipe in recipes" :key="recipe[1].title">
+              <span>{{recipe[1].title}}</span>
+              <span class="system-message" v-if="recipe[1].public">Public</span>
+            </li>
           </ol>
         </dt>
-        <dt>
-          <span class="account__detail">Total amount of recipes shared with me:</span>
-          {{ sharedRecipes ? sharedRecipes.length : null}}
-        </dt>
-        <dt>
+        <dt class="account__detail">
+          <div class="account__detail-title">
+            <span>
+              Total amount of recipes shared with me:
+              <span>{{ sharedRecipes ? sharedRecipes.length : null}}</span>
+            </span>
+          </div>
           <ol>
             <li v-for="recipe in sharedRecipes" :key="recipe[1].title">{{recipe[1].title}}</li>
           </ol>
@@ -46,7 +106,16 @@ import { auth, db } from "~/plugins/firebase.js";
 export default {
   name: "account",
   data() {
-    return { systemMessage: "" };
+    return {
+      systemMessage: "",
+      username: "",
+      email: "",
+      biography: "",
+      editUsername: false,
+      editEmail: false,
+      editBiography: false,
+      editBtnText: "Edit"
+    };
   },
   components: {},
   mixins: [user],
@@ -59,6 +128,15 @@ export default {
     }
   },
   methods: {
+    toggleEditUsername() {
+      this.editUsername = !this.editUsername;
+    },
+    toggleEditEmail() {
+      this.editEmail = !this.editEmail;
+    },
+    toggleEditBiography() {
+      this.editBiography = !this.editBiography;
+    },
     deleteAccount() {
       let user = auth.currentUser;
       let userUID = this.user.id;
