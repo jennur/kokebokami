@@ -22,7 +22,7 @@ export default context => {
 
             return resolve(store.dispatch("SET_USER_RECIPES", loggedinUser));
           } else {
-            //Assuming that user is coming via Google/Facebook (custom users are added on signup)
+            //Assuming that user is coming via Google/Facebook for the first time (custom users are added on signup)
             let databaseUser = {
               displayName: user.displayName,
               photoURL: user.photoURL,
