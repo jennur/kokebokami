@@ -184,7 +184,6 @@ export default {
         recipe.categories.forEach(category => {
           this.categories.push(category);
         });
-        console.log("CATEGORIES::: " + this.categories);
       }
     }
   },
@@ -238,7 +237,7 @@ export default {
           })
           .catch(error => {
             this.systemMessage = error.message;
-            console.log(error);
+            console.log("ERROR DELETING RECIPE::: " + error);
           });
       }
     },
@@ -287,7 +286,7 @@ export default {
           })
           .catch(error => {
             this.systemMessage = error.message;
-            console.log(error);
+            console.log("ERROR SAVING RECIPE::: " + error);
           });
       } else {
         const recipes = db.ref("recipes");

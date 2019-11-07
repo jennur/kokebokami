@@ -64,7 +64,7 @@ export default {
                   }
                 });
               } else {
-                console.log("No recipeKey in shareRecipe!");
+                console.log("No recipeKey found in shareRecipe");
               }
             }
           });
@@ -72,7 +72,7 @@ export default {
 
         .catch(error => {
           realThis.systemMessage = error.message;
-          console.log("ERROR IN SHARE RECIPE: " + error);
+          console.log("ERROR SHARING RECIPE::: " + error);
         });
     }
   }

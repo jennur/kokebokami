@@ -253,7 +253,7 @@ export default {
                     console.log("Successfully deleted recipe::: " + recipe.key);
                   })
                   .catch(error => {
-                    console.log(error.message);
+                    console.log("ERROR DELETING RECIPE::: " + error);
                   });
             });
           })
@@ -261,10 +261,10 @@ export default {
             db.ref("users/" + user.uid)
               .remove()
               .then(function() {
-                console.log("USER REMOVE SUCCEEDED!!! ");
+                console.log("USER REMOVE SUCCEEDED");
               })
               .catch(function(error) {
-                console.log("USER REMOVE FAILED::: " + error.message);
+                console.log("USER REMOVE FAILED::: " + error);
                 realThis.systemMessage = error.message;
               });
           })
