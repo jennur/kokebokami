@@ -14,7 +14,8 @@ export default context => {
               id: user.uid,
               profileImg: snapshot.val().photoURL,
               name: snapshot.val().displayName,
-              email: snapshot.val().email
+              email: snapshot.val().email,
+              biography: snapshot.val().biography
             };
             store.dispatch("SET_USER", loggedinUser);
             store.dispatch("SET_SHARED_RECIPES", loggedinUser);

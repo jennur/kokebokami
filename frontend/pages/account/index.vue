@@ -14,15 +14,14 @@
               class="button button--small button--transparent"
             >{{editBtnText}}</button>
           </div>
-          <span
-            class="account__detail-value"
-            v-if="!editUsername"
-          >{{user && user.name ? user.name : null}}</span>
-          <form class="account__detail-edit" v-else>
+          <span class="account__detail-value" v-if="!editUsername">{{username ? username : null}}</span>
+          <form v-on:submit.prevent class="account__detail-edit" v-else>
             <label>
-              <input type="text" :value="user.name" />
+              <input type="text" v-model="username" />
             </label>
+            <button @click="updateUsername" class="button button--xsmall">Save</button>
           </form>
+          <div class="system-message">{{usernameSystemMessage}}</div>
         </dt>
         <dt class="account__detail">
           <div class="account__detail-title">
@@ -33,15 +32,14 @@
             >{{editBtnText}}</button>
           </div>
 
-          <span
-            class="account__detail-value"
-            v-if="!editEmail"
-          >{{user && user.email ? user.email : null}}</span>
-          <form class="account__detail-edit" v-else>
+          <span class="account__detail-value" v-if="!editEmail">{{email ? email : null}}</span>
+          <form v-on:submit.prevent class="account__detail-edit" v-else>
             <label>
-              <input type="email" :value="user.email" />
+              <input type="email" v-model="email" />
             </label>
+            <button @click="updateEmail" class="button button--small">Save</button>
           </form>
+          <div class="system-message">{{emailSystemMessage}}</div>
         </dt>
         <dt class="account__detail">
           <div class="account__detail-title">
@@ -57,12 +55,14 @@
           <span
             class="account__detail-value"
             v-if="!editBiography"
-          >{{user && user.biography ? user.biography : "Not set"}}</span>
-          <form class="account__detail-edit" v-else>
+          >{{biography ? biography : "Not set"}}</span>
+          <form v-on:submit.prevent class="account__detail-edit" v-else>
             <label>
-              <textarea type="text" :value="user.biography" />
+              <textarea type="text" v-model="biography" />
             </label>
+            <button @click="updateBiography" class="button button--small">Save</button>
           </form>
+          <div class="system-message">{{biographySystemMessage}}</div>
         </dt>
         <dt class="account__detail">
           <div class="account__detail-title">
@@ -108,6 +108,9 @@ export default {
   data() {
     return {
       systemMessage: "",
+      usernameSystemMessage: "",
+      emailSystemMessage: "",
+      biographySystemMessage: "",
       username: "",
       email: "",
       biography: "",
@@ -118,6 +121,11 @@ export default {
     };
   },
   components: {},
+  mounted() {
+    this.username = this.user.name;
+    this.email = this.user.email;
+    this.biography = this.user.biography;
+  },
   mixins: [user],
   computed: {
     recipes() {
@@ -136,6 +144,49 @@ export default {
     },
     toggleEditBiography() {
       this.editBiography = !this.editBiography;
+    },
+    updateUsername() {
+      let realThis = this;
+      db.ref("/users/" + this.user.id)
+        .update({
+          displayName: this.username
+        })
+        .then(() => {
+          realThis.toggleEditUsername();
+        })
+        .catch(e => {
+          this.usernameSystemMessage = e.message;
+          console.log(e);
+        });
+    },
+    updateEmail() {
+      let realThis = this;
+      db.ref("/users/" + this.user.id)
+        .update({
+          email: this.email
+        })
+        .then(() => {
+          realThis.toggleEditEmail();
+        })
+        .catch(e => {
+          this.emailSystemMessage = e.message;
+          console.log(e);
+        });
+    },
+
+    updateBiography() {
+      let realThis = this;
+      db.ref("/users/" + this.user.id)
+        .update({
+          biography: this.biography
+        })
+        .then(() => {
+          realThis.toggleEditBiography();
+        })
+        .catch(e => {
+          this.biographySystemMessage = e.message;
+          console.log(e);
+        });
     },
     deleteAccount() {
       let user = auth.currentUser;
