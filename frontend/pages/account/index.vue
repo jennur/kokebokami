@@ -1,6 +1,7 @@
 <template>
   <div class="account container mobile-width padding-horizontal--large">
     <h2 class="heading--display-font margin-bottom--large">My account details</h2>
+    <nuxt-link to="/profile">See my profile</nuxt-link>
     <div class="flex-row-container">
       <dl>
         <dt class="account__detail">
