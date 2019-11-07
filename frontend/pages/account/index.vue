@@ -1,9 +1,31 @@
 <template>
   <div class="account container mobile-width padding-horizontal--large">
     <h2 class="heading--display-font margin-bottom--large">My account details</h2>
-    <nuxt-link to="/profile">See my profile</nuxt-link>
+    <nuxt-link to="/profile">See my public profile</nuxt-link>
     <div class="flex-row-container">
       <dl>
+        <dt class="account__detail">
+          <div class="account__detail-title">
+            <span>
+              Profile picture
+              <span class="system-message">(visible to other users)</span>
+            </span>
+            <button
+              @click="toggleEditProfileImg"
+              class="button button--small button--transparent"
+            >{{editBtnText}}</button>
+          </div>
+          <img
+            class="profile__img margin-top--large"
+            :src="photoURL"
+            :alt="user.name + '´s profile picture'"
+            v-if="photoURL"
+          />
+          <form v-on:submit.prevent class="account__detail-edit" v-if="editProfileImg">
+            <button @click="updateProfileImg" class="button button--xsmall">Remove</button>
+          </form>
+          <div class="system-message">{{profileImgSystemMessage}}</div>
+        </dt>
         <dt class="account__detail">
           <div class="account__detail-title">
             <span>
@@ -109,12 +131,15 @@ export default {
   data() {
     return {
       systemMessage: "",
+      profileImgSystemMessage: "",
       usernameSystemMessage: "",
       emailSystemMessage: "",
       biographySystemMessage: "",
+      photoURL: "",
       username: "",
       email: "",
       biography: "",
+      editProfileImg: false,
       editUsername: false,
       editEmail: false,
       editBiography: false,
@@ -126,6 +151,7 @@ export default {
     this.username = this.user.name;
     this.email = this.user.email;
     this.biography = this.user.biography;
+    this.photoURL = this.user.photoURL;
   },
   mixins: [user],
   computed: {
@@ -137,6 +163,9 @@ export default {
     }
   },
   methods: {
+    toggleEditProfileImg() {
+      this.editProfileImg = !this.editProfileImg;
+    },
     toggleEditUsername() {
       this.editUsername = !this.editUsername;
     },
@@ -145,6 +174,20 @@ export default {
     },
     toggleEditBiography() {
       this.editBiography = !this.editBiography;
+    },
+    updateProfileImg() {
+      let realThis = this;
+      db.ref("/users/" + this.user.id)
+        .update({
+          photoURL: ""
+        })
+        .then(() => {
+          realThis.toggleEditProfileImg();
+        })
+        .catch(e => {
+          this.profileImgSystemMessage = e.message;
+          console.log(e);
+        });
     },
     updateUsername() {
       let realThis = this;

@@ -25,6 +25,9 @@ export const mutations = {
   removeUser(state) {
     state.user = null;
   },
+  setAllUsers(state, payload) {
+    state.users = payload;
+  },
   setLoginSystemMessage(state, payload) {
     state.loginSystemMessage = payload;
   },
@@ -48,6 +51,15 @@ export const actions = {
   },
   REMOVE_USER: ({ commit }) => {
     commit("removeUser");
+  },
+  SET_ALL_USERS: ({ commit }) => {
+    let usersArray = [];
+    db.ref("users").once("value", users => {
+      users.forEach(user => {
+        usersArray.push([user.key, user.val()]);
+      });
+      commit("setAllUsers", usersArray);
+    });
   },
   GOOGLE_SIGN_IN: () => {
     auth.signInWithRedirect(GoogleProvider);
@@ -140,6 +152,9 @@ export const getters = {
   },
   user(state) {
     return state.user;
+  },
+  users(state) {
+    return state.users;
   },
   loginSystemMessage(state) {
     return state.loginSystemMessage;

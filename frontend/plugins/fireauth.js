@@ -6,13 +6,14 @@ export default context => {
   return new Promise((resolve, reject) => {
     auth.onAuthStateChanged(user => {
       if (user) {
+        store.dispatch("SET_ALL_USERS");
         let userRef = db.ref("users/" + user.uid);
 
         userRef.once("value", snapshot => {
           if (snapshot.exists()) {
             let loggedinUser = {
               id: user.uid,
-              profileImg: snapshot.val().photoURL,
+              photoURL: snapshot.val().photoURL,
               name: snapshot.val().displayName,
               email: snapshot.val().email,
               biography: snapshot.val().biography
@@ -33,7 +34,7 @@ export default context => {
 
             let loggedinUser = {
               id: user.uid,
-              profileImg: user.photoURL,
+              photoURL: user.photoURL,
               name: user.displayName,
               email: user.email
             };

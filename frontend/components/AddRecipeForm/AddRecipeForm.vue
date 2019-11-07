@@ -266,7 +266,6 @@ export default {
       categories.forEach(category => {
         category.checked ? categoryList.push(category.value) : null;
       });
-      console.log("CATEGORIES FOR SAVE::: " + categoryList);
 
       let recipeObject = {
         title: recipeTitle.value,
@@ -275,8 +274,7 @@ export default {
         instructions: instructionList,
         categories: categoryList,
         public: this.publicCheck,
-        ownerID: this.user.id,
-        ownerName: this.user.name
+        ownerID: this.user.id
       };
 
       if (this.recipeKey !== "") {
