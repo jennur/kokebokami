@@ -78,7 +78,8 @@ export default {
           recipesToBeFiltered.forEach(recipe => {
             if (recipe[1].categories.indexOf(category) !== -1) {
               oneOrMoreRecipesOfCategory *= 0;
-              filteredRecipes.push(recipe);
+              if (filteredRecipes.indexOf(recipe) === -1)
+                filteredRecipes.push(recipe);
             }
           });
         });
