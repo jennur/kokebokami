@@ -54,6 +54,7 @@ export default {
             name: "My account",
             img: this.user.profileImg
           },
+          { link: "/profile", name: "My profile" },
           { link: "/account/my-recipes", name: "My recipes" },
           { link: "/", name: "Discover recipes" }
         ];
