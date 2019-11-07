@@ -1,30 +1,113 @@
 <template>
   <div class="account container mobile-width padding-horizontal--large">
     <h2 class="heading--display-font margin-bottom--large">My account details</h2>
+    <nuxt-link to="/profile">See my public profile</nuxt-link>
     <div class="flex-row-container">
       <dl>
-        <dt>
-          <span class="account__detail">Name:</span>
-          {{user && user.name ? user.name : null}}
+        <dt class="account__detail">
+          <div class="account__detail-title">
+            <span>
+              Profile picture
+              <span class="system-message">(visible to other users)</span>
+            </span>
+            <button
+              @click="toggleEditProfileImg"
+              class="button button--small button--transparent"
+            >{{editBtnText}}</button>
+          </div>
+          <img
+            class="profile__img margin-top--large"
+            :src="photoURL"
+            :alt="user.name + '´s profile picture'"
+            v-if="photoURL"
+          />
+          <form v-on:submit.prevent class="account__detail-edit" v-if="editProfileImg">
+            <button @click="updateProfileImg" class="button button--xsmall">Remove</button>
+          </form>
+          <div class="system-message">{{profileImgSystemMessage}}</div>
         </dt>
-        <dt>
-          <span class="account__detail">E-mail:</span>
-          {{user && user.email ? user.email : null}}
+        <dt class="account__detail">
+          <div class="account__detail-title">
+            <span>
+              Username
+              <span class="system-message">(visible to other users)</span>
+            </span>
+            <button
+              @click="toggleEditUsername"
+              class="button button--small button--transparent"
+            >{{editBtnText}}</button>
+          </div>
+          <span class="account__detail-value" v-if="!editUsername">{{username ? username : null}}</span>
+          <form v-on:submit.prevent class="account__detail-edit" v-else>
+            <label>
+              <input type="text" v-model="username" />
+            </label>
+            <button @click="updateUsername" class="button button--xsmall">Save</button>
+          </form>
+          <div class="system-message">{{usernameSystemMessage}}</div>
         </dt>
-        <dt>
-          <span class="account__detail">Total amount of recipes:</span>
-          {{ recipes ? recipes.length : null}}
+        <dt class="account__detail">
+          <div class="account__detail-title">
+            <span>E-mail</span>
+            <button
+              @click="toggleEditEmail"
+              class="button button--small button--transparent"
+            >{{editBtnText}}</button>
+          </div>
+
+          <span class="account__detail-value" v-if="!editEmail">{{email ? email : null}}</span>
+          <form v-on:submit.prevent class="account__detail-edit" v-else>
+            <label>
+              <input type="email" v-model="email" />
+            </label>
+            <button @click="updateEmail" class="button button--small">Save</button>
+          </form>
+          <div class="system-message">{{emailSystemMessage}}</div>
         </dt>
-        <dt>
+        <dt class="account__detail">
+          <div class="account__detail-title">
+            <span>
+              Biography
+              <span class="system-message">(visible to other users)</span>
+            </span>
+            <button
+              @click="toggleEditBiography"
+              class="button button--small button--transparent"
+            >{{editBtnText}}</button>
+          </div>
+          <span
+            class="account__detail-value"
+            v-if="!editBiography"
+          >{{biography ? biography : "Not set"}}</span>
+          <form v-on:submit.prevent class="account__detail-edit" v-else>
+            <label>
+              <textarea type="text" v-model="biography" />
+            </label>
+            <button @click="updateBiography" class="button button--small">Save</button>
+          </form>
+          <div class="system-message">{{biographySystemMessage}}</div>
+        </dt>
+        <dt class="account__detail">
+          <div class="account__detail-title">
+            <span>
+              Total amount of recipes:
+              <span>{{ recipes ? recipes.length : null}}</span>
+            </span>
+          </div>
           <ol>
-            <li v-for="recipe in recipes" :key="recipe[1].title">{{recipe[1].title}}</li>
+            <li v-for="recipe in recipes" :key="recipe[1].title">
+              <span>{{recipe[1].title}}</span>
+              <span class="system-message" v-if="recipe[1].public">Public</span>
+            </li>
           </ol>
         </dt>
-        <dt>
-          <span class="account__detail">Total amount of recipes shared with me:</span>
-          {{ sharedRecipes ? sharedRecipes.length : null}}
-        </dt>
-        <dt>
+        <dt class="account__detail">
+          <div class="account__detail-title">
+            <span>
+              Total amount of recipes shared with me:
+              <span>{{ sharedRecipes ? sharedRecipes.length : null}}</span>
+            </span>
+          </div>
           <ol>
             <li v-for="recipe in sharedRecipes" :key="recipe[1].title">{{recipe[1].title}}</li>
           </ol>
@@ -46,9 +129,30 @@ import { auth, db } from "~/plugins/firebase.js";
 export default {
   name: "account",
   data() {
-    return { systemMessage: "" };
+    return {
+      systemMessage: "",
+      profileImgSystemMessage: "",
+      usernameSystemMessage: "",
+      emailSystemMessage: "",
+      biographySystemMessage: "",
+      photoURL: "",
+      username: "",
+      email: "",
+      biography: "",
+      editProfileImg: false,
+      editUsername: false,
+      editEmail: false,
+      editBiography: false,
+      editBtnText: "Edit"
+    };
   },
   components: {},
+  mounted() {
+    this.username = this.user.name;
+    this.email = this.user.email;
+    this.biography = this.user.biography;
+    this.photoURL = this.user.photoURL;
+  },
   mixins: [user],
   computed: {
     recipes() {
@@ -59,6 +163,75 @@ export default {
     }
   },
   methods: {
+    toggleEditProfileImg() {
+      this.editProfileImg = !this.editProfileImg;
+    },
+    toggleEditUsername() {
+      this.editUsername = !this.editUsername;
+    },
+    toggleEditEmail() {
+      this.editEmail = !this.editEmail;
+    },
+    toggleEditBiography() {
+      this.editBiography = !this.editBiography;
+    },
+    updateProfileImg() {
+      let realThis = this;
+      db.ref("/users/" + this.user.id)
+        .update({
+          photoURL: ""
+        })
+        .then(() => {
+          realThis.toggleEditProfileImg();
+        })
+        .catch(e => {
+          this.profileImgSystemMessage = e.message;
+          console.log(e);
+        });
+    },
+    updateUsername() {
+      let realThis = this;
+      db.ref("/users/" + this.user.id)
+        .update({
+          displayName: this.username
+        })
+        .then(() => {
+          realThis.toggleEditUsername();
+        })
+        .catch(e => {
+          this.usernameSystemMessage = e.message;
+          console.log(e);
+        });
+    },
+    updateEmail() {
+      let realThis = this;
+      db.ref("/users/" + this.user.id)
+        .update({
+          email: this.email
+        })
+        .then(() => {
+          realThis.toggleEditEmail();
+        })
+        .catch(e => {
+          this.emailSystemMessage = e.message;
+          console.log(e);
+        });
+    },
+
+    updateBiography() {
+      let realThis = this;
+      db.ref("/users/" + this.user.id)
+        .update({
+          biography: this.biography
+        })
+        .then(() => {
+          realThis.toggleEditBiography();
+        })
+        .catch(e => {
+          this.biographySystemMessage = e.message;
+          console.log(e);
+        });
+    },
     deleteAccount() {
       let user = auth.currentUser;
       let userUID = this.user.id;

@@ -14,7 +14,7 @@
         {{shareButtonText}}
       </span>
 
-      <div v-if="recipeOwner">
+      <div v-if="isRecipeOwner">
         <button
           @click="toggleWarning"
           class="button button--small button--transparent"
@@ -77,13 +77,16 @@ export default {
   },
   data() {
     return {
-      recipeOwner: false,
+      isRecipeOwner: false,
+      recipeOwnerID: "",
       editMode: false,
       sharing: false,
       shareButtonText: "Share recipe"
     };
   },
-
+  created() {
+    let users = this.$store.getters.users;
+  },
   mixins: [user],
   computed: {
     recipeKey() {
@@ -100,11 +103,11 @@ export default {
       let currentRecipe = allAvailableRecipes.filter(recipe => {
         let recipeCheck = recipe[0] === this.recipeKey;
         if (recipeCheck) {
-          this.recipeOwner = recipe[1].ownerID === this.user.id;
+          this.recipeOwnerID = recipe[1].ownerID;
+          this.isRecipeOwner = recipe[1].ownerID === this.user.id;
         }
         return recipeCheck;
       });
-      //console.log("OWNER ID::: " + currentRecipe[0][0]);
       return currentRecipe.length ? currentRecipe[0][1] : {};
     },
     editModeButtonText() {

@@ -6,6 +6,7 @@ export default function({ store, redirect, route }) {
     ? redirect("/account/my-recipes")
     : "";
   store.getters.user === null && isAdminRoute(route) ? redirect("/login") : "";
+  route.name == "recipes" ? redirect("/") : "";
 }
 
 function isAdminRoute(route) {

@@ -4,7 +4,7 @@
       <button @click="() => this.$emit('toggle')" class="remove-icon kokebokami-login-modal--close"></button>
       <form class="kokebokami-login-modal-form" v-on:submit.prevent>
         <label>
-          Username (e-mail)
+          E-mail
           <input type="text" v-model="email" required />
         </label>
         <label>

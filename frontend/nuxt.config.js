@@ -57,12 +57,24 @@ export default {
       {
         name: "recipes",
         path: "/recipes",
-        component: "pages/recipes.vue",
+        component: "pages/recipes/index.vue",
         children: [
           {
             name: "recipe",
             path: "/recipes/:recipe?",
             component: "pages/recipes/_recipe.vue"
+          }
+        ]
+      },
+      {
+        name: "profile",
+        path: "/profile",
+        component: "pages/index.vue",
+        children: [
+          {
+            name: "profile",
+            path: "/profile/:profile?",
+            component: "pages/profile/_profile.vue"
           }
         ]
       },

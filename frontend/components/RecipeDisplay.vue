@@ -18,13 +18,16 @@
     <span
       class="recipe-display__published-by"
       v-if="publicRecipe"
-    >Published by: {{recipe.ownerName ? recipe.ownerName : "Unknown"}}</span>
+    >Published by: {{recipeOwner ? recipeOwner : "Unknown"}}</span>
   </nuxt-link>
 </template>
 
 <script>
+import { db } from "~/plugins/firebase.js";
+
 export default {
   name: "recipe-display",
+
   props: {
     recipe: {
       type: Object,
@@ -42,6 +45,16 @@ export default {
   computed: {
     recipeUrl() {
       return this.recipeID;
+    },
+    recipeOwner() {
+      let users = this.$store.getters.users;
+      let recipeOwner = null;
+      users.forEach(user => {
+        if (this.recipe.ownerID === user[0]) {
+          recipeOwner = user[1].displayName;
+        }
+      });
+      return recipeOwner;
     }
   }
 };
