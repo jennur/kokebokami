@@ -14,7 +14,7 @@ export default context => {
             let loggedinUser = {
               id: user.uid,
               photoURL: snapshot.val().photoURL,
-              name: snapshot.val().displayName,
+              displayName: snapshot.val().displayName,
               email: snapshot.val().email,
               biography: snapshot.val().biography
             };
@@ -35,7 +35,7 @@ export default context => {
             let loggedinUser = {
               id: user.uid,
               photoURL: user.photoURL,
-              name: user.displayName,
+              displayName: user.displayName,
               email: user.email
             };
             store.dispatch("SET_USER", loggedinUser);
