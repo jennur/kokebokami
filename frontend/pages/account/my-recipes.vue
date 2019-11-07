@@ -39,8 +39,8 @@ export default {
     firstName() {
       let firstName = null;
 
-      if (this.user && this.user.name) {
-        let username = this.user.name;
+      if (this.user && this.user.displayName) {
+        let username = this.user.displayName;
         firstName = /\s/.test(username) ? username.split(" ")[0] : username;
       }
       return firstName;

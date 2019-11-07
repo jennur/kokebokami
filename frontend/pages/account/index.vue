@@ -18,7 +18,7 @@
           <img
             class="profile__img margin-top--large"
             :src="photoURL"
-            :alt="user.name + '´s profile picture'"
+            :alt="user.displayName + '´s profile picture'"
             v-if="photoURL"
           />
           <form v-on:submit.prevent class="account__detail-edit" v-if="editProfileImg">
@@ -148,7 +148,7 @@ export default {
   },
   components: {},
   mounted() {
-    this.username = this.user.name;
+    this.username = this.user.displayName;
     this.email = this.user.email;
     this.biography = this.user.biography;
     this.photoURL = this.user.photoURL;
@@ -163,6 +163,16 @@ export default {
     }
   },
   methods: {
+    updateUserDetailsInStore() {
+      let userObj = {
+        id: this.user.id,
+        photoURL: this.photoURL,
+        displayName: this.username,
+        email: this.email,
+        biography: this.biography
+      };
+      this.$store.dispatch("SET_USER", userObj);
+    },
     toggleEditProfileImg() {
       this.editProfileImg = !this.editProfileImg;
     },
@@ -182,6 +192,7 @@ export default {
           photoURL: ""
         })
         .then(() => {
+          realThis.updateUserDetailsInStore();
           realThis.toggleEditProfileImg();
         })
         .catch(e => {
@@ -196,6 +207,7 @@ export default {
           displayName: this.username
         })
         .then(() => {
+          realThis.updateUserDetailsInStore();
           realThis.toggleEditUsername();
         })
         .catch(e => {
@@ -210,6 +222,7 @@ export default {
           email: this.email
         })
         .then(() => {
+          realThis.updateUserDetailsInStore();
           realThis.toggleEditEmail();
         })
         .catch(e => {
@@ -225,6 +238,7 @@ export default {
           biography: this.biography
         })
         .then(() => {
+          realThis.updateUserDetailsInStore();
           realThis.toggleEditBiography();
         })
         .catch(e => {
@@ -253,7 +267,7 @@ export default {
                     console.log("Successfully deleted recipe::: " + recipe.key);
                   })
                   .catch(error => {
-                    console.log(error.message);
+                    console.log("ERROR DELETING RECIPE::: " + error);
                   });
             });
           })
@@ -261,10 +275,10 @@ export default {
             db.ref("users/" + user.uid)
               .remove()
               .then(function() {
-                console.log("USER REMOVE SUCCEEDED!!! ");
+                console.log("USER REMOVE SUCCEEDED");
               })
               .catch(function(error) {
-                console.log("USER REMOVE FAILED::: " + error.message);
+                console.log("USER REMOVE FAILED::: " + error);
                 realThis.systemMessage = error.message;
               });
           })

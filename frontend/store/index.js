@@ -75,7 +75,7 @@ export const actions = {
         commit("removeUser");
       })
       .catch(error => {
-        console.log(error);
+        console.log("ERROR REMOVING USER:::" + error);
       });
   },
   SET_USER_RECIPES: ({ commit }, user) => {

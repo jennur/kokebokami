@@ -58,7 +58,7 @@ export default {
         }
       })
       .catch(e => {
-        console.log(e.message);
+        console.log("ERROR SIGNING IN:::" + e);
         this.systemMessage = e.message;
       });
   },

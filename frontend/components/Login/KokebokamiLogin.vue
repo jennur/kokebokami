@@ -46,7 +46,6 @@ export default {
         .signInWithEmailAndPassword(this.email, this.password)
         .then(response => {
           var displayName = "";
-          console.log("RESPONSE. ENTERING DB::: ");
 
           if (response.user !== null) {
             db.ref("users/" + response.user.uid).on("value", snapshot => {
@@ -60,12 +59,7 @@ export default {
           }
         })
         .catch(error => {
-          console.log(
-            "Sign in failed with error code: " +
-              error.code +
-              " " +
-              error.message
-          );
+          console.log("ERROR SIGNING IN::: " + error);
           realThis.systemMessage = error.message;
         });
     }
