@@ -52,7 +52,7 @@ export default {
           {
             link: "/account",
             name: "My account",
-            img: this.user.profileImg
+            img: this.user.photoURL
           },
           { link: "/account/my-recipes", name: "My recipes" },
           { link: "/", name: "Discover recipes" }

@@ -51,7 +51,7 @@ export default {
         if (response.user !== null) {
           let user = {
             id: response.user.uid,
-            profileImg: response.user.photoURL,
+            photoURL: response.user.photoURL,
             name: response.user.displayName
           };
           this.$store.dispatch("SET_USER", user);
