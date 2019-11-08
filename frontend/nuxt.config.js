@@ -115,6 +115,11 @@ export default {
         name: "cookies-policy",
         path: "/cookies-policy",
         component: "pages/cookies-policy.vue"
+      },
+      {
+        name: "terms-and-conditions",
+        path: "/terms-and-conditions",
+        component: "pages/terms-and-conditions.vue"
       }
     ]
   },
