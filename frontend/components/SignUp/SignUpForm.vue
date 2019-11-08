@@ -25,8 +25,21 @@
       />
       <span class="system-message">{{passwordRepeatError}}</span>
     </label>
-
-    <div class="flex-column">
+    <label class="flex-column margin-bottom--medium">
+      <span>
+        <input
+          class="margin-top--small"
+          id="terms-and-conditions"
+          type="checkbox"
+          v-model="termsAndConditions"
+        /> I agree to the
+        <nuxt-link to="/terms-and-conditions">Terms and Conditions</nuxt-link>
+        {{" "}}and
+        <nuxt-link to="/privacy-policy">Privacy Policy</nuxt-link>
+      </span>
+      <span class="system-message">{{termsAndConditionsError}}</span>
+    </label>
+    <div class="flex-column margin-top--small">
       <button @click="validateForm" class="button button--small button--green">Sign up</button>
       <span class="system-message">{{systemMessage}}</span>
     </div>
@@ -46,6 +59,8 @@ export default {
       passwordError: "",
       passwordRepeat: "",
       passwordRepeatError: "",
+      termsAndConditions: false,
+      termsAndConditionsError: "",
       systemMessage: ""
     };
   },
@@ -99,6 +114,11 @@ export default {
         validated = validated * 0;
         this.passwordRepeatError = "Passwords does not match";
       } else this.passwordRepeatError = "";
+
+      if (!this.termsAndConditions) {
+        validated = validated * 0;
+        this.termsAndConditionsError = "You need to check the terms of service";
+      } else this.termsAndConditionsError = "";
 
       if (validated === 1) {
         this.signUp();

@@ -106,11 +106,20 @@ export default {
           }
         ]
       },
-
+      {
+        name: "privacy-policy",
+        path: "/privacy-policy",
+        component: "pages/privacy-policy.vue"
+      },
       {
         name: "cookies-policy",
         path: "/cookies-policy",
         component: "pages/cookies-policy.vue"
+      },
+      {
+        name: "terms-and-conditions",
+        path: "/terms-and-conditions",
+        component: "pages/terms-and-conditions.vue"
       }
     ]
   },
