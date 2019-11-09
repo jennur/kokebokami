@@ -10,10 +10,6 @@
               Profile picture
               <span class="system-message">(visible to other users)</span>
             </span>
-            <button
-              @click="toggleEditProfileImg"
-              class="button button--small button--transparent"
-            >{{editBtnText}}</button>
           </div>
           <img
             class="profile__img margin-top--large"
@@ -25,17 +21,18 @@
             <button @click="updateProfileImg" class="button button--xsmall">Remove</button>
           </form>
           <div class="system-message">{{profileImgSystemMessage}}</div>
+          <button
+            @click="toggleEditProfileImg"
+            class="button button--small button--transparent"
+          >{{editBtnText}}</button>
         </dt>
+
         <dt class="account__detail">
           <div class="account__detail-title">
             <span>
               Username
               <span class="system-message">(visible to other users)</span>
             </span>
-            <button
-              @click="toggleEditUsername"
-              class="button button--small button--transparent"
-            >{{editBtnText}}</button>
           </div>
           <span class="account__detail-value" v-if="!editUsername">{{username ? username : null}}</span>
           <form v-on:submit.prevent class="account__detail-edit" v-else>
@@ -45,16 +42,16 @@
             <button @click="updateUsername" class="button button--xsmall">Save</button>
           </form>
           <div class="system-message">{{usernameSystemMessage}}</div>
+          <button
+            @click="toggleEditUsername"
+            class="button button--small button--transparent"
+          >{{editBtnText}}</button>
         </dt>
+
         <dt class="account__detail">
           <div class="account__detail-title">
             <span>E-mail</span>
-            <button
-              @click="toggleEditEmail"
-              class="button button--small button--transparent"
-            >{{editBtnText}}</button>
           </div>
-
           <span class="account__detail-value" v-if="!editEmail">{{email ? email : null}}</span>
           <form v-on:submit.prevent class="account__detail-edit" v-else>
             <label>
@@ -63,17 +60,18 @@
             <button @click="updateEmail" class="button button--small">Save</button>
           </form>
           <div class="system-message">{{emailSystemMessage}}</div>
+          <button
+            @click="toggleEditEmail"
+            class="button button--small button--transparent"
+          >{{editBtnText}}</button>
         </dt>
+
         <dt class="account__detail">
           <div class="account__detail-title">
             <span>
               Biography
               <span class="system-message">(visible to other users)</span>
             </span>
-            <button
-              @click="toggleEditBiography"
-              class="button button--small button--transparent"
-            >{{editBtnText}}</button>
           </div>
           <span
             class="account__detail-value"
@@ -86,7 +84,12 @@
             <button @click="updateBiography" class="button button--small">Save</button>
           </form>
           <div class="system-message">{{biographySystemMessage}}</div>
+          <button
+            @click="toggleEditBiography"
+            class="button button--small button--transparent"
+          >{{editBtnText}}</button>
         </dt>
+
         <dt class="account__detail">
           <div class="account__detail-title">
             <span>
