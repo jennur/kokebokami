@@ -5,15 +5,25 @@ import {
   db
 } from "~/plugins/firebase.js";
 
-export const state = {
-  cookieConsent: false,
-  user: null,
-  loginSystemMessage: "",
-  recipes: [],
-  sharedRecipes: [],
-  publicRecipes: [],
-  categories: ["breakfast", "lunch", "dinner", "dessert", "vegetarian", "vegan"]
-};
+export function state() {
+  return {
+    cookieConsent: false,
+    user: null,
+    allUsers: null,
+    loginSystemMessage: "",
+    recipes: [],
+    sharedRecipes: [],
+    publicRecipes: [],
+    categories: [
+      "breakfast",
+      "lunch",
+      "dinner",
+      "dessert",
+      "vegetarian",
+      "vegan"
+    ]
+  };
+}
 
 export const mutations = {
   acceptCookies(state) {
@@ -26,7 +36,7 @@ export const mutations = {
     state.user = null;
   },
   setAllUsers(state, payload) {
-    state.users = payload;
+    state.allUsers = payload;
   },
   setLoginSystemMessage(state, payload) {
     state.loginSystemMessage = payload;
@@ -153,8 +163,8 @@ export const getters = {
   user(state) {
     return state.user;
   },
-  users(state) {
-    return state.users;
+  allUsers(state) {
+    return state.allUsers;
   },
   loginSystemMessage(state) {
     return state.loginSystemMessage;

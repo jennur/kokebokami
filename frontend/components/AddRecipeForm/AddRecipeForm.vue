@@ -84,7 +84,7 @@
           :editMode="editMode"
         />
         <div class="system-message">{{ systemMessage }}</div>
-        <nuxt-link v-if="deleted" to="/account/my-recipes">Go back to your cook book</nuxt-link>
+        <nuxt-link v-if="deleted" to="/my-recipes">Go back to your cook book</nuxt-link>
       </fieldset>
 
       <div
@@ -145,7 +145,7 @@ export default {
   },
   computed: {},
   created: function() {
-    let recipeKey = this.$route.params.recipe;
+    let recipeKey = this.$route.params.recipeid;
     if (this.existingRecipe !== null && recipeKey !== undefined) {
       this.recipeKey = recipeKey;
       let recipe = this.existingRecipe;
@@ -218,7 +218,7 @@ export default {
         ? "Are you sure you want to discard the changes?"
         : "Are you sure you want to discard your new recipe?";
       if (confirm(confirmText)) {
-        this.$router.push("/account/my-recipes");
+        this.$router.push("/my-recipes");
       }
     },
     deleteRecipe() {

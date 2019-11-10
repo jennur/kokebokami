@@ -9,7 +9,6 @@
   background-color: $blue;
   color: $white;
   font-size: $fontSizeMedium;
-  font-family: $displayFont;
   text-decoration: none;
   cursor: pointer;
 
@@ -117,6 +116,7 @@
     height: 48px;
     width: max-content;
     padding: 0px $spacingLarge;
+    padding-bottom: $spacingXSmall;
   }
 
   &--cancel {

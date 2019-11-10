@@ -1,5 +1,6 @@
 <template>
   <section class="tablet-width padding-horizontal--large margin--auto">
+    <breadcrumbs :routes="breadcrumbs" />
     <profile-view :user="user" />
     <h3>Check out my recipes</h3>
     <recipes-list :recipes="currentUsersPublicRecipes ? currentUsersPublicRecipes : []" />
@@ -14,7 +15,16 @@ import RecipesList from "~/components/RecipesList";
 export default {
   name: "profile",
   components: { ProfileView, RecipesList },
-  props: {},
+  props: {
+    breadcrumbs: {
+      type: Array,
+      default: () => [
+        { name: "Home", link: "/" },
+        { name: "My account", link: "/account" },
+        { name: "My public profile" }
+      ]
+    }
+  },
   mixins: [user],
   computed: {
     currentUsersPublicRecipes() {

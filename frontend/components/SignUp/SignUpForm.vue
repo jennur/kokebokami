@@ -1,18 +1,36 @@
 <template>
   <form class="sign-up-form" v-on:submit.prevent>
     <label class="flex-column margin-bottom--medium">
-      Name
-      <input class="margin-top--small" id="name" type="text" v-model="name" />
+      Username
+      <input
+        class="margin-top--small"
+        id="name"
+        type="text"
+        autocomplete="username"
+        v-model="name"
+      />
       <span class="system-message">{{nameError}}</span>
     </label>
     <label class="flex-column margin-bottom--medium">
       E-mail
-      <input class="margin-top--small" id="email" type="email" v-model="email" />
+      <input
+        class="margin-top--small"
+        id="email"
+        type="email"
+        autocomplete="email"
+        v-model="email"
+      />
       <span class="system-message">{{emailError}}</span>
     </label>
     <label class="flex-column margin-bottom--medium">
       Password
-      <input class="margin-top--small" id="password" type="password" v-model="password" />
+      <input
+        class="margin-top--small"
+        id="password"
+        type="password"
+        autocomplete="new-password"
+        v-model="password"
+      />
       <span class="system-message">{{passwordError}}</span>
     </label>
     <label class="flex-column margin-bottom--medium">
@@ -21,6 +39,7 @@
         class="margin-top--small"
         id="password-repeated"
         type="password"
+        autocomplete="new-password"
         v-model="passwordRepeat"
       />
       <span class="system-message">{{passwordRepeatError}}</span>
@@ -81,7 +100,7 @@ export default {
 
           realThis.$store.dispatch("SET_USER", user);
           if (response.user.uid !== undefined) {
-            realThis.$router.push("/account/my-recipes");
+            realThis.$router.push("/my-recipes");
           }
         })
         .catch(function(error) {

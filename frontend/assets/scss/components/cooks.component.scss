@@ -1,0 +1,35 @@
+.cooks {
+  &__search {
+    position: relative;
+
+    & input {
+      padding: $spacingMedium;
+      padding-left: $spacingXXLarge;
+      font-size: $fontSizeLarge;
+      width: 100%;
+      max-width: 350px;
+    }
+  }
+
+  &__waving-icon {
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    top: 0;
+    left: $spacingMedium;
+  }
+
+  &__result-list {
+    list-style: none;
+  }
+  &__user-link {
+    display: inline-flex;
+    align-items: center;
+  }
+  &__user-photo {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    margin-right: $spacingMedium;
+  }
+}

@@ -1,7 +1,5 @@
 <template>
-  <nav
-    class="navigation-menu padding-horizontal--large margin--auto margin-bottom--xxlarge tablet-width"
-  >
+  <nav class="navigation-menu padding-horizontal--large margin--auto tablet-width">
     <h1 class="navigation-menu__logo">
       <nuxt-link class="navigation-menu__logo-link" to="/">Kokebokami</nuxt-link>
     </h1>
@@ -54,7 +52,7 @@ export default {
             name: "My account",
             img: this.user.photoURL
           },
-          { link: "/account/my-recipes", name: "My recipes" },
+          { link: "/my-recipes", name: "My recipes" },
           { link: "/", name: "Discover recipes" }
         ];
       } else {

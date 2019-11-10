@@ -61,20 +61,20 @@ export default {
         children: [
           {
             name: "recipe",
-            path: "/recipes/:recipe?",
-            component: "pages/recipes/_recipe.vue"
+            path: "/recipes/:recipeid?",
+            component: "pages/recipes/_recipeid.vue"
           }
         ]
       },
       {
-        name: "profile",
-        path: "/profile",
-        component: "pages/index.vue",
+        name: "cooks",
+        path: "/cooks",
+        component: "pages/cooks/index.vue",
         children: [
           {
-            name: "profile",
-            path: "/profile/:profile?",
-            component: "pages/profile/_profile.vue"
+            name: "cook",
+            path: "/cooks/:userid?",
+            component: "pages/cooks/_userid.vue"
           }
         ]
       },
@@ -90,14 +90,14 @@ export default {
         component: "pages/account/index.vue",
         children: [
           {
-            name: "my-recipes",
-            path: "/account/my-recipes",
-            component: "pages/account/my-recipes.vue"
-          },
-          {
             name: "add-recipe",
             path: "/account/add-recipe",
             component: "pages/account/add-recipe.vue"
+          },
+          {
+            name: "public-profile-view",
+            path: "/account/public-profile-view",
+            component: "pages/account/public-profile-view.vue"
           },
           {
             name: "goodbye",
@@ -105,6 +105,11 @@ export default {
             component: "pages/goodbye.vue"
           }
         ]
+      },
+      {
+        name: "my-recipes",
+        path: "/my-recipes",
+        component: "pages/my-recipes.vue"
       },
       {
         name: "privacy-policy",

@@ -7,8 +7,8 @@ export default context => {
     auth.onAuthStateChanged(user => {
       if (user) {
         store.dispatch("SET_ALL_USERS");
-        let userRef = db.ref("users/" + user.uid);
 
+        let userRef = db.ref("users/" + user.uid);
         userRef.once("value", snapshot => {
           if (snapshot.exists()) {
             let loggedinUser = {
