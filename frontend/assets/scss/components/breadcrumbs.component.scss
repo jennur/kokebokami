@@ -1,0 +1,15 @@
+.breadcrumbs {
+  &__list {
+    display: block;
+    width: 100%;
+    text-align: left;
+    list-style: none;
+    font-size: $fontSizeSmall;
+    padding: 0px;
+
+    & li {
+      display: inline-block;
+      padding-right: $spacingSmall;
+    }
+  }
+}

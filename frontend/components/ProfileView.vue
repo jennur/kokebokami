@@ -1,5 +1,5 @@
 <template>
-  <div class="flex-row flex-row--justify-center flex-row--align-center margin-bottom--xlarge">
+  <div class="flex-row flex-row--align-center margin-bottom--xlarge">
     <img
       class="profile__img margin-right--xlarge"
       :src="user.photoURL"

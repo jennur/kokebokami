@@ -5,11 +5,11 @@
       <form class="kokebokami-login-modal-form" v-on:submit.prevent>
         <label>
           E-mail
-          <input type="text" v-model="email" required />
+          <input type="text" autocomplete="email" v-model="email" required />
         </label>
         <label>
           Password
-          <input type="password" v-model="password" required />
+          <input type="password" autocomplete="password" v-model="password" required />
         </label>
         <button
           @click="kokebokamiSignIn"

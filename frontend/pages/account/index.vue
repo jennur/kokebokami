@@ -1,126 +1,131 @@
 <template>
-  <div class="account container mobile-width padding-horizontal--large">
-    <h2 class="heading--display-font margin-bottom--large">My account details</h2>
-    <nuxt-link to="/profile">See my public profile</nuxt-link>
-    <div class="flex-row-container">
-      <dl>
-        <dt class="account__detail">
-          <div class="account__detail-title">
-            <span>
-              Profile picture
-              <span class="system-message">(visible to other users)</span>
-            </span>
-          </div>
-          <img
-            class="profile__img margin-top--large"
-            :src="photoURL"
-            :alt="user.displayName + '´s profile picture'"
-            v-if="photoURL"
-          />
-          <form v-on:submit.prevent class="account__detail-edit" v-if="editProfileImg">
-            <button @click="updateProfileImg" class="button button--xsmall">Remove</button>
-          </form>
-          <div class="system-message">{{profileImgSystemMessage}}</div>
-          <button
-            @click="toggleEditProfileImg"
-            class="button button--small button--transparent"
-          >{{editBtnText}}</button>
-        </dt>
+  <div>
+    <div class="tablet-width margin--auto padding-horizontal--large">
+      <breadcrumbs :routes="breadcrumbs" />
+    </div>
+    <div class="account container mobile-width padding-horizontal--large">
+      <h2 class="heading--display-font margin-bottom--large">My account details</h2>
+      <nuxt-link to="/profile">See my public profile</nuxt-link>
+      <div class="flex-row-container">
+        <dl>
+          <dt class="account__detail">
+            <div class="account__detail-title">
+              <span>
+                Profile picture
+                <span class="system-message">(visible to other users)</span>
+              </span>
+            </div>
+            <img
+              class="profile__img margin-top--large"
+              :src="photoURL"
+              :alt="user.displayName + '´s profile picture'"
+              v-if="photoURL"
+            />
+            <form v-on:submit.prevent class="account__detail-edit" v-if="editProfileImg">
+              <button @click="updateProfileImg" class="button button--xsmall">Remove</button>
+            </form>
+            <div class="system-message">{{profileImgSystemMessage}}</div>
+            <button
+              @click="toggleEditProfileImg"
+              class="button button--small button--transparent"
+            >{{editBtnText}}</button>
+          </dt>
 
-        <dt class="account__detail">
-          <div class="account__detail-title">
-            <span>
-              Username
-              <span class="system-message">(visible to other users)</span>
-            </span>
-          </div>
-          <span class="account__detail-value" v-if="!editUsername">{{username ? username : null}}</span>
-          <form v-on:submit.prevent class="account__detail-edit" v-else>
-            <label>
-              <input type="text" v-model="username" />
-            </label>
-            <button @click="updateUsername" class="button button--xsmall">Save</button>
-          </form>
-          <div class="system-message">{{usernameSystemMessage}}</div>
-          <button
-            @click="toggleEditUsername"
-            class="button button--small button--transparent"
-          >{{editBtnText}}</button>
-        </dt>
+          <dt class="account__detail">
+            <div class="account__detail-title">
+              <span>
+                Username
+                <span class="system-message">(visible to other users)</span>
+              </span>
+            </div>
+            <span class="account__detail-value" v-if="!editUsername">{{username ? username : null}}</span>
+            <form v-on:submit.prevent class="account__detail-edit" v-else>
+              <label>
+                <input type="text" autocomplete="username" v-model="username" />
+              </label>
+              <button @click="updateUsername" class="button button--xsmall">Save</button>
+            </form>
+            <div class="system-message">{{usernameSystemMessage}}</div>
+            <button
+              @click="toggleEditUsername"
+              class="button button--small button--transparent"
+            >{{editBtnText}}</button>
+          </dt>
 
-        <dt class="account__detail">
-          <div class="account__detail-title">
-            <span>E-mail</span>
-          </div>
-          <span class="account__detail-value" v-if="!editEmail">{{email ? email : null}}</span>
-          <form v-on:submit.prevent class="account__detail-edit" v-else>
-            <label>
-              <input type="email" v-model="email" />
-            </label>
-            <button @click="updateEmail" class="button button--small">Save</button>
-          </form>
-          <div class="system-message">{{emailSystemMessage}}</div>
-          <button
-            @click="toggleEditEmail"
-            class="button button--small button--transparent"
-          >{{editBtnText}}</button>
-        </dt>
+          <dt class="account__detail">
+            <div class="account__detail-title">
+              <span>E-mail</span>
+            </div>
+            <span class="account__detail-value" v-if="!editEmail">{{email ? email : null}}</span>
+            <form v-on:submit.prevent class="account__detail-edit" v-else>
+              <label>
+                <input type="email" autocomplete="email" v-model="email" />
+              </label>
+              <button @click="updateEmail" class="button button--small">Save</button>
+            </form>
+            <div class="system-message">{{emailSystemMessage}}</div>
+            <button
+              @click="toggleEditEmail"
+              class="button button--small button--transparent"
+            >{{editBtnText}}</button>
+          </dt>
 
-        <dt class="account__detail">
-          <div class="account__detail-title">
-            <span>
-              Biography
-              <span class="system-message">(visible to other users)</span>
-            </span>
-          </div>
-          <span
-            class="account__detail-value"
-            v-if="!editBiography"
-          >{{biography ? biography : "Not set"}}</span>
-          <form v-on:submit.prevent class="account__detail-edit" v-else>
-            <label>
-              <textarea type="text" v-model="biography" />
-            </label>
-            <button @click="updateBiography" class="button button--small">Save</button>
-          </form>
-          <div class="system-message">{{biographySystemMessage}}</div>
-          <button
-            @click="toggleEditBiography"
-            class="button button--small button--transparent"
-          >{{editBtnText}}</button>
-        </dt>
+          <dt class="account__detail">
+            <div class="account__detail-title">
+              <span>
+                Biography
+                <span class="system-message">(visible to other users)</span>
+              </span>
+            </div>
+            <span
+              class="account__detail-value"
+              v-if="!editBiography"
+            >{{biography ? biography : "Not set"}}</span>
+            <form v-on:submit.prevent class="account__detail-edit" v-else>
+              <label>
+                <textarea type="text" v-model="biography" />
+              </label>
+              <button @click="updateBiography" class="button button--small">Save</button>
+            </form>
+            <div class="system-message">{{biographySystemMessage}}</div>
+            <button
+              @click="toggleEditBiography"
+              class="button button--small button--transparent"
+            >{{editBtnText}}</button>
+          </dt>
 
-        <dt class="account__detail">
-          <div class="account__detail-title">
-            <span>
-              Total amount of recipes:
-              <span>{{ recipes ? recipes.length : null}}</span>
-            </span>
-          </div>
-          <ol>
-            <li v-for="recipe in recipes" :key="recipe[1].title">
-              <span>{{recipe[1].title}}</span>
-              <span class="system-message" v-if="recipe[1].public">Public</span>
-            </li>
-          </ol>
-        </dt>
-        <dt class="account__detail">
-          <div class="account__detail-title">
-            <span>
-              Total amount of recipes shared with me:
-              <span>{{ sharedRecipes ? sharedRecipes.length : null}}</span>
-            </span>
-          </div>
-          <ol>
-            <li v-for="recipe in sharedRecipes" :key="recipe[1].title">{{recipe[1].title}}</li>
-          </ol>
-        </dt>
-      </dl>
-      <button
-        class="button button--small button--transparent button--transparent-red margin-top--large"
-        @click="deleteAccount"
-      >Delete my account</button>
-      <p>{{systemMessage}}</p>
+          <dt class="account__detail">
+            <div class="account__detail-title">
+              <span>
+                Total amount of recipes:
+                <span>{{ recipes ? recipes.length : null}}</span>
+              </span>
+            </div>
+            <ol>
+              <li v-for="recipe in recipes" :key="recipe[1].title">
+                <span>{{recipe[1].title}}</span>
+                <span class="system-message" v-if="recipe[1].public">Public</span>
+              </li>
+            </ol>
+          </dt>
+          <dt class="account__detail">
+            <div class="account__detail-title">
+              <span>
+                Total amount of recipes shared with me:
+                <span>{{ sharedRecipes ? sharedRecipes.length : null}}</span>
+              </span>
+            </div>
+            <ol>
+              <li v-for="recipe in sharedRecipes" :key="recipe[1].title">{{recipe[1].title}}</li>
+            </ol>
+          </dt>
+        </dl>
+        <button
+          class="button button--small button--transparent button--transparent-red margin-top--large"
+          @click="deleteAccount"
+        >Delete my account</button>
+        <p>{{systemMessage}}</p>
+      </div>
     </div>
   </div>
 </template>
@@ -148,6 +153,12 @@ export default {
       editBiography: false,
       editBtnText: "Edit"
     };
+  },
+  props: {
+    breadcrumbs: {
+      type: Array,
+      default: () => [{ name: "Home", link: "/" }, { name: "My account" }]
+    }
   },
   components: {},
   mounted() {

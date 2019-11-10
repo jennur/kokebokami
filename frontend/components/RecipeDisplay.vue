@@ -47,7 +47,7 @@ export default {
       return this.recipeID;
     },
     recipeOwner() {
-      let users = this.$store.getters.users;
+      let users = this.$store.getters.allUsers;
       let recipeOwner = null;
       users.forEach(user => {
         if (this.recipe.ownerID === user[0]) {

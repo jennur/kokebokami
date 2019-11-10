@@ -1,6 +1,6 @@
 <template>
   <div v-if="!user">
-    <section class="container">
+    <section class="tablet-width margin-top--xxlarge margin--auto">
       <div
         class="flex-center-container flex-center-container--column mobile-width padding--none margin--auto"
       >
@@ -27,9 +27,13 @@
       headline="Sign up to start building your own cook book."
     />
   </div>
-  <div class="tablet-width padding-horizontal--large margin--auto" v-else>
+
+  <div class="tablet-width padding-horizontal--large margin-top--xxlarge margin--auto" v-else>
+    <div class="flex-row flex-row--justify-center margin-bottom--xlarge margin--auto">
+      <nuxt-link to="/cooks" class="button button--large">Discover cooks on Kokebokami</nuxt-link>
+    </div>
     <search-form
-      class="tablet-width margin-bottom--xlarge margin--auto"
+      class="margin-bottom--xlarge margin--auto"
       @filterBySearchTerm="setSearchTerm"
       @filterByCategory="setCategory"
     />
@@ -38,7 +42,6 @@
 </template>
 
 <script>
-import firebase from "firebase";
 import { GoogleProvider, auth } from "~/plugins/firebase.js";
 import googleLogo from "~/static/btn_google_light_normal_ios.svg";
 import { user } from "~/mixins/getCurrentUser.js";

@@ -61,7 +61,6 @@
 </template>
 
 <script>
-import { user } from "~/mixins/getCurrentUser.js";
 import ShareForm from "~/components/ShareForm.vue";
 import AddRecipeForm from "~/components/AddRecipeForm/AddRecipeForm.vue";
 import * as jsPDF from "jspdf";
@@ -77,44 +76,22 @@ export default {
   },
   data() {
     return {
-      isRecipeOwner: false,
       recipeOwnerID: "",
       editMode: false,
       sharing: false,
       shareButtonText: "Share recipe"
     };
   },
-  created() {
-    let users = this.$store.getters.users;
+  props: {
+    isRecipeOwner: { type: Boolean, default: false },
+    recipe: { type: Object, default: () => {} },
+    recipeKey: { type: String, default: "" }
   },
-  mixins: [user],
   computed: {
-    recipeKey() {
-      return this.$route.params.recipe;
-    },
-    recipe() {
-      let userRecipes = this.$store.getters.recipes;
-      let sharedRecipes = this.$store.getters.sharedRecipes;
-      let publicRecipes = this.$store.getters.publicRecipes;
-      let allAvailableRecipes = userRecipes
-        .concat(sharedRecipes)
-        .concat(publicRecipes);
-
-      let currentRecipe = allAvailableRecipes.filter(recipe => {
-        let recipeCheck = recipe[0] === this.recipeKey;
-        if (recipeCheck) {
-          this.recipeOwnerID = recipe[1].ownerID;
-          this.isRecipeOwner = recipe[1].ownerID === this.user.id;
-        }
-        return recipeCheck;
-      });
-      return currentRecipe.length ? currentRecipe[0][1] : {};
-    },
     editModeButtonText() {
       return this.editMode ? "Exit edit mode" : "Edit mode";
     }
   },
-
   methods: {
     toggleEditMode() {
       this.editMode = !this.editMode;
