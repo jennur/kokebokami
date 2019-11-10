@@ -2,6 +2,10 @@
   <footer class="footer flex-center-container flex-center-container--column margin-top--xxlarge">
     <ul class="footer__nav">
       <li>
+        <b>Contact:</b>
+        <a href="mailto:contact@kokebokami.com">contact@kokebokami.com</a>
+      </li>
+      <li>
         <nuxt-link to="/privacy-policy">Privacy policy</nuxt-link>
       </li>
     </ul>
