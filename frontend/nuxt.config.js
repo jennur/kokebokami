@@ -67,12 +67,6 @@ export default {
         ]
       },
       {
-        name: "profile",
-        path: "/profile",
-        component: "pages/index.vue"
-      },
-
-      {
         name: "cooks",
         path: "/cooks",
         component: "pages/cooks/index.vue",
@@ -99,6 +93,11 @@ export default {
             name: "add-recipe",
             path: "/account/add-recipe",
             component: "pages/account/add-recipe.vue"
+          },
+          {
+            name: "public-profile-view",
+            path: "/account/public-profile-view",
+            component: "pages/account/public-profile-view.vue"
           },
           {
             name: "goodbye",
