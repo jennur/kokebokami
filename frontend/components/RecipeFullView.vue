@@ -1,10 +1,13 @@
 <template>
   <section class="mobile-width margin--auto">
     <div class="flex-row">
-      <button
-        class="button button--block button--small button--green-border margin-bottom--large margin-right--large"
+      <span
+        role="button"
+        class="button button--small button--green-border margin-bottom--large margin-right--large"
         @click="pdfExport"
-      >⤓ Download as PDF</button>
+      >
+        <downloadIcon class="recipe__share-icon margin-right--medium" />Download as PDF
+      </span>
       <span
         role="button"
         @click="toggleShareBox"
@@ -66,13 +69,15 @@ import AddRecipeForm from "~/components/AddRecipeForm/AddRecipeForm.vue";
 import * as jsPDF from "jspdf";
 import logo from "~/assets/graphics/kokebokamilogo.png";
 import shareIcon from "~/assets/graphics/shareicon.svg";
+import downloadIcon from "~/assets/graphics/downloadicon.svg";
 
 export default {
   name: "recipe-full-view",
   components: {
     ShareForm,
     AddRecipeForm,
-    shareIcon
+    shareIcon,
+    downloadIcon
   },
   data() {
     return {
