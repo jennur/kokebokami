@@ -23,10 +23,39 @@
         </li>
       </ul>
     </div>
+    <div v-if="followedCooks">
+      <div
+        class="flex-row following-cooks tablet-width padding-horizontal--large margin--auto margin-top--xlarge"
+      >
+        <nuxt-link
+          :to="'cooks/' + followedCook[0]"
+          class="following-cooks__cook margin--small"
+          v-for="followedCook in followedCooks"
+          :key="followedCook[0]"
+        >
+          <img
+            class="following-cooks__img margin-right--xlarge"
+            :src="followedCook[1].photoURL"
+            :alt="followedCook[1].displayName + '´s profile picture'"
+            v-if="followedCook[1].photoURL"
+          />
+          <div class="flex-column">
+            <h2
+              class="heading--display-font margin-bottom--small margin--none"
+            >{{followedCook[1].displayName ? followedCook[1].displayName : ""}}</h2>
+            <p
+              class="following-cooks__biography margin--none"
+            >{{followedCook[1].biography ? (followedCook[1].biography.substring(0,70) + "...") : "This user did not write a biography yet."}}</p>
+          </div>
+        </nuxt-link>
+      </div>
+    </div>
   </div>
 </template>
 <script>
+import { user } from "~/mixins/getCurrentUser.js";
 import userIcon from "~/assets/graphics/user.svg";
+
 export default {
   name: "cooks",
   components: {
@@ -41,6 +70,7 @@ export default {
   data() {
     return { searchTerm: "" };
   },
+  mixins: [user],
   computed: {
     cooks() {
       let searchTerm = this.searchTerm;
@@ -50,6 +80,24 @@ export default {
           .toLowerCase()
           .startsWith(searchTerm.toLowerCase());
       });
+    },
+    followedCooks() {
+      let users = this.$store.getters.allUsers;
+      let followingUserData = [];
+      let following =
+        this.user && this.user.following
+          ? Object.entries(this.user.following)
+          : [];
+      if (users && following.length) {
+        users.forEach(user => {
+          following.forEach(follower => {
+            if (user[0] === follower[1]) {
+              followingUserData.push(user);
+            }
+          });
+        });
+      }
+      return followingUserData;
     }
   }
 };

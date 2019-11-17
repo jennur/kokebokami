@@ -16,7 +16,9 @@ export default context => {
               photoURL: snapshot.val().photoURL,
               displayName: snapshot.val().displayName,
               email: snapshot.val().email,
-              biography: snapshot.val().biography
+              biography: snapshot.val().biography,
+              following: snapshot.val().following,
+              followers: snapshot.val().followers
             };
             store.dispatch("SET_USER", loggedinUser);
             store.dispatch("SET_SHARED_RECIPES", loggedinUser);
@@ -29,6 +31,7 @@ export default context => {
               displayName: user.displayName,
               photoURL: user.photoURL,
               email: user.email
+              // No more details available upon first login
             };
             userRef.set(databaseUser);
 
@@ -37,6 +40,7 @@ export default context => {
               photoURL: user.photoURL,
               displayName: user.displayName,
               email: user.email
+              // No more details available upon first login
             };
             store.dispatch("SET_USER", loggedinUser);
             store.dispatch("SET_SHARED_RECIPES", loggedinUser);

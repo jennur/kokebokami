@@ -53,7 +53,7 @@ export default {
             img: this.user.photoURL
           },
           { link: "/my-recipes", name: "My recipes" },
-          { link: "/", name: "Discover recipes" }
+          { link: "/cooks", name: "Discover cooks" }
         ];
       } else {
         menuItems = [
