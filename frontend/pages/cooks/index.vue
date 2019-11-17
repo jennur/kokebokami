@@ -23,10 +23,12 @@
         </li>
       </ul>
     </div>
-    <div v-if="followedCooks">
-      <div
-        class="flex-row following-cooks tablet-width padding-horizontal--large margin--auto margin-top--xlarge"
-      >
+    <div
+      class="tablet-width padding-horizontal--large margin--auto margin-top--xlarge"
+      v-if="followedCooks"
+    >
+      <h3>Currently following</h3>
+      <div class="flex-row following-cooks">
         <nuxt-link
           :to="'cooks/' + followedCook[0]"
           class="following-cooks__cook margin--small"
