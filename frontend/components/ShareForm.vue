@@ -50,15 +50,14 @@ export default {
                     let sharedWith = Object.values(shares.val());
 
                     if (sharedWith.indexOf(userID) === -1) {
-                      let numShares = Object.keys(shares.val()).length;
-                      recipeRef.update({ [numShares]: userID });
+                      recipeRef.push(userID);
                       realThis.systemMessage =
                         "Successfully shared with " + username;
                     } else
                       realThis.systemMessage =
                         "This recipe is already shared with " + username;
                   } else {
-                    recipeRef.set({ 0: userID });
+                    recipeRef.push(userID);
                     realThis.systemMessage =
                       "Successfully shared with " + username;
                   }

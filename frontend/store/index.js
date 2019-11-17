@@ -118,8 +118,12 @@ export const actions = {
             const shares = recipe.val().sharedWith
               ? recipe.val().sharedWith
               : [];
-            if (shares.indexOf(user.id) !== -1) {
-              recipesArray.push([recipe.key, recipe.val()]);
+
+            if (shares.length) {
+              shares.forEach(share => {
+                if (share === user.id)
+                  recipesArray.push([recipe.key, recipe.val()]);
+              });
             }
           }
         });
