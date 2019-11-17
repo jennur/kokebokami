@@ -8,7 +8,9 @@
       :recipe="recipe[1]"
       :publicRecipe="publicRecipe"
     />
-    <div v-if="!recipesLength">It looks like there's nothing here atm!</div>
+    <div v-if="!recipesLength">
+      <p class="margin--none">It looks like there are no recipes here at the moment 😕</p>
+    </div>
   </div>
 </template>
 

@@ -1,0 +1,31 @@
+.following-cooks {
+  &__cook {
+    display: inline-flex;
+    flex-direction: row;
+    align-items: center;
+    border: 2px solid $green;
+    border-radius: $spacingSmall;
+    width: 100%;
+    height: 90px;
+    flex-basis: 100%;
+    padding: $spacingMedium;
+
+    @media screen and (min-width: $mobileWidth) {
+      flex-basis: 50%;
+      max-width: 44%;
+    }
+    @media screen and (min-width: $tabletWidth) {
+      max-width: 415px;
+    }
+    &:hover {
+      text-decoration: none;
+      background-color: $green;
+    }
+  }
+  &__img {
+    width: 30%;
+    max-width: 80px;
+    border-radius: inherit;
+    padding: $spacingXSmall;
+  }
+}
