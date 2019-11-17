@@ -25,7 +25,7 @@
     </div>
     <div
       class="tablet-width padding-horizontal--large margin--auto margin-top--xlarge"
-      v-if="followedCooks"
+      v-if="followedCooks.length"
     >
       <h3>Currently following</h3>
       <div class="flex-row following-cooks">
