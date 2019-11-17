@@ -1,31 +1,5 @@
 <template>
   <section class="mobile-width margin--auto">
-    <div class="flex-row">
-      <span
-        role="button"
-        class="button button--small button--green-border margin-bottom--large margin-right--large"
-        @click="pdfExport"
-      >
-        <downloadIcon class="recipe__share-icon margin-right--medium" />Download as PDF
-      </span>
-      <span
-        role="button"
-        @click="toggleShareBox"
-        class="button button--small button--green-border margin-right--large"
-      >
-        <shareIcon class="recipe__share-icon margin-right--medium" />
-        {{shareButtonText}}
-      </span>
-
-      <div v-if="isRecipeOwner">
-        <button
-          @click="toggleWarning"
-          class="button button--small button--transparent"
-        >{{editModeButtonText}}</button>
-      </div>
-    </div>
-    <share-form v-if="sharing" :recipeKey="recipeKey" />
-
     <div v-if="!editMode" id="recipe" class="recipe">
       <div class="recipe__categories margin-top--large">
         <span
@@ -38,6 +12,31 @@
       <div
         class="recipe__description"
       >{{recipe.description ? recipe.description : "Recipe has no description"}}</div>
+
+      <!-- Action bar -->
+      <div class="flex-row">
+        <span
+          role="button"
+          class="button button--small button--green-border margin-bottom--large margin-right--large"
+          @click="pdfExport"
+        >
+          <downloadIcon class="recipe__share-icon margin-right--medium" />Download as PDF
+        </span>
+        <span
+          role="button"
+          @click="toggleShareBox"
+          class="button button--small button--green-border margin-right--large"
+        >
+          <shareIcon class="recipe__share-icon margin-right--medium" />
+          {{shareButtonText}}
+        </span>
+
+        <div v-if="isRecipeOwner">
+          <button @click="toggleEditMode" class="button button--small button--transparent">Edit mode</button>
+        </div>
+      </div>
+      <share-form v-if="sharing" :recipeKey="recipeKey" />
+      <!-- End action bar -->
 
       <h4 v-if="recipe.ingredients">Ingredients</h4>
       <ul class="recipe__ingredients" v-if="recipe.ingredients">
