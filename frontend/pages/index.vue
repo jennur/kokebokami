@@ -74,14 +74,16 @@ export default {
       let searchTerm = this.searchTerm;
       let filteredRecipes = [];
       let recipesToBeFiltered = publicRecipes;
-
-      if (categories.length) {
+      if (publicRecipes && categories.length) {
         categories.forEach(category => {
           let oneOrMoreRecipesOfCategory = -1;
           recipesToBeFiltered.forEach(recipe => {
-            if (recipe[1].categories.indexOf(category) !== -1) {
+            if (
+              recipe[1].categories &&
+              recipe[1].categories.indexOf(category) !== -1
+            ) {
               oneOrMoreRecipesOfCategory *= 0;
-              if (filteredRecipes.indexOf(recipe) === -1)
+              if (filteredRecipes && filteredRecipes.indexOf(recipe) === -1)
                 filteredRecipes.push(recipe);
             }
           });
@@ -89,7 +91,7 @@ export default {
         recipesToBeFiltered = filteredRecipes;
       }
 
-      if (searchTerm !== "") {
+      if (publicRecipes && searchTerm !== "") {
         recipesToBeFiltered = recipesToBeFiltered.filter(recipe => {
           return (
             recipe[1].title.toLowerCase().includes(searchTerm.toLowerCase()) ||
