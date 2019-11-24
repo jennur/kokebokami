@@ -1,5 +1,5 @@
 <template>
-  <div class="container container--center margin--auto">
+  <div class="container container--center tablet-width margin--auto">
     <div class="flex-center-container margin--auto">
       <login-container class="flex-order--tablet-two" />
       <kokebokapen class="graphic graphic--kokebokapen flex-order--tablet-one" />
