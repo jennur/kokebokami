@@ -20,14 +20,14 @@
           class="button button--small button--green-border margin-bottom--large margin-right--large"
           @click="pdfExport"
         >
-          <downloadIcon class="recipe__share-icon margin-right--medium" />Download as PDF
+          <downloadIcon class="icon margin-right--medium" />Download as PDF
         </span>
         <span
           role="button"
           @click="toggleShareBox"
           class="button button--small button--green-border margin-right--large"
         >
-          <shareIcon class="recipe__share-icon margin-right--medium" />
+          <shareIcon class="icon margin-right--medium" />
           {{shareButtonText}}
         </span>
 
