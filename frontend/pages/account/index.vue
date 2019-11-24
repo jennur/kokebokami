@@ -4,13 +4,13 @@
       <breadcrumbs :routes="breadcrumbs" />
     </div>
     <div class="account container tablet-width padding-horizontal--large">
-      <h2 class="heading--display-font margin-bottom--large">My account details</h2>
+      <h2 class="heading--display-font margin-top--xxlarge margin-bottom--large">My account details</h2>
       <nuxt-link to="/account/public-profile-view">
         See my public profile
         <right-arrow class="icon icon--blue" />
       </nuxt-link>
       <div>
-        <h3>Personal data</h3>
+        <h3 class="margin-top--xxlarge">Personal data</h3>
         <dl class="flex-row">
           <dt class="account__detail account__detail--flex-column">
             <div class="account__detail-title">
