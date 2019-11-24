@@ -1,6 +1,6 @@
 <template>
   <button outline fab @click="facebookSignIn" class="facebook-btn">
-    <img class="facebook-btn__logo" src="~/static/f_logo_RGB-White_72.png" alt="facebook logo" />
+    <img class="facebook-btn__logo" src="~/static/f_logo_RGB-White_72.png" alt="fb logo" />
     <span class="facebook-btn__text">Sign in with Facebook</span>
   </button>
 </template>
