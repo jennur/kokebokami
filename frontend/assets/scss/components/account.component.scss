@@ -1,13 +1,22 @@
 .account {
   &__detail {
-    display: block;
+    display: inline-block;
     position: relative;
+    flex-grow: 1;
+    flex-basis: 40%;
     padding: $spacingLarge;
     padding-top: $spacingMedium;
     margin-bottom: $spacingLarge;
-    border-left: 2px solid $green;
+    margin-right: $spacingMedium;
+    border: 2px solid rgba($green, 0.3);
+    border-radius: $spacingSmall;
     font-size: $fontSizeMedium;
 
+    &--flex-column {
+      display: inline-flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
     &-title {
       display: flex;
       justify-content: space-between;
@@ -20,6 +29,25 @@
       display: block;
       width: 100%;
       margin-bottom: $spacingMedium;
+    }
+
+    &-edit {
+      display: flex;
+      flex-direction: column;
+      padding-top: $spacingSmall;
+
+      & textarea,
+      input {
+        margin-bottom: $spacingMedium;
+        width: 100%;
+      }
+      & textarea {
+        height: 100px;
+        resize: none;
+      }
+      & input {
+        max-width: 230px;
+      }
     }
   }
 }

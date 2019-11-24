@@ -20,14 +20,14 @@
           class="button button--small button--green-border margin-bottom--large margin-right--large"
           @click="pdfExport"
         >
-          <downloadIcon class="recipe__share-icon margin-right--medium" />Download as PDF
+          <download-icon class="icon icon--in-button margin-right--medium" />Download as PDF
         </span>
         <span
           role="button"
           @click="toggleShareBox"
           class="button button--small button--green-border margin-right--large"
         >
-          <shareIcon class="recipe__share-icon margin-right--medium" />
+          <share-icon class="icon icon--in-button margin-right--medium" />
           {{shareButtonText}}
         </span>
 
@@ -67,16 +67,12 @@ import ShareForm from "~/components/ShareForm.vue";
 import AddRecipeForm from "~/components/AddRecipeForm/AddRecipeForm.vue";
 import * as jsPDF from "jspdf";
 import logo from "~/assets/graphics/kokebokamilogo.png";
-import shareIcon from "~/assets/graphics/shareicon.svg";
-import downloadIcon from "~/assets/graphics/downloadicon.svg";
 
 export default {
   name: "recipe-full-view",
   components: {
     ShareForm,
-    AddRecipeForm,
-    shareIcon,
-    downloadIcon
+    AddRecipeForm
   },
   data() {
     return {

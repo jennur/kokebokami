@@ -1,0 +1,13 @@
+.icon {
+  width: 1em;
+
+  &--in-button {
+    margin-left: -$spacingSmall;
+  }
+
+  &--blue {
+    & g {
+      fill: $blue;
+    }
+  }
+}

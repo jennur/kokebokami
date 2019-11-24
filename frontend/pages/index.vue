@@ -17,7 +17,7 @@
         >Get started ➔</nuxt-link>
       </div>
       <div class="flex-center-container">
-        <kokeboka class="graphic graphic--kokeboka" />
+        <kokeboka class="illustration illustration--kokeboka" />
       </div>
     </section>
 

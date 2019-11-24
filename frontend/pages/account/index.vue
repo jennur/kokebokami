@@ -3,12 +3,16 @@
     <div class="tablet-width margin--auto padding-horizontal--large">
       <breadcrumbs :routes="breadcrumbs" />
     </div>
-    <div class="account container mobile-width padding-horizontal--large">
-      <h2 class="heading--display-font margin-bottom--large">My account details</h2>
-      <nuxt-link to="/account/public-profile-view">See my public profile</nuxt-link>
-      <div class="flex-row-container">
-        <dl>
-          <dt class="account__detail">
+    <div class="account container tablet-width padding-horizontal--large">
+      <h1 class="heading--display-font margin-top--xxlarge margin-bottom--large">My account details</h1>
+      <nuxt-link to="/account/public-profile-view">
+        See my public profile
+        <right-arrow class="icon icon--blue" />
+      </nuxt-link>
+      <div>
+        <h3 class="margin-top--xxlarge">Personal data</h3>
+        <dl class="flex-row">
+          <dt class="account__detail account__detail--flex-column">
             <div class="account__detail-title">
               <span>
                 Profile picture
@@ -22,16 +26,19 @@
               v-if="photoURL"
             />
             <form v-on:submit.prevent class="account__detail-edit" v-if="editProfileImg">
-              <button @click="updateProfileImg" class="button button--xsmall">Remove</button>
+              <button
+                @click="updateProfileImg"
+                class="button button--small margin-top--large"
+              >Remove</button>
             </form>
             <div class="system-message">{{profileImgSystemMessage}}</div>
             <button
               @click="toggleEditProfileImg"
-              class="button button--small button--transparent"
-            >{{editBtnText}}</button>
+              class="button button--small button--transparent account__detail-edit-btn"
+            >{{editProfileImg ? "Cancel" : "Edit"}}</button>
           </dt>
 
-          <dt class="account__detail">
+          <dt class="account__detail account__detail--flex-column">
             <div class="account__detail-title">
               <span>
                 Username
@@ -43,16 +50,16 @@
               <label>
                 <input type="text" autocomplete="username" v-model="username" />
               </label>
-              <button @click="updateUsername" class="button button--xsmall">Save</button>
+              <button @click="updateUsername" class="button button--small">Save</button>
             </form>
             <div class="system-message">{{usernameSystemMessage}}</div>
             <button
               @click="toggleEditUsername"
-              class="button button--small button--transparent"
-            >{{editBtnText}}</button>
+              class="button button--small button--transparent account__detail-edit-btn"
+            >{{editUsername ? "Cancel" : "Edit"}}</button>
           </dt>
 
-          <dt class="account__detail">
+          <dt class="account__detail account__detail--flex-column">
             <div class="account__detail-title">
               <span>E-mail</span>
             </div>
@@ -66,11 +73,11 @@
             <div class="system-message">{{emailSystemMessage}}</div>
             <button
               @click="toggleEditEmail"
-              class="button button--small button--transparent"
-            >{{editBtnText}}</button>
+              class="button button--small button--transparent account__detail-edit-btn"
+            >{{editEmail ? "Cancel" : "Edit"}}</button>
           </dt>
 
-          <dt class="account__detail">
+          <dt class="account__detail account__detail--flex-column">
             <div class="account__detail-title">
               <span>
                 Biography
@@ -90,20 +97,24 @@
             <div class="system-message">{{biographySystemMessage}}</div>
             <button
               @click="toggleEditBiography"
-              class="button button--small button--transparent"
-            >{{editBtnText}}</button>
+              class="button button--small button--transparent account__detail-edit-btn"
+            >{{editBiography ? "Cancel" : "Edit"}}</button>
           </dt>
-
+        </dl>
+        <h3>Recipes connected to your account</h3>
+        <dl class="flex-row">
           <dt class="account__detail">
             <div class="account__detail-title">
               <span>
-                Total amount of recipes:
+                My recipes:
                 <span>{{ recipes ? recipes.length : null}}</span>
               </span>
             </div>
             <ol>
               <li v-for="recipe in recipes" :key="recipe[1].title">
-                <span>{{recipe[1].title}}</span>
+                <span>
+                  <nuxt-link :to="'recipes/' + recipe[0]">{{recipe[1].title}}</nuxt-link>
+                </span>
                 <span class="system-message" v-if="recipe[1].public">Public</span>
               </li>
             </ol>
@@ -111,12 +122,44 @@
           <dt class="account__detail">
             <div class="account__detail-title">
               <span>
-                Total amount of recipes shared with me:
+                Recipes shared with me:
                 <span>{{ sharedRecipes ? sharedRecipes.length : null}}</span>
               </span>
             </div>
             <ol>
-              <li v-for="recipe in sharedRecipes" :key="recipe[1].title">{{recipe[1].title}}</li>
+              <li v-for="recipe in sharedRecipes" :key="recipe[1].title">
+                <nuxt-link :to="'recipes/' + recipe[0]">{{recipe[1].title}}</nuxt-link>
+              </li>
+            </ol>
+          </dt>
+        </dl>
+
+        <h3>Cooks connected to your account</h3>
+        <dl class="flex-row">
+          <dt class="account__detail">
+            <div class="account__detail-title">
+              <span>
+                Following:
+                <span>{{ cooksImFollowing ? cooksImFollowing.length : null}}</span>
+              </span>
+            </div>
+            <ol>
+              <li v-for="cook in cooksImFollowing" :key="cook[1].displayName">
+                <nuxt-link :to="'cooks/' + cook[0]">{{cook[1].displayName}}</nuxt-link>
+              </li>
+            </ol>
+          </dt>
+          <dt class="account__detail">
+            <div class="account__detail-title">
+              <span>
+                Followers:
+                <span>{{ cooksFollowingMe ? cooksFollowingMe.length : null}}</span>
+              </span>
+            </div>
+            <ol>
+              <li v-for="cook in cooksFollowingMe" :key="cook[1].displayName">
+                <nuxt-link :to="'cooks/' + cook[0]">{{cook[1].displayName}}</nuxt-link>
+              </li>
             </ol>
           </dt>
         </dl>
@@ -134,6 +177,7 @@
 import { user } from "~/mixins/getCurrentUser.js";
 import RecipesList from "~/components/RecipesList.vue";
 import { auth, db } from "~/plugins/firebase.js";
+
 export default {
   name: "account",
   data() {
@@ -150,8 +194,7 @@ export default {
       editProfileImg: false,
       editUsername: false,
       editEmail: false,
-      editBiography: false,
-      editBtnText: "Edit"
+      editBiography: false
     };
   },
   props: {
@@ -174,6 +217,42 @@ export default {
     },
     sharedRecipes() {
       return this.$store.getters.sharedRecipes;
+    },
+    cooksImFollowing() {
+      let users = this.$store.getters.allUsers;
+      let followingUserData = [];
+      let following =
+        this.user && this.user.following
+          ? Object.entries(this.user.following)
+          : [];
+      if (users && following.length) {
+        users.forEach(user => {
+          following.forEach(follower => {
+            if (user[0] === follower[1]) {
+              followingUserData.push(user);
+            }
+          });
+        });
+      }
+      return followingUserData;
+    },
+    cooksFollowingMe() {
+      let users = this.$store.getters.allUsers;
+      let followerUserData = [];
+      let followers =
+        this.user && this.user.followers
+          ? Object.entries(this.user.followers)
+          : [];
+      if (followers.length) {
+        users.forEach(user => {
+          followers.forEach(follower => {
+            if (user[0] === follower[1]) {
+              followerUserData.push(user);
+            }
+          });
+        });
+      }
+      return followerUserData;
     }
   },
   methods: {

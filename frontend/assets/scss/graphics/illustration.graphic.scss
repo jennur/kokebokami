@@ -1,16 +1,17 @@
-.graphic {
+.illustration {
   display: block;
   width: 100%;
   height: auto;
   position: relative;
-  margin: $spacingXXLarge auto;
 
   &--kokeboka {
     max-width: 750px;
+    margin: $spacingXXLarge auto;
   }
 
   &--kokebokapen {
     display: none;
+    margin: $spacingXXLarge;
     @media screen and (min-width: $tabletWidth) {
       max-width: 300px;
       display: block;

@@ -1,0 +1,9 @@
+.tab {
+  cursor: pointer;
+  color: $blue;
+
+  &--active {
+    cursor: default;
+    color: $black;
+  }
+}

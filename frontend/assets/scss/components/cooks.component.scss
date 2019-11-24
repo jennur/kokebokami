@@ -1,13 +1,15 @@
 .cooks {
   &__search {
-    position: relative;
-
+    text-align: left;
+    max-width: 350px;
+    & label {
+      position: relative;
+    }
     & input {
       padding: $spacingMedium;
       padding-left: $spacingXXLarge;
       font-size: $fontSizeLarge;
       width: 100%;
-      max-width: 350px;
     }
   }
 
@@ -20,7 +22,10 @@
   }
 
   &__result-list {
+    max-width: 350px;
     list-style: none;
+    text-align: left;
+    padding: 0px;
   }
   &__user-link {
     display: inline-flex;
