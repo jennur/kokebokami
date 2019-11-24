@@ -1,5 +1,7 @@
 .recipe-display {
-  display: block;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   width: 300px;
   margin: $spacingSmall;
   border: 2px solid $green;
@@ -20,6 +22,7 @@
   &__description {
     display: block;
     padding-top: 0;
+    padding-bottom: $spacingMedium;
   }
   &__categories {
     display: block;
@@ -37,7 +40,7 @@
   &__published-by {
     display: block;
     position: absolute;
-    bottom: $spacingSmall;
+    bottom: $spacingMedium;
     right: $spacingXLarge;
     font-size: $fontSizeSmall;
     color: $blue;
