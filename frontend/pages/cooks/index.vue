@@ -27,54 +27,44 @@
         </ul>
       </div>
     </div>
-    <div
-      class="tablet-width padding-horizontal--large margin--auto margin-top--xlarge"
-      v-if="followedCooks.length"
-    >
-      <h3>Currently following</h3>
-      <div class="flex-row following-cooks">
-        <nuxt-link
-          :to="'cooks/' + followedCook[0]"
-          class="following-cooks__cook margin--small"
-          v-for="followedCook in followedCooks"
-          :key="followedCook[0]"
-        >
-          <img
-            class="following-cooks__img margin-right--xlarge"
-            :src="followedCook[1].photoURL"
-            :alt="followedCook[1].displayName + '´s profile picture'"
-            v-if="followedCook[1].photoURL"
-          />
-          <div class="flex-column">
-            <h2
-              class="heading--display-font margin-bottom--small margin--none"
-            >{{followedCook[1].displayName ? followedCook[1].displayName : ""}}</h2>
-            <p
-              class="following-cooks__biography margin--none"
-            >{{followedCook[1].biography ? (followedCook[1].biography.substring(0,70) + "...") : "This user did not write a biography yet."}}</p>
-          </div>
-        </nuxt-link>
+    <div class="tablet-width padding-horizontal--large margin--auto margin-top--xlarge">
+      <div class="flex-row">
+        <h3
+          id="following-tab"
+          @click="event => toggleCooks(event)"
+          :class="'tab margin-right--large ' + (showFollowedCooks ? 'tab--active':'')"
+        >Currently following ({{this.followedCooks.length}})</h3>
+        <h3 class="margin-right--large">|</h3>
+        <h3
+          id="followers-tab"
+          @click="event => toggleCooks(event)"
+          :class="'tab ' + (showFollowers ? 'tab--active':'')"
+        >Followers ({{this.followers.length}})</h3>
       </div>
+      <cooks-list :cooks="followedCooks" v-if="showFollowedCooks" />
+      <cooks-list :cooks="followers" v-if="showFollowers" />
     </div>
   </div>
 </template>
 <script>
 import { user } from "~/mixins/getCurrentUser.js";
 import userIcon from "~/assets/graphics/user.svg";
+import CooksList from "~/components/CooksList.vue";
 
 export default {
   name: "cooks",
   components: {
-    userIcon
+    userIcon,
+    CooksList
+  },
+  data() {
+    return { searchTerm: "", showFollowedCooks: true, showFollowers: false };
   },
   props: {
     breadcrumbs: {
       type: Array,
       default: () => [{ name: "Home", link: "/" }, { name: "Cooks" }]
     }
-  },
-  data() {
-    return { searchTerm: "" };
   },
   mixins: [user],
   computed: {
@@ -104,6 +94,38 @@ export default {
         });
       }
       return followingUserData;
+    },
+    followers() {
+      let users = this.$store.getters.allUsers;
+      let followerUserData = [];
+      let followers =
+        this.user && this.user.followers
+          ? Object.entries(this.user.followers)
+          : [];
+      if (followers.length) {
+        users.forEach(user => {
+          followers.forEach(follower => {
+            if (user[0] === follower[1]) {
+              followerUserData.push(user);
+            }
+          });
+        });
+      }
+      return followerUserData;
+    }
+  },
+  methods: {
+    toggleCooks(event) {
+      if (event.target.id === "followers-tab" && !this.showFollowers) {
+        this.showFollowers = !this.showFollowers;
+        this.showFollowedCooks = !this.showFollowedCooks;
+      } else if (
+        event.target.id === "following-tab" &&
+        !this.showFollowedCooks
+      ) {
+        this.showFollowers = !this.showFollowers;
+        this.showFollowedCooks = !this.showFollowedCooks;
+      }
     }
   }
 };
