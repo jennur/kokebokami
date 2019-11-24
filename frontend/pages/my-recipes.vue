@@ -8,12 +8,14 @@
     >Add new recipe</nuxt-link>
     <div class="flex-row margin-top--large">
       <h3
-        @click="toggleRecipes"
+        id="my-recipes-tab"
+        @click="event => toggleRecipes(event)"
         :class="'tab margin-right--large ' + (showMyRecipes ? 'tab--active':'')"
       >My recipes</h3>
       <h3 class="margin-right--large">|</h3>
       <h3
-        @click="toggleRecipes"
+        id="shared-recipes-tab"
+        @click="event => toggleRecipes(event)"
         :class="'tab ' + (showSharedRecipes ? 'tab--active':'')"
       >Recipes shared with me</h3>
     </div>
@@ -80,9 +82,17 @@ export default {
     }
   },
   methods: {
-    toggleRecipes() {
-      this.showMyRecipes = !this.showMyRecipes;
-      this.showSharedRecipes = !this.showSharedRecipes;
+    toggleRecipes(event) {
+      if (event.target.id === "my-recipes-tab" && !this.showMyRecipes) {
+        this.showMyRecipes = !this.showMyRecipes;
+        this.showSharedRecipes = !this.showSharedRecipes;
+      } else if (
+        event.target.id === "shared-recipes-tab" &&
+        !this.showSharedRecipes
+      ) {
+        this.showMyRecipes = !this.showMyRecipes;
+        this.showSharedRecipes = !this.showSharedRecipes;
+      }
     },
     setCategory(category) {
       let categoryIndex = this.categories.indexOf(category.value);
