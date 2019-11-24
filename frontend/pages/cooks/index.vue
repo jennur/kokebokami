@@ -3,25 +3,29 @@
     <div class="tablet-width padding-horizontal--large margin--auto">
       <breadcrumbs :routes="breadcrumbs" />
     </div>
-    <div class="cooks mobile-width padding-horizontal--large margin--auto">
+    <div
+      class="cooks container container--center mobile-width padding-horizontal--large margin-top--xlarge margin--auto"
+    >
       <h2>Discover other users of Kokebokami</h2>
-      <label class="cooks__search">
-        <userIcon class="cooks__waving-icon" />
-        <input type="text" placeholder="Search for username" v-model="searchTerm" />
-      </label>
-      <ul class="cooks__result-list margin-top--xlarge padding-left--xlarge" v-if="searchTerm">
-        <li class="margin-bottom--large" v-for="cook in cooks" :key="cook[0]">
-          <nuxt-link :to="'cooks/' + cook[0]" class="cooks__user-link">
-            <img
-              class="cooks__user-photo"
-              :src="cook[1].photoURL"
-              alt="User profile"
-              v-if="cook[1].photoURL"
-            />
-            {{cook[1].displayName}}
-          </nuxt-link>
-        </li>
-      </ul>
+      <div class="cooks__search margin--auto">
+        <label>
+          <userIcon class="cooks__waving-icon" />
+          <input type="text" placeholder="Search for username" v-model="searchTerm" />
+        </label>
+        <ul class="cooks__result-list margin-top--xlarge padding-left--xlarge" v-if="searchTerm">
+          <li class="margin-bottom--large" v-for="cook in cooks" :key="cook[0]">
+            <nuxt-link :to="'cooks/' + cook[0]" class="cooks__user-link">
+              <img
+                class="cooks__user-photo"
+                :src="cook[1].photoURL"
+                alt="User profile"
+                v-if="cook[1].photoURL"
+              />
+              {{cook[1].displayName}}
+            </nuxt-link>
+          </li>
+        </ul>
+      </div>
     </div>
     <div
       class="tablet-width padding-horizontal--large margin--auto margin-top--xlarge"

@@ -1,10 +1,10 @@
 <template>
   <div class="container container--center tablet-width padding-horizontal--large">
     <breadcrumbs :routes="breadcrumbs" />
-    <h2 class="heading--display-font margin-bottom--large">{{this.firstName}}'s kokebok</h2>
+    <h1 class="heading--display-font margin-bottom--large">{{this.firstName}}'s kokebok</h1>
     <nuxt-link
       to="/account/add-recipe"
-      class="button button--large button--round margin--auto margin-top--medium"
+      class="button button--large button--round margin--auto margin-top--xlarge"
     >Add new recipe</nuxt-link>
     <div class="flex-row margin-top--large">
       <h3

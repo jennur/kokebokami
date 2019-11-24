@@ -4,7 +4,7 @@
       <breadcrumbs :routes="breadcrumbs" />
     </div>
     <div class="account container tablet-width padding-horizontal--large">
-      <h2 class="heading--display-font margin-top--xxlarge margin-bottom--large">My account details</h2>
+      <h1 class="heading--display-font margin-top--xxlarge margin-bottom--large">My account details</h1>
       <nuxt-link to="/account/public-profile-view">
         See my public profile
         <right-arrow class="icon icon--blue" />
