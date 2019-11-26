@@ -1,5 +1,5 @@
 .search-form {
-  background-color: rgba($green, 0.1);
+  //background-color: rgba($green, 0.1);
   padding: $spacingMedium;
   border-radius: $spacingSmall;
 
@@ -26,10 +26,38 @@
   &__category {
     display: inline-flex;
     flex-wrap: nowrap;
+    align-items: center;
     text-transform: capitalize;
     min-width: 100px;
     @media screen and (min-width: $mobileWidth) {
       min-width: auto;
+    }
+
+    & input {
+      appearance: none;
+      -webkit-appearance: none;
+      border: 2px solid $blue;
+      border-radius: $spacingSmall;
+      margin-top: $spacingSmall;
+      margin-right: $spacingSmall;
+      width: $spacingLarge;
+      height: $spacingLarge;
+      position: relative;
+
+      &:checked {
+        &::after {
+          content: "";
+          display: block;
+          position: absolute;
+          bottom: $spacingSmall;
+          left: $spacingSmall - 2px;
+          width: $spacingMedium + 2px;
+          height: $spacingSmall + 2px;
+          border-left: 4px solid $blue;
+          border-bottom: 4px solid $blue;
+          transform: rotate(315deg);
+        }
+      }
     }
   }
 }
