@@ -29,9 +29,9 @@
   </div>
 
   <div class="tablet-width padding-horizontal--large margin-top--xxlarge margin--auto" v-else>
-    <div class="flex-row flex-row--justify-center margin-bottom--xlarge margin--auto">
+    <!--div class="flex-row flex-row--justify-center margin-bottom--xlarge margin--auto">
       <nuxt-link to="/cooks" class="button button--large">Discover cooks on Kokebokami</nuxt-link>
-    </div>
+    </div-->
     <search-form
       class="margin-bottom--xlarge margin--auto"
       @filterBySearchTerm="setSearchTerm"
