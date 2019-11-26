@@ -19,6 +19,7 @@ export function state() {
       "lunch",
       "dinner",
       "dessert",
+      "snack",
       "vegetarian",
       "vegan"
     ]
