@@ -6,6 +6,7 @@ import CookieConsent from "~/components/CookieConsent.vue";
 import RightArrow from "~/assets/graphics/rightarrow.svg";
 import ShareIcon from "~/assets/graphics/shareicon.svg";
 import DownloadIcon from "~/assets/graphics/downloadicon.svg";
+import SearchIcon from "~/assets/graphics/searchicon.svg";
 
 Vue.component("navigation", Navigation);
 Vue.component("breadcrumbs", BreadCrumbs);
@@ -17,3 +18,4 @@ Vue.component("cookie-consent", CookieConsent);
 Vue.component("right-arrow", RightArrow);
 Vue.component("share-icon", ShareIcon);
 Vue.component("download-icon", DownloadIcon);
+Vue.component("search-icon", SearchIcon);

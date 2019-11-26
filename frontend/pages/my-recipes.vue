@@ -7,28 +7,41 @@
       class="button button--large button--round margin--auto margin-top--xlarge"
     >Add new recipe</nuxt-link>
     <div class="flex-row margin-top--large">
-      <h3
+      <h4
         id="my-recipes-tab"
         @click="event => toggleRecipes(event)"
         :class="'tab margin-right--large ' + (showMyRecipes ? 'tab--active':'')"
-      >My recipes</h3>
-      <h3 class="margin-right--large">|</h3>
-      <h3
+      >My recipes</h4>
+      <h4 class="margin-right--large">|</h4>
+      <h4
         id="shared-recipes-tab"
         @click="event => toggleRecipes(event)"
         :class="'tab ' + (showSharedRecipes ? 'tab--active':'')"
-      >Recipes shared with me</h3>
+      >Recipes shared with me</h4>
     </div>
     <div class="container">
+      <span
+        role="button"
+        @click="toggleSearchForm"
+        class="button button--small button--green-border margin-bottom--large"
+      >
+        <search-icon class="icon icon--in-button margin-right--medium" v-if="!search" />
+        {{search ? "Exit search" : "Search"}}
+      </span>
       <search-form
         class="margin-bottom--xlarge margin--auto"
         @filterBySearchTerm="setSearchTerm"
         @filterByCategory="setCategory"
+        v-if="search"
       />
     </div>
-    <recipes-list class="padding-bottom--large" :recipes="userRecipes" v-if="showMyRecipes" />
     <recipes-list
-      class="padding-bottom--large"
+      class="margin-top--large padding-bottom--large"
+      :recipes="userRecipes"
+      v-if="showMyRecipes"
+    />
+    <recipes-list
+      class="margin-top--large padding-bottom--large"
       :recipes="sharedRecipes"
       :publicRecipe="true"
       v-if="showSharedRecipes"
@@ -49,6 +62,7 @@ export default {
       addingRecipe: false,
       showMyRecipes: true,
       showSharedRecipes: false,
+      search: false,
       categories: [],
       searchTerm: ""
     };
@@ -82,6 +96,9 @@ export default {
     }
   },
   methods: {
+    toggleSearchForm() {
+      this.search = !this.search;
+    },
     toggleRecipes(event) {
       if (event.target.id === "my-recipes-tab" && !this.showMyRecipes) {
         this.showMyRecipes = !this.showMyRecipes;
