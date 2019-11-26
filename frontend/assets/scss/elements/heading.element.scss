@@ -24,6 +24,13 @@ h3 {
   }
 }
 
+h4 {
+  font-size: $fontSizeMediumMobile;
+  @media screen and (min-width: $tabletWidth) {
+    font-size: $fontSizeMedium;
+  }
+}
+
 .heading {
   &--display-font {
     font-family: $displayFont;
