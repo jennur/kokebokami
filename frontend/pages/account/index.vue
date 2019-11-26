@@ -175,7 +175,7 @@
 
 <script>
 import { user } from "~/mixins/getCurrentUser.js";
-import RecipesList from "~/components/RecipesList.vue";
+import RecipesList from "~/components/Recipes/RecipesList.vue";
 import { auth, db } from "~/plugins/firebase.js";
 
 export default {

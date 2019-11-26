@@ -29,17 +29,17 @@
     </div>
     <div class="tablet-width padding-horizontal--large margin--auto margin-top--xlarge">
       <div class="flex-row">
-        <h3
+        <h4
           id="following-tab"
           @click="event => toggleCooks(event)"
           :class="'tab margin-right--large ' + (showFollowedCooks ? 'tab--active':'')"
-        >Currently following ({{this.followedCooks.length}})</h3>
-        <h3 class="margin-right--large">|</h3>
-        <h3
+        >Currently following ({{this.followedCooks.length}})</h4>
+        <h4 class="margin-right--large">|</h4>
+        <h4
           id="followers-tab"
           @click="event => toggleCooks(event)"
           :class="'tab ' + (showFollowers ? 'tab--active':'')"
-        >Followers ({{this.followers.length}})</h3>
+        >Followers ({{this.followers.length}})</h4>
       </div>
       <cooks-list :cooks="followedCooks" v-if="showFollowedCooks" />
       <cooks-list :cooks="followers" v-if="showFollowers" />
@@ -49,7 +49,7 @@
 <script>
 import { user } from "~/mixins/getCurrentUser.js";
 import userIcon from "~/assets/graphics/user.svg";
-import CooksList from "~/components/CooksList.vue";
+import CooksList from "~/components/Cooks/CooksList.vue";
 
 export default {
   name: "cooks",

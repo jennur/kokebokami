@@ -49,7 +49,7 @@ import kokeboka from "~/assets/graphics/veggies.svg";
 import SignUpSection from "~/components/SignUp/SignUpSection.vue";
 
 import SearchForm from "~/components/Search/SearchForm.vue";
-import RecipesList from "~/components/RecipesList.vue";
+import RecipesList from "~/components/Recipes/RecipesList.vue";
 
 export default {
   name: "Home",

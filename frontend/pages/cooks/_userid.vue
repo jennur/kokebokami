@@ -23,7 +23,7 @@
 import { user } from "~/mixins/getCurrentUser.js";
 import { db } from "~/plugins/firebase.js";
 import ProfileView from "~/components/ProfileView.vue";
-import RecipesList from "~/components/RecipesList";
+import RecipesList from "~/components/Recipes/RecipesList";
 
 export default {
   name: "public-profile",
