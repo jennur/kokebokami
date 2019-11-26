@@ -4,7 +4,7 @@
     <div class="flex-column">
       <button
         @click="unfollowUser"
-        class="button button--small button--red-border margin-top--large"
+        class="button button--small button--red-border"
         v-if="isFollowingUser"
       >Unfollow {{userVisited ? userVisited[1].displayName : ""}}</button>
       <button
@@ -14,7 +14,7 @@
       >Follow {{userVisited ? userVisited[1].displayName : ""}}</button>
       <span class="system-message margin-top--medium">{{systemMessage}}</span>
     </div>
-    <profile-view class="margin-top--xxlarge" :user="userVisited ? userVisited[1] : {}" />
+    <profile-view class="margin-top--medium" :user="userVisited ? userVisited[1] : {}" />
     <h3>Check out my recipes</h3>
     <recipes-list :recipes="userVisitedsPublicRecipes" />
   </section>
@@ -23,7 +23,7 @@
 import { user } from "~/mixins/getCurrentUser.js";
 import { db } from "~/plugins/firebase.js";
 import ProfileView from "~/components/ProfileView.vue";
-import RecipesList from "~/components/RecipesList";
+import RecipesList from "~/components/Recipes/RecipesList";
 
 export default {
   name: "public-profile",

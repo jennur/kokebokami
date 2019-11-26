@@ -10,7 +10,7 @@
 <script>
 import { user } from "~/mixins/getCurrentUser.js";
 import ProfileView from "~/components/ProfileView.vue";
-import RecipesList from "~/components/RecipesList";
+import RecipesList from "~/components/Recipes/RecipesList";
 
 export default {
   name: "profile",

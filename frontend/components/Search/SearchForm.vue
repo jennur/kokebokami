@@ -2,7 +2,7 @@
   <form class="search-form" v-on:submit.prevent>
     <fieldset>
       <label class="search-form__search-field">
-        <searchIcon class="search-form__search-icon" />
+        <search-icon class="search-form__search-icon" />
         <input
           id="search"
           type="text"
@@ -28,12 +28,8 @@
   </form>
 </template>
 <script>
-import searchIcon from "~/assets/graphics/searchicon.svg";
 export default {
   name: "search-form",
-  components: {
-    searchIcon
-  },
   props: {},
   computed: {
     categories() {

@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import RecipeFullView from "~/components/RecipeFullView.vue";
+import RecipeFullView from "~/components/Recipes/RecipeFullView.vue";
 import { user } from "~/mixins/getCurrentUser.js";
 
 export default {

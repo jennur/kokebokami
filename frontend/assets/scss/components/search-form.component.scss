@@ -1,4 +1,8 @@
 .search-form {
+  //background-color: rgba($green, 0.1);
+  padding: $spacingMedium;
+  border-radius: $spacingSmall;
+
   &__search-field {
     position: relative;
 
@@ -22,6 +26,7 @@
   &__category {
     display: inline-flex;
     flex-wrap: nowrap;
+    align-items: center;
     text-transform: capitalize;
     min-width: 100px;
     @media screen and (min-width: $mobileWidth) {
