@@ -45,16 +45,19 @@
       <span class="system-message">{{passwordRepeatError}}</span>
     </label>
     <label class="flex-column margin-bottom--medium">
-      <span>
+      <span class="flex-row flex-row--nowrap">
         <input
           class="margin-top--small"
           id="terms-and-conditions"
           type="checkbox"
           v-model="termsAndConditions"
-        /> I agree to the
-        <nuxt-link to="/terms-and-conditions">Terms and Conditions</nuxt-link>
-        {{" "}}and
-        <nuxt-link to="/privacy-policy">Privacy Policy</nuxt-link>
+        />
+        <span class="padding-horizontal--small">
+          I agree to the
+          <nuxt-link to="/terms-and-conditions">Terms and Conditions</nuxt-link>
+          {{" "}}and
+          <nuxt-link to="/privacy-policy">Privacy Policy</nuxt-link>
+        </span>
       </span>
       <span class="system-message">{{termsAndConditionsError}}</span>
     </label>
