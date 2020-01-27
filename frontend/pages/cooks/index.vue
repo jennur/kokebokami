@@ -1,11 +1,9 @@
 <template>
   <div>
-    <div class="tablet-width padding-horizontal--large margin--auto">
+    <div>
       <breadcrumbs :routes="breadcrumbs" />
     </div>
-    <div
-      class="cooks container container--center mobile-width padding-horizontal--large margin-top--xlarge margin--auto"
-    >
+    <div class="cooks container container--center mobile-width margin-top--xlarge margin--auto">
       <h2>Discover other users of Kokebokami</h2>
       <div class="cooks__search margin--auto">
         <label>
@@ -27,7 +25,7 @@
         </ul>
       </div>
     </div>
-    <div class="tablet-width padding-horizontal--large margin--auto margin-top--xlarge">
+    <div class="margin-top--xlarge">
       <div class="flex-row">
         <h4
           id="following-tab"

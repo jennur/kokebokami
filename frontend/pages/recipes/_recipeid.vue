@@ -1,5 +1,5 @@
 <template>
-  <div class="tablet-width padding-horizontal--large margin--auto">
+  <div>
     <breadcrumbs class="margin-bottom--large" :routes="breadcrumbs" />
     <div class="mobile-width margin-top--xxlarge margin--auto">
       <recipe-full-view :recipe="recipe" :recipeKey="recipeKey" :isRecipeOwner="isRecipeOwner" />
@@ -61,10 +61,10 @@ export default {
           { name: "Home", link: "/" },
           { name: "Cooks", link: "/cooks" },
           {
-            name: `${recipeOwnerUsername}`,
+            name: recipeOwnerUsername,
             link: `/cooks/${this.recipe.ownerID}`
           },
-          { name: `${this.recipe.title}` }
+          { name: this.recipe.title }
         ];
       } else {
         return [
@@ -73,7 +73,7 @@ export default {
             name: "My recipes",
             link: "/my-recipes"
           },
-          { name: `${this.recipe.title}` }
+          { name: this.recipe.title }
         ];
       }
     }

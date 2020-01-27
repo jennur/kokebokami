@@ -1,5 +1,5 @@
 <template>
-  <section class="tablet-width padding-horizontal--large margin--auto">
+  <section>
     <breadcrumbs :routes="breadcrumbs" />
     <profile-view :user="user" />
     <h3>Check out my recipes</h3>

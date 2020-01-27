@@ -1,6 +1,6 @@
 <template>
   <div v-if="!user">
-    <section class="tablet-width margin-top--xxlarge margin--auto">
+    <section class="margin-top--xxlarge">
       <div
         class="flex-center-container flex-center-container--column mobile-width padding--none margin--auto"
       >

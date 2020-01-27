@@ -1,5 +1,5 @@
 <template>
-  <section class="mobile-width padding-horizontal--large margin--auto">
+  <section class="mobile-width margin--auto">
     <h1>Terms and Conditions</h1>
 
     <p>Last updated: November 08, 2019</p>

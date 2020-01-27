@@ -1,5 +1,5 @@
 <template>
-  <section class="mobile-width padding-horizontal--large margin--auto margin-top--large">
+  <section class="mobile-width margin--auto margin-top--large">
     <h1>Cookies Policy</h1>
 
     <p>Last updated: October 23, 2019</p>
