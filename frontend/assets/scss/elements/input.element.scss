@@ -39,3 +39,21 @@ input[type="checkbox"] {
     }
   }
 }
+
+.dark-bg {
+  & input,
+  textarea {
+    color: $white;
+    caret-color: $green;
+  }
+  & input[type="checkbox"] {
+    border: 2px solid $green;
+
+    &:checked {
+      &::after {
+        border-left: 4px solid $green;
+        border-bottom: 4px solid $green;
+      }
+    }
+  }
+}
