@@ -1,27 +1,44 @@
 <template>
-  <div class="tablet-width padding-horizontal--large margin--auto">
+  <div>
     <breadcrumbs class="margin-bottom--large" :routes="breadcrumbs" />
     <div class="mobile-width margin-top--xxlarge margin--auto">
       <recipe-full-view :recipe="recipe" :recipeKey="recipeKey" :isRecipeOwner="isRecipeOwner" />
+      <comments class="margin-top--xlarge" :path="path" />
     </div>
   </div>
 </template>
 
 <script>
 import RecipeFullView from "~/components/Recipes/RecipeFullView.vue";
+import Comments from "~/components/Comments/Comments.vue";
+
 import { user } from "~/mixins/getCurrentUser.js";
 
 export default {
   name: "recipe",
-  components: { RecipeFullView },
+  components: { RecipeFullView, Comments },
   data() {
     return {
       isRecipeOwner: false,
       recipeOwnerUsername: null
     };
   },
+  head() {
+    return {
+      title: `Kokebokami | ${this.recipe.title}`,
+      link: [
+        {
+          rel: "canonical",
+          href: "https://www.kokebokami.com" + this.path
+        }
+      ]
+    };
+  },
   mixins: [user],
   computed: {
+    path() {
+      return this.$route.path;
+    },
     recipeKey() {
       return this.$route.params.recipeid;
     },
@@ -61,10 +78,10 @@ export default {
           { name: "Home", link: "/" },
           { name: "Cooks", link: "/cooks" },
           {
-            name: `${recipeOwnerUsername}`,
+            name: recipeOwnerUsername,
             link: `/cooks/${this.recipe.ownerID}`
           },
-          { name: `${this.recipe.title}` }
+          { name: this.recipe.title }
         ];
       } else {
         return [
@@ -73,7 +90,7 @@ export default {
             name: "My recipes",
             link: "/my-recipes"
           },
-          { name: `${this.recipe.title}` }
+          { name: this.recipe.title }
         ];
       }
     }

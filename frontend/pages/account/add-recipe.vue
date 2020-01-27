@@ -1,5 +1,5 @@
 <template>
-  <div class="tablet-width margin--auto padding-horizontal--large">
+  <div>
     <breadcrumbs :routes="breadcrumbs" />
     <add-recipe-form :recipe="recipe" />
   </div>

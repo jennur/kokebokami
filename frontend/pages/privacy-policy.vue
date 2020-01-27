@@ -1,5 +1,5 @@
 <template>
-  <section class="mobile-width padding-horizontal--large margin--auto">
+  <section class="mobile-width margin--auto">
     <h1>Privacy Policy</h1>
 
     <p>Effective date: November 08, 2019</p>

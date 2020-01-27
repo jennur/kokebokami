@@ -1,5 +1,5 @@
 <template>
-  <section class="tablet-width padding-horizontal--large margin--auto" :key="key">
+  <section :key="key">
     <breadcrumbs :routes="breadcrumbs" />
     <div class="flex-column">
       <button

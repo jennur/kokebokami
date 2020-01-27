@@ -1,7 +1,10 @@
 <template>
   <div>
+    <div id="fb-root"></div>
     <navigation />
-    <nuxt />
+    <div class="tablet-width margin--auto padding-horizontal--large">
+      <nuxt />
+    </div>
     <footer-component />
     <cookie-consent />
   </div>
