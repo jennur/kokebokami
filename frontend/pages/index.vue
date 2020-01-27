@@ -1,6 +1,6 @@
 <template>
   <div v-if="!user">
-    <section class="margin-top--xxlarge">
+    <section class="tablet-width margin--auto padding-horizontal--large margin-top--xxlarge">
       <div
         class="flex-center-container flex-center-container--column mobile-width padding--none margin--auto"
       >
@@ -29,9 +29,6 @@
   </div>
 
   <div class="tablet-width padding-horizontal--large margin-top--xxlarge margin--auto" v-else>
-    <!--div class="flex-row flex-row--justify-center margin-bottom--xlarge margin--auto">
-      <nuxt-link to="/cooks" class="button button--large">Discover cooks on Kokebokami</nuxt-link>
-    </div-->
     <search-form
       class="margin-bottom--xlarge margin--auto"
       @filterBySearchTerm="setSearchTerm"
@@ -53,6 +50,7 @@ import RecipesList from "~/components/Recipes/RecipesList.vue";
 
 export default {
   name: "Home",
+  layout: "fullwidth",
   components: {
     kokeboka,
     SignUpSection,
