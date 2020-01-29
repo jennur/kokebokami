@@ -1,6 +1,6 @@
 <template>
   <div>
-    <navigation />
+    <header-component />
     <div class="tablet-width margin--auto padding-horizontal--large">
       <nuxt />
     </div>
