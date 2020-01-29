@@ -28,43 +28,32 @@
         <search-icon class="icon icon--in-button margin-right--medium" v-if="!search" />
         {{search ? "Exit search" : "Search"}}
       </span>
-      <search-form
+      <recipes-filter
         class="margin-bottom--xlarge margin--auto"
-        @filterBySearchTerm="setSearchTerm"
-        @filterByCategory="setCategory"
+        :recipes="visibleRecipes"
+        @filter="setVisibleRecipes"
         v-if="search"
       />
     </div>
-    <recipes-list
-      class="margin-top--large padding-bottom--large"
-      :recipes="userRecipes"
-      v-if="showMyRecipes"
-    />
-    <recipes-list
-      class="margin-top--large padding-bottom--large"
-      :recipes="sharedRecipes"
-      :publicRecipe="true"
-      v-if="showSharedRecipes"
-    />
+    <recipes-list class="margin-top--large padding-bottom--large" :recipes="visibleRecipes" />
   </div>
 </template>
 
 <script>
 import { user } from "~/mixins/getCurrentUser.js";
 import RecipesList from "~/components/Recipes/RecipesList.vue";
-import SearchForm from "~/components/Search/SearchForm.vue";
+import RecipesFilter from "~/components/RecipesFilter/RecipesFilter.vue";
 
 export default {
   name: "my-recipes",
-  components: { RecipesList, SearchForm },
+  components: { RecipesList, RecipesFilter },
   data() {
     return {
       addingRecipe: false,
       showMyRecipes: true,
       showSharedRecipes: false,
       search: false,
-      categories: [],
-      searchTerm: ""
+      visibleRecipes: []
     };
   },
   mixins: [user],
@@ -85,14 +74,10 @@ export default {
       return firstName;
     },
     userRecipes() {
-      let recipes = this.$store.getters.recipes;
-      if (recipes) return this.filterRecipes(recipes);
-      else return [];
+      return this.$store.getters.recipes;
     },
     sharedRecipes() {
-      let recipes = this.$store.getters.sharedRecipes;
-      if (recipes) return this.filterRecipes(recipes);
-      else return [];
+      return this.$store.getters.sharedRecipes;
     }
   },
   methods: {
@@ -103,61 +88,23 @@ export default {
       if (event.target.id === "my-recipes-tab" && !this.showMyRecipes) {
         this.showMyRecipes = !this.showMyRecipes;
         this.showSharedRecipes = !this.showSharedRecipes;
+        this.visibleRecipes = this.userRecipes;
       } else if (
         event.target.id === "shared-recipes-tab" &&
         !this.showSharedRecipes
       ) {
         this.showMyRecipes = !this.showMyRecipes;
         this.showSharedRecipes = !this.showSharedRecipes;
+        this.visibleRecipes = this.sharedRecipes;
       }
     },
-    setCategory(category) {
-      let categoryIndex = this.categories.indexOf(category.value);
-
-      if (category.checked) {
-        this.categories.push(category.value);
-      } else if (!category.checked && categoryIndex !== -1) {
-        this.categories.splice(categoryIndex, 1);
-      }
-    },
-    setSearchTerm(value) {
-      this.searchTerm = value;
-    },
-    filterRecipes(recipes) {
-      let categories = this.categories;
-      let searchTerm = this.searchTerm;
-      let filteredRecipes = [];
-      let recipesToBeFiltered = recipes;
-      if (recipes && categories.length) {
-        categories.forEach(category => {
-          let oneOrMoreRecipesOfCategory = -1;
-          recipesToBeFiltered.forEach(recipe => {
-            if (
-              recipe[1].categories &&
-              recipe[1].categories.indexOf(category) !== -1
-            ) {
-              oneOrMoreRecipesOfCategory *= 0;
-              if (filteredRecipes && filteredRecipes.indexOf(recipe) === -1)
-                filteredRecipes.push(recipe);
-            }
-          });
-        });
-        recipesToBeFiltered = filteredRecipes;
-      }
-
-      if (recipes && searchTerm !== "") {
-        recipesToBeFiltered = recipesToBeFiltered.filter(recipe => {
-          return (
-            recipe[1].title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            recipe[1].description
-              .toLowerCase()
-              .includes(searchTerm.toLowerCase())
-          );
-        });
-      }
-
-      return recipesToBeFiltered;
+    setVisibleRecipes(filteredRecipes) {
+      this.visibleRecipes = filteredRecipes;
     }
+  },
+  created() {
+    if (this.showMyRecipes) this.visibleRecipes = this.userRecipes;
+    else if (this.showSharedRecipes) this.visibleRecipes = this.sharedRecipes;
   }
 };
 </script>

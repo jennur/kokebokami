@@ -29,10 +29,10 @@
   </div>
 
   <div class="tablet-width padding-horizontal--large margin-top--xxlarge margin--auto" v-else>
-    <search-form
+    <recipes-filter
       class="margin-bottom--xlarge margin--auto"
-      @filterBySearchTerm="setSearchTerm"
-      @filterByCategory="setCategory"
+      :recipes="recipes"
+      @filter="setVisibleRecipes"
     />
     <recipes-list :recipes="visibleRecipes" :publicRecipe="true" />
   </div>
@@ -45,7 +45,7 @@ import { user } from "~/mixins/getCurrentUser.js";
 import kokeboka from "~/assets/graphics/veggies.svg";
 import SignUpSection from "~/components/SignUp/SignUpSection.vue";
 
-import SearchForm from "~/components/Search/SearchForm.vue";
+import RecipesFilter from "~/components/RecipesFilter/RecipesFilter.vue";
 import RecipesList from "~/components/Recipes/RecipesList.vue";
 
 export default {
@@ -54,68 +54,27 @@ export default {
   components: {
     kokeboka,
     SignUpSection,
-    SearchForm,
+    RecipesFilter,
     RecipesList
   },
   data() {
     return {
-      categories: [],
-      searchTerm: "",
-      filteredRecipes: []
+      visibleRecipes: []
     };
   },
-  mixins: [user],
   computed: {
-    visibleRecipes() {
-      let publicRecipes = this.$store.getters.publicRecipes;
-      let categories = this.categories;
-      let searchTerm = this.searchTerm;
-      let filteredRecipes = [];
-      let recipesToBeFiltered = publicRecipes;
-      if (publicRecipes && categories.length) {
-        categories.forEach(category => {
-          let oneOrMoreRecipesOfCategory = -1;
-          recipesToBeFiltered.forEach(recipe => {
-            if (
-              recipe[1].categories &&
-              recipe[1].categories.indexOf(category) !== -1
-            ) {
-              oneOrMoreRecipesOfCategory *= 0;
-              if (filteredRecipes && filteredRecipes.indexOf(recipe) === -1)
-                filteredRecipes.push(recipe);
-            }
-          });
-        });
-        recipesToBeFiltered = filteredRecipes;
-      }
-
-      if (publicRecipes && searchTerm !== "") {
-        recipesToBeFiltered = recipesToBeFiltered.filter(recipe => {
-          return (
-            recipe[1].title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            recipe[1].description
-              .toLowerCase()
-              .includes(searchTerm.toLowerCase())
-          );
-        });
-      }
-
-      return recipesToBeFiltered;
+    recipes() {
+      return this.$store.getters.publicRecipes;
     }
   },
+  mixins: [user],
   methods: {
-    setCategory(category) {
-      let categoryIndex = this.categories.indexOf(category.value);
-
-      if (category.checked) {
-        this.categories.push(category.value);
-      } else if (!category.checked && categoryIndex !== -1) {
-        this.categories.splice(categoryIndex, 1);
-      }
-    },
-    setSearchTerm(value) {
-      this.searchTerm = value;
+    setVisibleRecipes(filteredRecipes) {
+      this.visibleRecipes = filteredRecipes;
     }
+  },
+  created() {
+    this.visibleRecipes = this.$store.getters.publicRecipes;
   }
 };
 </script>

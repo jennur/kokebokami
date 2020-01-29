@@ -14,14 +14,40 @@ export function state() {
     recipes: [],
     sharedRecipes: [],
     publicRecipes: [],
-    categories: [
-      "breakfast",
-      "lunch",
-      "dinner",
-      "dessert",
-      "snack",
-      "vegetarian",
-      "vegan"
+    allCategories: [
+      {
+        languages: [
+          "English",
+          "French",
+          "German",
+          "Italian",
+          "Norwegian",
+          "Spanish",
+
+          "Polish",
+          "Arabic",
+          "Bengali",
+          "Dutch",
+          "Hindi",
+          "Javanese",
+          "Japanese",
+          "Korean",
+          "Malay",
+          "Mandarin",
+          "Persian",
+          "Portuguese",
+          "Punjabi",
+          "Russian",
+          "Swahili",
+          "Tamil",
+          "Thai",
+          "Turkish",
+          "Vietnamese"
+        ]
+      },
+      { typeOfMeal: ["vegetarian", "vegan"] },
+      { freeFrom: ["fish", "celery", "nuts", "gluten", "diary"] },
+      { categories: ["breakfast", "lunch", "dinner", "dessert", "snack"] }
     ]
   };
 }
@@ -183,7 +209,7 @@ export const getters = {
   publicRecipes(state) {
     return state.publicRecipes;
   },
-  categories(state) {
-    return state.categories;
+  allCategories(state) {
+    return state.allCategories;
   }
 };
