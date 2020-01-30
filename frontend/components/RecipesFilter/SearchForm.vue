@@ -1,7 +1,7 @@
 <template>
   <fieldset>
-    <label class="search-form__search-field">
-      <search-icon class="search-form__search-icon" />
+    <label class="search-field">
+      <search-icon class="search-icon" />
       <input
         id="search"
         type="text"

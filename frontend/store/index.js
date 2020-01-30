@@ -29,7 +29,6 @@ export function state() {
           "Bengali",
           "Dutch",
           "Hindi",
-          "Javanese",
           "Japanese",
           "Korean",
           "Malay",
@@ -45,9 +44,9 @@ export function state() {
           "Vietnamese"
         ]
       },
-      { typeOfMeal: ["vegetarian", "vegan"] },
+      { typeOfMeal: ["breakfast", "lunch", "dinner", "dessert", "snack"] },
       { freeFrom: ["fish", "celery", "nuts", "gluten", "diary"] },
-      { categories: ["breakfast", "lunch", "dinner", "dessert", "snack"] }
+      { categories: ["vegetarian", "vegan"] }
     ]
   };
 }

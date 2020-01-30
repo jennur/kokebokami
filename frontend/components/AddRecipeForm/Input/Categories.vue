@@ -23,8 +23,16 @@ export default {
     }
   },
   computed: {
+    allCategoryObjects() {
+      return this.$store.getters.allCategories;
+    },
     categories() {
-      return this.$store.getters.categories;
+      let allCategories = [];
+      this.allCategoryObjects.forEach(categoryObj => {
+        allCategories = allCategories.concat(Object.values(categoryObj)[0]);
+      });
+
+      return allCategories;
     }
   },
   mounted() {

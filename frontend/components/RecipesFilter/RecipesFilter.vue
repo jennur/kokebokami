@@ -1,9 +1,10 @@
 <template>
-  <form class="search-form" v-on:submit.prevent>
-    <search-form :recipes="recipes" @filterSearchTerm="setSearchTerm" />
-    <category-filter :categories="allCategories" @filterCategories="setCategory" />
-    <button @click="handleSearch">Apply</button>
-  </form>
+  <div class="recipes-filter-container">
+    <form class="recipes-filter__form" v-on:submit.prevent>
+      <search-form :recipes="recipes" @filterSearchTerm="setSearchTerm" />
+      <category-filter :categories="allCategories" @filterCategories="setCategories" />
+    </form>
+  </div>
 </template>
 <script>
 import CategoryFilter from "./CategoryFilter.vue";
@@ -39,15 +40,11 @@ export default {
   methods: {
     setSearchTerm(value) {
       this.searchTerm = value;
+      this.handleSearch();
     },
-    setCategory(target) {
-      let categoryIndex = this.categories.indexOf(target.value);
-
-      if (target.checked) {
-        this.categories.push(target.value);
-      } else if (!target.checked && categoryIndex !== -1) {
-        this.categories.splice(categoryIndex, 1);
-      }
+    setCategories(filteredCategories) {
+      this.categories = filteredCategories;
+      this.handleSearch();
     },
     handleSearch() {
       let publicRecipes = this.$store.getters.publicRecipes;
@@ -82,7 +79,6 @@ export default {
           );
         });
       }
-      console.log("Recipes To Be Filtered:::", recipesToBeFiltered);
       this.$emit("filter", recipesToBeFiltered);
     }
   }
