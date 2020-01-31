@@ -24,19 +24,31 @@
     }
     & .categories {
       &-container {
-        display: flex;
-        flex-direction: row;
+        display: block;
         margin-top: $spacingMedium;
         padding: $spacingMedium;
         background-color: rgba($orange, 0.08);
+        box-sizing: border-box;
+        border-radius: $spacingSmall;
       }
-      display: flex;
+      display: inline-flex;
       flex-direction: column;
-      max-width: 200px;
+      margin-left: $spacingLarge;
+      color: $blue;
 
       &__title {
         margin-top: $spacingMedium;
       }
+
+      &__select {
+        background-color: transparent;
+        padding: $spacingMedium $spacingMedium;
+        border: 2px solid $blue;
+        color: $blue;
+        font-size: $fontSizeSmall;
+        box-shadow: none;
+      }
+
       &__category {
         display: inline-flex;
         flex-wrap: nowrap;

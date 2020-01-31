@@ -2,14 +2,23 @@
   <fieldset id="categories" class="categories-container">
     <div class="categories">
       <h4 class="categories__title margin-bottom--medium">Recipe Language</h4>
-      <select v-model="selected" @change="(event) =>{handleCategory(event.target)}">
+      <select
+        class="categories__select"
+        v-model="selected"
+        @change="
+          event => {
+            handleCategory(event.target);
+          }
+        "
+      >
         <option>All languages</option>
         <option
           v-for="category in languages"
           :value="category"
           :key="category"
           :id="category"
-        >{{category}}</option>
+          >{{ category }}</option
+        >
       </select>
     </div>
     <div class="categories">
@@ -20,8 +29,16 @@
         :key="category"
         :id="category"
       >
-        <input type="checkbox" :value="category" @change="(event) =>{handleCategory(event.target)}" />
-        {{category}}
+        <input
+          type="checkbox"
+          :value="category"
+          @change="
+            event => {
+              handleCategory(event.target);
+            }
+          "
+        />
+        {{ category }}
       </label>
     </div>
     <div class="categories">
@@ -32,8 +49,16 @@
         :key="category"
         :id="category"
       >
-        <input type="checkbox" :value="category" @change="(event) =>{handleCategory(event.target)}" />
-        {{category}}
+        <input
+          type="checkbox"
+          :value="category"
+          @change="
+            event => {
+              handleCategory(event.target);
+            }
+          "
+        />
+        {{ category }}
       </label>
     </div>
     <div class="categories">
@@ -44,8 +69,16 @@
         :key="category"
         :id="category"
       >
-        <input type="checkbox" :value="category" @change="(event) =>{handleCategory(event.target)}" />
-        {{category}}
+        <input
+          type="checkbox"
+          :value="category"
+          @change="
+            event => {
+              handleCategory(event.target);
+            }
+          "
+        />
+        {{ category }}
       </label>
     </div>
   </fieldset>
@@ -107,18 +140,8 @@ export default {
     handleCategory(target) {
       let categoryIndex = this.filteredCategories.indexOf(target.value);
       let categories = this.filteredCategories;
-      let language = [];
+      let language = this.selected;
 
-      if (target.value === this.selected) {
-        categories = categories.filter(category => {
-          console.log("Category in filter::", category);
-          return this.languages.indexOf(category) === -1;
-        });
-
-        if (target.value !== "All languages") {
-          categories.push(target.value);
-        }
-      }
       if (target.checked) {
         categories.push(target.value);
       } else if (
@@ -129,8 +152,14 @@ export default {
         categories.splice(categoryIndex, 1);
       }
       this.filteredCategories = categories;
-      console.log("Categories::", this.filteredCategories);
-      this.$emit("filterCategories", this.filteredCategories);
+      console.log("CategoryObject::", {
+        language: language,
+        categories: this.filteredCategories
+      });
+      this.$emit("filterCategories", {
+        language: language,
+        categories: this.filteredCategories
+      });
     }
   }
 };

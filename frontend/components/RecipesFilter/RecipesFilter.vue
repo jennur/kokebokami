@@ -2,7 +2,10 @@
   <div class="recipes-filter-container">
     <form class="recipes-filter__form" v-on:submit.prevent>
       <search-form :recipes="recipes" @filterSearchTerm="setSearchTerm" />
-      <category-filter :categories="allCategories" @filterCategories="setCategories" />
+      <category-filter
+        :categories="allCategories"
+        @filterCategories="setCategories"
+      />
     </form>
   </div>
 </template>
@@ -17,7 +20,7 @@ export default {
     SearchForm
   },
   data() {
-    return { searchTerm: "", categories: [] };
+    return { language: "", searchTerm: "", categories: [] };
   },
   props: {
     recipes: {
@@ -42,16 +45,25 @@ export default {
       this.searchTerm = value;
       this.handleSearch();
     },
-    setCategories(filteredCategories) {
-      this.categories = filteredCategories;
+    setCategories(categoryObject) {
+      this.categories = categoryObject.categories;
+      this.language = categoryObject.language;
       this.handleSearch();
     },
     handleSearch() {
       let publicRecipes = this.$store.getters.publicRecipes;
+      let language = this.language;
       let categories = this.categories;
       let searchTerm = this.searchTerm;
       let filteredRecipes = [];
       let recipesToBeFiltered = publicRecipes;
+
+      if (publicRecipes && language !== "" && language !== "All languages") {
+        recipesToBeFiltered = recipesToBeFiltered.filter(recipe => {
+          return recipe[1].language === language;
+        });
+      }
+
       if (publicRecipes && categories.length) {
         categories.forEach(category => {
           let oneOrMoreRecipesOfCategory = -1;
