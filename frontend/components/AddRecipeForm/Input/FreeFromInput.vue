@@ -23,7 +23,7 @@
 </template>
 <script>
 export default {
-  name: "free-from",
+  name: "free-from-input",
   data() {
     return { checkedFreeFrom: [] };
   },
@@ -59,7 +59,6 @@ export default {
   },
   mounted() {
     let existingFreeFrom = this.existingFreeFrom;
-    console.log("ExistingFreeFrom::", existingFreeFrom);
 
     if (existingFreeFrom.length) {
       existingFreeFrom.forEach(allergen => {

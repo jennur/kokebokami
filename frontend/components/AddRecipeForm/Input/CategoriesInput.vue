@@ -23,7 +23,7 @@
 </template>
 <script>
 export default {
-  name: "categories",
+  name: "categories-input",
   data() {
     return { checkedCategories: [] };
   },

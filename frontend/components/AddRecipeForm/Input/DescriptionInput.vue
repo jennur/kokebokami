@@ -10,7 +10,7 @@
 </template>
 <script>
 export default {
-  name: "description",
+  name: "description-input",
   data() {
     let descriptionValue = "";
     if (this.existingDescription) {

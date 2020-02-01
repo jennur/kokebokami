@@ -11,7 +11,7 @@
 
 <script>
 export default {
-  name: "title-component",
+  name: "title-input",
   data() {
     let titleValue = "";
     if (this.existingTitle) {
