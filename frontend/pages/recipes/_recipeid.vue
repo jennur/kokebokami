@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import RecipeFullView from "~/components/Recipes/RecipeFullView.vue";
+import RecipeFullView from "~/components/Recipes/RecipeFullView/RecipeFullView.vue";
 import Comments from "~/components/Comments/Comments.vue";
 
 import { user } from "~/mixins/getCurrentUser.js";
@@ -97,4 +97,3 @@ export default {
   }
 };
 </script>
-
