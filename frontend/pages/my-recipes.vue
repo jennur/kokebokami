@@ -1,23 +1,32 @@
 <template>
   <div class="container container--center">
     <breadcrumbs :routes="breadcrumbs" />
-    <h1 class="heading--display-font margin-bottom--large">{{this.firstName}}'s kokebok</h1>
+    <h1 class="heading--display-font margin-bottom--large">
+      {{ this.firstName }}'s kokebok
+    </h1>
     <nuxt-link
       to="/account/add-recipe"
       class="button button--large button--round margin--auto margin-top--xlarge"
-    >Add new recipe</nuxt-link>
+      >Add new recipe</nuxt-link
+    >
     <div class="flex-row margin-top--large">
       <h4
         id="my-recipes-tab"
         @click="event => toggleRecipes(event)"
-        :class="'tab margin-right--large ' + (showMyRecipes ? 'tab--active':'')"
-      >My recipes</h4>
+        :class="
+          'tab margin-right--large ' + (showMyRecipes ? 'tab--active' : '')
+        "
+      >
+        My recipes
+      </h4>
       <h4 class="margin-right--large">|</h4>
       <h4
         id="shared-recipes-tab"
         @click="event => toggleRecipes(event)"
-        :class="'tab ' + (showSharedRecipes ? 'tab--active':'')"
-      >Recipes shared with me</h4>
+        :class="'tab ' + (showSharedRecipes ? 'tab--active' : '')"
+      >
+        Recipes shared with me
+      </h4>
     </div>
     <div class="container">
       <span
@@ -25,17 +34,23 @@
         @click="toggleSearchForm"
         class="button button--small button--green-border margin-bottom--large"
       >
-        <search-icon class="icon icon--in-button margin-right--medium" v-if="!search" />
-        {{search ? "Exit search" : "Search"}}
+        <search-icon
+          class="icon icon--in-button margin-right--medium"
+          v-if="!search"
+        />
+        {{ search ? "Exit search" : "Search" }}
       </span>
       <recipes-filter
         class="margin-bottom--xlarge margin--auto"
-        :recipes="visibleRecipes"
+        :recipes="recipesToBeFiltered"
         @filter="setVisibleRecipes"
         v-if="search"
       />
     </div>
-    <recipes-list class="margin-top--large padding-bottom--large" :recipes="visibleRecipes" />
+    <recipes-list
+      class="margin-top--large padding-bottom--large"
+      :recipes="visibleRecipes"
+    />
   </div>
 </template>
 
@@ -53,7 +68,9 @@ export default {
       showMyRecipes: true,
       showSharedRecipes: false,
       search: false,
-      visibleRecipes: []
+      filteredRecipes: [],
+      filtered: false,
+      filteredKind: ""
     };
   },
   mixins: [user],
@@ -74,10 +91,32 @@ export default {
       return firstName;
     },
     userRecipes() {
-      return this.$store.getters.recipes;
+      return this.$store.state.recipes;
     },
     sharedRecipes() {
-      return this.$store.getters.sharedRecipes;
+      return this.$store.state.sharedRecipes;
+    },
+    visibleRecipes() {
+      if (this.showMyRecipes) {
+        if (!this.filtered) return this.userRecipes;
+        if (this.filtered && this.filteredKind === "myRecipes")
+          return this.filteredRecipes;
+        else if (this.filtered && this.filteredKind === "sharedRecipes")
+          return this.userRecipes;
+      } else if (this.showSharedRecipes) {
+        if (!this.filtered) return this.sharedRecipes;
+        if (this.filtered && this.filteredKind === "sharedRecipes")
+          return this.filteredRecipes;
+        else if (this.filtered && this.filteredKind === "myRecipes")
+          return this.sharedRecipes;
+      }
+    },
+    recipesToBeFiltered() {
+      if (this.showMyRecipes) {
+        return this.userRecipes;
+      } else if (this.showSharedRecipes) {
+        return this.sharedRecipes;
+      }
     }
   },
   methods: {
@@ -88,24 +127,20 @@ export default {
       if (event.target.id === "my-recipes-tab" && !this.showMyRecipes) {
         this.showMyRecipes = !this.showMyRecipes;
         this.showSharedRecipes = !this.showSharedRecipes;
-        this.visibleRecipes = this.userRecipes;
       } else if (
         event.target.id === "shared-recipes-tab" &&
         !this.showSharedRecipes
       ) {
         this.showMyRecipes = !this.showMyRecipes;
         this.showSharedRecipes = !this.showSharedRecipes;
-        this.visibleRecipes = this.sharedRecipes;
       }
     },
-    setVisibleRecipes(filteredRecipes) {
-      this.visibleRecipes = filteredRecipes;
+    setVisibleRecipes(filteredRecipesObj) {
+      this.filteredRecipes = filteredRecipesObj.recipes;
+      this.filtered = filteredRecipesObj.filtered;
+      if (this.showMyRecipes) this.filteredKind = "myRecipes";
+      if (this.showSharedRecipes) this.filteredKind = "sharedRecipes";
     }
-  },
-  created() {
-    if (this.showMyRecipes) this.visibleRecipes = this.userRecipes;
-    else if (this.showSharedRecipes) this.visibleRecipes = this.sharedRecipes;
   }
 };
 </script>
-

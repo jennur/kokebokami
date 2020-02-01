@@ -3,14 +3,16 @@
     <form class="recipes-filter__form" v-on:submit.prevent>
       <search-form :recipes="recipes" @filterSearchTerm="setSearchTerm" />
       <category-filter
-        :categories="allCategories"
-        @filterCategories="setCategories"
+        @setLanguage="setLanguage"
+        @setTypeOfMeal="setTypeOfMeal"
+        @setMealCategories="setMealCategories"
+        @setFreeFrom="setFreeFrom"
       />
     </form>
   </div>
 </template>
 <script>
-import CategoryFilter from "./CategoryFilter.vue";
+import CategoryFilter from "./CategoryFilter/CategoryFilter.vue";
 import SearchForm from "./SearchForm.vue";
 
 export default {
@@ -20,7 +22,14 @@ export default {
     SearchForm
   },
   data() {
-    return { language: "", searchTerm: "", categories: [] };
+    return {
+      language: "",
+      searchTerm: "",
+      typeOfMeal: [],
+      mealCategories: [],
+      freeFrom: [],
+      categories: []
+    };
   },
   props: {
     recipes: {
@@ -28,50 +37,70 @@ export default {
       default: () => []
     }
   },
-  computed: {
-    allCategories() {
-      let allCategoryObjects = this.$store.getters.allCategories;
-      let allCategories = [];
-      allCategoryObjects.forEach(categoryObj => {
-        allCategories = allCategories.concat(Object.values(categoryObj)[0]);
-      });
-
-      return allCategories;
-    }
-  },
-
   methods: {
     setSearchTerm(value) {
       this.searchTerm = value;
       this.handleSearch();
     },
-    setCategories(categoryObject) {
-      this.categories = categoryObject.categories;
-      this.language = categoryObject.language;
+    setLanguage(language) {
+      this.language = language;
+      this.handleSearch();
+    },
+    setTypeOfMeal(typeOfMeal) {
+      this.typeOfMeal = typeOfMeal;
+      this.handleSearch();
+    },
+    setMealCategories(mealCategories) {
+      this.mealCategories = mealCategories;
+      this.handleSearch();
+    },
+    setFreeFrom(freeFrom) {
+      this.freeFrom = freeFrom;
       this.handleSearch();
     },
     handleSearch() {
-      let publicRecipes = this.$store.getters.publicRecipes;
+      let recipes = this.recipes;
       let language = this.language;
-      let categories = this.categories;
+      let categories = this.typeOfMeal.concat(this.mealCategories);
+      let freeFrom = this.freeFrom;
       let searchTerm = this.searchTerm;
       let filteredRecipes = [];
-      let recipesToBeFiltered = publicRecipes;
+      let recipesToBeFiltered = recipes;
 
-      if (publicRecipes && language !== "" && language !== "All languages") {
+      if (recipes && language !== "" && language !== "All languages") {
         recipesToBeFiltered = recipesToBeFiltered.filter(recipe => {
-          return recipe[1].language === language;
+          if (recipe[1].language) {
+            return recipe[1].language.toLowerCase() === language.toLowerCase();
+          }
         });
       }
 
-      if (publicRecipes && categories.length) {
+      if (recipes && freeFrom.length) {
+        recipesToBeFiltered = recipesToBeFiltered.filter(recipe => {
+          if (recipe.freeFrom) {
+            return freeFrom.forEach(allergen => {
+              return recipe.freeFrom.indexOf(allergen) > -1; //true: allergen in list
+            });
+          }
+        });
+      }
+
+      if (recipes && categories.length) {
         categories.forEach(category => {
           let oneOrMoreRecipesOfCategory = -1;
           recipesToBeFiltered.forEach(recipe => {
-            if (
-              recipe[1].categories &&
-              recipe[1].categories.indexOf(category) !== -1
-            ) {
+            let recipeTypeOfMeal = recipe[1].typeOfMeal
+              ? recipe[1].typeOfMeal
+              : [];
+            let recipeMealCategories = recipe[1].categories
+              ? recipe[1].categories
+              : [];
+
+            let recipeCategories = recipeTypeOfMeal.concat(
+              recipeMealCategories
+            );
+
+            if (recipeCategories && recipeCategories.indexOf(category) !== -1) {
               oneOrMoreRecipesOfCategory *= 0;
               if (filteredRecipes && filteredRecipes.indexOf(recipe) === -1)
                 filteredRecipes.push(recipe);
@@ -81,7 +110,7 @@ export default {
         recipesToBeFiltered = filteredRecipes;
       }
 
-      if (publicRecipes && searchTerm !== "") {
+      if (recipes && searchTerm !== "") {
         recipesToBeFiltered = recipesToBeFiltered.filter(recipe => {
           return (
             recipe[1].title.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -91,7 +120,10 @@ export default {
           );
         });
       }
-      this.$emit("filter", recipesToBeFiltered);
+      this.$emit("filter", {
+        recipes: recipesToBeFiltered,
+        filtered: true
+      });
     }
   }
 };

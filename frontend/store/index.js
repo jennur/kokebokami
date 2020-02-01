@@ -45,7 +45,7 @@ export function state() {
         ]
       },
       { typeOfMeal: ["breakfast", "lunch", "dinner", "dessert", "snack"] },
-      { freeFrom: ["fish", "celery", "nuts", "gluten", "diary"] },
+      { allergens: ["fish", "celery", "nuts", "gluten", "diary"] },
       { categories: ["vegetarian", "vegan"] }
     ]
   };

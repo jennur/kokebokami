@@ -1,20 +1,27 @@
 <template>
   <div v-if="!user">
-    <section class="tablet-width margin--auto padding-horizontal--large margin-top--xxlarge">
+    <section
+      class="tablet-width margin--auto padding-horizontal--large margin-top--xxlarge"
+    >
       <div
         class="flex-center-container flex-center-container--column mobile-width padding--none margin--auto"
       >
-        <h1
-          class="heading--display-font padding-horizontal--large"
-        >It's time to digitalize your cook book!</h1>
+        <h1 class="heading--display-font padding-horizontal--large">
+          It's time to digitalize your cook book!
+        </h1>
         <p
           class="padding-horizontal--large color--blue font-size--medium text-align--center"
-        >Start storing your personal recipes online to make sure they never get lost. Keep them private, share them with the public or your friends only.</p>
+        >
+          Start storing your personal recipes online to make sure they never get
+          lost. Keep them private, share them with the public or your friends
+          only.
+        </p>
         <nuxt-link
           to="/sign-up"
           class="button button--large padding-horizontal--xlarge margin-top--large"
           v-if="!user"
-        >Get started ➔</nuxt-link>
+          >Get started ➔</nuxt-link
+        >
       </div>
       <div class="flex-center-container">
         <kokeboka class="illustration illustration--kokeboka" />
@@ -28,7 +35,10 @@
     />
   </div>
 
-  <div class="tablet-width padding-horizontal--large margin-top--xxlarge margin--auto" v-else>
+  <div
+    class="tablet-width padding-horizontal--large margin-top--xxlarge margin--auto"
+    v-else
+  >
     <recipes-filter
       class="margin-bottom--xlarge margin--auto"
       :recipes="recipes"
@@ -59,22 +69,25 @@ export default {
   },
   data() {
     return {
-      visibleRecipes: []
+      filteredRecipes: [],
+      filtered: false
     };
   },
   computed: {
     recipes() {
       return this.$store.getters.publicRecipes;
+    },
+    visibleRecipes() {
+      if (!this.filtered) return this.recipes;
+      if (this.filtered) return this.filteredRecipes;
     }
   },
   mixins: [user],
   methods: {
-    setVisibleRecipes(filteredRecipes) {
-      this.visibleRecipes = filteredRecipes;
+    setVisibleRecipes(filteredRecipesObj) {
+      this.filteredRecipes = filteredRecipesObj.recipes;
+      this.filtered = filteredRecipesObj.filtered;
     }
-  },
-  created() {
-    this.visibleRecipes = this.$store.getters.publicRecipes;
   }
 };
 </script>

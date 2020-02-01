@@ -6,13 +6,17 @@
         id="search"
         type="text"
         placeholder="Search among recipes"
-        @input="(event) =>{handleSearchTerm(event.target.value)}"
+        @input="
+          event => {
+            handleSearchTerm(event.target.value);
+          }
+        "
       />
     </label>
   </fieldset>
 </template>
 <script>
-import CategoryFilter from "./CategoryFilter.vue";
+import CategoryFilter from "./CategoryFilter/CategoryFilter.vue";
 
 export default {
   name: "search-form",
