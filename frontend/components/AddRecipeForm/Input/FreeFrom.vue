@@ -1,15 +1,16 @@
 <template>
-  <div class="categories">
-    <h4 class="categories__title margin-bottom--medium">Free from</h4>
+  <fieldset>
+    <h4 class="margin-bottom--medium">Free from</h4>
+
     <label
-      class="categories__category margin-right--large"
+      class="search-form__category margin-right--large"
       v-for="allergen in allergens"
       :key="allergen"
     >
       <input
         type="checkbox"
-        :value="allergen"
         :id="allergen"
+        :value="allergen"
         @change="
           event => {
             handleFreeFrom(event.target);
@@ -18,13 +19,19 @@
       />
       {{ allergen }}
     </label>
-  </div>
+  </fieldset>
 </template>
 <script>
 export default {
   name: "free-from",
   data() {
-    return { freeFrom: [] };
+    return { checkedFreeFrom: [] };
+  },
+  props: {
+    existingFreeFrom: {
+      type: Array,
+      default: () => []
+    }
   },
   computed: {
     allergens() {
@@ -38,16 +45,27 @@ export default {
   },
   methods: {
     handleFreeFrom(target) {
-      let categoryIndex = this.freeFrom.indexOf(target.value);
-      let freeFrom = this.freeFrom;
+      let categoryIndex = this.checkedFreeFrom.indexOf(target.value);
+      let freeFrom = [].concat(this.checkedFreeFrom);
 
       if (target.checked) {
         freeFrom.push(target.value);
       } else if (!target.checked && categoryIndex !== -1) {
         freeFrom.splice(categoryIndex, 1);
       }
-      this.freeFrom = freeFrom;
-      this.$emit("filter", this.freeFrom);
+      this.checkedFreeFrom = freeFrom;
+      this.$emit("update", this.checkedFreeFrom);
+    }
+  },
+  mounted() {
+    let existingFreeFrom = this.existingFreeFrom;
+    console.log("ExistingFreeFrom::", existingFreeFrom);
+
+    if (existingFreeFrom.length) {
+      existingFreeFrom.forEach(allergen => {
+        let element = document.getElementById(allergen);
+        if (element) element.checked = true;
+      });
     }
   }
 };

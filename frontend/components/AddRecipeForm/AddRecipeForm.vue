@@ -1,14 +1,42 @@
 <template>
   <section class="mobile-width margin--auto margin-top--xlarge">
     <form class="add-recipe-form" v-on:submit.prevent>
+      <!-- LANGUAGE -->
+      <select v-model="language" id="language" class="categories__select">
+        <option>This recipe is in ...</option>
+        <option
+          v-for="language in languages"
+          :value="language"
+          :key="language"
+          :id="language"
+          >{{ language }}</option
+        >
+      </select>
+
       <!-- CATEGORIES -->
 
-      <categories id="categories" class="margin-bottom--xlarge" :existingCategories="categories" />
+      <categories
+        id="categories"
+        class="margin-bottom--xlarge"
+        :existingCategories="categories"
+        @update="updateCategories"
+      />
 
+      <!-- FREE FROM -->
+      <free-from
+        id="freeFrom"
+        class="margin-bottom--xlarge"
+        :existingFreeFrom="freeFrom"
+        @update="updateFreeFrom"
+      />
       <!-- TITLE / DESCRIPTION -->
 
       <fieldset class="flex-column">
-        <title-component id="recipeTitle" class="margin-bottom--medium" :existingTitle="title" />
+        <title-component
+          id="recipeTitle"
+          class="margin-bottom--medium"
+          :existingTitle="title"
+        />
         <description
           id="recipeDescription"
           class="margin-bottom--medium"
@@ -18,7 +46,10 @@
 
       <!-- INGREDIENTS -->
 
-      <fieldset id="ingredientList" class="add-recipe-form__ingredients flex-column">
+      <fieldset
+        id="ingredientList"
+        class="add-recipe-form__ingredients flex-column"
+      >
         <h4>Ingredients</h4>
         <span
           class="flex-row flex-row--align-center margin-bottom--small"
@@ -31,13 +62,18 @@
           />
           <decrement-button
             :data-ingredient-ref="ingredientNumber"
-            @decrement="(event)=>{removeIngredient(event)}"
+            @decrement="
+              event => {
+                removeIngredient(event);
+              }
+            "
           ></decrement-button>
         </span>
         <increment-button
           class="margin-top--large"
           @increment="incrementIngredientNumber"
-        >Add ingredient</increment-button>
+          >Add ingredient</increment-button
+        >
       </fieldset>
 
       <!-- INSTRUCTIONS -->
@@ -57,19 +93,24 @@
               />
               <decrement-button
                 :data-instruction-ref="instructionNumber"
-                @decrement="(event) => removeInstruction(event)"
+                @decrement="event => removeInstruction(event)"
               ></decrement-button>
             </span>
           </li>
         </ol>
-        <increment-button class="margin-top--large" @increment="incrementInstructionNumber">Add step</increment-button>
+        <increment-button
+          class="margin-top--large"
+          @increment="incrementInstructionNumber"
+          >Add step</increment-button
+        >
       </fieldset>
 
       <!-- PUBLIC CHECK -->
 
       <fieldset class="container">
         <label>
-          <input type="checkbox" id="publicCheck" v-model="publicCheck" /> Make recipe public (share with all users of Kokebokami)
+          <input type="checkbox" id="publicCheck" v-model="publicCheck" /> Make
+          recipe public (share with all users of Kokebokami)
         </label>
       </fieldset>
 
@@ -84,7 +125,9 @@
           :editMode="editMode"
         />
         <div class="system-message">{{ systemMessage }}</div>
-        <nuxt-link v-if="deleted" to="/my-recipes">Go back to your cook book</nuxt-link>
+        <nuxt-link v-if="deleted" to="/my-recipes"
+          >Go back to your cook book</nuxt-link
+        >
       </fieldset>
 
       <div
@@ -92,7 +135,9 @@
         v-else-if="saved && recipeKey"
       >
         <div class="system-message">{{ systemMessage }}</div>
-        <nuxt-link v-if="recipeKey !== ''" :to="'/recipes/' + recipeKey">Look at your new recipe ➔</nuxt-link>
+        <nuxt-link v-if="recipeKey !== ''" :to="'/recipes/' + recipeKey"
+          >Look at your new recipe ➔</nuxt-link
+        >
       </div>
     </form>
   </section>
@@ -103,6 +148,7 @@ import { user } from "~/mixins/getCurrentUser.js";
 import { db } from "~/plugins/firebase.js";
 import TitleComponent from "./Input/TitleComponent.vue";
 import Description from "./Input/Description.vue";
+import FreeFrom from "./Input/FreeFrom.vue";
 import Ingredient from "./Input/Ingredient.vue";
 import Instruction from "./Input/Instruction.vue";
 import Categories from "./Input/Categories";
@@ -115,6 +161,7 @@ export default {
   components: {
     TitleComponent,
     Description,
+    FreeFrom,
     Ingredient,
     Instruction,
     Categories,
@@ -125,16 +172,18 @@ export default {
   mixins: [user],
   data() {
     return {
-      systemMessage: "",
-      saved: false,
-      recipeKey: "",
-      title: "",
+      categories: [],
+      deleted: false,
       description: "",
+      freeFrom: [],
       ingredients: [],
       instructions: [],
-      categories: [],
+      language: "",
       publicCheck: false,
-      deleted: false
+      recipeKey: "",
+      systemMessage: "",
+      saved: false,
+      title: ""
     };
   },
   props: {
@@ -143,24 +192,30 @@ export default {
     existingRecipe: { type: Object, default: () => null },
     editMode: { type: Boolean, default: false }
   },
-  computed: {},
+  computed: {
+    languages() {
+      let allCategoryObjects = this.$store.getters.allCategories;
+      return Object.values(
+        allCategoryObjects.filter(object => {
+          return object.languages;
+        })[0]
+      )[0];
+    }
+  },
   created: function() {
     let recipeKey = this.$route.params.recipeid;
     if (this.existingRecipe !== null && recipeKey !== undefined) {
       this.recipeKey = recipeKey;
       let recipe = this.existingRecipe;
 
-      if (recipe.title !== undefined) {
-        this.title = recipe.title;
-      }
-
-      if (recipe.description !== undefined) {
+      if (recipe.title !== undefined) this.title = recipe.title;
+      if (recipe.description !== undefined)
         this.description = recipe.description;
-      }
-
-      if (recipe.public !== undefined) {
-        this.publicCheck = recipe.public;
-      }
+      if (recipe.public !== undefined) this.publicCheck = recipe.public;
+      if (recipe.language !== undefined) this.language = recipe.language;
+      if (recipe.categories !== undefined) this.categories = recipe.categories;
+      if (recipe.freeFrom !== undefined) this.freeFrom = recipe.freeFrom;
+      if (recipe.typeOfMeal !== undefined) this.typeOfMeal = recipe.typeOfMeal;
 
       let counter = 0;
 
@@ -180,14 +235,16 @@ export default {
         });
       }
       counter = 0;
-      if (recipe.categories !== undefined) {
-        recipe.categories.forEach(category => {
-          this.categories.push(category);
-        });
-      }
     }
   },
   methods: {
+    updateCategories(checked) {
+      this.categories = checked;
+    },
+    updateFreeFrom(checked) {
+      this.freeFrom = checked;
+      console.log("FreeFrom updated::", this.freeFrom);
+    },
     incrementIngredientNumber() {
       let list = this.ingredientNumberList;
       let ingredientNumber = list.length === 0 ? 1 : Math.max.apply(null, list);
@@ -243,7 +300,6 @@ export default {
           });
       }
     },
-
     saveRecipe() {
       const recipeTitle = document.querySelector("#recipeTitle input");
       const recipeDescription = document.querySelector(
@@ -262,18 +318,14 @@ export default {
         instructionList.push(instruction.value);
       });
 
-      let categories = document.querySelectorAll("#categories input");
-      let categoryList = [];
-      categories.forEach(category => {
-        category.checked ? categoryList.push(category.value) : null;
-      });
-
       let recipeObject = {
         title: recipeTitle.value,
         ingredients: ingredientList,
         description: recipeDescription.value,
         instructions: instructionList,
-        categories: categoryList,
+        categories: this.categories,
+        freeFrom: this.freeFrom,
+        language: this.language,
         public: this.publicCheck,
         ownerID: this.user.id
       };
@@ -307,4 +359,3 @@ export default {
   }
 };
 </script>
-
