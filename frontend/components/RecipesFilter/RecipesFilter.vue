@@ -56,61 +56,71 @@ export default {
     },
     setFreeFrom(freeFrom) {
       this.freeFrom = freeFrom;
+      console.log("Free from filter:", this.freeFrom);
       this.handleSearch();
     },
     handleSearch() {
       let recipes = this.recipes;
       let language = this.language;
-      let categories = this.typeOfMeal.concat(this.mealCategories);
+      let categories = this.mealCategories;
+      let typeOfMeal = this.typeOfMeal;
       let freeFrom = this.freeFrom;
       let searchTerm = this.searchTerm;
-      let filteredRecipes = [];
       let recipesToBeFiltered = recipes;
 
-      if (recipes && language !== "" && language !== "All languages") {
+      // Filter on language
+      if (
+        recipesToBeFiltered &&
+        language !== "" &&
+        language !== "All languages"
+      ) {
         recipesToBeFiltered = recipesToBeFiltered.filter(recipe => {
           if (recipe[1].language) {
             return recipe[1].language.toLowerCase() === language.toLowerCase();
           }
         });
       }
-
-      if (recipes && freeFrom.length) {
-        recipesToBeFiltered = recipesToBeFiltered.filter(recipe => {
-          if (recipe.freeFrom) {
-            return freeFrom.forEach(allergen => {
-              return recipe.freeFrom.indexOf(allergen) > -1; //true: allergen in list
-            });
-          }
-        });
-      }
-
-      if (recipes && categories.length) {
-        categories.forEach(category => {
-          let oneOrMoreRecipesOfCategory = -1;
-          recipesToBeFiltered.forEach(recipe => {
-            let recipeTypeOfMeal = recipe[1].typeOfMeal
-              ? recipe[1].typeOfMeal
-              : [];
-            let recipeMealCategories = recipe[1].categories
-              ? recipe[1].categories
-              : [];
-
-            let recipeCategories = recipeTypeOfMeal.concat(
-              recipeMealCategories
-            );
-
-            if (recipeCategories && recipeCategories.indexOf(category) !== -1) {
-              oneOrMoreRecipesOfCategory *= 0;
-              if (filteredRecipes && filteredRecipes.indexOf(recipe) === -1)
-                filteredRecipes.push(recipe);
+      // Filter on allergens
+      if (recipesToBeFiltered && freeFrom.length) {
+        freeFrom.forEach(allergen => {
+          recipesToBeFiltered = recipesToBeFiltered.filter(recipe => {
+            if (recipe[1].freeFrom) {
+              return recipe[1].freeFrom.indexOf(allergen) > -1; //true: allergen in list
             }
           });
         });
-        recipesToBeFiltered = filteredRecipes;
       }
 
-      if (recipes && searchTerm !== "") {
+      // Filter on categories
+      if (recipesToBeFiltered && categories.length) {
+        categories.forEach(category => {
+          recipesToBeFiltered = recipesToBeFiltered.filter(recipe => {
+            if (recipe[1].categories) {
+              return recipe[1].categories.indexOf(category) > -1; //true: category in list
+            }
+          });
+        });
+      }
+
+      // Filter on type of meal
+      if (recipesToBeFiltered && typeOfMeal.length) {
+        console.log(
+          "Recipes::",
+          recipesToBeFiltered,
+          "typeOfMeal::",
+          typeOfMeal
+        );
+        typeOfMeal.forEach(type => {
+          recipesToBeFiltered = recipesToBeFiltered.filter(recipe => {
+            if (recipe[1].typeOfMeal) {
+              return recipe[1].typeOfMeal.indexOf(type) > -1; //true: type in list
+            }
+          });
+        });
+      }
+
+      // Filter on search term
+      if (recipesToBeFiltered && searchTerm !== "") {
         recipesToBeFiltered = recipesToBeFiltered.filter(recipe => {
           return (
             recipe[1].title.toLowerCase().includes(searchTerm.toLowerCase()) ||

@@ -22,31 +22,40 @@ export function state() {
           "German",
           "Italian",
           "Norwegian",
+          "Polish",
           "Spanish",
 
-          "Polish",
           "Arabic",
-          "Bengali",
           "Dutch",
           "Hindi",
           "Japanese",
           "Korean",
-          "Malay",
           "Mandarin",
-          "Persian",
           "Portuguese",
           "Punjabi",
           "Russian",
           "Swahili",
-          "Tamil",
           "Thai",
           "Turkish",
           "Vietnamese"
         ]
       },
-      { typeOfMeal: ["breakfast", "lunch", "dinner", "dessert", "snack"] },
-      { allergens: ["fish", "celery", "nuts", "gluten", "diary"] },
-      { categories: ["vegetarian", "vegan"] }
+      {
+        typeOfMeal: [
+          "breakfast",
+          "lunch",
+          "dinner",
+          "side dish",
+          "dessert",
+          "baking",
+          "snack",
+          "drinks"
+        ]
+      },
+      {
+        allergens: ["nuts", "gluten", "dairy", "eggs", "soy", "fish", "celery"]
+      },
+      { categories: ["quick & easy", "sugar free", "vegetarian", "vegan"] }
     ]
   };
 }

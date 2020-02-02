@@ -7,10 +7,10 @@
   </fieldset>
 </template>
 <script>
-import Language from "./Language.vue";
-import TypeOfMeal from "./TypeOfMeal.vue";
-import MealCategories from "./MealCategories.vue";
-import FreeFrom from "./FreeFrom.vue";
+import Language from "./Categories/Language.vue";
+import TypeOfMeal from "./Categories/TypeOfMeal.vue";
+import MealCategories from "./Categories/MealCategories.vue";
+import FreeFrom from "./Categories/FreeFrom.vue";
 
 export default {
   name: "category-filter",
