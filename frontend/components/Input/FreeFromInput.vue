@@ -1,9 +1,9 @@
 <template>
-  <fieldset>
-    <h4 class="margin-bottom--medium">Free from</h4>
+  <fieldset class="categories">
+    <h4 class="categories__title margin-bottom--medium">Free from</h4>
 
     <label
-      class="search-form__category margin-right--large"
+      class="categories__category margin-right--large"
       v-for="allergen in allergens"
       :key="allergen"
     >

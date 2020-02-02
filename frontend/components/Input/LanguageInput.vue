@@ -1,18 +1,21 @@
 <template>
-  <select
-    v-model="language"
-    @change="() => $emit('language', language)"
-    id="language"
-    class="categories__select"
-  >
-    <option>All languages</option>
-    <option
-      v-for="language in languages"
-      :value="language"
-      :key="language"
-      :id="language"
-    >{{ language }}</option>
-  </select>
+  <fieldset class="categories">
+    <h4 class="categories__title">Recipe language</h4>
+    <select
+      v-model="language"
+      @change="() => $emit('language', language)"
+      id="language"
+      class="categories__select"
+    >
+      <option>All languages</option>
+      <option
+        v-for="language in languages"
+        :value="language"
+        :key="language"
+        :id="language"
+      >{{ language }}</option>
+    </select>
+  </fieldset>
 </template>
 <script>
 export default {

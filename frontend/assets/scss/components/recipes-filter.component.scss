@@ -1,6 +1,6 @@
 .recipes-filter {
   &__form {
-    padding: $spacingMedium;
+    display: block;
     border-radius: $spacingSmall;
 
     & .search-field {
@@ -31,13 +31,18 @@
         box-sizing: border-box;
         border-radius: $spacingSmall;
       }
-      display: inline-flex;
-      flex-direction: column;
-      margin-left: $spacingLarge;
+
+      display: inline-block;
+      width: 100%;
       color: $blue;
+      @media screen and (min-width: $tabletWidth) {
+        float: left;
+        width: 200px;
+      }
 
       &__title {
         margin-top: $spacingMedium;
+        margin-left: 4px;
       }
 
       &__select {
@@ -45,18 +50,21 @@
         padding: $spacingMedium $spacingMedium;
         border: 2px solid $blue;
         color: $blue;
-        font-size: $fontSizeSmall;
+        font-size: $fontSizeMedium;
+        font-family: $bodyFont;
         box-shadow: none;
+        width: 150px;
+        height: 30px;
       }
 
       &__category {
         display: inline-flex;
-        flex-wrap: nowrap;
         align-items: center;
         text-transform: capitalize;
-        min-width: 100px;
-        @media screen and (min-width: $mobileWidth) {
-          min-width: auto;
+        min-width: 130px;
+        margin-bottom: $spacingSmall;
+        @media screen and (min-width: $tabletWidth) {
+          display: flex;
         }
       }
     }

@@ -1,9 +1,9 @@
 <template>
   <div>
     <breadcrumbs class="margin-bottom--large" :routes="breadcrumbs" />
-    <div class="mobile-width margin-top--xxlarge margin--auto">
+    <div class="tablet-width margin-top--xxlarge margin--auto">
       <recipe-full-view :recipe="recipe" :recipeKey="recipeKey" :isRecipeOwner="isRecipeOwner" />
-      <comments class="margin-top--xlarge" :path="path" />
+      <comments class="mobile-width margin--auto margin-top--xlarge" :path="path" />
     </div>
   </div>
 </template>
