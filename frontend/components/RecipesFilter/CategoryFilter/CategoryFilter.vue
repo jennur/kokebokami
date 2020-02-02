@@ -1,24 +1,24 @@
 <template>
   <fieldset id="categories" class="categories-container">
-    <language @filter="handleLanguage" />
-    <meal-categories @filter="handleMealCategory" />
-    <type-of-meal @filter="handleTypeOfMeal" />
-    <free-from @filter="handleFreeFrom" />
+    <language-input @update="handleLanguage" />
+    <categories-input @update="handleMealCategory" />
+    <type-of-meal-input @update="handleTypeOfMeal" />
+    <free-from-input @update="handleFreeFrom" />
   </fieldset>
 </template>
 <script>
-import Language from "./Categories/Language.vue";
-import TypeOfMeal from "./Categories/TypeOfMeal.vue";
-import MealCategories from "./Categories/MealCategories.vue";
-import FreeFrom from "./Categories/FreeFrom.vue";
+import LanguageInput from "~/components/Input/LanguageInput.vue";
+import TypeOfMealInput from "~/components/Input/TypeOfMealInput.vue";
+import CategoriesInput from "~/components/Input/CategoriesInput.vue";
+import FreeFromInput from "~/components/Input/FreeFromInput.vue";
 
 export default {
   name: "category-filter",
   components: {
-    Language,
-    TypeOfMeal,
-    MealCategories,
-    FreeFrom
+    LanguageInput,
+    TypeOfMealInput,
+    CategoriesInput,
+    FreeFromInput
   },
   data() {
     return { filteredCategories: [] };

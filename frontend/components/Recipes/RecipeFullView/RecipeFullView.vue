@@ -1,6 +1,6 @@
 <template>
-  <section class="mobile-width margin--auto">
-    <div v-if="!editMode" id="recipe" class="recipe">
+  <section>
+    <div v-if="!editMode" id="recipe" class="recipe mobile-width margin--auto">
       <free-from-display v-if="recipe.freeFrom" :freeFrom="recipe.freeFrom" />
       <category-display v-if="recipe.categories" :categories="recipe.categories" />
       <h2 class="recipe__title">{{ recipeTitle }}</h2>

@@ -56,7 +56,6 @@ export default {
     },
     setFreeFrom(freeFrom) {
       this.freeFrom = freeFrom;
-      console.log("Free from filter:", this.freeFrom);
       this.handleSearch();
     },
     handleSearch() {
@@ -104,12 +103,6 @@ export default {
 
       // Filter on type of meal
       if (recipesToBeFiltered && typeOfMeal.length) {
-        console.log(
-          "Recipes::",
-          recipesToBeFiltered,
-          "typeOfMeal::",
-          typeOfMeal
-        );
         typeOfMeal.forEach(type => {
           recipesToBeFiltered = recipesToBeFiltered.filter(recipe => {
             if (recipe[1].typeOfMeal) {

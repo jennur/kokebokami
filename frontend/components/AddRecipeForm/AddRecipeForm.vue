@@ -78,16 +78,16 @@
 <script>
 import { user } from "~/mixins/getCurrentUser.js";
 import { db } from "~/plugins/firebase.js";
-import CategoriesInput from "./Input/CategoriesInput.vue";
-import DescriptionInput from "./Input/DescriptionInput.vue";
-import FreeFromInput from "./Input/FreeFromInput.vue";
-import TypeOfMealInput from "./Input/TypeOfMealInput.vue";
+import CategoriesInput from "~/components/Input/CategoriesInput.vue";
+import DescriptionInput from "~/components/Input/DescriptionInput.vue";
+import FreeFromInput from "~/components/Input/FreeFromInput.vue";
+import TypeOfMealInput from "~/components/Input/TypeOfMealInput.vue";
 
-import IngredientsInput from "./Input/IngredientsInput.vue";
-import InstructionsInput from "./Input/InstructionsInput.vue";
-import LanguageInput from "./Input/LanguageInput.vue";
+import IngredientsInput from "~/components/Input/IngredientsInput.vue";
+import InstructionsInput from "~/components/Input/InstructionsInput.vue";
+import LanguageInput from "~/components/Input/LanguageInput.vue";
 import SaveActions from "./Actions/SaveActions.vue";
-import TitleInput from "./Input/TitleInput.vue";
+import TitleInput from "~/components/Input/TitleInput.vue";
 
 export default {
   name: "add-recipe-form",
@@ -213,7 +213,6 @@ export default {
         ownerID: this.user.id
       };
 
-      console.log("RecipeObject::", recipeObject);
       if (this.recipeKey !== "") {
         const recipeRef = db.ref("recipes/" + this.recipeKey);
         recipeRef
