@@ -1,62 +1,76 @@
 <template>
-  <section class="mobile-width margin--auto margin-top--xlarge">
-    <form class="add-recipe-form" v-on:submit.prevent>
-      <!-- LANGUAGE -->
-      <language-input :existingLanguage="language" @language="updateLanguage" />
+  <section class="margin--auto margin-top--xlarge">
+    <form v-on:submit.prevent>
+      <div class="recipes-filter__form">
+        <div class="categories-container">
+          <!-- LANGUAGE -->
+          <language-input :existingLanguage="language" @language="updateLanguage" />
 
-      <!-- CATEGORIES -->
-      <categories-input
-        id="categories"
-        class="margin-bottom--xlarge"
-        :existingCategories="categories"
-        @update="updateCategories"
-      />
+          <!-- CATEGORIES -->
+          <categories-input
+            id="categories"
+            class="margin-bottom--xlarge"
+            :existingCategories="categories"
+            @update="updateCategories"
+          />
 
-      <!-- FREE FROM -->
-      <free-from-input
-        id="freeFrom"
-        class="margin-bottom--xlarge"
-        :existingFreeFrom="freeFrom"
-        @update="updateFreeFrom"
-      />
+          <!-- TYPES OF MEAL -->
+          <type-of-meal-input
+            id="typeOfMeal"
+            class="categories margin-bottom--xlarge"
+            :existingTypeOfMeal="typeOfMeal"
+            @update="updateTypeOfMeal"
+          />
 
-      <!-- TITLE / DESCRIPTION -->
-      <fieldset class="flex-column">
-        <title-input id="recipeTitle" class="margin-bottom--medium" :existingTitle="title" />
-        <description-input
-          id="recipeDescription"
-          class="margin-bottom--medium"
-          :existingDescription="description"
+          <!-- FREE FROM -->
+          <free-from-input
+            id="freeFrom"
+            class="categories margin-bottom--xlarge"
+            :existingFreeFrom="freeFrom"
+            @update="updateFreeFrom"
+          />
+        </div>
+      </div>
+
+      <div class="mobile-width margin--auto">
+        <!-- TITLE / DESCRIPTION -->
+        <fieldset class="flex-column">
+          <title-input id="recipeTitle" class="margin-bottom--medium" :existingTitle="title" />
+          <description-input
+            id="recipeDescription"
+            class="margin-bottom--medium"
+            :existingDescription="description"
+          />
+        </fieldset>
+
+        <!-- INGREDIENTS -->
+        <ingredients-input :existingIngredients="existingRecipe ? existingRecipe.ingredients : []" />
+
+        <!-- INSTRUCTIONS -->
+        <instructions-input
+          :existingInstructions="existingRecipe ? existingRecipe.instructions : []"
         />
-      </fieldset>
 
-      <!-- INGREDIENTS -->
-      <ingredients-input :existingIngredients="existingRecipe ? existingRecipe.ingredients : []" />
+        <!-- PUBLIC CHECK -->
+        <fieldset class="container">
+          <label>
+            <input type="checkbox" id="publicCheck" v-model="publicCheck" /> Make
+            recipe public (share with all users of Kokebokami)
+          </label>
+        </fieldset>
 
-      <!-- INSTRUCTIONS -->
-      <instructions-input
-        :existingInstructions="existingRecipe ? existingRecipe.instructions : []"
-      />
-
-      <!-- PUBLIC CHECK -->
-      <fieldset class="container">
-        <label>
-          <input type="checkbox" id="publicCheck" v-model="publicCheck" /> Make
-          recipe public (share with all users of Kokebokami)
-        </label>
-      </fieldset>
-
-      <!-- SAVE / UPDATE -->
-      <save-actions
-        :recipeKey="recipeKey"
-        :deleted="deleted"
-        :saved="saved"
-        :editMode="editMode"
-        :systemMessage="systemMessage"
-        @save="saveRecipe"
-        @cancel="cancel"
-        @deleteRecipe="deleteRecipe"
-      />
+        <!-- SAVE / UPDATE -->
+        <save-actions
+          :recipeKey="recipeKey"
+          :deleted="deleted"
+          :saved="saved"
+          :editMode="editMode"
+          :systemMessage="systemMessage"
+          @save="saveRecipe"
+          @cancel="cancel"
+          @deleteRecipe="deleteRecipe"
+        />
+      </div>
     </form>
   </section>
 </template>
@@ -67,6 +81,8 @@ import { db } from "~/plugins/firebase.js";
 import CategoriesInput from "./Input/CategoriesInput.vue";
 import DescriptionInput from "./Input/DescriptionInput.vue";
 import FreeFromInput from "./Input/FreeFromInput.vue";
+import TypeOfMealInput from "./Input/TypeOfMealInput.vue";
+
 import IngredientsInput from "./Input/IngredientsInput.vue";
 import InstructionsInput from "./Input/InstructionsInput.vue";
 import LanguageInput from "./Input/LanguageInput.vue";
@@ -83,7 +99,8 @@ export default {
     InstructionsInput,
     LanguageInput,
     SaveActions,
-    TitleInput
+    TitleInput,
+    TypeOfMealInput
   },
   mixins: [user],
   data() {
@@ -92,6 +109,7 @@ export default {
       deleted: false,
       description: "",
       freeFrom: [],
+      typeOfMeal: [],
       language: "",
       publicCheck: false,
       recipeKey: "",
@@ -121,15 +139,19 @@ export default {
     }
   },
   methods: {
+    updateLanguage(language) {
+      this.language = language;
+    },
     updateCategories(checked) {
       this.categories = checked;
     },
     updateFreeFrom(checked) {
       this.freeFrom = checked;
     },
-    updateLanguage(language) {
-      this.language = language;
+    updateTypeOfMeal(typeOfMeal) {
+      this.typeOfMeal = typeOfMeal;
     },
+
     cancel() {
       let confirmText = this.editMode
         ? "Are you sure you want to discard the changes?"
@@ -185,11 +207,13 @@ export default {
         instructions: instructionList,
         categories: this.categories,
         freeFrom: this.freeFrom,
+        typeOfMeal: this.typeOfMeal,
         language: this.language,
         public: this.publicCheck,
         ownerID: this.user.id
       };
 
+      console.log("RecipeObject::", recipeObject);
       if (this.recipeKey !== "") {
         const recipeRef = db.ref("recipes/" + this.recipeKey);
         recipeRef

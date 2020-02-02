@@ -1,9 +1,9 @@
 <template>
-  <fieldset>
-    <h4 class="margin-bottom--medium">Categories</h4>
+  <fieldset class="categories">
+    <h4 class="categories__title margin-bottom--medium">Categories</h4>
 
     <label
-      class="search-form__category margin-right--large"
+      class="categories__category margin-right--large"
       v-for="category in categories"
       :key="category"
     >
@@ -38,15 +38,19 @@ export default {
       return this.$store.getters.allCategories;
     },
     categories() {
-      let allCategories = [];
-      this.allCategoryObjects.forEach(categoryObj => {
-        if (
-          Object.keys(categoryObj)[0] === "typeOfMeal" ||
-          Object.keys(categoryObj)[0] === "categories"
-        )
-          allCategories = allCategories.concat(Object.values(categoryObj)[0]);
-      });
-      return allCategories;
+      return Object.values(
+        this.allCategoryObjects.filter(object => {
+          return object.categories;
+        })[0]
+      )[0];
+    },
+    allTypesOfMeal() {
+      // Needed due to duplicate in previous categories
+      return Object.values(
+        this.allCategoryObjects.filter(object => {
+          return object.typeOfMeal;
+        })[0]
+      )[0];
     }
   },
   methods: {
@@ -66,10 +70,13 @@ export default {
   },
   mounted() {
     let existingCategories = this.existingCategories;
-    if (existingCategories.length) {
+    if (existingCategories && existingCategories.length) {
       existingCategories.forEach(category => {
-        let element = document.getElementById(category);
-        if (element) element.checked = true;
+        if (this.allTypesOfMeal.indexOf(category) === -1) {
+          // ^ Needed due to duplicate of typeOfMeal in previous categories
+          let element = document.getElementById(category);
+          if (element) element.checked = true;
+        }
       });
       this.checkedCategories = this.existingCategories;
     }
