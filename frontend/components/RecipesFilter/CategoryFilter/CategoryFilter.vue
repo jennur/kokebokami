@@ -1,9 +1,9 @@
 <template>
-  <fieldset id="categories" class="categories-container">
-    <language-input @update="handleLanguage" />
-    <categories-input @update="handleMealCategory" />
-    <type-of-meal-input @update="handleTypeOfMeal" />
-    <free-from-input @update="handleFreeFrom" />
+  <fieldset class="categories-container">
+    <language-input :existingLanguage="language" @update="handleLanguage" />
+    <categories-input :existingCategories="categories" @update="handleMealCategory" />
+    <type-of-meal-input :existingTypeOfMeal="typeOfMeal" @update="handleTypeOfMeal" />
+    <free-from-input :existingFreeFrom="freeFrom" @update="handleFreeFrom" />
   </fieldset>
 </template>
 <script>
@@ -20,8 +20,20 @@ export default {
     CategoriesInput,
     FreeFromInput
   },
+  props: {
+    existingCategories: {
+      type: Object,
+      default: () => {}
+    }
+  },
   data() {
-    return { filteredCategories: [] };
+    return {
+      categories: [],
+      typeOfMeal: [],
+      language: "",
+      freeFrom: [],
+      filteredCategories: []
+    };
   },
   computed: {
     allCategoryObjects() {
@@ -48,6 +60,14 @@ export default {
     },
     handleFreeFrom(category) {
       this.$emit("setFreeFrom", category);
+    }
+  },
+  created() {
+    if (this.existingCategories) {
+      this.categories = this.existingCategories.categories;
+      this.language = this.existingCategories.language;
+      this.freeFrom = this.existingCategories.freeFrom;
+      this.typeOfMeal = this.existingCategories.typeOfMeal;
     }
   }
 };

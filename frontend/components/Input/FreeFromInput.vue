@@ -1,5 +1,5 @@
 <template>
-  <fieldset class="categories">
+  <fieldset id="freeFrom" class="categories">
     <h4 class="categories__title margin-bottom--medium">Free from</h4>
 
     <label
@@ -66,6 +66,7 @@ export default {
         if (element) element.checked = true;
       });
     }
+    this.checkedFreeFrom = this.existingFreeFrom;
   }
 };
 </script>

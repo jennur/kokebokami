@@ -1,12 +1,7 @@
 <template>
   <fieldset class="categories">
     <h4 class="categories__title">Recipe language</h4>
-    <select
-      v-model="language"
-      @change="() => $emit('language', language)"
-      id="language"
-      class="categories__select"
-    >
+    <select v-model="language" @change="handleLanguage" id="language" class="categories__select">
       <option>All languages</option>
       <option
         v-for="language in languages"
@@ -37,6 +32,11 @@ export default {
           return object.languages;
         })[0]
       )[0];
+    }
+  },
+  methods: {
+    handleLanguage() {
+      this.$emit("update", this.language);
     }
   },
   created() {

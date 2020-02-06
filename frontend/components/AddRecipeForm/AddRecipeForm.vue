@@ -2,34 +2,13 @@
   <section class="margin--auto margin-top--xlarge">
     <form v-on:submit.prevent>
       <div class="recipes-filter__form">
-        <div class="categories-container">
-          <!-- LANGUAGE -->
-          <language-input :existingLanguage="language" @language="updateLanguage" />
-
-          <!-- CATEGORIES -->
-          <categories-input
-            id="categories"
-            class="margin-bottom--xlarge"
-            :existingCategories="categories"
-            @update="updateCategories"
-          />
-
-          <!-- TYPES OF MEAL -->
-          <type-of-meal-input
-            id="typeOfMeal"
-            class="categories margin-bottom--xlarge"
-            :existingTypeOfMeal="typeOfMeal"
-            @update="updateTypeOfMeal"
-          />
-
-          <!-- FREE FROM -->
-          <free-from-input
-            id="freeFrom"
-            class="categories margin-bottom--xlarge"
-            :existingFreeFrom="freeFrom"
-            @update="updateFreeFrom"
-          />
-        </div>
+        <category-filter
+          :existingCategories="{ language, typeOfMeal, categories, freeFrom }"
+          @setLanguage="updateLanguage"
+          @setTypeOfMeal="updateTypeOfMeal"
+          @setMealCategories="updateCategories"
+          @setFreeFrom="updateFreeFrom"
+        />
       </div>
 
       <div class="mobile-width margin--auto">
@@ -78,29 +57,23 @@
 <script>
 import { user } from "~/mixins/getCurrentUser.js";
 import { db } from "~/plugins/firebase.js";
-import CategoriesInput from "~/components/Input/CategoriesInput.vue";
+import CategoryFilter from "~/components/RecipesFilter/CategoryFilter/CategoryFilter.vue";
 import DescriptionInput from "~/components/Input/DescriptionInput.vue";
-import FreeFromInput from "~/components/Input/FreeFromInput.vue";
-import TypeOfMealInput from "~/components/Input/TypeOfMealInput.vue";
 
 import IngredientsInput from "~/components/Input/IngredientsInput.vue";
 import InstructionsInput from "~/components/Input/InstructionsInput.vue";
-import LanguageInput from "~/components/Input/LanguageInput.vue";
 import SaveActions from "./Actions/SaveActions.vue";
 import TitleInput from "~/components/Input/TitleInput.vue";
 
 export default {
   name: "add-recipe-form",
   components: {
-    CategoriesInput,
+    CategoryFilter,
     DescriptionInput,
-    FreeFromInput,
     IngredientsInput,
     InstructionsInput,
-    LanguageInput,
     SaveActions,
-    TitleInput,
-    TypeOfMealInput
+    TitleInput
   },
   mixins: [user],
   data() {
@@ -127,7 +100,6 @@ export default {
     if (this.existingRecipe !== null && recipeKey !== undefined) {
       this.recipeKey = recipeKey;
       let recipe = this.existingRecipe;
-
       if (recipe.title !== undefined) this.title = recipe.title;
       if (recipe.description !== undefined)
         this.description = recipe.description;

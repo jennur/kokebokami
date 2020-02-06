@@ -1,5 +1,5 @@
 <template>
-  <div class="categories">
+  <div id="typeOfMeal" class="categories">
     <h4 class="categories__title margin-bottom--medium">Type of meal</h4>
     <label
       class="categories__category margin-right--large"

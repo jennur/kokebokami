@@ -1,5 +1,5 @@
 <template>
-  <fieldset class="categories">
+  <fieldset id="categories" class="categories">
     <h4 class="categories__title margin-bottom--medium">Categories</h4>
 
     <label
