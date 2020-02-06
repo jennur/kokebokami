@@ -1,17 +1,13 @@
 <template>
   <div v-if="!user">
-    <section
-      class="tablet-width margin--auto padding-horizontal--large margin-top--xxlarge"
-    >
+    <section class="tablet-width margin--auto padding-horizontal--large margin-top--xxlarge">
       <div
         class="flex-center-container flex-center-container--column mobile-width padding--none margin--auto"
       >
-        <h1 class="heading--display-font padding-horizontal--large">
-          It's time to digitalize your cook book!
-        </h1>
-        <p
-          class="padding-horizontal--large color--blue font-size--medium text-align--center"
-        >
+        <h1
+          class="heading--display-font padding-horizontal--large"
+        >It's time to digitalize your cook book!</h1>
+        <p class="padding-horizontal--large color--blue font-size--medium text-align--center">
           Start storing your personal recipes online to make sure they never get
           lost. Keep them private, share them with the public or your friends
           only.
@@ -20,8 +16,7 @@
           to="/sign-up"
           class="button button--large padding-horizontal--xlarge margin-top--large"
           v-if="!user"
-          >Get started ➔</nuxt-link
-        >
+        >Get started ➔</nuxt-link>
       </div>
       <div class="flex-center-container">
         <kokeboka class="illustration illustration--kokeboka" />
@@ -35,11 +30,17 @@
     />
   </div>
 
-  <div
-    class="tablet-width padding-horizontal--large margin-top--xxlarge margin--auto"
-    v-else
-  >
+  <div class="tablet-width padding-horizontal--large margin-top--xxlarge margin--auto" v-else>
+    <span
+      role="button"
+      @click="toggleSearchForm"
+      class="button button--small button--green-border margin-bottom--large"
+    >
+      <search-icon class="icon icon--in-button margin-right--medium" v-if="!search" />
+      {{ search ? "Exit search" : "Search" }}
+    </span>
     <recipes-filter
+      v-if="search"
       class="margin-bottom--xlarge margin--auto"
       :recipes="recipes"
       @filter="setVisibleRecipes"
@@ -69,6 +70,7 @@ export default {
   },
   data() {
     return {
+      search: false,
       filteredRecipes: [],
       filtered: false
     };
@@ -84,6 +86,9 @@ export default {
   },
   mixins: [user],
   methods: {
+    toggleSearchForm() {
+      this.search = !this.search;
+    },
     setVisibleRecipes(filteredRecipesObj) {
       this.filteredRecipes = filteredRecipesObj.recipes;
       this.filtered = filteredRecipesObj.filtered;

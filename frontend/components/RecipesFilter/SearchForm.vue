@@ -18,12 +18,6 @@
 <script>
 export default {
   name: "search-form",
-  props: {
-    recipes: {
-      type: Array,
-      default: () => []
-    }
-  },
   methods: {
     handleSearchTerm(value) {
       this.$emit("filterOnSearchTerm", value);
