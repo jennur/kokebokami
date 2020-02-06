@@ -3,7 +3,7 @@
     <div id="actionBar" class="flex-row">
       <span
         role="button"
-        class="button button--small button--green-border margin-bottom--large margin-right--large"
+        class="button button--small button--green-border button--mobile-expand margin-bottom--large margin-right--large"
         @click="handlePdfExport"
       >
         <download-icon class="icon icon--in-button margin-right--medium" />Download as PDF
@@ -11,7 +11,7 @@
       <span
         role="button"
         @click="toggleShareBox"
-        class="button button--small button--green-border margin-right--large"
+        class="button button--small button--green-border button--mobile-expand margin-right--large"
       >
         <share-icon class="icon icon--in-button margin-right--medium" />
         {{ shareButtonText }}

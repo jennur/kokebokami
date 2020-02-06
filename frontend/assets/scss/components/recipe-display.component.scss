@@ -19,6 +19,10 @@
     text-decoration: none;
   }
 
+  &__title {
+    padding-top: $spacingLarge;
+  }
+
   &__description {
     display: block;
     padding-top: 0;
@@ -35,6 +39,16 @@
     border-radius: $spacingLarge;
     text-transform: capitalize;
     font-size: $fontSizeSmall;
+
+    &-note {
+      text-align: left;
+
+      & p {
+        margin: $spacingXSmall;
+        font-size: $fontSizeSmall;
+        color: $blue;
+      }
+    }
   }
 
   &__published-by {

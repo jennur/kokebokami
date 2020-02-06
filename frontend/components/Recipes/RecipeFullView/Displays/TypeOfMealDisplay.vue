@@ -1,28 +1,25 @@
 <template>
   <div class="recipe__category-note margin-top--small">
     <p class="margin-top--small margin-bottom--small">
-      <b>Free from:</b>
-      {{ freeFromAllergens }}
+      <b>Meal type:</b>
+      {{ whatTypeOfMeal }}
     </p>
   </div>
 </template>
 <script>
 export default {
-  name: "free-from-display",
+  name: "type-of-meal-display",
   props: {
-    freeFrom: {
+    typeOfMeal: {
       type: Array,
       default: () => []
     }
   },
   computed: {
-    freeFromAllergens() {
-      return this.freeFrom
-        .map(allergen => {
-          return (
-            allergen.charAt(0).toUpperCase() +
-            allergen.slice(1, allergen.length)
-          );
+    whatTypeOfMeal() {
+      return this.typeOfMeal
+        .map(type => {
+          return type.charAt(0).toUpperCase() + type.slice(1, type.length);
         })
         .join(", ");
     }

@@ -1,13 +1,21 @@
 <template>
   <section>
     <div v-if="!editMode" id="recipe" class="recipe mobile-width margin--auto">
-      <free-from-display v-if="recipe.freeFrom" :freeFrom="recipe.freeFrom" />
-      <category-display v-if="recipe.categories" :categories="recipe.categories" />
       <h2 class="recipe__title">{{ recipeTitle }}</h2>
       <div class="recipe__description">{{ description }}</div>
+      <category-display
+        class="margin-bottom--xxlarge"
+        v-if="recipe.categories"
+        :categories="recipe.categories"
+      />
+      <type-of-meal-display v-if="recipe.typeOfMeal" :typeOfMeal="recipe.typeOfMeal" />
+      <free-from-display
+        class="margin-bottom--xlarge"
+        v-if="recipe.freeFrom"
+        :freeFrom="recipe.freeFrom"
+      />
 
       <action-bar
-        id="actionBar"
         :isRecipeOwner="isRecipeOwner"
         :recipeKey="recipeKey"
         :editMode="editMode"
@@ -35,6 +43,7 @@ import AddRecipeForm from "~/components/AddRecipeForm/AddRecipeForm.vue";
 import ActionBar from "./Interaction/ActionBar.vue";
 import CategoryDisplay from "./Displays/CategoryDisplay.vue";
 import FreeFromDisplay from "./Displays/FreeFromDisplay";
+import TypeOfMealDisplay from "./Displays/TypeOfMealDisplay";
 import IngredientsDisplay from "./Displays/IngredientsDisplay.vue";
 import InstructionsDisplay from "./Displays/InstructionsDisplay.vue";
 import * as jsPDF from "jspdf";
@@ -47,6 +56,7 @@ export default {
     ActionBar,
     CategoryDisplay,
     FreeFromDisplay,
+    TypeOfMealDisplay,
     IngredientsDisplay,
     InstructionsDisplay
   },
