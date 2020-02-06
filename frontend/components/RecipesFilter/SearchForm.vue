@@ -16,28 +16,17 @@
   </fieldset>
 </template>
 <script>
-import CategoryFilter from "./CategoryFilter/CategoryFilter.vue";
-
 export default {
   name: "search-form",
-  components: {
-    CategoryFilter
-  },
   props: {
     recipes: {
       type: Array,
       default: () => []
     }
   },
-  computed: {
-    categories() {
-      return this.$store.getters.allCategories;
-    }
-  },
-
   methods: {
     handleSearchTerm(value) {
-      this.$emit("filterSearchTerm", value);
+      this.$emit("filterOnSearchTerm", value);
     }
   }
 };

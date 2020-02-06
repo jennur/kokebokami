@@ -57,7 +57,7 @@
 <script>
 import { user } from "~/mixins/getCurrentUser.js";
 import { db } from "~/plugins/firebase.js";
-import CategoryFilter from "~/components/RecipesFilter/CategoryFilter/CategoryFilter.vue";
+import CategoryFilter from "~/components/CategoryFilter/CategoryFilter.vue";
 import DescriptionInput from "~/components/Input/DescriptionInput.vue";
 
 import IngredientsInput from "~/components/Input/IngredientsInput.vue";

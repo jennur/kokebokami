@@ -1,7 +1,7 @@
 <template>
   <div class="recipes-filter-container">
     <form class="recipes-filter__form" v-on:submit.prevent>
-      <search-form :recipes="recipes" @filterSearchTerm="setSearchTerm" />
+      <search-form :recipes="recipes" @filterOnSearchTerm="setSearchTerm" />
       <category-filter
         @setLanguage="setLanguage"
         @setTypeOfMeal="setTypeOfMeal"
@@ -12,7 +12,7 @@
   </div>
 </template>
 <script>
-import CategoryFilter from "./CategoryFilter/CategoryFilter.vue";
+import CategoryFilter from "~/components/CategoryFilter/CategoryFilter.vue";
 import SearchForm from "./SearchForm.vue";
 
 export default {
