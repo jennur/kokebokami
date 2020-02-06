@@ -73,7 +73,6 @@
   }
 
   &--transparent {
-    padding: 0px;
     width: auto;
     border: none;
     background-color: transparent;
@@ -81,11 +80,14 @@
     text-align: left;
     font-family: $bodyFont;
     padding: 0px !important;
+    text-decoration: none;
+    border-bottom: 1px solid $green;
+    border-radius: 0px;
 
     &:hover {
       background-color: transparent;
       color: $blue;
-      text-decoration: underline;
+      border-bottom: 1px solid $blue;
     }
 
     &-red {
@@ -116,6 +118,13 @@
     width: max-content;
     padding: 0px $spacingLarge;
     padding-bottom: $spacingXSmall;
+  }
+
+  &--mobile-expand {
+    width: 100%;
+    @media screen and (min-width: $mobileWidth) {
+      width: inherit;
+    }
   }
 
   &--cancel {

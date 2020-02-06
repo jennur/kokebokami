@@ -1,0 +1,85 @@
+<template>
+  <fieldset id="categories" class="categories">
+    <h4 class="categories__title margin-bottom--medium">Categories</h4>
+
+    <label
+      class="categories__category margin-right--large"
+      v-for="category in categories"
+      :key="category"
+    >
+      <input
+        type="checkbox"
+        :id="category"
+        :value="category"
+        @change="
+          event => {
+            handleCategory(event.target);
+          }
+        "
+      />
+      {{ category }}
+    </label>
+  </fieldset>
+</template>
+<script>
+export default {
+  name: "categories-input",
+  data() {
+    return { checkedCategories: [] };
+  },
+  props: {
+    existingCategories: {
+      type: Array,
+      default: () => []
+    }
+  },
+  computed: {
+    allCategoryObjects() {
+      return this.$store.getters.allCategories;
+    },
+    categories() {
+      return Object.values(
+        this.allCategoryObjects.filter(object => {
+          return object.categories;
+        })[0]
+      )[0];
+    },
+    allTypesOfMeal() {
+      // Needed due to duplicate in previous categories
+      return Object.values(
+        this.allCategoryObjects.filter(object => {
+          return object.typeOfMeal;
+        })[0]
+      )[0];
+    }
+  },
+  methods: {
+    handleCategory(target) {
+      let checkedCategories = [].concat(this.checkedCategories);
+      let categoryIndex = checkedCategories.indexOf(target.value);
+      if (target.checked) {
+        checkedCategories.push(target.value);
+      } else if (!target.checked && categoryIndex !== -1) {
+        checkedCategories.splice(categoryIndex, 1);
+      }
+
+      this.checkedCategories = checkedCategories;
+
+      this.$emit("update", this.checkedCategories);
+    }
+  },
+  mounted() {
+    let existingCategories = this.existingCategories;
+    if (existingCategories && existingCategories.length) {
+      existingCategories.forEach(category => {
+        if (this.allTypesOfMeal.indexOf(category) === -1) {
+          // ^ Needed due to duplicate of typeOfMeal in previous categories
+          let element = document.getElementById(category);
+          if (element) element.checked = true;
+        }
+      });
+      this.checkedCategories = this.existingCategories;
+    }
+  }
+};
+</script>

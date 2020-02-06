@@ -1,0 +1,72 @@
+.recipes-filter {
+  &__form {
+    display: block;
+    border-radius: $spacingSmall;
+
+    & .search-field {
+      position: relative;
+
+      & input {
+        padding: $spacingMedium;
+        padding-left: $spacingXXLarge;
+        font-size: $fontSizeLarge;
+        width: 100%;
+        max-width: 350px;
+      }
+    }
+
+    & .search-icon {
+      width: 20px;
+      height: 20px;
+      position: absolute;
+      top: 0;
+      left: $spacingMedium;
+    }
+    & .categories {
+      &-container {
+        display: block;
+        margin-top: $spacingMedium;
+        padding: $spacingMedium;
+        background-color: rgba($orange, 0.08);
+        box-sizing: border-box;
+        border-radius: $spacingSmall;
+      }
+
+      display: inline-block;
+      width: 100%;
+      color: $blue;
+      @media screen and (min-width: $tabletWidth) {
+        float: left;
+        width: 200px;
+      }
+
+      &__title {
+        margin-top: $spacingMedium;
+        margin-left: 4px;
+      }
+
+      &__select {
+        background-color: transparent;
+        padding: $spacingMedium $spacingMedium;
+        border: 2px solid $blue;
+        color: $blue;
+        font-size: $fontSizeMedium;
+        font-family: $bodyFont;
+        box-shadow: none;
+        width: 150px;
+        height: 30px;
+      }
+
+      &__category {
+        display: inline-flex;
+        align-items: center;
+        text-transform: capitalize;
+        min-width: 130px;
+        margin-bottom: $spacingSmall;
+        @media screen and (min-width: $tabletWidth) {
+          display: flex;
+        }
+      }
+    }
+  }
+}

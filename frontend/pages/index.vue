@@ -1,25 +1,6 @@
 <template>
   <div v-if="!user">
-    <section class="tablet-width margin--auto padding-horizontal--large margin-top--xxlarge">
-      <div
-        class="flex-center-container flex-center-container--column mobile-width padding--none margin--auto"
-      >
-        <h1
-          class="heading--display-font padding-horizontal--large"
-        >It's time to digitalize your cook book!</h1>
-        <p
-          class="padding-horizontal--large color--blue font-size--medium text-align--center"
-        >Start storing your personal recipes online to make sure they never get lost. Keep them private, share them with the public or your friends only.</p>
-        <nuxt-link
-          to="/sign-up"
-          class="button button--large padding-horizontal--xlarge margin-top--large"
-          v-if="!user"
-        >Get started ➔</nuxt-link>
-      </div>
-      <div class="flex-center-container">
-        <kokeboka class="illustration illustration--kokeboka" />
-      </div>
-    </section>
+    <initial-info-section />
 
     <sign-up-section
       class="container--blue"
@@ -29,10 +10,22 @@
   </div>
 
   <div class="tablet-width padding-horizontal--large margin-top--xxlarge margin--auto" v-else>
-    <search-form
+    <div class="flex-center-container">
+      <h2 class="heading--display-font">Discover public recipes</h2>
+    </div>
+    <span
+      role="button"
+      @click="toggleSearchForm"
+      class="button button--small button--green-border margin-bottom--large"
+    >
+      <search-icon class="icon icon--in-button margin-right--medium" v-if="!search" />
+      {{ search ? "Exit search" : "Search" }}
+    </span>
+    <recipes-filter
+      v-if="search"
       class="margin-bottom--xlarge margin--auto"
-      @filterBySearchTerm="setSearchTerm"
-      @filterByCategory="setCategory"
+      :recipes="recipes"
+      @filter="setVisibleRecipes"
     />
     <recipes-list :recipes="visibleRecipes" :publicRecipe="true" />
   </div>
@@ -42,79 +35,45 @@
 import { GoogleProvider, auth } from "~/plugins/firebase.js";
 import googleLogo from "~/static/btn_google_light_normal_ios.svg";
 import { user } from "~/mixins/getCurrentUser.js";
-import kokeboka from "~/assets/graphics/veggies.svg";
+import InitialInfoSection from "~/components/InitialInfoSection/InititalInfoSection.vue";
 import SignUpSection from "~/components/SignUp/SignUpSection.vue";
 
-import SearchForm from "~/components/Search/SearchForm.vue";
+import RecipesFilter from "~/components/RecipesFilter/RecipesFilter.vue";
 import RecipesList from "~/components/Recipes/RecipesList.vue";
 
 export default {
   name: "Home",
   layout: "fullwidth",
   components: {
-    kokeboka,
+    InitialInfoSection,
     SignUpSection,
-    SearchForm,
+    RecipesFilter,
     RecipesList
   },
   data() {
     return {
-      categories: [],
-      searchTerm: "",
-      filteredRecipes: []
+      search: false,
+      filteredRecipes: [],
+      filtered: false
     };
   },
-  mixins: [user],
   computed: {
+    recipes() {
+      return this.$store.getters.publicRecipes;
+    },
     visibleRecipes() {
-      let publicRecipes = this.$store.getters.publicRecipes;
-      let categories = this.categories;
-      let searchTerm = this.searchTerm;
-      let filteredRecipes = [];
-      let recipesToBeFiltered = publicRecipes;
-      if (publicRecipes && categories.length) {
-        categories.forEach(category => {
-          let oneOrMoreRecipesOfCategory = -1;
-          recipesToBeFiltered.forEach(recipe => {
-            if (
-              recipe[1].categories &&
-              recipe[1].categories.indexOf(category) !== -1
-            ) {
-              oneOrMoreRecipesOfCategory *= 0;
-              if (filteredRecipes && filteredRecipes.indexOf(recipe) === -1)
-                filteredRecipes.push(recipe);
-            }
-          });
-        });
-        recipesToBeFiltered = filteredRecipes;
-      }
-
-      if (publicRecipes && searchTerm !== "") {
-        recipesToBeFiltered = recipesToBeFiltered.filter(recipe => {
-          return (
-            recipe[1].title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            recipe[1].description
-              .toLowerCase()
-              .includes(searchTerm.toLowerCase())
-          );
-        });
-      }
-
-      return recipesToBeFiltered;
+      if (!this.filtered) return this.recipes;
+      if (this.filtered) return this.filteredRecipes;
     }
   },
+  mixins: [user],
   methods: {
-    setCategory(category) {
-      let categoryIndex = this.categories.indexOf(category.value);
-
-      if (category.checked) {
-        this.categories.push(category.value);
-      } else if (!category.checked && categoryIndex !== -1) {
-        this.categories.splice(categoryIndex, 1);
-      }
+    toggleSearchForm() {
+      this.search = !this.search;
     },
-    setSearchTerm(value) {
-      this.searchTerm = value;
+    setVisibleRecipes(filteredRecipesObj) {
+      this.filteredRecipes = filteredRecipesObj.recipes;
+      this.filtered = filteredRecipesObj.filtered;
     }
   }
 };

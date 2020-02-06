@@ -51,5 +51,10 @@
     padding: $spacingXSmall $spacingLarge $spacingSmall $spacingLarge;
     border-radius: $spacingLarge;
     text-transform: capitalize;
+
+    &-note {
+      color: $blue;
+      font-size: $fontSizeSmall;
+    }
   }
 }

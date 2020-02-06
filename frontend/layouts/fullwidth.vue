@@ -1,6 +1,6 @@
 <template>
   <div>
-    <navigation />
+    <header-component />
     <div class="full-width margin--auto">
       <nuxt />
     </div>
