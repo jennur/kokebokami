@@ -7,7 +7,7 @@
       v-if="user && user.photoURL"
     />
     <div class="profile__biography mobile-width">
-      <h1 class="heading--display-font">{{user && user.displayName ? user.displayName : ""}}</h1>
+      <h1>{{user && user.displayName ? user.displayName : ""}}</h1>
       <p>{{user && user.biography ? user.biography : ""}}</p>
     </div>
   </div>

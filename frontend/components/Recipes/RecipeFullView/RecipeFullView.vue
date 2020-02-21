@@ -3,25 +3,27 @@
     <div v-if="!editMode" id="recipe" class="recipe mobile-width margin--auto">
       <h2 class="recipe__title">{{ recipeTitle }}</h2>
       <div class="recipe__description">{{ description }}</div>
-      <category-display
-        class="margin-bottom--xxlarge"
-        v-if="recipe.categories"
-        :categories="recipe.categories"
-      />
-      <type-of-meal-display v-if="recipe.typeOfMeal" :typeOfMeal="recipe.typeOfMeal" />
-      <free-from-display
-        class="margin-bottom--xlarge"
-        v-if="recipe.freeFrom"
-        :freeFrom="recipe.freeFrom"
-      />
+      <div id="ignorePDF">
+        <category-display
+          class="margin-bottom--xxlarge"
+          v-if="recipe.categories"
+          :categories="recipe.categories"
+        />
+        <type-of-meal-display v-if="recipe.typeOfMeal" :typeOfMeal="recipe.typeOfMeal" />
+        <free-from-display
+          class="margin-bottom--xlarge"
+          v-if="recipe.freeFrom"
+          :freeFrom="recipe.freeFrom"
+        />
 
-      <action-bar
-        :isRecipeOwner="isRecipeOwner"
-        :recipeKey="recipeKey"
-        :editMode="editMode"
-        @edit="toggleEditMode"
-        @download="pdfExport"
-      />
+        <action-bar
+          :isRecipeOwner="isRecipeOwner"
+          :recipeKey="recipeKey"
+          :editMode="editMode"
+          @edit="toggleEditMode"
+          @download="pdfExport"
+        />
+      </div>
 
       <ingredients-display v-if="recipe.ingredients" :ingredients="recipe.ingredients" />
       <instructions-display v-if="recipe.instructions" :instructions="recipe.instructions" />
@@ -63,7 +65,8 @@ export default {
   data() {
     return {
       recipeOwnerID: "",
-      editMode: false
+      editMode: false,
+      hide: false
     };
   },
   props: {
@@ -99,6 +102,11 @@ export default {
     },
     pdfExport() {
       if (this.recipe.title !== undefined) {
+        var elementHandler = {
+          "#ignorePDF": function(element, renderer) {
+            return true;
+          }
+        };
         let recipe = document.getElementById("recipe");
         var doc = new jsPDF("p", "mm", "a4");
         var img = new Image();
@@ -106,7 +114,10 @@ export default {
         doc.addImage(img, "PNG", 163, 10, 27, 5);
 
         let documentTitle = this.recipe.title.replace(/\s/g, "-").toLowerCase();
-        doc.fromHTML(recipe, 20, 10, { width: "150" });
+        doc.fromHTML(recipe, 20, 10, {
+          width: 150,
+          elementHandlers: elementHandler
+        });
         doc.save("kokebokami_" + documentTitle + ".pdf");
       }
     }

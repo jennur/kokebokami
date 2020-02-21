@@ -1,7 +1,7 @@
 .recipe {
   text-align: left;
   &__title {
-    font-family: $displayFont;
+    font-family: $headingFont;
     font-size: $fontSizeXXLargeMobile;
     @media screen and (min-width: $tabletWidth) {
       font-size: $fontSizeXXLarge;

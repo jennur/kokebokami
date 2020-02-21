@@ -11,7 +11,7 @@
 
   <div class="tablet-width padding-horizontal--large margin-top--xxlarge margin--auto" v-else>
     <div class="flex-center-container">
-      <h2 class="heading--display-font">Discover public recipes</h2>
+      <h2>Discover public recipes</h2>
     </div>
     <span
       role="button"
