@@ -246,7 +246,10 @@
     <h2>Contact Us</h2>
     <p>If you have any questions about this Privacy Policy, please contact us:</p>
     <ul class="arrow-list">
-      <li>By email: contact@kokebokami.com</li>
+      <li>
+        By email:
+        <a href="mailto:contact@kokebokami.com">contact@kokebokami.com</a>
+      </li>
     </ul>
   </section>
 </template>
