@@ -7,9 +7,7 @@
       :alt="displayName + '´s profile picture'"
     />
     <div class="flex-column">
-      <h2
-        class="heading--display-font margin-bottom--small margin--none"
-      >{{displayName ? displayName : ""}}</h2>
+      <h2 class="margin-bottom--small margin--none">{{displayName ? displayName : ""}}</h2>
       <p
         class="following-cooks__biography margin--none"
       >{{biography ? (biography.substring(0,70) + "...") : "This user did not write a biography yet."}}</p>

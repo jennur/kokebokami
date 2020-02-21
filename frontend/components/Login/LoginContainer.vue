@@ -1,6 +1,6 @@
 <template>
   <div class="login-container">
-    <h2 class="heading--display-font margin-bottom--xlarge">Log in to see kokeboka di</h2>
+    <h2 class="margin-bottom--xlarge">Log in to see kokeboka di</h2>
 
     <google-login class="margin-bottom--medium" />
     <facebook-login class="margin-bottom--medium" />

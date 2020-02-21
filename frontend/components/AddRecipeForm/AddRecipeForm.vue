@@ -11,7 +11,7 @@
         />
       </div>
 
-      <div class="mobile-width margin--auto">
+      <div class="mobile-width margin-top--xlarge margin--auto">
         <!-- TITLE / DESCRIPTION -->
         <fieldset class="flex-column">
           <title-input id="recipeTitle" class="margin-bottom--medium" :existingTitle="title" />
