@@ -14,8 +14,10 @@
       <h2>Discover public recipes</h2>
     </div>
     <span
+      tabindex="0"
       role="button"
       @click="toggleSearchForm"
+      @keydown="event => { (event.keyCode === 13) && toggleSearchForm() }"
       class="button button--small button--green-border margin-bottom--large"
     >
       <search-icon class="icon icon--in-button margin-right--medium" v-if="!search" />

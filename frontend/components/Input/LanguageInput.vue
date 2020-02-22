@@ -1,24 +1,25 @@
 <template>
   <fieldset class="categories">
     <h4 class="categories__title">Recipe language</h4>
-    <select v-model="language" @change="handleLanguage" id="language" class="categories__select">
-      <option label="All languages" />
-      <option
-        v-for="language in languages"
-        :label="language"
-        :value="language"
-        :key="language"
-        :id="language"
-      />
-    </select>
+    <select-component
+      id="language"
+      :options="languages"
+      :preSelected="existingLanguage"
+      defaultValue="All languages"
+      @select="(language) => handleLanguage(language)"
+    />
   </fieldset>
 </template>
 <script>
+import SelectComponent from "./SelectComponent.vue";
 export default {
   name: "language-input",
-  data() {
-    return { language: "" };
+  components: {
+    SelectComponent
   },
+  /*data() {
+    return { language: "" };
+  },*/
   props: {
     existingLanguage: {
       type: String,
@@ -36,8 +37,8 @@ export default {
     }
   },
   methods: {
-    handleLanguage() {
-      this.$emit("update", this.language);
+    handleLanguage(language) {
+      this.$emit("update", language);
     }
   },
   created() {
