@@ -4,8 +4,8 @@
     <ol class="recipe__instructions">
       <li
         class="recipe__instructions-step"
-        v-for="step in instructions"
-        :key="step"
+        v-for="(step, index) in instructions"
+        :key="`instruction-${index}`"
       >{{ step ? step : "Recipe has no instructions" }}</li>
     </ol>
   </div>

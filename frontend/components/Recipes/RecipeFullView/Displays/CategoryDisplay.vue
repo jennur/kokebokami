@@ -2,8 +2,8 @@
   <div class="recipe__categories margin-top--large">
     <span
       class="recipe__category margin-right--large"
-      v-for="category in mealCategories"
-      :key="category"
+      v-for="(category, index) in mealCategories"
+      :key="`category-${index}`"
     >{{ category }}</span>
   </div>
 </template>
