@@ -2,13 +2,14 @@
   <fieldset class="categories">
     <h4 class="categories__title">Recipe language</h4>
     <select v-model="language" @change="handleLanguage" id="language" class="categories__select">
-      <option>All languages</option>
+      <option label="All languages" />
       <option
         v-for="language in languages"
+        :label="language"
         :value="language"
         :key="language"
         :id="language"
-      >{{ language }}</option>
+      />
     </select>
   </fieldset>
 </template>
