@@ -2,6 +2,8 @@
   &__search {
     text-align: left;
     max-width: 350px;
+    width: 100%;
+    position: relative;
     & label {
       position: relative;
     }
@@ -23,18 +25,31 @@
 
   &__result-list {
     max-width: 350px;
+    width: inherit;
+    background-color: $white;
     list-style: none;
     text-align: left;
+    position: absolute;
+    border-radius: $spacingSmall;
     padding: 0px;
+    box-shadow: 0px $spacingMedium $spacingMedium rgba(0, 0, 0, 0.25);
   }
   &__user-link {
     display: inline-flex;
     align-items: center;
+    width: 100%;
+    padding: $spacingMedium;
+    margin: 0px;
+    box-sizing: border-box;
+    &:hover {
+      background-color: rgba($green, 0.2);
+    }
   }
   &__user-photo {
     width: 30px;
     height: 30px;
     border-radius: 50%;
     margin-right: $spacingMedium;
+    background-color: rgba($blue, 0.5);
   }
 }
