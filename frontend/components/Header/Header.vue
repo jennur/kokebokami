@@ -1,6 +1,9 @@
 <template>
-  <div :class="`header ${scrollDown ? '' : 'header--open'}`">
-    <navigation @toggleMenu="handleMenu" />
+  <div>
+    <div class="header--space-reserver"></div>
+    <div :class="`header ${scrollDown ? '' : 'header--open'}`">
+      <navigation @toggleMenu="handleMenu" />
+    </div>
   </div>
 </template>
 
