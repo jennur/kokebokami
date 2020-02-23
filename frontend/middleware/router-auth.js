@@ -1,11 +1,12 @@
 export default function({ store, redirect, route }) {
-  const userExists =
-    store.state.user !== null && store.state.user !== undefined;
+  let user = store.state.user;
+  const userExists = user !== null && user !== undefined;
 
-  userExists && (route.name == "login" || route.name == "sign-up")
-    ? redirect("/my-recipes")
-    : "";
-  store.state.user === null && isAdminRoute(route) ? redirect("/login") : "";
+  if (userExists && user.verifiedEmail) {
+    if (route.name == "login" || route.name == "sign-up")
+      redirect("/my-recipes");
+  }
+  user === null && isAdminRoute(route) ? redirect("/login") : "";
   route.name == "recipes" ? redirect("/") : "";
 }
 

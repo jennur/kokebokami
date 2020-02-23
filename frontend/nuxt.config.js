@@ -102,7 +102,12 @@ export default {
           {
             name: "goodbye",
             path: "/account/goodbye",
-            component: "pages/goodbye.vue"
+            component: "pages/account/goodbye.vue"
+          },
+          {
+            name: "verify-email",
+            path: "/account/verify-email",
+            component: "pages/account/verify-email.vue"
           }
         ]
       },
