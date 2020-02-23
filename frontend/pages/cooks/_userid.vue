@@ -1,20 +1,27 @@
 <template>
   <section :key="key">
     <breadcrumbs :routes="breadcrumbs" />
-    <div class="flex-column">
+    <div class="flex-column flex-align--end">
       <button
         @click="unfollowUser"
-        class="button button--small button--red-border"
+        class="button button--small button--red-border margin-top--large"
         v-if="isFollowingUser"
-      >Unfollow {{userVisited ? userVisited[1].displayName : ""}}</button>
+      >
+        Unfollow {{ userVisited ? userVisited[1].displayName : "" }}
+      </button>
       <button
         @click="followUser"
         class="button button--small button--green-border margin-top--large"
         v-else
-      >Follow {{userVisited ? userVisited[1].displayName : ""}}</button>
-      <span class="system-message margin-top--medium">{{systemMessage}}</span>
+      >
+        Follow {{ userVisited ? userVisited[1].displayName : "" }}
+      </button>
+      <span class="system-message margin-top--medium">{{ systemMessage }}</span>
     </div>
-    <profile-view class="margin-top--medium" :user="userVisited ? userVisited[1] : {}" />
+    <profile-view
+      class="margin-top--medium"
+      :user="userVisited ? userVisited[1] : {}"
+    />
     <h3>Check out my recipes</h3>
     <recipes-list :recipes="userVisitedsPublicRecipes" />
   </section>

@@ -2,7 +2,7 @@
   <div>
     <h4>Ingredients</h4>
     <ul class="recipe__ingredients">
-      <li v-for="ingredient in ingredients" :key="ingredient">{{ ingredient }}</li>
+      <li v-for="(ingredient, index) in ingredients" :key="`ingredient-${index}`">{{ ingredient }}</li>
     </ul>
   </div>
 </template>

@@ -1,43 +1,32 @@
 <template>
   <div>
-    <div>
-      <breadcrumbs :routes="breadcrumbs" />
-    </div>
-    <div class="cooks container container--center mobile-width margin-top--xlarge margin--auto">
+    <breadcrumbs :routes="breadcrumbs" />
+    <div
+      class="cooks container container--center mobile-width margin-top--xlarge margin--auto"
+    >
       <h2>Discover other users of Kokebokami</h2>
-      <div class="cooks__search margin--auto">
-        <label>
-          <userIcon class="cooks__waving-icon" />
-          <input type="text" placeholder="Search for username" v-model="searchTerm" />
-        </label>
-        <ul class="cooks__result-list margin-top--xlarge padding-left--xlarge" v-if="searchTerm">
-          <li class="margin-bottom--large" v-for="cook in cooks" :key="cook[0]">
-            <nuxt-link :to="'cooks/' + cook[0]" class="cooks__user-link">
-              <img
-                class="cooks__user-photo"
-                :src="cook[1].photoURL"
-                alt="User profile"
-                v-if="cook[1].photoURL"
-              />
-              {{cook[1].displayName}}
-            </nuxt-link>
-          </li>
-        </ul>
-      </div>
+      <cooks-search />
     </div>
     <div class="margin-top--xlarge">
       <div class="flex-row">
         <h4
           id="following-tab"
           @click="event => toggleCooks(event)"
-          :class="'tab margin-right--large ' + (showFollowedCooks ? 'tab--active':'')"
-        >Currently following ({{this.followedCooks.length}})</h4>
+          :class="
+            'tab margin-right--large ' +
+              (showFollowedCooks ? 'tab--active' : '')
+          "
+        >
+          Currently following ({{ this.followedCooks.length }})
+        </h4>
         <h4 class="margin-right--large">|</h4>
         <h4
           id="followers-tab"
           @click="event => toggleCooks(event)"
-          :class="'tab ' + (showFollowers ? 'tab--active':'')"
-        >Followers ({{this.followers.length}})</h4>
+          :class="'tab ' + (showFollowers ? 'tab--active' : '')"
+        >
+          Followers ({{ this.followers.length }})
+        </h4>
       </div>
       <cooks-list :cooks="followedCooks" v-if="showFollowedCooks" />
       <cooks-list :cooks="followers" v-if="showFollowers" />
@@ -46,17 +35,17 @@
 </template>
 <script>
 import { user } from "~/mixins/getCurrentUser.js";
-import userIcon from "~/assets/graphics/user.svg";
+import CooksSearch from "~/components/Cooks/CooksSearch/CooksSearch.vue";
 import CooksList from "~/components/Cooks/CooksList.vue";
 
 export default {
   name: "cooks",
   components: {
-    userIcon,
+    CooksSearch,
     CooksList
   },
   data() {
-    return { searchTerm: "", showFollowedCooks: true, showFollowers: false };
+    return { showFollowedCooks: true, showFollowers: false };
   },
   props: {
     breadcrumbs: {
@@ -66,15 +55,6 @@ export default {
   },
   mixins: [user],
   computed: {
-    cooks() {
-      let searchTerm = this.searchTerm;
-      let users = this.$store.getters.allUsers;
-      return users.filter(user => {
-        return user[1].displayName
-          .toLowerCase()
-          .startsWith(searchTerm.toLowerCase());
-      });
-    },
     followedCooks() {
       let users = this.$store.getters.allUsers;
       let followingUserData = [];

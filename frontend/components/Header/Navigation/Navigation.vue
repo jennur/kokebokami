@@ -1,11 +1,19 @@
 <template>
-  <nav class="navigation-menu padding-horizontal--large margin--auto tablet-width">
+  <nav
+    v-click-outside="closeMenu"
+    class="navigation-menu padding-horizontal--large margin--auto tablet-width"
+  >
     <h1 class="navigation-menu__logo">
-      <nuxt-link class="navigation-menu__logo-link" to="/">Kokebokami</nuxt-link>
+      <nuxt-link class="navigation-menu__logo-link" to="/"
+        >Kokebokami</nuxt-link
+      >
     </h1>
     <burger-icon @click.native="toggleMenu" :open="open" />
     <div
-      :class="'navigation-menu__list-container ' + (open ? 'navigation-menu__list-container--open' : '')"
+      :class="
+        'navigation-menu__list-container ' +
+          (open ? 'navigation-menu__list-container--open' : '')
+      "
     >
       <ul class="navigation-menu__list">
         <li v-for="menuItem in menuItems" :key="menuItem.name">
@@ -18,8 +26,13 @@
           <nuxt-link
             class="navigation-menu__link"
             :to="menuItem.link"
-            @click.native="()=>{open = false}"
-          >{{menuItem.name}}</nuxt-link>
+            @click.native="
+              () => {
+                open = false;
+              }
+            "
+            >{{ menuItem.name }}</nuxt-link
+          >
         </li>
         <li v-if="user">
           <button class="logout-button" @click="logOut">Log out</button>
@@ -32,7 +45,7 @@
 <script>
 import { user } from "~/mixins/getCurrentUser.js";
 import BurgerIcon from "./BurgerMenu/BurgerIcon.vue";
-
+import ClickOutside from "vue-click-outside";
 export default {
   name: "navigation",
   components: {
@@ -67,12 +80,20 @@ export default {
   methods: {
     toggleMenu() {
       this.open = !this.open;
+      this.$emit("toggleMenu", this.open);
+    },
+    closeMenu() {
+      this.open = false;
+      this.$emit("toggleMenu", false);
     },
     logOut() {
       this.$store.dispatch("USER_SIGN_OUT");
       this.$router.push("/");
       this.open = false;
     }
+  },
+  directives: {
+    ClickOutside
   }
 };
 </script>

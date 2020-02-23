@@ -4,6 +4,7 @@
 @import "./settings/variables.settings.scss";
 
 /* Flex */
+@import "./flex/flex-align.flex.scss";
 @import "./flex/flex-order.flex.scss";
 
 /* Elements */
@@ -33,6 +34,7 @@
 @import "./components/cooks.component.scss";
 @import "./components/footer.component.scss";
 @import "./components/following-cooks.component.scss";
+@import "./components/header.component.scss";
 @import "./components/kokebokami-login.component.scss";
 @import "./components/login-container.component.scss";
 @import "./components/navigation.component.scss";
@@ -41,6 +43,7 @@
 @import "./components/recipe-full-view.component.scss";
 @import "./components/recipes-filter.component.scss";
 @import "./components/recipes-list-container.component.scss";
+@import "./components/select.component.scss";
 @import "./components/share-form.component.scss";
 @import "./components/sign-up-form.component.scss";
 

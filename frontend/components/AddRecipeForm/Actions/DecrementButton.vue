@@ -1,5 +1,10 @@
 <template>
-  <button class="remove-icon" title="Remove" @click="(event)=>{this.$emit('decrement', event)}">
+  <button
+    type="button"
+    class="remove-icon"
+    title="Remove"
+    @click="(event)=>{this.$emit('decrement', event)}"
+  >
     <slot />
   </button>
 </template>

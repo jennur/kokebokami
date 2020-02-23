@@ -8,20 +8,18 @@
       :key="category"
     >
       <input
+        tabindex="0"
         type="checkbox"
         :id="category"
         :value="category"
-        @change="
-          event => {
-            handleCategory(event.target);
-          }
-        "
+        @change="event => handleCategory(event.target)"
       />
       {{ category }}
     </label>
   </fieldset>
 </template>
 <script>
+//Categories, FreeFrom, TypeOfMeal can be merged to one component
 export default {
   name: "categories-input",
   data() {
