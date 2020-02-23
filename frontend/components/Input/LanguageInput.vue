@@ -6,7 +6,7 @@
       :options="languages"
       :preSelected="existingLanguage"
       defaultValue="All languages"
-      @select="(language) => handleLanguage(language)"
+      @select="language => handleLanguage(language)"
     />
   </fieldset>
 </template>
@@ -28,7 +28,7 @@ export default {
   },
   computed: {
     languages() {
-      let allCategoryObjects = this.$store.getters.allCategories;
+      let allCategoryObjects = this.$store.state.allCategories;
       return Object.values(
         allCategoryObjects.filter(object => {
           return object.languages;

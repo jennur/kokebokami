@@ -5,15 +5,19 @@
       <div class="recipe__description">{{ description }}</div>
       <div id="ignorePDF">
         <category-display
-          class="margin-bottom--xxlarge"
           v-if="recipe.categories"
           :categories="recipe.categories"
+          class="margin-bottom--xxlarge"
         />
-        <type-of-meal-display v-if="recipe.typeOfMeal" :typeOfMeal="recipe.typeOfMeal" />
+        <type-of-meal-display
+          v-if="recipe.typeOfMeal"
+          :typeOfMeal="recipe.typeOfMeal"
+          :class="`${recipe.freeFrom ? '' : 'margin-bottom--xlarge'}`"
+        />
         <free-from-display
-          class="margin-bottom--xlarge"
           v-if="recipe.freeFrom"
           :freeFrom="recipe.freeFrom"
+          class="margin-bottom--xlarge"
         />
 
         <action-bar
@@ -25,8 +29,14 @@
         />
       </div>
 
-      <ingredients-display v-if="recipe.ingredients" :ingredients="recipe.ingredients" />
-      <instructions-display v-if="recipe.instructions" :instructions="recipe.instructions" />
+      <ingredients-display
+        v-if="recipe.ingredients"
+        :ingredients="recipe.ingredients"
+      />
+      <instructions-display
+        v-if="recipe.instructions"
+        :instructions="recipe.instructions"
+      />
     </div>
 
     <!-- EDIT FORM -->

@@ -1,36 +1,41 @@
 <template>
-  <nuxt-link :to="'/recipes/' + recipeUrl" class="recipe-display padding--xlarge">
+  <nuxt-link
+    :to="'/recipes/' + recipeUrl"
+    class="recipe-display padding--xlarge"
+  >
     <div>
       <div class="recipe-display__category-note">
         <p v-if="typeOfMeal">
           <b>Meal type:</b>
-          {{typeOfMeal}}
+          {{ typeOfMeal }}
         </p>
         <p v-if="freeFrom">
           <b>Free from:</b>
-          {{freeFrom}}
+          {{ freeFrom }}
         </p>
       </div>
-      <h3
-        class="recipe-display__title margin--none margin-bottom--medium"
-      >{{recipe.title ? recipe.title : "Recipe has no title"}}</h3>
-      <div
-        class="recipe-display__description"
-      >{{recipe.description ? recipe.description : "Recipe has no description"}}</div>
+      <h3 class="recipe-display__title margin--none margin-bottom--medium">
+        {{ recipe.title ? recipe.title : "Recipe has no title" }}
+      </h3>
+      <div class="recipe-display__description margin-bottom--large">
+        {{
+          recipe.description ? recipe.description : "Recipe has no description"
+        }}
+      </div>
     </div>
     <div>
       <div class="recipe-display__categories">
         <span
-          class="recipe-display__category margin-vertical--large margin-horizontal--small"
+          class="recipe-display__category margin-bottom--large margin-horizontal--small"
           v-for="category in categories"
           :key="category"
-        >{{category}}</span>
+          >{{ category }}</span
+        >
       </div>
 
-      <span
-        class="recipe-display__published-by"
-        v-if="publicRecipe"
-      >Published by: {{recipeOwner ? recipeOwner : "Unknown"}}</span>
+      <span class="recipe-display__published-by" v-if="publicRecipe"
+        >Published by: {{ recipeOwner ? recipeOwner : "Unknown" }}</span
+      >
     </div>
   </nuxt-link>
 </template>
@@ -60,7 +65,7 @@ export default {
       return this.recipeID;
     },
     recipeOwner() {
-      let users = this.$store.getters.allUsers;
+      let users = this.$store.state.allUsers;
       let recipeOwner = null;
       users.forEach(user => {
         if (this.recipe.ownerID === user[0]) {
@@ -70,7 +75,7 @@ export default {
       return recipeOwner;
     },
     allCategoryObjects() {
-      return this.$store.getters.allCategories;
+      return this.$store.state.allCategories;
     },
     allTypesOfMeal() {
       // Needed due to duplicate in previous categories

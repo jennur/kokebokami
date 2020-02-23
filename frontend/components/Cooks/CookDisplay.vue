@@ -1,16 +1,27 @@
 <template>
-  <nuxt-link :to="'cooks/' + cookID" class="following-cooks__cook margin--small">
-    <img
-      class="following-cooks__img margin-right--xlarge"
+  <nuxt-link
+    :to="'cooks/' + cookID"
+    class="following-cooks__cook margin--small"
+  >
+    <div
+      role="img"
       v-if="photoURL"
-      :src="photoURL"
-      :alt="displayName + '´s profile picture'"
+      class="following-cooks__img margin-right--xlarge"
+      :style="`background-image: url(${photoURL})`"
+      :aria-label="displayName + '´s profile picture'"
     />
+    <div v-else class="following-cooks__img margin-right--xlarge"></div>
     <div class="flex-column">
-      <h2 class="margin-bottom--small margin--none">{{displayName ? displayName : ""}}</h2>
-      <p
-        class="following-cooks__biography margin--none"
-      >{{biography ? (biography.substring(0,70) + "...") : "This user did not write a biography yet."}}</p>
+      <h2 class="margin-bottom--small margin--none">
+        {{ displayName ? displayName : "" }}
+      </h2>
+      <p class="following-cooks__biography margin--none">
+        {{
+          biography
+            ? biography.substring(0, 70) + "..."
+            : "This user did not write a biography yet."
+        }}
+      </p>
     </div>
   </nuxt-link>
 </template>

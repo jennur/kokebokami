@@ -3,7 +3,9 @@
     <breadcrumbs :routes="breadcrumbs" />
     <profile-view :user="user" />
     <h3>Check out my recipes</h3>
-    <recipes-list :recipes="currentUsersPublicRecipes ? currentUsersPublicRecipes : []" />
+    <recipes-list
+      :recipes="currentUsersPublicRecipes ? currentUsersPublicRecipes : []"
+    />
   </section>
 </template>
 
@@ -28,7 +30,7 @@ export default {
   mixins: [user],
   computed: {
     currentUsersPublicRecipes() {
-      let publicRecipes = this.$store.getters.publicRecipes;
+      let publicRecipes = this.$store.state.publicRecipes;
       let currentUsersPublicRecipes = publicRecipes.filter(recipe => {
         return recipe[1].ownerID === this.user.id;
       });
@@ -38,4 +40,3 @@ export default {
   }
 };
 </script>
-

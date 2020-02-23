@@ -1,8 +1,14 @@
 <template>
   <fieldset class="categories-container">
     <language-input :existingLanguage="language" @update="handleLanguage" />
-    <categories-input :existingCategories="categories" @update="handleMealCategory" />
-    <type-of-meal-input :existingTypeOfMeal="typeOfMeal" @update="handleTypeOfMeal" />
+    <categories-input
+      :existingCategories="categories"
+      @update="handleMealCategory"
+    />
+    <type-of-meal-input
+      :existingTypeOfMeal="typeOfMeal"
+      @update="handleTypeOfMeal"
+    />
     <free-from-input :existingFreeFrom="freeFrom" @update="handleFreeFrom" />
   </fieldset>
 </template>
@@ -37,7 +43,7 @@ export default {
   },
   computed: {
     allCategoryObjects() {
-      return this.$store.getters.allCategories;
+      return this.$store.state.allCategories;
     },
     allCategories() {
       let allCategories = [];

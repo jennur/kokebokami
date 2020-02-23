@@ -1,11 +1,11 @@
 export default function({ store, redirect, route }) {
   const userExists =
-    store.getters.user !== null && store.getters.user !== undefined;
+    store.state.user !== null && store.state.user !== undefined;
 
   userExists && (route.name == "login" || route.name == "sign-up")
     ? redirect("/my-recipes")
     : "";
-  store.getters.user === null && isAdminRoute(route) ? redirect("/login") : "";
+  store.state.user === null && isAdminRoute(route) ? redirect("/login") : "";
   route.name == "recipes" ? redirect("/") : "";
 }
 

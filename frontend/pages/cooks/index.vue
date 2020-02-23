@@ -56,7 +56,7 @@ export default {
   mixins: [user],
   computed: {
     followedCooks() {
-      let users = this.$store.getters.allUsers;
+      let users = this.$store.state.allUsers;
       let followingUserData = [];
       let following =
         this.user && this.user.following
@@ -74,7 +74,7 @@ export default {
       return followingUserData;
     },
     followers() {
-      let users = this.$store.getters.allUsers;
+      let users = this.$store.state.allUsers;
       let followerUserData = [];
       let followers =
         this.user && this.user.followers

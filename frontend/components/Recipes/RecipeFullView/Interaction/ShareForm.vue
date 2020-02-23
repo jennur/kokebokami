@@ -4,11 +4,15 @@
       <h4>Share this recipe with another user</h4>
       <label class="margin-bottom--large">
         User's email address:
-        <input type="email" placeholder="john.doe@example.com" v-model="email" />
+        <input
+          type="email"
+          placeholder="john.doe@example.com"
+          v-model="email"
+        />
       </label>
       <button @click="shareRecipe" class="button button--small">Share</button>
     </form>
-    <div class="system-message margin-top--large">{{systemMessage}}</div>
+    <div class="system-message margin-top--large">{{ systemMessage }}</div>
   </div>
 </template>
 <script>
@@ -35,6 +39,7 @@ export default {
         .once("value", snapshot => {
           let userID = null;
           let username = "";
+          let existingEmailCheck = 1;
           snapshot.forEach(user => {
             if (user.val().email === emailValue) {
               userID = user.key;
@@ -63,10 +68,15 @@ export default {
                   }
                 });
               } else {
-                console.log("No recipeKey found in shareRecipe");
+                console.log("Error: No recipeKey found in shareRecipe");
               }
+              existingEmailCheck *= 0;
             }
           });
+          if (existingEmailCheck === 1) {
+            realThis.systemMessage =
+              "This email address does not exist in the database";
+          }
         })
 
         .catch(error => {
