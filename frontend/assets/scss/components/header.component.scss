@@ -1,0 +1,13 @@
+.header {
+  position: fixed;
+  top: 0;
+  background-color: $cream;
+  width: 100%;
+  z-index: 999;
+  transform: translateY(-50px);
+  transition: transform 0.5s;
+
+  &--open {
+    transform: translateY(0px);
+  }
+}
