@@ -81,6 +81,13 @@ select {
         position: absolute;
         right: $spacingMedium;
       }
+      &:hover,
+      &:active,
+      &:focus {
+        &::after {
+          color: #fef3e9;
+        }
+      }
     }
   }
 }

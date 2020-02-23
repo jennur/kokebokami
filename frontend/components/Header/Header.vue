@@ -17,7 +17,6 @@ export default {
   methods: {
     handleMenu(status) {
       this.menuOpen = status;
-      console.log("Status::", status);
     },
     handleScroll() {
       let currentScrollValue = window.pageYOffset;
