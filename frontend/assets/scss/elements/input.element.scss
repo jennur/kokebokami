@@ -23,7 +23,9 @@ input[type="checkbox"] {
   width: $spacingLarge;
   height: $spacingLarge;
   position: relative;
-
+  &:focus {
+    border: 2px solid $green;
+  }
   &:checked {
     &::after {
       content: "";
@@ -54,6 +56,10 @@ input[type="checkbox"] {
         border-left: 4px solid $green;
         border-bottom: 4px solid $green;
       }
+    }
+
+    &:focus {
+      border: 3px solid $green;
     }
   }
 }

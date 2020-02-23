@@ -17,7 +17,7 @@
 
 <script>
 export default {
-  name: "goodbye",
+  name: "verify-email",
   props: {
     breadcrumbs: {
       type: Array,

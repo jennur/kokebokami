@@ -12,12 +12,14 @@ html {
   font-family: "Be Vietnam", sans-serif;
   background-color: $cream;
   overflow-x: hidden;
+  min-height: 100vh;
 }
 
 body {
   position: relative;
   overflow-x: hidden;
   margin: 0px;
+  min-height: 100vh;
 }
 
 .color {

@@ -6,15 +6,7 @@ export default context => {
   auth.onAuthStateChanged(user => {
     if (user) {
       if (!user.emailVerified) {
-        user
-          .sendEmailVerification()
-          .then(() => {
-            redirect("/account/verify-email");
-          })
-          .catch(error => {
-            console.log("Error sending verification email:", error);
-            redirect("/account/verify-email");
-          });
+        redirect("/account/verify-email");
       } else {
         setUserData(store, user);
       }
@@ -24,11 +16,12 @@ export default context => {
 
 function setUserData(store, user) {
   store.dispatch("SET_ALL_USERS");
-
+  let loggedinUser = {};
   let userRef = db.ref("users/" + user.uid);
+
   userRef.once("value", snapshot => {
     if (snapshot.exists()) {
-      let loggedinUser = {
+      loggedinUser = {
         id: user.uid,
         photoURL: snapshot.val().photoURL,
         displayName: snapshot.val().displayName,
@@ -37,32 +30,26 @@ function setUserData(store, user) {
         following: snapshot.val().following,
         followers: snapshot.val().followers
       };
-
-      store.dispatch("SET_USER", loggedinUser);
-      store.dispatch("SET_SHARED_RECIPES", loggedinUser);
-      store.dispatch("SET_PUBLIC_RECIPES");
-      store.dispatch("SET_USER_RECIPES", loggedinUser);
     } else {
-      //Assuming that user is coming via Google/Facebook for the first time (custom users are added on signup)
       let databaseUser = {
-        displayName: user.displayName,
-        photoURL: user.photoURL,
+        displayName: user.displayName ? user.displayName : "User",
+        photoURL: user.photoURL && user.photoURL,
         email: user.email
         // No more details available upon first login
       };
       userRef.set(databaseUser);
 
-      let loggedinUser = {
+      loggedinUser = {
         id: user.uid,
-        photoURL: user.photoURL,
-        displayName: user.displayName,
+        photoURL: user.photoURL && user.photoURL,
+        displayName: user.displayName && user.displayName,
         email: user.email
         // No more details available upon first login
       };
-      store.dispatch("SET_USER", loggedinUser);
-      store.dispatch("SET_SHARED_RECIPES", loggedinUser);
-      store.dispatch("SET_PUBLIC_RECIPES");
-      store.dispatch("SET_USER_RECIPES", loggedinUser);
     }
+    store.dispatch("SET_USER", loggedinUser);
+    store.dispatch("SET_SHARED_RECIPES", loggedinUser);
+    store.dispatch("SET_PUBLIC_RECIPES");
+    store.dispatch("SET_USER_RECIPES", loggedinUser);
   });
 }

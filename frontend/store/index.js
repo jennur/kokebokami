@@ -11,6 +11,7 @@ export function state() {
     user: null,
     allUsers: null,
     loginSystemMessage: "",
+    signupSystemMessage: "",
     recipes: [],
     sharedRecipes: [],
     publicRecipes: [],
@@ -84,6 +85,9 @@ export const mutations = {
   setLoginSystemMessage(state, payload) {
     state.loginSystemMessage = payload;
   },
+  setSignupSystemMessage(state, payload) {
+    state.signupSystemMessage = payload;
+  },
   setRecipes(state, payload) {
     state.recipes = payload;
   },
@@ -120,7 +124,26 @@ export const actions = {
   FACEBOOK_SIGN_IN: () => {
     auth.signInWithRedirect(FacebookProvider);
   },
-  KOKEBOKAMI_SIGN_IN: (email, password) => {},
+  KOKEBOKAMI_SIGN_UP: ({ commit }, credentials) => {
+    auth
+      .createUserWithEmailAndPassword(credentials.email, credentials.password)
+      .then(response => {
+        response.user
+          .sendEmailVerification()
+          .then(() => {
+            console.log("Verification email sent");
+          })
+          .catch(error => {
+            console.log("Error sending verification email:", error);
+          });
+      })
+      .catch(function(error) {
+        commit("setSignupSystemMessage", error.message);
+        console.log(
+          "Failed with error code: " + error.code + " " + error.message
+        );
+      });
+  },
   USER_SIGN_OUT: ({ commit }) => {
     auth
       .signOut()

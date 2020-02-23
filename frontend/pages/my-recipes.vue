@@ -1,7 +1,7 @@
 <template>
   <div class="container container--center">
     <breadcrumbs :routes="breadcrumbs" />
-    <h1 class="margin-bottom--large">{{ this.firstName }}'s kokebok</h1>
+    <h1 class="margin-bottom--large">{{ headlineText }}</h1>
     <nuxt-link
       to="/account/add-recipe"
       class="button button--large button--round margin--auto margin-top--xlarge"
@@ -82,12 +82,16 @@ export default {
   computed: {
     firstName() {
       let firstName = null;
-
-      if (this.user && this.user.displayName) {
-        let username = this.user.displayName;
+      let user = this.user;
+      if (user && user.displayName && user.displayName !== "User") {
+        let username = user.displayName;
         firstName = /\s/.test(username) ? username.split(" ")[0] : username;
       }
       return firstName;
+    },
+    headlineText() {
+      if (this.firstName) return `${this.firstName}'s kokebok`;
+      else return "My kokebok";
     },
     userRecipes() {
       return this.$store.state.recipes;
