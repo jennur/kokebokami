@@ -59,6 +59,7 @@ export function state() {
       {
         categories: [
           "quick & easy",
+          "comfort food",
           "spicy",
           "sugar free",
           "vegetarian",
