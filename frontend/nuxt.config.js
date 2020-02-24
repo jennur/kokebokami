@@ -103,11 +103,6 @@ export default {
             name: "goodbye",
             path: "/account/goodbye",
             component: "pages/account/goodbye.vue"
-          },
-          {
-            name: "verify-email",
-            path: "/account/verify-email",
-            component: "pages/account/verify-email.vue"
           }
         ]
       },
@@ -115,6 +110,11 @@ export default {
         name: "my-recipes",
         path: "/my-recipes",
         component: "pages/my-recipes.vue"
+      },
+      {
+        name: "verify-email",
+        path: "/verify-email",
+        component: "pages/verify-email.vue"
       },
       {
         name: "privacy-policy",

@@ -6,7 +6,7 @@ export default context => {
   auth.onAuthStateChanged(user => {
     if (user) {
       if (!user.emailVerified) {
-        redirect("/account/verify-email");
+        redirect("/verify-email");
       } else {
         setUserData(store, user);
       }
