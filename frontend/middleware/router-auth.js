@@ -10,17 +10,14 @@ export default function({ store, redirect, route }) {
       redirect("/my-recipes");
     }
   }
-  user === null && isAdminRoute(route) ? redirect("/login") : "";
-  route.name == "recipes" ? redirect("/") : "";
+  !user && isAdminRoute(route) ? redirect("/login") : "";
 }
 
 function isAdminRoute(route) {
-  if (route.matched.some(record => record.path == "/account")) {
-    return true;
-  } else if (route.matched.some(record => record.path == "/my-recipes")) {
+  if (route.matched.some(record => record.path.indexOf("account") > -1)) {
     return true;
   } else if (
-    route.matched.some(record => record.path == "/account/add-recipe")
+    route.matched.some(record => record.path.indexOf("recipes") > -1)
   ) {
     return true;
   }

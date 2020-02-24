@@ -1,18 +1,23 @@
 <template>
   <div class="login-container">
     <h2 class="margin-bottom--xlarge">Log in to see kokeboka di</h2>
-
+    <!-- Social Media login -->
     <google-login class="margin-bottom--medium" />
     <facebook-login class="margin-bottom--medium" />
+
+    <!-- Kokebokami login -->
     <div class="margin-top--medium">
       <button
         class="button button--large button--transparent"
         @click="toggleLoginModal"
-      >➔ Sign in with username and password</button>
+      >
+        ➔ Sign in with username and password
+      </button>
+
       <kokebokami-login :open="loginModalOpen" @toggle="toggleLoginModal" />
     </div>
     <div class="system-message margin-top--medium" v-if="systemMessage">
-      <p>{{systemMessage}}</p>
+      <p>{{ systemMessage }}</p>
     </div>
   </div>
 </template>
@@ -57,9 +62,9 @@ export default {
           this.$store.dispatch("SET_USER", user);
         }
       })
-      .catch(e => {
-        console.log("ERROR SIGNING IN:::" + e);
-        this.systemMessage = e.message;
+      .catch(error => {
+        console.log("Error signing in:", error);
+        this.systemMessage = error.message;
       });
   },
   methods: {
