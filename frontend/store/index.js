@@ -11,6 +11,7 @@ export function state() {
     user: null,
     allUsers: null,
     loginSystemMessage: "",
+    signupSystemMessage: "",
     recipes: [],
     sharedRecipes: [],
     publicRecipes: [],
@@ -55,7 +56,15 @@ export function state() {
       {
         allergens: ["nuts", "gluten", "dairy", "eggs", "soy", "fish", "celery"]
       },
-      { categories: ["quick & easy", "sugar free", "vegetarian", "vegan"] }
+      {
+        categories: [
+          "quick & easy",
+          "spicy",
+          "sugar free",
+          "vegetarian",
+          "vegan"
+        ]
+      }
     ]
   };
 }
@@ -75,6 +84,9 @@ export const mutations = {
   },
   setLoginSystemMessage(state, payload) {
     state.loginSystemMessage = payload;
+  },
+  setSignupSystemMessage(state, payload) {
+    state.signupSystemMessage = payload;
   },
   setRecipes(state, payload) {
     state.recipes = payload;
@@ -112,7 +124,26 @@ export const actions = {
   FACEBOOK_SIGN_IN: () => {
     auth.signInWithRedirect(FacebookProvider);
   },
-  KOKEBOKAMI_SIGN_IN: (email, password) => {},
+  KOKEBOKAMI_SIGN_UP: ({ commit }, credentials) => {
+    auth
+      .createUserWithEmailAndPassword(credentials.email, credentials.password)
+      .then(response => {
+        response.user
+          .sendEmailVerification()
+          .then(() => {
+            console.log("Verification email sent");
+          })
+          .catch(error => {
+            console.log("Error sending verification email:", error);
+          });
+      })
+      .catch(function(error) {
+        commit("setSignupSystemMessage", error.message);
+        console.log(
+          "Failed with error code: " + error.code + " " + error.message
+        );
+      });
+  },
   USER_SIGN_OUT: ({ commit }) => {
     auth
       .signOut()
@@ -120,7 +151,7 @@ export const actions = {
         commit("removeUser");
       })
       .catch(error => {
-        console.log("ERROR REMOVING USER:::" + error);
+        console.log("Error removing user: " + error);
       });
   },
   SET_USER_RECIPES: ({ commit }, user) => {
@@ -137,39 +168,40 @@ export const actions = {
       },
       error => {
         console.log(
-          "Something failed when attempting to set recipes: " + error
+          "Error: Something failed when attempting to set recipes: " + error
         );
       }
     );
   },
-  SET_SHARED_RECIPES: ({ commit }, user) => {
+  SET_SHARED_RECIPES: async ({ commit }, user) => {
     const recipesRef = db.ref("recipes").orderByChild("sharedWith");
     let recipesArray = [];
-    recipesRef.once(
+    await recipesRef.once(
       "value",
       recipes => {
         recipes.forEach(recipe => {
           if (recipe.exists()) {
             const shares = recipe.val().sharedWith
-              ? recipe.val().sharedWith
+              ? Object.values(recipe.val().sharedWith)
               : [];
-
             if (shares.length) {
               shares.forEach(share => {
-                if (share === user.id)
+                if (share === user.id) {
                   recipesArray.push([recipe.key, recipe.val()]);
+                }
               });
             }
           }
         });
-        commit("setSharedRecipes", recipesArray);
       },
       error => {
         console.log(
-          "Something failed when attempting to set shared recipes: " + error
+          "Error: Something failed when attempting to set shared recipes: " +
+            error
         );
       }
     );
+    commit("setSharedRecipes", recipesArray);
   },
   SET_PUBLIC_RECIPES: ({ commit }) => {
     const recipesRef = db.ref("recipes").orderByChild("public");
@@ -188,36 +220,10 @@ export const actions = {
       },
       error => {
         console.log(
-          "Something failed when attempting to set public recipes: " + error
+          "Error: Something failed when attempting to set public recipes: " +
+            error
         );
       }
     );
-  }
-};
-
-export const getters = {
-  cookieConsent(state) {
-    return state.cookieConsent;
-  },
-  user(state) {
-    return state.user;
-  },
-  allUsers(state) {
-    return state.allUsers;
-  },
-  loginSystemMessage(state) {
-    return state.loginSystemMessage;
-  },
-  recipes(state) {
-    return state.recipes;
-  },
-  sharedRecipes(state) {
-    return state.sharedRecipes;
-  },
-  publicRecipes(state) {
-    return state.publicRecipes;
-  },
-  allCategories(state) {
-    return state.allCategories;
   }
 };

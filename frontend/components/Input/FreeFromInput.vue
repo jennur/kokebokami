@@ -35,7 +35,7 @@ export default {
   },
   computed: {
     allergens() {
-      let allCategoryObjects = this.$store.getters.allCategories;
+      let allCategoryObjects = this.$store.state.allCategories;
       return Object.values(
         allCategoryObjects.filter(object => {
           return object.allergens;

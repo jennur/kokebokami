@@ -2,8 +2,15 @@
   <div>
     <breadcrumbs class="margin-bottom--large" :routes="breadcrumbs" />
     <div class="tablet-width margin-top--xxlarge margin--auto">
-      <recipe-full-view :recipe="recipe" :recipeKey="recipeKey" :isRecipeOwner="isRecipeOwner" />
-      <comments class="mobile-width margin--auto margin-top--xlarge" :path="path" />
+      <recipe-full-view
+        :recipe="recipe"
+        :recipeKey="recipeKey"
+        :isRecipeOwner="isRecipeOwner"
+      />
+      <comments
+        class="mobile-width margin--auto margin-top--xlarge"
+        :path="path"
+      />
     </div>
   </div>
 </template>
@@ -43,9 +50,9 @@ export default {
       return this.$route.params.recipeid;
     },
     recipe() {
-      let userRecipes = this.$store.getters.recipes;
-      let sharedRecipes = this.$store.getters.sharedRecipes;
-      let publicRecipes = this.$store.getters.publicRecipes;
+      let userRecipes = this.$store.state.recipes;
+      let sharedRecipes = this.$store.state.sharedRecipes;
+      let publicRecipes = this.$store.state.publicRecipes;
       let allAvailableRecipes = userRecipes
         .concat(sharedRecipes)
         .concat(publicRecipes);
@@ -61,7 +68,7 @@ export default {
       return currentRecipe.length ? currentRecipe[0][1] : {};
     },
     recipeOwner() {
-      let users = this.$store.getters.allUsers;
+      let users = this.$store.state.allUsers;
       if (users) {
         return users.find(user => {
           return user[0] === this.recipe.ownerID;

@@ -1,7 +1,12 @@
 <template>
-  <section :class="'kokebokami-login ' + (open ? 'kokebokami-login--open': '') ">
+  <section
+    :class="'kokebokami-login ' + (open ? 'kokebokami-login--open' : '')"
+  >
     <div class="kokebokami-login-modal">
-      <button @click="() => this.$emit('toggle')" class="remove-icon kokebokami-login-modal--close"></button>
+      <button
+        @click="() => this.$emit('toggle')"
+        class="remove-icon kokebokami-login-modal--close"
+      ></button>
       <form class="kokebokami-login-modal-form" v-on:submit.prevent>
         <label>
           E-mail
@@ -9,13 +14,22 @@
         </label>
         <label>
           Password
-          <input type="password" autocomplete="password" v-model="password" required />
+          <input
+            type="password"
+            autocomplete="password"
+            v-model="password"
+            required
+          />
         </label>
         <button
           @click="kokebokamiSignIn"
           class="button button--small button--green margin-top--large"
-        >Log in</button>
-        <div class="system-message system-message--dark-bg margin-top--medium">{{systemMessage}}</div>
+        >
+          Log in
+        </button>
+        <div class="system-message system-message--dark-bg margin-top--medium">
+          {{ systemMessage }}
+        </div>
         <div class="kokebokami-login-modal-signup margin-top--large">
           Don't already have an account?
           <nuxt-link to="/sign-up">Sign up</nuxt-link>
@@ -59,7 +73,7 @@ export default {
           }
         })
         .catch(error => {
-          console.log("ERROR SIGNING IN::: " + error);
+          console.log("Error signing in: " + error);
           realThis.systemMessage = error.message;
         });
     }

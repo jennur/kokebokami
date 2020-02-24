@@ -44,7 +44,7 @@ export default {
       return this.$route.params.userid;
     },
     userVisited() {
-      let users = this.$store.getters.allUsers;
+      let users = this.$store.state.allUsers;
       if (users) {
         return users.find(user => {
           return user[0] === this.cookUserID;
@@ -61,7 +61,7 @@ export default {
       }
     },
     userVisitedsPublicRecipes() {
-      let publicRecipes = this.$store.getters.publicRecipes;
+      let publicRecipes = this.$store.state.publicRecipes;
       let userVisitedsPublicRecipes = [];
       if (this.userVisited) {
         userVisitedsPublicRecipes = publicRecipes.filter(recipe => {

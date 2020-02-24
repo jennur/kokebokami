@@ -23,7 +23,7 @@ export default {
   },
   computed: {
     recipe() {
-      let recipes = this.$store.getters.recipes;
+      let recipes = this.$store.state.recipes;
       return recipes.find(recipe => {
         return recipe.id === this.$route.params.recipeid;
       });
@@ -31,4 +31,3 @@ export default {
   }
 };
 </script>
-

@@ -1,11 +1,12 @@
 <template>
   <div class="container container--center">
     <breadcrumbs :routes="breadcrumbs" />
-    <h1 class="margin-bottom--large">{{ this.firstName }}'s kokebok</h1>
+    <h1 class="margin-bottom--large">{{ headlineText }}</h1>
     <nuxt-link
       to="/account/add-recipe"
       class="button button--large button--round margin--auto margin-top--xlarge"
-    >Add new recipe</nuxt-link>
+      >Add new recipe</nuxt-link
+    >
     <div class="flex-row margin-top--large">
       <h4
         id="my-recipes-tab"
@@ -13,13 +14,17 @@
         :class="
           'tab margin-right--large ' + (showMyRecipes ? 'tab--active' : '')
         "
-      >My recipes</h4>
+      >
+        My recipes
+      </h4>
       <h4 class="margin-right--large">|</h4>
       <h4
         id="shared-recipes-tab"
         @click="event => toggleRecipes(event)"
         :class="'tab ' + (showSharedRecipes ? 'tab--active' : '')"
-      >Recipes shared with me</h4>
+      >
+        Recipes shared with me
+      </h4>
     </div>
     <div class="container">
       <span
@@ -27,7 +32,10 @@
         @click="toggleSearchForm"
         class="button button--small button--green-border margin-bottom--large"
       >
-        <search-icon class="icon icon--in-button margin-right--medium" v-if="!search" />
+        <search-icon
+          class="icon icon--in-button margin-right--medium"
+          v-if="!search"
+        />
         {{ search ? "Exit search" : "Search" }}
       </span>
       <recipes-filter
@@ -37,7 +45,11 @@
         v-if="search"
       />
     </div>
-    <recipes-list class="margin-top--large padding-bottom--large" :recipes="visibleRecipes" />
+    <recipes-list
+      class="margin-top--large padding-bottom--large"
+      :recipes="visibleRecipes"
+      :publicRecipe="showSharedRecipes"
+    />
   </div>
 </template>
 
@@ -70,12 +82,16 @@ export default {
   computed: {
     firstName() {
       let firstName = null;
-
-      if (this.user && this.user.displayName) {
-        let username = this.user.displayName;
+      let user = this.user;
+      if (user && user.displayName && user.displayName !== "User") {
+        let username = user.displayName;
         firstName = /\s/.test(username) ? username.split(" ")[0] : username;
       }
       return firstName;
+    },
+    headlineText() {
+      if (this.firstName) return `${this.firstName}'s kokebok`;
+      else return "My kokebok";
     },
     userRecipes() {
       return this.$store.state.recipes;

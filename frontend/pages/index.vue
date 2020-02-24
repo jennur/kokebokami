@@ -9,18 +9,29 @@
     />
   </div>
 
-  <div class="tablet-width padding-horizontal--large margin-top--xxlarge margin--auto" v-else>
-    <div class="flex-center-container">
+  <div
+    class="tablet-width padding-horizontal--large margin-top--xxlarge margin--auto"
+    v-else
+  >
+    <div class="flex-center-container flex-column">
       <h2>Discover public recipes</h2>
+      <nuxt-link to="/my-recipes">My cookbook ➔</nuxt-link>
     </div>
     <span
       tabindex="0"
       role="button"
       @click="toggleSearchForm"
-      @keydown="event => { (event.keyCode === 13) && toggleSearchForm() }"
+      @keydown="
+        event => {
+          event.keyCode === 13 && toggleSearchForm();
+        }
+      "
       class="button button--small button--green-border margin-bottom--large"
     >
-      <search-icon class="icon icon--in-button margin-right--medium" v-if="!search" />
+      <search-icon
+        class="icon icon--in-button margin-right--medium"
+        v-if="!search"
+      />
       {{ search ? "Exit search" : "Search" }}
     </span>
     <recipes-filter
@@ -61,7 +72,7 @@ export default {
   },
   computed: {
     recipes() {
-      return this.$store.getters.publicRecipes;
+      return this.$store.state.publicRecipes;
     },
     visibleRecipes() {
       if (!this.filtered) return this.recipes;

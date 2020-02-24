@@ -4,7 +4,8 @@
       class="recipe__category margin-right--large"
       v-for="(category, index) in mealCategories"
       :key="`category-${index}`"
-    >{{ category }}</span>
+      >{{ category }}</span
+    >
   </div>
 </template>
 <script>
@@ -18,7 +19,7 @@ export default {
   },
   computed: {
     allCategoryObjects() {
-      return this.$store.getters.allCategories;
+      return this.$store.state.allCategories;
     },
     allTypesOfMeal() {
       // Needed due to duplicate in previous categories

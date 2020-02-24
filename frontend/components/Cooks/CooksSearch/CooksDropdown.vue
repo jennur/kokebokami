@@ -27,7 +27,7 @@ export default {
   computed: {
     cooks() {
       let searchTerm = this.searchTerm;
-      let users = this.$store.getters.allUsers;
+      let users = this.$store.state.allUsers;
       return users.filter(user => {
         return user[1].displayName
           .toLowerCase()
