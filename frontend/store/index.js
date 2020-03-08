@@ -54,13 +54,22 @@ export function state() {
         ]
       },
       {
-        allergens: ["nuts", "gluten", "dairy", "eggs", "soy", "fish", "celery"]
+        allergens: [
+          "nuts",
+          "gluten",
+          "dairy",
+          "sugar",
+          "eggs",
+          "soy",
+          "fish",
+          "celery"
+        ]
       },
       {
         categories: [
           "quick & easy",
+          "comfort food",
           "spicy",
-          "sugar free",
           "vegetarian",
           "vegan"
         ]

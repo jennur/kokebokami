@@ -169,13 +169,11 @@
             <div class="account__detail-title">
               <span>
                 Following:
-                <span>{{
-                  cooksImFollowing ? cooksImFollowing.length : null
-                }}</span>
+                <span>{{ followed ? followed.length : null }}</span>
               </span>
             </div>
             <ol>
-              <li v-for="cook in cooksImFollowing" :key="cook[1].displayName">
+              <li v-for="cook in followed" :key="cook[1].displayName">
                 <nuxt-link :to="'cooks/' + cook[0]">{{
                   cook[1].displayName
                 }}</nuxt-link>
@@ -186,15 +184,13 @@
             <div class="account__detail-title">
               <span>
                 Followers:
-                <span>{{
-                  cooksFollowingMe ? cooksFollowingMe.length : null
-                }}</span>
+                <span>{{ followers ? followers.length : null }}</span>
               </span>
             </div>
             <ol>
-              <li v-for="cook in cooksFollowingMe" :key="cook[1].displayName">
-                <nuxt-link :to="'cooks/' + cook[0]">{{
-                  cook[1].displayName
+              <li v-for="follower in followers" :key="follower[1].displayName">
+                <nuxt-link :to="'cooks/' + follower[0]">{{
+                  follower[1].displayName
                 }}</nuxt-link>
               </li>
             </ol>
@@ -214,6 +210,7 @@
 
 <script>
 import { user } from "~/mixins/getCurrentUser.js";
+import connectedUsers from "~/mixins/getConnectedUsers.js";
 import RecipesList from "~/components/Recipes/RecipesList.vue";
 import { auth, db } from "~/plugins/firebase.js";
 
@@ -242,56 +239,19 @@ export default {
       default: () => [{ name: "Home", link: "/" }, { name: "My account" }]
     }
   },
-  components: {},
   mounted() {
     this.username = this.user.displayName;
     this.email = this.user.email;
     this.biography = this.user.biography;
     this.photoURL = this.user.photoURL;
   },
-  mixins: [user],
+  mixins: [user, connectedUsers],
   computed: {
     recipes() {
       return this.$store.state.recipes;
     },
     sharedRecipes() {
       return this.$store.state.sharedRecipes;
-    },
-    cooksImFollowing() {
-      let users = this.$store.state.allUsers;
-      let followingUserData = [];
-      let following =
-        this.user && this.user.following
-          ? Object.entries(this.user.following)
-          : [];
-      if (users && following.length) {
-        users.forEach(user => {
-          following.forEach(follower => {
-            if (user[0] === follower[1]) {
-              followingUserData.push(user);
-            }
-          });
-        });
-      }
-      return followingUserData;
-    },
-    cooksFollowingMe() {
-      let users = this.$store.state.allUsers;
-      let followerUserData = [];
-      let followers =
-        this.user && this.user.followers
-          ? Object.entries(this.user.followers)
-          : [];
-      if (followers.length) {
-        users.forEach(user => {
-          followers.forEach(follower => {
-            if (user[0] === follower[1]) {
-              followerUserData.push(user);
-            }
-          });
-        });
-      }
-      return followerUserData;
     }
   },
   methods: {
@@ -384,33 +344,36 @@ export default {
       const realThis = this;
       if (
         confirm(
-          "Are you sure you want to delete your account and all your recipes?\nThis operation cannot be undone."
+          `Are you sure you want to delete your account and all your recipes?
+          \nThis operation cannot be undone.`
         )
       ) {
         let recipesRef = db.ref("recipes").orderByChild("ownerID");
 
+        //Remove user's recipes
         recipesRef
           .once("value", recipes => {
             recipes.forEach(recipe => {
-              if (recipe.val().ownerID === user.uid)
+              if (recipe.val().ownerID === user.uid) {
                 db.ref("recipes/" + recipe.key)
                   .remove()
                   .then(() => {
-                    console.log("Successfully deleted recipe::: " + recipe.key);
+                    console.log("Success: Deleted recipe:: " + recipe.key);
                   })
                   .catch(error => {
-                    console.log("ERROR DELETING RECIPE::: " + error);
+                    console.log("Error: Recipe removal failed:: " + error);
                   });
+              }
             });
           })
           .then(() => {
             db.ref("users/" + user.uid)
               .remove()
               .then(function() {
-                console.log("USER REMOVE SUCCEEDED");
+                console.log("Success: User was removed from database");
               })
               .catch(function(error) {
-                console.log("USER REMOVE FAILED::: " + error);
+                console.log("Error: User remove failed:: " + error);
                 realThis.systemMessage = error.message;
               });
           })
@@ -425,12 +388,12 @@ export default {
               })
               .catch(function(error) {
                 realThis.systemMessage = error.message;
-                console.log("ERROR DELETING USER::: " + error);
+                console.log("Error: User delete failed::", error);
               });
           })
           .catch(function(error) {
             realThis.systemMessage = error.message;
-            console.log("ERROR DURING DELETING PROCESS::: " + error);
+            console.log("Error: Recipes reference failed:: " + error);
           });
       }
     }

@@ -9,7 +9,7 @@
     </div>
     <div v-else>
       <h2>Whoopsie, something went wrong!</h2>
-      <h3>If the problem continues, please contact us.</h3>
+      <p>If the problem continues, please contact us.</p>
     </div>
     <nuxt-link to="/">Take me back to the front page</nuxt-link>
   </div>

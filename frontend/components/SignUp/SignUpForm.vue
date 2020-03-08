@@ -9,7 +9,7 @@
         autocomplete="email"
         v-model="email"
       />
-      <span class="system-message">{{ emailError }}</span>
+      <span class="system-message margin-top--small">{{ emailError }}</span>
     </label>
     <label class="flex-column margin-bottom--medium">
       Password
@@ -20,7 +20,7 @@
         autocomplete="new-password"
         v-model="password"
       />
-      <span class="system-message">{{ passwordError }}</span>
+      <span class="system-message margin-top--small">{{ passwordError }}</span>
     </label>
     <label class="flex-column margin-bottom--medium">
       Repeat password
@@ -31,7 +31,9 @@
         autocomplete="new-password"
         v-model="passwordRepeat"
       />
-      <span class="system-message">{{ passwordRepeatError }}</span>
+      <span class="system-message margin-top--small">{{
+        passwordRepeatError
+      }}</span>
     </label>
     <label class="flex-column margin-bottom--medium">
       <span class="flex-row flex-row--nowrap">
@@ -49,13 +51,15 @@
           <nuxt-link to="/privacy-policy">Privacy Policy</nuxt-link>
         </span>
       </span>
-      <span class="system-message">{{ termsAndConditionsError }}</span>
+      <span class="system-message margin-top--small">{{
+        termsAndConditionsError
+      }}</span>
     </label>
     <div class="flex-column margin-top--small">
       <button @click="validateForm" class="button button--small button--green">
         Sign up
       </button>
-      <span class="system-message">{{ systemMessage }}</span>
+      <span class="system-message margin-top--small">{{ systemMessage }}</span>
     </div>
   </form>
 </template>
@@ -101,7 +105,7 @@ export default {
 
       if (this.password !== this.passwordRepeat) {
         validated = validated * 0;
-        this.passwordRepeatError = "Passwords does not match";
+        this.passwordRepeatError = "Passwords do not match";
       } else this.passwordRepeatError = "";
 
       if (!this.termsAndConditions) {

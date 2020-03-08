@@ -82,43 +82,13 @@ export default {
   methods: {
     followUser() {
       const realThis = this;
-      const userVisitedRef = db.ref(
-        "users/" + this.userVisited[0] + "/followers"
-      );
-
-      userVisitedRef
-        .once("value", snapshot => {
-          if (snapshot.exists()) {
-            let followingAlready = false;
-
-            snapshot.forEach(value => {
-              if (value.val() === realThis.user.id) {
-                followingAlready = true;
-                return;
-              }
-            });
-
-            if (!followingAlready) {
-              userVisitedRef.push(this.user.id).catch(error => {
-                console.log(error);
-              });
-            }
-          } else {
-            userVisitedRef.push(this.user.id).catch(error => {
-              console.log(error);
-            });
-          }
-        })
-        .catch(error => {
-          console.log(error);
-        });
-
       const currentUserRef = db.ref("users/" + this.user.id + "/following");
       currentUserRef
-        .once("value", snapshot => {
-          if (snapshot.exists()) {
-            let followingAlready = false;
-            snapshot.forEach(value => {
+        .once("value", async snapshot => {
+          let followingAlready = false;
+
+          if (await snapshot.exists()) {
+            await snapshot.forEach(value => {
               if (value.val() === realThis.userVisited[0]) {
                 followingAlready = true;
                 return;
@@ -129,18 +99,9 @@ export default {
               realThis.systemMessage =
                 "You're already following " +
                 realThis.userVisited[1].displayName;
-            } else {
-              currentUserRef
-                .push(realThis.userVisited[0])
-                .then(() => {
-                  realThis.followed = true;
-                })
-                .catch(error => {
-                  console.log(error);
-                  realThis.systemMessage = error.message;
-                });
             }
-          } else {
+          }
+          if (!followingAlready) {
             currentUserRef
               .push(realThis.userVisited[0])
               .then(() => {
@@ -158,39 +119,14 @@ export default {
     },
     unfollowUser() {
       const realThis = this;
-      const userVisitedRef = db.ref(
-        "users/" + this.userVisited[0] + "/followers"
-      );
 
-      userVisitedRef
-        .once("value", snapshot => {
-          if (snapshot.exists()) {
-            snapshot.forEach(value => {
-              if (value.val() === realThis.user.id) {
-                userVisitedRef
-                  .child(value.key)
-                  .remove()
-                  .catch(error => console.log(error));
-                return;
-              }
-            });
-          } else {
-            console.log(
-              "ERROR: Snapshot does not exist in unfollowUser userVisitedRef"
-            );
-          }
-        })
-        .catch(error => {
-          console.log(error);
-        });
-
-      const currentUserRef = db.ref("users/" + this.user.id + "/following");
-      currentUserRef
+      const userRef = db.ref("users/" + this.user.id + "/following");
+      userRef
         .once("value", snapshot => {
           if (snapshot.exists()) {
             snapshot.forEach(value => {
               if (value.val() === realThis.userVisited[0]) {
-                currentUserRef
+                userRef
                   .child(value.key)
                   .remove()
                   .then(() => {
@@ -201,13 +137,11 @@ export default {
               }
             });
           } else {
-            console.log(
-              "ERROR: Snapshot does not exist in unfollowUser currentUserRef"
-            );
+            console.log("Error: Snapshot does not exist in unfollowUser()");
           }
         })
         .catch(error => {
-          console.log(error);
+          console.log("Error: Something went wrong in userRef()::", error);
         });
     }
   }

@@ -74,7 +74,7 @@ export default {
         })
         .catch(error => {
           console.log("Error signing in: " + error);
-          realThis.systemMessage = error.message;
+          realThis.systemMessage = "Email and password do not match";
         });
     }
   }
