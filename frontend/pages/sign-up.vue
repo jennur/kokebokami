@@ -21,12 +21,5 @@ export default {
       default: false
     }
   }
-  /*   ,watch: {
-    user(value) {
-      if (value !== undefined && value !== null) {
-        this.$router.push("/my-recipes");
-      }
-    }
-  } */
 };
 </script>

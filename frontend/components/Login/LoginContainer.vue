@@ -10,9 +10,7 @@
       <button
         class="button button--large button--transparent"
         @click="toggleLoginModal"
-      >
-        ➔ Sign in with username and password
-      </button>
+      >➔ Sign in with username and password</button>
 
       <kokebokami-login :open="loginModalOpen" @toggle="toggleLoginModal" />
     </div>
@@ -40,33 +38,7 @@ export default {
   data() {
     return { systemMessage: "", loginModalOpen: false };
   },
-  computed: {},
   mixins: [user],
-  watch: {
-    user(value) {
-      if (value !== undefined && value !== null) {
-        this.$router.push("/my-recipes");
-      }
-    }
-  },
-  created: function() {
-    auth
-      .getRedirectResult()
-      .then(response => {
-        if (response.user !== null) {
-          let user = {
-            id: response.user.uid,
-            photoURL: response.user.photoURL,
-            name: response.user.displayName
-          };
-          this.$store.dispatch("SET_USER", user);
-        }
-      })
-      .catch(error => {
-        console.log("Error signing in:", error);
-        this.systemMessage = error.message;
-      });
-  },
   methods: {
     toggleLoginModal() {
       this.loginModalOpen = !this.loginModalOpen;

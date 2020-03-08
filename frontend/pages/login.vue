@@ -10,6 +10,7 @@
 <script>
 import kokebokapen from "~/assets/graphics/kokebokapen.svg";
 import LoginContainer from "~/components/Login/LoginContainer.vue";
+import { user } from "~/mixins/getCurrentUser.js";
 
 export default {
   name: "Login",

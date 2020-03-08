@@ -1,15 +1,16 @@
+import { auth } from "../plugins/firebase.js";
+
 export default function({ store, redirect, route }) {
-  let user = store.state.user;
-  if (user && user.verifiedEmail) {
-    if (
-      route.name == "login" ||
-      route.name == "sign-up" ||
-      route.name == "verify-email"
-    ) {
-      redirect("/my-recipes");
-    }
+  let storeUser = store.state.user;
+  if (storeUser) {
+    performRedirect(route, redirect);
   }
-  !user && isAdminRoute(route) ? redirect("/login") : "";
+  auth.onAuthStateChanged(user => {
+    if (user && user.emailVerified) {
+      performRedirect(route, redirect);
+    }
+    !user && isAdminRoute(route) ? redirect("/login") : "";
+  });
 }
 
 function isAdminRoute(route) {
@@ -19,5 +20,19 @@ function isAdminRoute(route) {
     route.matched.some(record => record.path.indexOf("recipes") > -1)
   ) {
     return true;
+  } else if (
+    route.matched.some(record => record.path.indexOf("verify-email") > -1)
+  ) {
+    return true;
+  }
+}
+
+function performRedirect(route, redirect) {
+  if (
+    route.name == "login" ||
+    route.name == "sign-up" ||
+    route.name == "verify-email"
+  ) {
+    redirect("/my-recipes");
   }
 }
