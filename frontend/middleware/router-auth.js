@@ -6,8 +6,10 @@ export default function({ store, redirect, route }) {
     performRedirect(route, redirect);
   }
   auth.onAuthStateChanged(user => {
-    console.log("User router-auth::", user);
-    if (user && user.emailVerified) {
+    if (
+      user &&
+      (user.emailVerified || user.providerData[0].providerId === "facebook.com")
+    ) {
       performRedirect(route, redirect);
     }
     !user && isAdminRoute(route) ? redirect("/login") : "";

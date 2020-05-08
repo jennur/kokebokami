@@ -4,16 +4,13 @@ export default context => {
   const { store, redirect } = context;
   auth
     .getRedirectResult()
-    .then(result => {
-      console.log("Redirect", result.user);
-    })
     .catch(error => console.log("Redirect error:", error));
 
   auth.onAuthStateChanged(user => {
     if (user) {
       if (
         !user.emailVerified &&
-        user.providerData[0].providerId !== "facebook.com"
+        user.providerData[0].providerId === "password"
       ) {
         redirect("/verify-email");
       } else {
