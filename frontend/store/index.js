@@ -112,6 +112,9 @@ export const actions = {
   ACCEPT_COOKIES: ({ commit }) => {
     commit("acceptCookies");
   },
+  SET_LOGIN_MESSAGE: ({ commit }, payload) => {
+    commit("setLoginSystemMessage", payload);
+  },
   SET_USER: ({ commit }, user) => {
     commit("setUser", user);
   },
