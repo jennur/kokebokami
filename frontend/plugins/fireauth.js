@@ -2,10 +2,16 @@ import { auth, db } from "~/plugins/firebase.js";
 
 export default context => {
   const { store, redirect } = context;
+  auth
+    .getRedirectResult()
+    .catch(error => console.log("Redirect error:", error));
 
   auth.onAuthStateChanged(user => {
     if (user) {
-      if (!user.emailVerified) {
+      if (
+        !user.emailVerified &&
+        user.providerData[0].providerId === "password"
+      ) {
         redirect("/verify-email");
       } else {
         setUserData(store, user);
