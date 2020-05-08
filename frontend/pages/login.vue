@@ -1,6 +1,7 @@
 <template>
   <div class="container container--center">
-    <div class="flex-center-container margin--auto">
+    <loading-splash v-if="loading" />
+    <div v-else class="flex-center-container margin--auto">
       <login-container class="flex-order--tablet-two" />
       <kokebokapen class="illustration illustration--kokebokapen flex-order--tablet-one" />
     </div>
@@ -9,14 +10,21 @@
 
 <script>
 import kokebokapen from "~/assets/graphics/kokebokapen.svg";
+import LoadingSplash from "~/components/Login/LoadingSplash.vue";
 import LoginContainer from "~/components/Login/LoginContainer.vue";
 import { user } from "~/mixins/getCurrentUser.js";
 
 export default {
   name: "Login",
   components: {
+    LoadingSplash,
     LoginContainer,
     kokebokapen
+  },
+  computed: {
+    loading() {
+      return this.$route.fullPath.indexOf("loading") > -1;
+    }
   }
 };
 </script>

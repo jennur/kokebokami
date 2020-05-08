@@ -14,6 +14,7 @@ export default {
   },
   methods: {
     facebookSignIn() {
+      this.$router.push("/login?loading");
       this.$store.dispatch("FACEBOOK_SIGN_IN");
     }
   }
