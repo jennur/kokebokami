@@ -131,7 +131,9 @@ export const actions = {
     auth.signInWithRedirect(GoogleProvider);
   },
   FACEBOOK_SIGN_IN: () => {
-    auth.signInWithRedirect(FacebookProvider);
+    auth
+      .signInWithRedirect(FacebookProvider)
+      .catch(error => console.log("Facebook error:", error));
   },
   KOKEBOKAMI_SIGN_UP: ({ commit }, credentials) => {
     auth

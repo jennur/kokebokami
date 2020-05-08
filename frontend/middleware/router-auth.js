@@ -5,13 +5,15 @@ export default function({ store, redirect, route }) {
   if (storeUser) {
     performRedirect(route, redirect);
   }
-  auth.onAuthStateChanged(user => {
-    console.log("User router-auth::", user);
-    if (user && user.emailVerified) {
-      performRedirect(route, redirect);
-    }
-    !user && isAdminRoute(route) ? redirect("/login") : "";
-  });
+  auth
+    .onAuthStateChanged(user => {
+      console.log("User router-auth::", user);
+      if (user && user.emailVerified) {
+        performRedirect(route, redirect);
+      }
+      !user && isAdminRoute(route) ? redirect("/login") : "";
+    })
+    .catch(error => "AuthStateChange error:", error);
 }
 
 function isAdminRoute(route) {

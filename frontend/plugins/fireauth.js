@@ -2,9 +2,12 @@ import { auth, db } from "~/plugins/firebase.js";
 
 export default context => {
   const { store, redirect } = context;
-  auth.getRedirectResult().then(result => {
-    console.log("Redirect", result.user);
-  });
+  auth
+    .getRedirectResult()
+    .then(result => {
+      console.log("Redirect", result.user);
+    })
+    .catch(error => console.log("Redirect error:", error));
 
   auth.onAuthStateChanged(user => {
     if (user) {
