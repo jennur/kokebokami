@@ -13,7 +13,7 @@ export default function({ store, redirect, route }) {
       }
       !user && isAdminRoute(route) ? redirect("/login") : "";
     })
-    .catch(error => "AuthStateChange error:", error);
+    .catch(error => console.log("AuthStateChange error:", error));
 }
 
 function isAdminRoute(route) {
