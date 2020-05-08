@@ -17,7 +17,7 @@
         >✕ Cancel</button>
       </div>
       <div class="system-message">{{ systemMessage }}</div>
-      <nuxt-link v-if="deleted" to="/my-recipes">Go back to your cook book</nuxt-link>
+      <nuxt-link v-if="deleted" to="/my-recipes">Go back to your cookbook</nuxt-link>
     </fieldset>
 
     <div
