@@ -6,6 +6,7 @@ export default function({ store, redirect, route }) {
     performRedirect(route, redirect);
   }
   auth.onAuthStateChanged(user => {
+    console.log("User router-auth::", user);
     if (user && user.emailVerified) {
       performRedirect(route, redirect);
     }
