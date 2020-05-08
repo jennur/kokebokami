@@ -12,11 +12,16 @@
         <nuxt-link to="/privacy-policy">Privacy policy</nuxt-link>
       </li>
     </ul>
-    <p class="footer__copyright">© 2019 kokebokami</p>
+    <p class="footer__copyright">© {{year}} kokebokami</p>
   </footer>
 </template>
 <script>
 export default {
-  name: "footer-component"
+  name: "footer-component",
+  computed: {
+    year() {
+      return new Date().getFullYear();
+    }
+  }
 };
 </script>
