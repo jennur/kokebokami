@@ -11,7 +11,10 @@ export default context => {
 
   auth.onAuthStateChanged(user => {
     if (user) {
-      if (!user.emailVerified) {
+      if (
+        !user.emailVerified &&
+        user.providerData[0].providerId !== "facebook.com"
+      ) {
         redirect("/verify-email");
       } else {
         setUserData(store, user);
