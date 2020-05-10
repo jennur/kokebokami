@@ -1,9 +1,9 @@
 <template>
   <footer class="footer flex-center-container flex-center-container--column margin-top--xxlarge">
     <ul class="footer__nav">
-      <!--li>
-        <nuxt-link to="/about">About Kokebokami</nuxt-link>
-      </li-->
+      <li>
+        <nuxt-link to="/about">About</nuxt-link>
+      </li>
       <li>
         <b>Contact:</b>
         <a href="mailto:contact@kokebokami.com">contact@kokebokami.com</a>

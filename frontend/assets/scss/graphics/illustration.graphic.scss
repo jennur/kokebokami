@@ -17,4 +17,13 @@
       display: block;
     }
   }
+
+  &--food-clouds {
+    max-height: 200px;
+    margin: $spacingXXLarge auto;
+  }
+  &--clouds {
+    max-height: 80px;
+    margin: $spacingXXLarge auto;
+  }
 }
