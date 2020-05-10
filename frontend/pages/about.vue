@@ -26,7 +26,7 @@
   </section>
 </template>
 <script>
-import foodclouds from "../assets/graphics/food-clouds.svg";
+import foodclouds from "../assets/graphics/cookbook-clouds.svg";
 import clouds from "../assets/graphics/clouds.svg";
 export default {
   name: "about",
