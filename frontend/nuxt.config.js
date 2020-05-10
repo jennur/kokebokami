@@ -5,7 +5,6 @@ export default {
   generate: {
     fallback: true
   },
-
   /*
    ** Headers of the page
    */
@@ -155,7 +154,7 @@ export default {
    ** Nuxt.js modules
    */
   modules: [
-    ["nuxt-svg-loader", "@nuxtjs/dotenv", "@nuxtjs/svg"],
+    ["nuxt-svg-loader", "@nuxtjs/dotenv", "@nuxtjs/svg", "@nuxtjs/pwa"],
     [
       "@nuxtjs/sitemap",
       {
