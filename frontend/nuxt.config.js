@@ -30,7 +30,7 @@ export default {
   /*
    ** Customize the progress-bar color
    */
-  loading: { color: "#fff" },
+  loading: { color: "#ff7300" },
   /*
    ** Global CSS
    */
@@ -212,5 +212,6 @@ export default {
         fs: "empty"
       };
     }
-  }
+  },
+  pwa: {}
 };
