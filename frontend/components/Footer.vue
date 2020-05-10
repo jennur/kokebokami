@@ -12,7 +12,7 @@
         <nuxt-link to="/privacy-policy">Privacy policy</nuxt-link>
       </li>
     </ul>
-    <p class="footer__copyright">© {{year}} kokebokami</p>
+    <p class="footer__copyright">© {{year}} Kokebokami</p>
   </footer>
 </template>
 <script>
