@@ -1,5 +1,5 @@
 <template>
-  <footer class="footer flex-center-container flex-center-container--column margin-top--xxlarge">
+  <footer class="footer flex-center-container flex-center-container--column">
     <ul class="footer__nav">
       <li>
         <nuxt-link to="/about">About</nuxt-link>

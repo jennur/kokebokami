@@ -5,8 +5,9 @@
   position: relative;
 
   &--kokeboka {
-    max-width: 750px;
-    margin: $spacingXXLarge auto;
+    width: 100%;
+    margin: 0 auto;
+    padding-bottom: $spacingXXLarge;
   }
 
   &--kokebokapen {
