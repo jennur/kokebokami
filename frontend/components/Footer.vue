@@ -1,18 +1,34 @@
 <template>
-  <footer class="footer flex-center-container flex-center-container--column margin-top--xxlarge">
-    <ul class="footer__nav">
-      <li>
-        <nuxt-link to="/about">About</nuxt-link>
-      </li>
-      <li>
-        <b>Contact:</b>
-        <a href="mailto:contact@kokebokami.com">contact@kokebokami.com</a>
-      </li>
-      <li>
-        <nuxt-link to="/privacy-policy">Privacy policy</nuxt-link>
-      </li>
-    </ul>
-    <p class="footer__copyright">© {{year}} Kokebokami</p>
+  <footer class="footer flex-center-container flex-center-container--column">
+    <div class="flex-row margin-top--large">
+      <ul class="footer__nav margin-horizontal--large">
+        <li>
+          <a
+            href="https://www.facebook.com/kokebokami"
+            class="flex-row flex-row--align-center"
+          >
+            <fa
+              :icon="['fab', 'facebook-square']"
+              style="font-size: 30px; margin-right: 10px;"
+            />
+            Follow us on Facebook
+          </a>
+        </li>
+        <li>
+          <b>Contact:</b>
+          <a href="mailto:contact@kokebokami.com">contact@kokebokami.com</a>
+        </li>
+      </ul>
+      <ul class="footer__nav margin-horizontal--large">
+        <li>
+          <nuxt-link to="/about">About</nuxt-link>
+        </li>
+        <li>
+          <nuxt-link to="/privacy-policy">Privacy policy</nuxt-link>
+        </li>
+      </ul>
+    </div>
+    <p class="footer__copyright">© {{ year }} Kokebokami</p>
   </footer>
 </template>
 <script>

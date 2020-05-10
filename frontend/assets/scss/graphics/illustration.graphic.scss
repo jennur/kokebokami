@@ -5,8 +5,9 @@
   position: relative;
 
   &--kokeboka {
-    max-width: 750px;
-    margin: $spacingXXLarge auto;
+    width: 100%;
+    margin: 0 auto;
+    padding-bottom: $spacingXXLarge;
   }
 
   &--kokebokapen {
@@ -21,9 +22,11 @@
   &--food-clouds {
     max-height: 170px;
     margin: $spacingXXLarge auto;
+    padding-bottom: $spacingLarge;
   }
   &--clouds {
     max-height: 80px;
     margin: $spacingXXLarge auto;
+    padding: $spacingXXLarge 0px;
   }
 }

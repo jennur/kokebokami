@@ -13,4 +13,7 @@
     background-color: $blue;
     color: $white;
   }
+  &--orange {
+    background-color: rgba($orange, 0.08);
+  }
 }
