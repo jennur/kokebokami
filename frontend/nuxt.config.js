@@ -5,7 +5,6 @@ export default {
   generate: {
     fallback: true
   },
-
   /*
    ** Headers of the page
    */
@@ -31,7 +30,7 @@ export default {
   /*
    ** Customize the progress-bar color
    */
-  loading: { color: "#fff" },
+  loading: { color: "#ff7300" },
   /*
    ** Global CSS
    */
@@ -155,7 +154,7 @@ export default {
    ** Nuxt.js modules
    */
   modules: [
-    ["nuxt-svg-loader", "@nuxtjs/dotenv", "@nuxtjs/svg"],
+    ["nuxt-svg-loader", "@nuxtjs/dotenv", "@nuxtjs/svg", "@nuxtjs/pwa"],
     [
       "@nuxtjs/sitemap",
       {
@@ -213,5 +212,6 @@ export default {
         fs: "empty"
       };
     }
-  }
+  },
+  pwa: {}
 };
