@@ -4,10 +4,10 @@
   &__nav {
     list-style: none;
     padding: 0px;
+    max-width: 300px;
 
     & li {
-      display: inline-block;
-      margin-right: $spacingLarge;
+      margin-bottom: $spacingMedium;
     }
   }
 

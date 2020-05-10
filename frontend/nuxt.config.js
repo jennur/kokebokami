@@ -162,6 +162,18 @@ export default {
         path: "/sitemap.xml",
         generate: false
       }
+    ],
+    [
+      "nuxt-fontawesome",
+      {
+        component: "fa",
+        imports: [
+          {
+            set: "@fortawesome/free-brands-svg-icons",
+            icons: ["fab"]
+          }
+        ]
+      }
     ]
   ],
   sitemap: {
