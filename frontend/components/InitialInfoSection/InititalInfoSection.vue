@@ -5,7 +5,7 @@
         class="flex-center-container flex-center-container--column mobile-width padding--none margin--auto"
       >
         <h1 class="padding-horizontal--large margin-top--xxlarge">
-          It's time to digitalize your cookbook!
+          It's time to digitize your cookbook!
         </h1>
         <p
           class="padding-horizontal--large color--blue font-size--medium text-align--center"
