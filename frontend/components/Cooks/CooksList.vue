@@ -1,5 +1,5 @@
 <template>
-  <div class="flex-row following-cooks">
+  <div class="flex-row following-cooks margin-bottom--xxlarge">
     <cook-display
       v-for="cook in cooks"
       :key="cook[0]"

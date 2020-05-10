@@ -4,10 +4,12 @@
       <div
         class="flex-center-container flex-center-container--column mobile-width padding--none margin--auto"
       >
-        <h1
-          class="padding-horizontal--large margin-top--xxlarge"
-        >It's time to digitalize your cookbook!</h1>
-        <p class="padding-horizontal--large color--blue font-size--medium text-align--center">
+        <h1 class="padding-horizontal--large margin-top--xxlarge">
+          It's time to digitalize your cookbook!
+        </h1>
+        <p
+          class="padding-horizontal--large color--blue font-size--medium text-align--center"
+        >
           Start storing your personal recipes online to make sure they never get
           lost. Keep them private, share them with the public or your friends
           only.
@@ -15,7 +17,8 @@
         <nuxt-link
           to="/sign-up"
           class="button button--large padding-horizontal--xlarge margin-top--large"
-        >Get started ➔</nuxt-link>
+          >Get started ➔</nuxt-link
+        >
       </div>
       <div class="flex-center-container"></div>
     </div>

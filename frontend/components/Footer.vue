@@ -1,10 +1,17 @@
 <template>
   <footer class="footer flex-center-container flex-center-container--column">
-    <div class="flex-row">
+    <div class="flex-row margin-top--large">
       <ul class="footer__nav margin-horizontal--large">
         <li>
-          <a href="https://www.facebook.com/kokebokami">
-            <fa :icon="['fab', 'facebook']" /> Follow us on Facebook
+          <a
+            href="https://www.facebook.com/kokebokami"
+            class="flex-row flex-row--align-center"
+          >
+            <fa
+              :icon="['fab', 'facebook-square']"
+              style="font-size: 30px; margin-right: 10px;"
+            />
+            Follow us on Facebook
           </a>
         </li>
         <li>

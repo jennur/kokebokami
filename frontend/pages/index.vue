@@ -9,7 +9,10 @@
     />
   </div>
 
-  <div class="tablet-width padding-horizontal--large margin-top--xxlarge margin--auto" v-else>
+  <div
+    class="tablet-width padding-horizontal--large margin-top--xxlarge margin--auto"
+    v-else
+  >
     <div class="flex-center-container flex-column">
       <h2>Discover public recipes</h2>
       <nuxt-link to="/my-recipes">My cookbook ➔</nuxt-link>
@@ -25,7 +28,10 @@
       "
       class="button button--small button--green-border margin-bottom--large"
     >
-      <search-icon class="icon icon--in-button margin-right--medium" v-if="!search" />
+      <search-icon
+        class="icon icon--in-button margin-right--medium"
+        v-if="!search"
+      />
       {{ search ? "Exit search" : "Search" }}
     </span>
     <recipes-filter

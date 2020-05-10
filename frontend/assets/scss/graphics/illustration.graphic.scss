@@ -22,9 +22,11 @@
   &--food-clouds {
     max-height: 170px;
     margin: $spacingXXLarge auto;
+    padding-bottom: $spacingLarge;
   }
   &--clouds {
     max-height: 80px;
     margin: $spacingXXLarge auto;
+    padding: $spacingXXLarge 0px;
   }
 }
