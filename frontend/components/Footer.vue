@@ -9,7 +9,7 @@
           >
             <fa
               :icon="['fab', 'facebook-square']"
-              style="font-size: 30px; margin-right: 10px;"
+              style="font-size: 25px; margin-right: 10px;"
             />
             Follow us on Facebook
           </a>

@@ -89,4 +89,41 @@
 
     resize: none;
   }
+
+  &--url {
+    width: 360px;
+  }
+  &__url {
+    width: 100%;
+    max-width: 300px;
+    height: 40px;
+    font-size: $fontSizeLarge;
+    border: 2px solid $green;
+    border-right: 0px;
+    border-radius: $spacingSmall 0px 0px $spacingSmall;
+    caret-color: $blue;
+    &:focus {
+      border: 2px solid $green;
+      border-right: 0px;
+      border-radius: $spacingSmall 0px 0px $spacingSmall;
+    }
+  }
+  &__url-submit {
+    height: 40px;
+    width: 70px;
+    background-color: $green;
+    color: $blue;
+    padding: 2px;
+    margin-left: -10px;
+    border-radius: 0px $spacingSmall $spacingSmall 0px;
+    z-index: 2;
+    &:hover {
+      background-color: $blue;
+      padding: 0px;
+      border: 2px solid $green;
+      border-radius: $spacingSmall;
+      color: $green;
+      cursor: pointer;
+    }
+  }
 }

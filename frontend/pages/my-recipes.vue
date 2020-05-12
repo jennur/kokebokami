@@ -2,11 +2,16 @@
   <div class="container container--center">
     <breadcrumbs :routes="breadcrumbs" />
     <h1 class="margin-bottom--large">{{ headlineText }}</h1>
-    <nuxt-link
-      to="/account/add-recipe"
-      class="button button--large button--round margin--auto margin-top--xlarge"
-      >Add new recipe</nuxt-link
-    >
+    <div class="flex-column">
+      <nuxt-link
+        to="/account/add-recipe"
+        class="button button--large button--round margin--auto margin-vertical--xlarge"
+        >Add new recipe</nuxt-link
+      >
+      <nuxt-link to="/account/add-recipe-from-page"
+        >Add recipe from url ➔</nuxt-link
+      >
+    </div>
     <div class="flex-row margin-top--large">
       <h4
         id="my-recipes-tab"

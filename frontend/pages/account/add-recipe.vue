@@ -9,7 +9,7 @@
 import AddRecipeForm from "~/components/AddRecipeForm/AddRecipeForm.vue";
 
 export default {
-  name: "recipe",
+  name: "addRecipe",
   components: { AddRecipeForm },
   props: {
     breadcrumbs: {
