@@ -22,23 +22,26 @@ export default {
       this.menuOpen = status;
     },
     handleScroll() {
-      let currentScrollValue = window.pageYOffset;
-      if (
-        currentScrollValue > 0 &&
-        currentScrollValue > this.previousScrollValue
-      ) {
-        this.previousScrollValue = currentScrollValue;
-        if (currentScrollValue >= 50 && !this.menuOpen) {
-          this.scrollDown = true;
+      if (false) {
+        let currentScrollValue = window.pageYOffset;
+        if (
+          currentScrollValue > 0 &&
+          currentScrollValue > this.previousScrollValue
+        ) {
+          this.previousScrollValue = currentScrollValue;
+          if (currentScrollValue >= 50 && !this.menuOpen) {
+            this.scrollDown = true;
+          }
+        } else {
+          this.previousScrollValue = currentScrollValue;
+          this.scrollDown = false;
         }
-      } else {
-        this.previousScrollValue = currentScrollValue;
-        this.scrollDown = false;
       }
     }
   },
   created() {
-    window.addEventListener("scroll", this.handleScroll);
+    /*     if (process.client) window.addEventListener("scroll", this.handleScroll);
+     */
   }
 };
 </script>

@@ -5,16 +5,24 @@
       <nuxt />
     </div>
     <footer-component />
-    <cookie-consent />
-    <script id="dsq-count-scr" src="//kokebokami.disqus.com/count.js" async></script>
+    <cookie-consent v-if="!cookieAccepted" @cookieAccept="closeCookieConsent" />
+
+    <script
+      id="dsq-count-scr"
+      src="//kokebokami.disqus.com/count.js"
+      async
+    ></script>
   </div>
 </template>
 <script>
-import CookieConsent from "~/components/CookieConsent.vue";
+import CookieConsent from "../components/CookieConsent.vue";
+import cookieConsentLogic from "../mixins/cookieConsent.js";
+
 export default {
   name: "fullwidth",
   components: {
     CookieConsent
-  }
+  },
+  mixins: [cookieConsentLogic]
 };
 </script>

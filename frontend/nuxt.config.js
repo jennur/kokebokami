@@ -1,7 +1,7 @@
 require("dotenv").config();
 
 export default {
-  mode: "spa",
+  mode: "universal",
   generate: {
     fallback: true
   },
@@ -40,8 +40,8 @@ export default {
    */
   plugins: [
     "~/plugins/globalComponents.js",
-    "~/plugins/firebase.js",
-    "~/plugins/fireauth.js"
+    { src: "~/plugins/firebase.js", mode: "client" },
+    { src: "~/plugins/fireauth.js", mode: "client" }
   ],
 
   router: {
