@@ -1,4 +1,5 @@
 import { auth, db } from "~/plugins/firebase.js";
+import routerAuth from "~/middleware/router-auth.js";
 
 export default context => {
   const { store, redirect } = context;
@@ -16,6 +17,7 @@ export default context => {
         redirect("/verify-email");
       } else {
         setUserData(store, user);
+        routerAuth(context);
       }
     }
   });

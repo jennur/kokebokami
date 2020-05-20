@@ -1,17 +1,16 @@
 import { auth } from "../plugins/firebase.js";
 
-export default function({ store, redirect, route, router }) {
+export default function({ store, redirect, route }) {
   let storeUser = store.state.user;
   if (storeUser) {
     performRedirect(route, redirect);
   }
   auth.onAuthStateChanged(user => {
-    console.log("Logging in:", user);
     if (
       user &&
       (user.emailVerified || user.providerData[0].providerId === "facebook.com")
     ) {
-      performRedirect(route, redirect, router);
+      performRedirect(route, redirect);
     }
     !user && isAdminRoute(route) && redirect("/login");
   });
@@ -31,14 +30,12 @@ function isAdminRoute(route) {
   }
 }
 
-function performRedirect(route, redirect, router) {
-  console.log("Route:", route, router);
+function performRedirect(route, redirect) {
   if (
-    route.name.indexOf("login") > -1 ||
+    route.name == "login" ||
     route.name == "sign-up" ||
     route.name == "verify-email"
   ) {
-    console.log("Router", router);
     redirect("/my-recipes");
   }
 }
