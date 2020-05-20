@@ -21,6 +21,7 @@ export function state() {
           "English",
           "French",
           "German",
+          "Hebrew",
           "Italian",
           "Norwegian",
           "Polish",
