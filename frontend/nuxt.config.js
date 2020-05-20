@@ -38,6 +38,12 @@ export default {
   /*
    ** Plugins to load before mounting the App
    */
+  serverMiddleware: [
+    // Will register redirect-ssl npm package
+    /*     'redirect-ssl',
+     */
+    { path: "/api/page-scraper", handler: "~/api/pageScraper.js" }
+  ],
   plugins: [
     "~/plugins/globalComponents.js",
     { src: "~/plugins/firebase.js", mode: "client" },
@@ -154,7 +160,9 @@ export default {
    ** Nuxt.js modules
    */
   modules: [
-    ["nuxt-svg-loader", "@nuxtjs/dotenv", "@nuxtjs/svg", "@nuxtjs/pwa"],
+    "@nuxtjs/axios",
+    "@nuxtjs/pwa",
+    ["nuxt-svg-loader", "@nuxtjs/dotenv", "@nuxtjs/svg"],
     [
       "@nuxtjs/sitemap",
       {
@@ -200,6 +208,7 @@ export default {
     authProviderCertURL: process.env.AUTH_PROVIDER_CERT_URL,
     clientCertURL: process.env.CLIENT_CERT_URL
   },
+
   /*
    ** Build configuration
    */

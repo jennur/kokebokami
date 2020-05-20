@@ -59,7 +59,7 @@ import TypeOfMealDisplay from "./Displays/TypeOfMealDisplay";
 import IngredientsDisplay from "./Displays/IngredientsDisplay.vue";
 import InstructionsDisplay from "./Displays/InstructionsDisplay.vue";
 import * as jsPDF from "jspdf";
-import logo from "~/assets/graphics/kokebokamilogo.png";
+import logo from "~/static/kokebokamilogo.png";
 
 export default {
   name: "recipe-full-view",

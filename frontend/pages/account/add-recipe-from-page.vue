@@ -10,7 +10,7 @@
         class="add-recipe-form__url"
       />
       <input
-        @click.prevent="$fetch"
+        @click.prevent="getContent"
         type="submit"
         name="submit"
         value="Load"
@@ -27,7 +27,6 @@
   </section>
 </template>
 <script>
-import axios from "axios";
 import cheerio from "cheerio";
 /* import puppeteer from "puppeteer";
  */ export default {
@@ -39,59 +38,40 @@ import cheerio from "cheerio";
       systemMessage: ""
     };
   },
+  /* fetchOnServer: false,
   async fetch() {
-    let url = this.$refs.urlInput.value;
+    let url = this.$refs && this.$refs.urlInput.value;
     let urlCheck = /(?:http(s)?:\/\/)[\w.-]+(?:\.[\w.-]+)+[\w\-._~:\?#[\]@!$&'()*+,;=.]+/;
     console.log("Test::", urlCheck.test(url));
     if (urlCheck.test(url)) {
-      try {
-        const browser = await puppeteer.launch();
-        const page = await browser.newPage();
-        await page.goto(url);
-        /*         await page.waitForSelector(".category", { timeout: 1000 });
-         */
-        const body = await page.evaluate(() => {
-          return document.querySelector("body").innerHTML;
-        });
-        console.log(body);
-
-        await browser.close();
-      } catch (error) {
-        console.log(error);
-      }
+      console.log("This:", this);
+      this.content = await this.$axios
+        .$get("/api/page-scraper", { url })
+        .then(result => console.log("Result", result))
+        .catch(error => console.log("Error:", error));
     } else {
       console.log("Error in url:", url);
     }
-    /* let url = this.$refs.urlInput.value;
-    let urlCheck = /(?:http(s)?:\/\/)[\w.-]+(?:\.[\w.-]+)+[\w\-._~:\?#[\]@!$&'()*+,;=.]+/;
-    console.log("Test::", urlCheck.test(url));
-    if (urlCheck.test(url)) {
-      this.clicked = true;
-      console.log("Url:", url);
-      this.systemMessage = "";
-      let content = await axios
-        .get(`https://cors-anywhere.herokuapp.com/${url}`)
-        .then(result => {
-          console.log("Data:", result.data);
-          this.handleContent(result.data);
-        })
-        .catch(error => {
-          console.log("Error::", error);
-          this.systemMessage = error.message;
-        });
-      console.log("Content:", content);
-    } else {
-      console.log("Error in url:", url);
-      this.systemMessage = "The URL is not the correct format.";
-    } */
-  },
-  fetchOnServer: false,
+  }, */
   methods: {
     handleContent(content) {
       let $ = cheerio.load(content);
       let body = $("body");
       this.content = body.html();
       console.log("Body:", body);
+    },
+    async getContent() {
+      let getUrl = this.$refs.urlInput.value;
+      let urlCheck = /(?:http(s)?:\/\/)[\w.-]+(?:\.[\w.-]+)+[\w\-._~:\?#[\]@!$&'()*+,;=.]+/;
+      console.log("Test::", urlCheck.test(getUrl));
+      if (urlCheck.test(getUrl)) {
+        await this.$axios
+          .$get("/api/page-scraper", { params: { getUrl } })
+          .then(result => console.log("Result", result))
+          .catch(error => console.log("Error:", error));
+      } else {
+        console.log("Error in url:", url);
+      }
     }
   }
 };
