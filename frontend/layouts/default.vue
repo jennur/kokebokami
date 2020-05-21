@@ -1,11 +1,10 @@
 <template>
   <div>
     <header-component />
-    <div class="tablet-width margin--auto padding-horizontal--large">
+    <main class="tablet-width margin--auto padding-horizontal--large">
       <nuxt />
-    </div>
+    </main>
     <footer-component />
-    <cookie-consent v-if="!cookieAccepted" @cookieAccept="closeCookieConsent" />
   </div>
 </template>
 <script>

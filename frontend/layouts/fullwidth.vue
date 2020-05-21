@@ -1,12 +1,10 @@
 <template>
   <div>
     <header-component />
-    <div class="full-width margin--auto">
+    <main class="full-width margin--auto">
       <nuxt />
-    </div>
+    </main>
     <footer-component />
-    <cookie-consent v-if="!cookieAccepted" @cookieAccept="closeCookieConsent" />
-
     <script
       id="dsq-count-scr"
       src="//kokebokami.disqus.com/count.js"

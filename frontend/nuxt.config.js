@@ -100,6 +100,11 @@ export default {
             component: "pages/account/add-recipe.vue"
           },
           {
+            name: "add-recipe-from-url",
+            path: "/account/add-recipe-from-url",
+            component: "pages/account/add-recipe-from-url.vue"
+          },
+          {
             name: "public-profile-view",
             path: "/account/public-profile-view",
             component: "pages/account/public-profile-view.vue"

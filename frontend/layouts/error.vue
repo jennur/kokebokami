@@ -1,5 +1,5 @@
 <template>
-  <div
+  <main
     class="mobile-width padding-horizontal--large margin--auto margin-bottom--xxlarge"
   >
     <div v-if="error.statusCode === 404" class="container container--center">
@@ -18,7 +18,7 @@
     <div class="container container--center">
       <nuxt-link to="/">Take me back to the front page</nuxt-link>
     </div>
-  </div>
+  </main>
 </template>
 
 <script>

@@ -26,6 +26,9 @@
         <li>
           <nuxt-link to="/privacy-policy">Privacy policy</nuxt-link>
         </li>
+        <li>
+          <nuxt-link to="/cookies-policy">Cookies policy</nuxt-link>
+        </li>
       </ul>
     </div>
     <p class="footer__copyright">© {{ year }} Kokebokami</p>

@@ -1,10 +1,10 @@
 <template>
-  <div>
+  <header>
     <div class="header--space-reserver"></div>
     <div :class="`header ${scrollDown ? '' : 'header--open'}`">
       <navigation @toggleMenu="handleMenu" />
     </div>
-  </div>
+  </header>
 </template>
 
 <script>
