@@ -17,25 +17,7 @@
       <h2>Discover public recipes</h2>
       <nuxt-link to="/my-recipes">My cookbook ➔</nuxt-link>
     </div>
-    <span
-      tabindex="0"
-      role="button"
-      @click="toggleSearchForm"
-      @keydown="
-        event => {
-          event.keyCode === 13 && toggleSearchForm();
-        }
-      "
-      class="button button--small button--green-border margin-bottom--large"
-    >
-      <search-icon
-        class="icon icon--in-button margin-right--medium"
-        v-if="!search"
-      />
-      {{ search ? "Exit search" : "Search" }}
-    </span>
     <recipes-filter
-      v-if="search"
       class="margin-bottom--xlarge margin--auto"
       :recipes="recipes"
       @filter="setVisibleRecipes"
@@ -66,7 +48,6 @@ export default {
   },
   data() {
     return {
-      search: false,
       filteredRecipes: [],
       filtered: false
     };
@@ -82,9 +63,6 @@ export default {
   },
   mixins: [user],
   methods: {
-    toggleSearchForm() {
-      this.search = !this.search;
-    },
     setVisibleRecipes(filteredRecipesObj) {
       this.filteredRecipes = filteredRecipesObj.recipes;
       this.filtered = filteredRecipesObj.filtered;

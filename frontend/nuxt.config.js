@@ -143,7 +143,7 @@ export default {
       }
     ]
   },
-
+  pageTransition: "fade",
   /*
    ** Nuxt.js dev-modules
    */

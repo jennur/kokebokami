@@ -1,28 +1,50 @@
 <template>
   <div class="recipes-filter-container">
-    <form class="recipes-filter__form" v-on:submit.prevent>
-      <search-form :recipes="recipes" @filterOnSearchTerm="setSearchTerm" />
-      <category-filter
-        @setLanguage="setLanguage"
-        @setTypeOfMeal="setTypeOfMeal"
-        @setMealCategories="setMealCategories"
-        @setFreeFrom="setFreeFrom"
+    <span
+      tabindex="0"
+      role="button"
+      @click="toggleSearchForm"
+      @keydown="
+        event => {
+          event.keyCode === 13 && toggleSearchForm();
+        }
+      "
+      class="button button--small button--green-border margin-bottom--large"
+    >
+      <search-icon
+        class="icon icon--in-button margin-right--medium"
+        v-if="!search"
       />
-    </form>
+      {{ search ? "Exit search" : "Search" }}
+    </span>
+    <expand-transition :show="search">
+      <form class="recipes-filter__form" v-on:submit.prevent>
+        <search-form :recipes="recipes" @filterOnSearchTerm="setSearchTerm" />
+        <category-filter
+          @setLanguage="setLanguage"
+          @setTypeOfMeal="setTypeOfMeal"
+          @setMealCategories="setMealCategories"
+          @setFreeFrom="setFreeFrom"
+        />
+      </form>
+    </expand-transition>
   </div>
 </template>
 <script>
 import CategoryFilter from "~/components/CategoryFilter/CategoryFilter.vue";
 import SearchForm from "./SearchForm.vue";
+import ExpandTransition from "~/components/Transitions/Expand.vue";
 
 export default {
   name: "recipes-filter",
   components: {
     CategoryFilter,
-    SearchForm
+    SearchForm,
+    ExpandTransition
   },
   data() {
     return {
+      search: false,
       language: "",
       searchTerm: "",
       typeOfMeal: [],
@@ -38,6 +60,9 @@ export default {
     }
   },
   methods: {
+    toggleSearchForm() {
+      this.search = !this.search;
+    },
     setSearchTerm(value) {
       this.searchTerm = value;
       this.handleSearch();

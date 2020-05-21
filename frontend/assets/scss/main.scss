@@ -62,3 +62,8 @@
 @import "./spacing/margin.spacing.scss";
 @import "./spacing/padding.spacing.scss";
 @import "./spacing/width.spacing.scss";
+
+/* Transitions */
+@import "./transitions/expand.transition.scss";
+@import "./transitions/fade.transition.scss";
+@import "./transitions/pop.transition.scss";
