@@ -41,6 +41,7 @@
       @filter="setVisibleRecipes"
     />
     <recipes-list :recipes="visibleRecipes" :publicRecipe="true" />
+    <scroll-button />
   </div>
 </template>
 
@@ -51,6 +52,7 @@ import SignUpSection from "~/components/SignUp/SignUpSection.vue";
 
 import RecipesFilter from "~/components/RecipesFilter/RecipesFilter.vue";
 import RecipesList from "~/components/Recipes/RecipesList.vue";
+import ScrollButton from "~/components/ScrollButton.vue";
 
 export default {
   name: "Home",
@@ -59,7 +61,8 @@ export default {
     InitialInfoSection,
     SignUpSection,
     RecipesFilter,
-    RecipesList
+    RecipesList,
+    ScrollButton
   },
   data() {
     return {

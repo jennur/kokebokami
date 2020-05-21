@@ -1,16 +1,23 @@
 <template>
   <div class="loading-splash">
     <div class="container container--center mobile-width" v-if="loginError">
-      <p class="system-message">{{loginError}}</p>
+      <p class="system-message">{{ loginError }}</p>
       <nuxt-link to="/login">Try again</nuxt-link>
     </div>
-    <h2 v-else>Logging you in ...</h2>
+    <div v-else>
+      <loadingBook />
+      <h2>Logging you in ...</h2>
+    </div>
   </div>
 </template>
 
 <script>
+import loadingBook from "~/assets/graphics/loading-book.svg";
 export default {
   name: "loading-splash",
+  components: {
+    loadingBook
+  },
   computed: {
     loginError() {
       let error = this.$store.state.loginSystemMessage;
