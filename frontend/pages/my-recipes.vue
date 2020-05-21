@@ -8,7 +8,7 @@
         class="button button--large button--round margin--auto margin-vertical--xlarge"
         >Add new recipe</nuxt-link
       >
-      <nuxt-link to="/account/add-recipe-from-page"
+      <nuxt-link to="/account/add-recipe-from-url"
         >Add recipe from url ➔</nuxt-link
       >
     </div>

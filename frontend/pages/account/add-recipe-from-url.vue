@@ -28,9 +28,8 @@
 </template>
 <script>
 import cheerio from "cheerio";
-/* import puppeteer from "puppeteer";
- */ export default {
-  name: "addRecipeFromPage",
+export default {
+  name: "addRecipeFromUrl",
   data() {
     return {
       clicked: false,
