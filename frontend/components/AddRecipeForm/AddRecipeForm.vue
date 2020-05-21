@@ -14,7 +14,11 @@
       <div class="mobile-width margin-top--xlarge margin--auto">
         <!-- TITLE / DESCRIPTION -->
         <fieldset class="flex-column">
-          <title-input id="recipeTitle" class="margin-bottom--medium" :existingTitle="title" />
+          <title-input
+            id="recipeTitle"
+            class="margin-bottom--medium"
+            :existingTitle="title"
+          />
           <description-input
             id="recipeDescription"
             class="margin-bottom--medium"
@@ -23,18 +27,26 @@
         </fieldset>
 
         <!-- INGREDIENTS -->
-        <ingredients-input :existingIngredients="existingRecipe ? existingRecipe.ingredients : []" />
+        <ingredients-input
+          :existingIngredients="
+            existingRecipe ? existingRecipe.ingredients : []
+          "
+        />
 
         <!-- INSTRUCTIONS -->
         <instructions-input
-          :existingInstructions="existingRecipe ? existingRecipe.instructions : []"
+          :existingInstructions="
+            existingRecipe ? existingRecipe.instructions : []
+          "
         />
 
         <!-- PUBLIC CHECK -->
         <fieldset class="container">
-          <label>
-            <input type="checkbox" id="publicCheck" v-model="publicCheck" /> Make
-            recipe public (share with all users of Kokebokami)
+          <label class="flex-row flex-row--align-center">
+            <input type="checkbox" id="publicCheck" v-model="publicCheck" />
+            <span class="margin-left--small"
+              >Make recipe public (share with all users of Kokebokami)</span
+            >
           </label>
         </fieldset>
 

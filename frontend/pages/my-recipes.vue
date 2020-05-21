@@ -32,22 +32,10 @@
       </h4>
     </div>
     <div class="container">
-      <span
-        role="button"
-        @click="toggleSearchForm"
-        class="button button--small button--green-border margin-bottom--large"
-      >
-        <search-icon
-          class="icon icon--in-button margin-right--medium"
-          v-if="!search"
-        />
-        {{ search ? "Exit search" : "Search" }}
-      </span>
       <recipes-filter
         class="margin-bottom--xlarge margin--auto"
         :recipes="recipesToBeFiltered"
         @filter="setVisibleRecipes"
-        v-if="search"
       />
     </div>
     <recipes-list
@@ -71,7 +59,6 @@ export default {
       addingRecipe: false,
       showMyRecipes: true,
       showSharedRecipes: false,
-      search: false,
       filteredRecipes: [],
       filtered: false,
       filteredKind: ""
@@ -128,9 +115,6 @@ export default {
     }
   },
   methods: {
-    toggleSearchForm() {
-      this.search = !this.search;
-    },
     toggleRecipes(event) {
       if (event.target.id === "my-recipes-tab" && !this.showMyRecipes) {
         this.showMyRecipes = !this.showMyRecipes;
