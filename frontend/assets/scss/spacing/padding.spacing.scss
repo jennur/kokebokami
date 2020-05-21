@@ -63,8 +63,8 @@
       padding-right: $spacingLargeMobile;
       box-sizing: border-box;
       @media screen and (min-width: $tabletWidth) {
-        padding-left: $spacingSmall;
-        padding-right: $spacingSmall;
+        padding-left: $spacingLarge;
+        padding-right: $spacingLarge;
       }
     }
     &--xlarge {

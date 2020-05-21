@@ -5,7 +5,7 @@
     <sign-up-section
       class="container--blue"
       :darkBg="true"
-      headline="Sign up to start building your own cookbook."
+      headline="Sign up to start building your own cookbook"
     />
   </div>
 

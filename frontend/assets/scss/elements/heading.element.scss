@@ -1,24 +1,25 @@
-h1,
-h2 {
-  font-family: $headingFont;
-}
-
 h1 {
+  font-family: $headingFont;
   font-size: $fontSizeXXLargeMobile;
+  margin-top: $spacingXXLarge;
   @media screen and (min-width: $tabletWidth) {
     font-size: $fontSizeXXLarge;
   }
 }
 
 h2 {
+  font-family: $headingFont;
   font-size: $fontSizeXLargeMobile;
+  margin-top: $spacingXXLarge;
   @media screen and (min-width: $tabletWidth) {
     font-size: $fontSizeXLarge;
   }
 }
 
 h3 {
+  font-family: $subHeadingFont;
   font-size: $fontSizeLargeMobile;
+  margin-top: $spacingXLarge;
   @media screen and (min-width: $tabletWidth) {
     font-size: $fontSizeLarge;
   }
@@ -26,6 +27,7 @@ h3 {
 
 h4 {
   font-size: $fontSizeMediumMobile;
+  margin-top: $spacingLarge;
   @media screen and (min-width: $tabletWidth) {
     font-size: $fontSizeMedium;
   }

@@ -1,6 +1,6 @@
 <template>
   <div class="login-container">
-    <h2 class="margin-bottom--xlarge">Log in to see kokeboka di</h2>
+    <h2 class="margin-bottom--xlarge">Log in to kokeboka di</h2>
     <!-- Social Media login -->
     <google-login class="margin-bottom--medium" />
     <facebook-login class="margin-bottom--medium" />
@@ -10,7 +10,9 @@
       <button
         class="button button--large button--transparent"
         @click="toggleLoginModal"
-      >➔ Sign in with username and password</button>
+      >
+        ➔ Sign in with username and password
+      </button>
 
       <kokebokami-login :open="loginModalOpen" @toggle="toggleLoginModal" />
     </div>

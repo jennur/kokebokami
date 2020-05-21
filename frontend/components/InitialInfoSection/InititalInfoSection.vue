@@ -2,13 +2,15 @@
   <section class="container--orange">
     <div class="tablet-width margin--auto padding-horizontal--large">
       <div
-        class="flex-center-container flex-center-container--column mobile-width padding--none margin--auto"
+        class="flex-center-container flex-center-container--column tablet-width padding--none margin--auto"
       >
-        <h1 class="padding-horizontal--large margin-top--xxlarge">
-          Build your personal cookbook online!
+        <h1
+          class="container--center padding-horizontal--large margin-top--xxlarge"
+        >
+          Build your personal cookbook online
         </h1>
         <p
-          class="padding-horizontal--large color--blue font-size--medium text-align--center"
+          class="padding-horizontal--large color--blue mobile-width text-align--center"
         >
           Start storing your personal recipes online to make sure they never get
           lost. Keep them private, share them with the public or your friends
