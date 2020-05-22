@@ -67,7 +67,7 @@
 </template>
 
 <script>
-import { user } from "~/mixins/getCurrentUser.js";
+import user from "~/mixins/user.js";
 import { db } from "~/plugins/firebase.js";
 import CategoryFilter from "~/components/CategoryFilter/CategoryFilter.vue";
 import DescriptionInput from "~/components/Input/DescriptionInput.vue";
@@ -152,7 +152,7 @@ export default {
           "Are you sure you want to delete this recipe? This operation cannot be undone."
         )
       ) {
-        const recipeRef = db.ref("recipes/" + this.recipeKey);
+        const recipeRef = this.$fireDb.ref("recipes/" + this.recipeKey);
         recipeRef
           .remove()
           .then(() => {
@@ -198,7 +198,7 @@ export default {
       };
 
       if (this.recipeKey !== "") {
-        const recipeRef = db.ref("recipes/" + this.recipeKey);
+        const recipeRef = this.$fireDb.ref("recipes/" + this.recipeKey);
         recipeRef
           .update(recipeObject)
           .then(() => {
@@ -210,7 +210,7 @@ export default {
             console.log("ERROR SAVING RECIPE::: " + error);
           });
       } else {
-        const recipes = db.ref("recipes");
+        const recipes = this.$fireDb.ref("recipes");
         const newRecipeKey = recipes.push(recipeObject).key;
 
         if (newRecipeKey !== null) {

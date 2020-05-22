@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import { user } from "~/mixins/getCurrentUser.js";
+import user from "~/mixins/user.js";
 import InitialInfoSection from "~/components/InitialInfoSection/InititalInfoSection.vue";
 import SignUpSection from "~/components/SignUp/SignUpSection.vue";
 

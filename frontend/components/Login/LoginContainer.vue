@@ -27,7 +27,7 @@ import GoogleLogin from "./GoogleLogin.vue";
 import FacebookLogin from "./FacebookLogin.vue";
 import KokebokamiLogin from "./KokebokamiLogin.vue";
 
-import { user } from "~/mixins/getCurrentUser.js";
+import user from "~/mixins/user.js";
 import { auth } from "~/plugins/firebase.js";
 
 export default {

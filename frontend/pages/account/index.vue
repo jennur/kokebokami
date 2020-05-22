@@ -130,11 +130,11 @@
             <div class="account__detail-title">
               <span>
                 My recipes:
-                <span>{{ recipes ? recipes.length : null }}</span>
+                <span>{{ userRecipes ? userRecipes.length : null }}</span>
               </span>
             </div>
             <ol>
-              <li v-for="recipe in recipes" :key="recipe[1].title">
+              <li v-for="recipe in userRecipes" :key="recipe[1].title">
                 <span>
                   <nuxt-link :to="'recipes/' + recipe[0]">{{
                     recipe[1].title
@@ -209,10 +209,12 @@
 </template>
 
 <script>
-import { user } from "~/mixins/getCurrentUser.js";
+import user from "~/mixins/user.js";
+import sharedRecipes from "~/mixins/sharedRecipes.js";
+import userRecipes from "~/mixins/userRecipes.js";
 import connectedUsers from "~/mixins/getConnectedUsers.js";
 import RecipesList from "~/components/Recipes/RecipesList.vue";
-import { auth, db } from "~/plugins/firebase.js";
+//import { auth, db } from "~/plugins/firebase.js";
 
 export default {
   name: "account",
@@ -247,12 +249,12 @@ export default {
   },
   mixins: [user, connectedUsers],
   computed: {
-    recipes() {
+    /* recipes() {
       return this.$store.state.recipes;
     },
     sharedRecipes() {
       return this.$store.state.sharedRecipes;
-    }
+    } */
   },
   methods: {
     updateUserDetailsInStore() {
@@ -279,7 +281,8 @@ export default {
     },
     updateProfileImg() {
       let realThis = this;
-      db.ref("/users/" + this.user.id)
+      this.$fireDb
+        .ref("/users/" + this.user.id)
         .update({
           photoURL: ""
         })
@@ -294,7 +297,8 @@ export default {
     },
     updateUsername() {
       let realThis = this;
-      db.ref("/users/" + this.user.id)
+      this.$fireDb
+        .ref("/users/" + this.user.id)
         .update({
           displayName: this.username
         })
@@ -309,7 +313,8 @@ export default {
     },
     updateEmail() {
       let realThis = this;
-      db.ref("/users/" + this.user.id)
+      this.$fireDb
+        .ref("/users/" + this.user.id)
         .update({
           email: this.email
         })
@@ -325,7 +330,8 @@ export default {
 
     updateBiography() {
       let realThis = this;
-      db.ref("/users/" + this.user.id)
+      this.$fireDb
+        .ref("/users/" + this.user.id)
         .update({
           biography: this.biography
         })
@@ -339,7 +345,7 @@ export default {
         });
     },
     deleteAccount() {
-      let user = auth.currentUser;
+      let user = this.$fireAuth.currentUser;
       let userUID = this.user.id;
       const realThis = this;
       if (
@@ -348,14 +354,15 @@ export default {
           \nThis operation cannot be undone.`
         )
       ) {
-        let recipesRef = db.ref("recipes").orderByChild("ownerID");
+        let recipesRef = this.$fireDb.ref("recipes").orderByChild("ownerID");
 
         //Remove user's recipes
         recipesRef
           .once("value", recipes => {
             recipes.forEach(recipe => {
               if (recipe.val().ownerID === user.uid) {
-                db.ref("recipes/" + recipe.key)
+                this.$fireDb
+                  .ref("recipes/" + recipe.key)
                   .remove()
                   .then(() => {
                     console.log("Success: Deleted recipe:: " + recipe.key);
@@ -367,7 +374,8 @@ export default {
             });
           })
           .then(() => {
-            db.ref("users/" + user.uid)
+            this.$fireDb
+              .ref("users/" + user.uid)
               .remove()
               .then(function() {
                 console.log("Success: User was removed from database");

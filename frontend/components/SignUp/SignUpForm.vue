@@ -87,7 +87,24 @@ export default {
   methods: {
     signUp() {
       let credentials = { email: this.email, password: this.password };
-      this.$store.dispatch("KOKEBOKAMI_SIGN_UP", credentials);
+      this.$fireAuth
+        .createUserWithEmailAndPassword(credentials.email, credentials.password)
+        .then(response => {
+          response.user
+            .sendEmailVerification()
+            .then(() => {
+              console.log("Verification email sent");
+            })
+            .catch(error => {
+              console.log("Error sending verification email:", error);
+            });
+        })
+        .catch(function(error) {
+          commit("setSignupSystemMessage", error.message);
+          console.log(
+            "Failed with error code: " + error.code + " " + error.message
+          );
+        });
     },
     validateForm() {
       const emailRegex = /.{1,}@[^.]{1,}/;

@@ -47,7 +47,10 @@
 </template>
 
 <script>
-import { user } from "~/mixins/getCurrentUser.js";
+import user from "~/mixins/user.js";
+import sharedRecipes from "~/mixins/sharedRecipes.js";
+import userRecipes from "~/mixins/userRecipes.js";
+
 import RecipesList from "~/components/Recipes/RecipesList.vue";
 import RecipesFilter from "~/components/RecipesFilter/RecipesFilter.vue";
 
@@ -85,12 +88,12 @@ export default {
       if (this.firstName) return `${this.firstName}'s kokebok`;
       else return "My kokebok";
     },
-    userRecipes() {
+    /* userRecipes() {
       return this.$store.state.recipes;
     },
     sharedRecipes() {
       return this.$store.state.sharedRecipes;
-    },
+    }, */
     visibleRecipes() {
       if (this.showMyRecipes) {
         if (!this.filtered) return this.userRecipes;

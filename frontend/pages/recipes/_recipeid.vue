@@ -19,7 +19,7 @@
 import RecipeFullView from "~/components/Recipes/RecipeFullView/RecipeFullView.vue";
 import Comments from "~/components/Comments/Comments.vue";
 
-import { user } from "~/mixins/getCurrentUser.js";
+import user from "~/mixins/user.js";
 
 export default {
   name: "recipe",

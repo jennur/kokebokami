@@ -43,7 +43,7 @@
 </template>
 
 <script>
-import { user } from "~/mixins/getCurrentUser.js";
+import user from "~/mixins/user.js";
 import BurgerIcon from "./BurgerMenu/BurgerIcon.vue";
 import ClickOutside from "vue-click-outside";
 export default {

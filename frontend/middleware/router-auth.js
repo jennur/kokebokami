@@ -1,22 +1,32 @@
-import { auth } from "../plugins/firebase.js";
+/* //import { auth } from "../plugins/firebase.js";
 
-export default function({ store, redirect, route }) {
+export default function(context) {
+  console.log("Context", context);
+  let { store, redirect, route } = context;
   let storeUser = store.state.user;
   if (storeUser) {
     performRedirect(route, redirect);
   }
-  auth.onAuthStateChanged(user => {
-    if (
-      user &&
-      (user.emailVerified || user.providerData[0].providerId === "facebook.com")
-    ) {
-      performRedirect(route, redirect);
+  context.app.$fireAuthObj.onAuthStateChanged(user => {
+    if (user) {
+      if (
+        user.emailVerified ||
+        user.providerData[0].providerId === "facebook.com"
+      ) {
+        performRedirect(route, redirect);
+      } else if (
+        !user.emailVerified &&
+        user.providerData[0].providerId === "password"
+      ) {
+        redirect("/verify-email");
+      }
+    } else {
+      if (onAdminRoute(route)) redirect("/login");
     }
-    !user && isAdminRoute(route) && redirect("/login");
   });
 }
 
-function isAdminRoute(route) {
+function onAdminRoute(route) {
   if (route.matched.some(record => record.path.indexOf("account") > -1)) {
     return true;
   } else if (
@@ -39,3 +49,4 @@ function performRedirect(route, redirect) {
     redirect("/my-recipes");
   }
 }
+ */

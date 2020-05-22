@@ -27,7 +27,7 @@
   </section>
 </template>
 <script>
-import { user } from "~/mixins/getCurrentUser.js";
+import user from "~/mixins/user.js";
 import { db } from "~/plugins/firebase.js";
 import ProfileView from "~/components/ProfileView.vue";
 import RecipesList from "~/components/Recipes/RecipesList";
@@ -82,7 +82,9 @@ export default {
   methods: {
     followUser() {
       const realThis = this;
-      const currentUserRef = db.ref("users/" + this.user.id + "/following");
+      const currentUserRef = this.$fireDb.ref(
+        "users/" + this.user.id + "/following"
+      );
       currentUserRef
         .once("value", async snapshot => {
           let followingAlready = false;
@@ -120,7 +122,7 @@ export default {
     unfollowUser() {
       const realThis = this;
 
-      const userRef = db.ref("users/" + this.user.id + "/following");
+      const userRef = this.$fireDb.ref("users/" + this.user.id + "/following");
       userRef
         .once("value", snapshot => {
           if (snapshot.exists()) {

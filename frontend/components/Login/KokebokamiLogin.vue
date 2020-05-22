@@ -39,7 +39,7 @@
   </section>
 </template>
 <script>
-import { user } from "~/mixins/getCurrentUser.js";
+import user from "~/mixins/user.js";
 import { auth, db } from "~/plugins/firebase.js";
 
 export default {
@@ -62,14 +62,16 @@ export default {
           var displayName = "";
 
           if (response.user !== null) {
-            db.ref("users/" + response.user.uid).on("value", snapshot => {
-              displayName = snapshot.val().displayName;
-              let user = {
-                id: response.user.uid,
-                name: displayName
-              };
-              realThis.$store.dispatch("SET_USER", user);
-            });
+            this.$fireDb
+              .ref("users/" + response.user.uid)
+              .on("value", snapshot => {
+                displayName = snapshot.val().displayName;
+                let user = {
+                  id: response.user.uid,
+                  name: displayName
+                };
+                realThis.$store.dispatch("SET_USER", user);
+              });
           }
         })
         .catch(error => {

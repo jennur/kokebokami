@@ -1,9 +1,11 @@
-import {
+/* import {
   GoogleProvider,
   FacebookProvider,
   auth,
   db
-} from "~/plugins/firebase.js";
+} from "~/plugins/firebase.js"; */
+
+import { auth } from "firebase-admin";
 
 export function state() {
   return {
@@ -80,8 +82,29 @@ export function state() {
 }
 
 export const mutations = {
-  acceptCookies(state) {
+  /* acceptCookies(state) {
     state.cookieConsent = true;
+  }, */
+  onAuthStateChanged(state, { authUser, claims }) {
+    console.log("AutStateChanged Mutation:", authUser, "Claims:", claims);
+    if (!authUser) {
+      // claims = null
+      // Perform logout operations
+      /* $fireAuth
+        .signOut()
+        .then(() => {
+          state.user = null;
+          console.log("Logged out");
+        })
+        .catch(error => {
+          console.log("Error signing out from Firebase:", error);
+        }); */
+    } else {
+      const { uid, email, emailVerified } = authUser;
+      console.log("AuthUser:", authUser);
+
+      // Do something with the authUser and the claims object...
+    }
   },
   setUser(state, payload) {
     state.user = payload;
@@ -89,29 +112,64 @@ export const mutations = {
   removeUser(state) {
     state.user = null;
   },
-  setAllUsers(state, payload) {
+  /* setAllUsers(state, payload) {
     state.allUsers = payload;
-  },
+  }, */
   setLoginSystemMessage(state, payload) {
     state.loginSystemMessage = payload;
   },
   setSignupSystemMessage(state, payload) {
     state.signupSystemMessage = payload;
   },
-  setRecipes(state, payload) {
+  /*  setRecipes(state, payload) {
     state.recipes = payload;
-  },
-  setSharedRecipes(state, payload) {
+  }, */
+  /* setSharedRecipes(state, payload) {
     state.sharedRecipes = payload;
-  },
+  }, */
   setPublicRecipes(state, payload) {
     state.publicRecipes = payload;
   }
 };
 
 export const actions = {
-  ACCEPT_COOKIES: ({ commit }) => {
+  /* ACCEPT_COOKIES: ({ commit }) => {
     commit("acceptCookies");
+  }, */
+  ON_AUTH_STATE_CHANGED: function(context, { authUser, claims }) {
+    console.log("User:", authUser);
+    //let userRef = this.$fireDb.ref("users/" + authUser.uid);
+
+    /* userRef.once("value", snapshot => {
+      if (snapshot.exists()) {
+        loggedinUser = {
+          id: user.uid,
+          photoURL: snapshot.val().photoURL,
+          displayName: snapshot.val().displayName,
+          email: snapshot.val().email,
+          biography: snapshot.val().biography,
+          following: snapshot.val().following,
+          followers: snapshot.val().followers
+        };
+      } else {
+        let databaseUser = {
+          displayName: user.displayName ? user.displayName : "User",
+          photoURL: user.photoURL && user.photoURL,
+          email: user.email
+          // No more details available upon first login
+        };
+        userRef.set(databaseUser);
+
+        loggedinUser = {
+          id: user.uid,
+          photoURL: user.photoURL && user.photoURL,
+          displayName: user.displayName && user.displayName,
+          email: user.email
+          // No more details available upon first login
+        };
+      }
+      context.commit("setUser", loggedinUser);
+    }); */
   },
   SET_LOGIN_MESSAGE: ({ commit }, payload) => {
     commit("setLoginSystemMessage", payload);
@@ -121,44 +179,18 @@ export const actions = {
   },
   REMOVE_USER: ({ commit }) => {
     commit("removeUser");
-  },
-  SET_ALL_USERS: ({ commit }) => {
+  }
+  /* SET_ALL_USERS: ({ commit, $fireDb }) => {
     let usersArray = [];
-    db.ref("users").once("value", users => {
+    $fireDb.ref("users").once("value", users => {
       users.forEach(user => {
         usersArray.push([user.key, user.val()]);
       });
       commit("setAllUsers", usersArray);
     });
-  },
-  GOOGLE_SIGN_IN: () => {
-    auth.signInWithRedirect(GoogleProvider);
-  },
-  FACEBOOK_SIGN_IN: () => {
-    auth.signInWithRedirect(FacebookProvider);
-  },
-  KOKEBOKAMI_SIGN_UP: ({ commit }, credentials) => {
-    auth
-      .createUserWithEmailAndPassword(credentials.email, credentials.password)
-      .then(response => {
-        response.user
-          .sendEmailVerification()
-          .then(() => {
-            console.log("Verification email sent");
-          })
-          .catch(error => {
-            console.log("Error sending verification email:", error);
-          });
-      })
-      .catch(function(error) {
-        commit("setSignupSystemMessage", error.message);
-        console.log(
-          "Failed with error code: " + error.code + " " + error.message
-        );
-      });
-  },
-  USER_SIGN_OUT: ({ commit }) => {
-    auth
+  }, */
+  /* USER_SIGN_OUT: ({ commit, $fireAuth }) => {
+    $fireAuth
       .signOut()
       .then(() => {
         commit("removeUser");
@@ -166,9 +198,9 @@ export const actions = {
       .catch(error => {
         console.log("Error removing user: " + error);
       });
-  },
-  SET_USER_RECIPES: ({ commit }, user) => {
-    const recipesRef = db.ref("recipes").orderByKey();
+  }, */
+  /* SET_USER_RECIPES: ({ commit }, user) => {
+    const recipesRef = $fireDb.ref("recipes").orderByKey();
     let recipesArray = [];
     recipesRef.once(
       "value",
@@ -185,9 +217,9 @@ export const actions = {
         );
       }
     );
-  },
-  SET_SHARED_RECIPES: async ({ commit }, user) => {
-    const recipesRef = db.ref("recipes").orderByChild("sharedWith");
+  },*/
+  /* SET_SHARED_RECIPES: async ({ commit }, user) => {
+    const recipesRef = $fireDb.ref("recipes").orderByChild("sharedWith");
     let recipesArray = [];
     await recipesRef.once(
       "value",
@@ -215,9 +247,9 @@ export const actions = {
       }
     );
     commit("setSharedRecipes", recipesArray);
-  },
-  SET_PUBLIC_RECIPES: ({ commit }) => {
-    const recipesRef = db.ref("recipes").orderByChild("public");
+  }, */
+  /*  SET_PUBLIC_RECIPES: ({ commit, $fireDb }) => {
+    const recipesRef = $fireDb.ref("recipes").orderByChild("public");
     let recipesArray = [];
     recipesRef.once(
       "value",
@@ -238,5 +270,5 @@ export const actions = {
         );
       }
     );
-  }
+  } */
 };

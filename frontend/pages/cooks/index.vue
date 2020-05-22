@@ -34,7 +34,7 @@
   </div>
 </template>
 <script>
-import { user } from "~/mixins/getCurrentUser.js";
+import user from "~/mixins/user.js";
 import connectedUsers from "~/mixins/getConnectedUsers.js";
 import CooksSearch from "~/components/Cooks/CooksSearch/CooksSearch.vue";
 import CooksList from "~/components/Cooks/CooksList.vue";

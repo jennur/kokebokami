@@ -6,7 +6,9 @@
         class="button button--small button--green-border button--mobile-expand margin-bottom--large margin-right--large"
         @click="handlePdfExport"
       >
-        <download-icon class="icon icon--in-button margin-right--medium" />Download as PDF
+        <download-icon
+          class="icon icon--in-button margin-right--medium"
+        />Download as PDF
       </span>
       <span
         role="button"
@@ -18,10 +20,15 @@
       </span>
 
       <div v-if="isRecipeOwner">
-        <button @click="handleEditMode" class="button button--small button--transparent">Edit mode</button>
+        <button
+          @click="handleEditMode"
+          class="button button--small button--transparent"
+        >
+          Edit mode
+        </button>
       </div>
     </div>
-    <share-form v-if="sharing" :recipeKey="recipeKey" />
+    <share-form :open="sharing" :recipeKey="recipeKey" />
   </div>
 </template>
 <script>

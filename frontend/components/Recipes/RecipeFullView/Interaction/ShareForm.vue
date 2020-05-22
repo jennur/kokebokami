@@ -1,29 +1,42 @@
 <template>
   <div class="share-form-container">
-    <form class="share-form" v-on:submit.prevent>
-      <h4>Share this recipe with another user</h4>
-      <label class="margin-bottom--large">
-        User's email address:
-        <input
-          type="email"
-          placeholder="john.doe@example.com"
-          v-model="email"
-        />
-      </label>
-      <button @click="shareRecipe" class="button button--small">Share</button>
-    </form>
-    <div class="system-message margin-top--large">{{ systemMessage }}</div>
+    <expand-transition :show="open">
+      <form class="share-form" v-on:submit.prevent>
+        <h4>Share this recipe with another user</h4>
+        <p class="margin-top--none margin-bottom--large">
+          The recipe will show up under your friend's "Recipes shared with me"
+          tab in his/hers cookbook.
+        </p>
+        <label class="margin-bottom--large">
+          User's email address:
+          <input
+            type="email"
+            placeholder="john.doe@example.com"
+            v-model="email"
+          />
+        </label>
+        <button @click="shareRecipe" class="button button--small">Share</button>
+      </form>
+      <div class="system-message margin-top--large">{{ systemMessage }}</div>
+    </expand-transition>
   </div>
 </template>
 <script>
 import { db } from "~/plugins/firebase.js";
-
+import ExpandTransition from "~/components/Transitions/Expand.vue";
 export default {
   name: "share-form",
+  components: {
+    ExpandTransition
+  },
   data() {
     return { email: "", systemMessage: "" };
   },
   props: {
+    open: {
+      type: Boolean,
+      default: false
+    },
     recipeKey: {
       type: String,
       default: null
@@ -34,7 +47,7 @@ export default {
       const realThis = this;
       const emailValue = this.email;
       const recipeKey = this.recipeKey;
-      const userRef = db.ref("users");
+      const userRef = this.$fireDb.ref("users");
       userRef
         .once("value", snapshot => {
           let userID = null;
@@ -46,7 +59,7 @@ export default {
               username = user.val().displayName;
 
               if (recipeKey !== null) {
-                const recipeRef = db.ref(
+                const recipeRef = this.$fireDb.ref(
                   "recipes/" + recipeKey + "/sharedWith"
                 );
 

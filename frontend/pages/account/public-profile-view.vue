@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import { user } from "~/mixins/getCurrentUser.js";
+import user from "~/mixins/user.js";
 import ProfileView from "~/components/ProfileView.vue";
 import RecipesList from "~/components/Recipes/RecipesList";
 

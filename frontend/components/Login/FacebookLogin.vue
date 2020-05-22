@@ -9,13 +9,14 @@
   </button>
 </template>
 <script>
-import { user } from "~/mixins/getCurrentUser.js";
+import user from "~/mixins/user.js";
 export default {
   name: "facebook-login",
   methods: {
     facebookSignIn() {
       this.$router.push("/login?loading");
-      this.$store.dispatch("FACEBOOK_SIGN_IN");
+      const FacebookProvider = new this.$fireAuthObj.FacebookAuthProvider();
+      this.$fireAuth.signInWithRedirect(FacebookProvider);
     }
   }
 };

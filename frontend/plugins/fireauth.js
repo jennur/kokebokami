@@ -1,14 +1,14 @@
-import { auth, db } from "~/plugins/firebase.js";
-import routerAuth from "~/middleware/router-auth.js";
+/* import { auth, db } from "~/plugins/firebase.js";
+import routerAuth from "~/middleware/router-this.$fireAuth.js";
 
 export default context => {
   const { store, redirect } = context;
-  auth.getRedirectResult().catch(error => {
+  this.$fireAuth.getRedirectResult().catch(error => {
     console.log("Redirect error:", error);
     store.dispatch("SET_LOGIN_MESSAGE", error.message);
   });
 
-  auth.onAuthStateChanged(user => {
+  this.$fireAuth.onAuthStateChanged(user => {
     if (user) {
       if (
         !user.emailVerified &&
@@ -26,7 +26,7 @@ export default context => {
 function setUserData(store, user) {
   store.dispatch("SET_ALL_USERS");
   let loggedinUser = {};
-  let userRef = db.ref("users/" + user.uid);
+  let userRef = this.$fireDb.ref("users/" + user.uid);
 
   userRef.once("value", snapshot => {
     if (snapshot.exists()) {
@@ -62,3 +62,4 @@ function setUserData(store, user) {
     store.dispatch("SET_USER_RECIPES", loggedinUser);
   });
 }
+ */

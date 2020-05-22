@@ -6,7 +6,7 @@
 </template>
 <script>
 import googleLogo from "~/assets/graphics/btn_google_light_normal_ios.svg";
-import { user } from "~/mixins/getCurrentUser.js";
+import user from "~/mixins/user.js";
 
 export default {
   name: "google-login",
@@ -16,7 +16,8 @@ export default {
   methods: {
     googleSignIn() {
       this.$router.push("/login?loading");
-      this.$store.dispatch("GOOGLE_SIGN_IN");
+      const GoogleProvider = new this.$fireAuthObj.GoogleAuthProvider();
+      this.$fireAuth.signInWithRedirect(GoogleProvider);
     }
   }
 };
