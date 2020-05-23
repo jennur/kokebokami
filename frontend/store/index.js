@@ -87,15 +87,13 @@ export const mutations = {
 
 export const actions = {
   ON_AUTH_STATE_CHANGED: function(context, { authUser, claims }) {
-    console.log("User:", authUser, "\nRoute:", this.app.router.history.current);
     if (authUser) {
       let userRef = this.$fireDb.ref("users/" + authUser.uid);
 
       userRef.once("value", snapshot => {
         let loggedinUser = {
           id: authUser.uid,
-          emailVerified: authUser.emailVerified,
-          isAdmin: claims.custom_claim
+          emailVerified: authUser.emailVerified
         };
         if (snapshot.exists()) {
           loggedinUser = {

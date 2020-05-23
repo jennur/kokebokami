@@ -68,7 +68,6 @@
 
 <script>
 import user from "~/mixins/user.js";
-//import { db } from "~/plugins/firebase.js";
 import CategoryFilter from "~/components/CategoryFilter/CategoryFilter.vue";
 import DescriptionInput from "~/components/Input/DescriptionInput.vue";
 
