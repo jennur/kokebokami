@@ -1,7 +1,7 @@
-export default async function(context) {
+export default function(context) {
   let { redirect, route, app } = context;
   if (app.$fireAuth.currentUser) {
-    let user = await app.$fireAuth.currentUser;
+    let user = app.$fireAuth.currentUser;
     if (
       user.emailVerified ||
       user.providerData[0].providerId === "facebook.com"

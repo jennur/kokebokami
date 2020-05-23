@@ -2,7 +2,11 @@
   <fieldset id="instructionList" class="flex-column margin-bottom--xxlarge">
     <h4>Instructions</h4>
     <ol class="add-recipe-form__instructions">
-      <li class="margin-bottom--medium" v-for="number in instructionNumbers" :key="number">
+      <li
+        class="margin-bottom--medium"
+        v-for="number in instructionNumbers"
+        :key="number"
+      >
         <span class="flex-row flex-row--nowrap flex-row--align-center">
           <label>
             <textarea
@@ -19,7 +23,11 @@
         </span>
       </li>
     </ol>
-    <increment-button class="margin-top--large" @increment="incrementInstructionNumber">Add step</increment-button>
+    <increment-button
+      class="margin-top--large"
+      @increment="incrementInstructionNumber"
+      >Add step</increment-button
+    >
   </fieldset>
 </template>
 
@@ -60,7 +68,7 @@ export default {
       this.editing = true;
     }
   },
-  created() {
+  mounted() {
     let counter = 0;
 
     if (this.existingInstructions !== undefined) {

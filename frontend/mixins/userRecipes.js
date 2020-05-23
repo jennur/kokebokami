@@ -7,7 +7,7 @@ export default {
       errorMessage: ""
     };
   },
-  created() {
+  beforeMount() {
     let componentThis = this;
     if (this.userAuth) {
       let userRecipesRef = this.$fireDb.ref("recipes").orderByKey();

@@ -17,9 +17,6 @@ export default {
   components: {
     SelectComponent
   },
-  /*data() {
-    return { language: "" };
-  },*/
   props: {
     existingLanguage: {
       type: String,
@@ -40,9 +37,6 @@ export default {
     handleLanguage(language) {
       this.$emit("update", language);
     }
-  },
-  created() {
-    if (this.existingLanguage !== "") this.language = this.existingLanguage;
   }
 };
 </script>

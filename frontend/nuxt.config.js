@@ -1,9 +1,22 @@
 require("dotenv").config();
+const axios = require("axios");
 
 export default {
   mode: "universal",
   generate: {
-    fallback: true
+    fallback: true,
+    routes() {
+      return axios
+        .get(
+          `https://${process.env.PROJECT_ID}.firebaseio.com/recipes.json?auth=${process.env.DATABASE_SECRET}`
+        )
+        .then(res => {
+          return Object.keys(res.data).map(key => {
+            return `/recipes/${key}`;
+          });
+        })
+        .catch(error => console.log("Error generating routes:", error));
+    }
   },
 
   // Headers of the page
@@ -26,9 +39,6 @@ export default {
 
   // Global CSS
   css: ["~/assets/scss/main.scss"],
-  serverMiddleware: [
-    { path: "/api/page-scraper", handler: "~/api/pageScraper.js" }
-  ],
   plugins: ["~/plugins/globalComponents.js"],
 
   router: {
@@ -62,6 +72,7 @@ export default {
     "@nuxtjs/dotenv",
     "@nuxtjs/sitemap",
     "nuxt-fontawesome"
+    //"~/modules/api"
   ],
   firebase: {
     config: {
@@ -80,7 +91,6 @@ export default {
 
         // it is recommended to configure either a mutation or action but you can set both
         initialize: {
-          //onAuthStateChangedMutation: "onAuthStateChanged",
           onAuthStateChangedAction: "ON_AUTH_STATE_CHANGED"
         },
         ssr: false

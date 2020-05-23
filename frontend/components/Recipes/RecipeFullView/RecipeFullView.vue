@@ -58,7 +58,7 @@ import FreeFromDisplay from "./Displays/FreeFromDisplay";
 import TypeOfMealDisplay from "./Displays/TypeOfMealDisplay";
 import IngredientsDisplay from "./Displays/IngredientsDisplay.vue";
 import InstructionsDisplay from "./Displays/InstructionsDisplay.vue";
-import * as jsPDF from "jspdf";
+//import * as jsPDF from "jspdf";
 import logo from "~/static/kokebokamilogo.png";
 
 export default {
@@ -117,18 +117,22 @@ export default {
             return true;
           }
         };
-        let recipe = document.getElementById("recipe");
-        var doc = new jsPDF("p", "mm", "a4");
-        var img = new Image();
-        img.src = logo;
-        doc.addImage(img, "PNG", 163, 10, 27, 5);
+        /* if (process.browser) {
+          let recipe = document.getElementById("recipe");
+          var doc = new jsPDF("p", "mm", "a4");
+          var img = new Image();
+          img.src = logo;
+          doc.addImage(img, "PNG", 163, 10, 27, 5);
 
-        let documentTitle = this.recipe.title.replace(/\s/g, "-").toLowerCase();
-        doc.fromHTML(recipe, 20, 10, {
-          width: 150,
-          elementHandlers: elementHandler
-        });
-        doc.save("kokebokami_" + documentTitle + ".pdf");
+          let documentTitle = this.recipe.title
+            .replace(/\s/g, "-")
+            .toLowerCase();
+          doc.fromHTML(recipe, 20, 10, {
+            width: 150,
+            elementHandlers: elementHandler
+          });
+          doc.save("kokebokami_" + documentTitle + ".pdf");
+        } */
       }
     }
   }

@@ -33,11 +33,12 @@ export default {
     }
   },
   data() {
+    let existingCategories = this.existingCategories;
     return {
-      categories: [],
-      typeOfMeal: [],
-      language: "",
-      freeFrom: [],
+      categories: (existingCategories && existingCategories.categories) || [],
+      typeOfMeal: (existingCategories && existingCategories.typeOfMeal) || [],
+      language: (existingCategories && existingCategories.language) || "",
+      freeFrom: (existingCategories && existingCategories.freeFrom) || [],
       filteredCategories: []
     };
   },
@@ -66,14 +67,6 @@ export default {
     },
     handleFreeFrom(category) {
       this.$emit("setFreeFrom", category);
-    }
-  },
-  created() {
-    if (this.existingCategories) {
-      this.categories = this.existingCategories.categories;
-      this.language = this.existingCategories.language;
-      this.freeFrom = this.existingCategories.freeFrom;
-      this.typeOfMeal = this.existingCategories.typeOfMeal;
     }
   }
 };

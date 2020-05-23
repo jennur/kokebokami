@@ -124,6 +124,7 @@ export const actions = {
         }
         context.commit("setUser", loggedinUser);
       });
+      this.$fireAuthUnsubscribe;
     }
   },
   SET_LOGIN_MESSAGE: ({ commit }, payload) => {

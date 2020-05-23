@@ -6,7 +6,7 @@ export default {
       errorMessage: ""
     };
   },
-  created() {
+  beforeMount() {
     let componentThis = this;
     if (this.userAuth) {
       this.$fireDb.ref("users").once(

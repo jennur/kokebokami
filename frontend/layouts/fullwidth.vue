@@ -13,14 +13,7 @@
   </div>
 </template>
 <script>
-import CookieConsent from "../components/CookieConsent.vue";
-import cookieConsentLogic from "../mixins/cookieConsent.js";
-
 export default {
-  name: "fullwidth",
-  components: {
-    CookieConsent
-  },
-  mixins: [cookieConsentLogic]
+  name: "fullwidth"
 };
 </script>

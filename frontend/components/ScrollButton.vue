@@ -22,8 +22,10 @@ export default {
   },
   methods: {
     handleScroll() {
-      if (window.pageYOffset > 500) this.showButton = true;
-      else this.showButton = false;
+      if (process.browser) {
+        if (window.pageYOffset > 500) this.showButton = true;
+        else this.showButton = false;
+      }
     },
     scrollToTop() {
       if (process.browser) {
@@ -35,6 +37,11 @@ export default {
   mounted() {
     if (process.browser) {
       window.addEventListener("scroll", this.handleScroll);
+    }
+  },
+  destroyed() {
+    if (process.browser) {
+      window.removeEventListener("scroll", this.handleScroll);
     }
   }
 };
