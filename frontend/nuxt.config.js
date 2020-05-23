@@ -5,9 +5,8 @@ export default {
   generate: {
     fallback: true
   },
-  /*
-   ** Headers of the page
-   */
+
+  // Headers of the page
   head: {
     title: "Kokebokami",
     meta: [
@@ -19,45 +18,26 @@ export default {
         content: process.env.npm_package_description || ""
       }
     ],
-    link: [
-      { rel: "icon", type: "image/png", href: "/favicon.png" },
-      {
-        rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css?family=Roboto&display=swap"
-      }
-    ]
+    link: [{ rel: "icon", type: "image/png", href: "/favicon.png" }]
   },
-  /*
-   ** Customize the progress-bar color
-   */
+
+  // Customize the progress-bar color
   loading: { color: "#ff7300" },
-  /*
-   ** Global CSS
-   */
+
+  // Global CSS
   css: ["~/assets/scss/main.scss"],
-  /*
-   ** Plugins to load before mounting the App
-   */
   serverMiddleware: [
-    // Will register redirect-ssl npm package
-    /*     'redirect-ssl',
-     */
     { path: "/api/page-scraper", handler: "~/api/pageScraper.js" }
   ],
-  plugins: [
-    "~/plugins/globalComponents.js"
-    /* { src: "~/plugins/firebase.js", mode: "client" },
-    { src: "~/plugins/firethis.$fireAuth.js", mode: "client" } */
-  ],
+  plugins: ["~/plugins/globalComponents.js"],
 
   router: {
     middleware: "router-auth",
     linkExactActiveClass: "active-link"
   },
   pageTransition: "fade",
-  /*
-   ** Nuxt.js dev-modules
-   */
+
+  // Nuxt.js dev-modules
   buildModules: [
     [
       "@nuxtjs/google-gtag",
@@ -72,9 +52,8 @@ export default {
       }
     ]
   ],
-  /*
-   ** Nuxt.js modules
-   */
+
+  // Nuxt.js modules
   modules: [
     "@nuxtjs/firebase",
     "@nuxtjs/axios",
@@ -101,22 +80,15 @@ export default {
 
         // it is recommended to configure either a mutation or action but you can set both
         initialize: {
-          onAuthStateChangedMutation: "onAuthStateChanged",
+          //onAuthStateChangedMutation: "onAuthStateChanged",
           onAuthStateChangedAction: "ON_AUTH_STATE_CHANGED"
         },
-
         ssr: false
       },
-      //firestore: false,
-      //functions: false,
-      //storage: false,
-      realtimeDb: true,
-      //messaging: false,
-      //performance: false,
-      analytics: true
-      //remoteConfig: false
+      realtimeDb: true
     }
   },
+  pwa: {},
   sitemap: {
     path: "/sitemap.xml",
     generate: false,
@@ -136,14 +108,6 @@ export default {
   },
   env: {
     baseURL: process.env.BASE_URL || "http://localhost:3000",
-    /* apiKey: process.env.API_KEY,
-    authDomain: process.env.AUTH_DOMAIN,
-    databaseURL: process.env.DATABASE_URL,
-    projectId: process.env.PROJECT_ID,
-    storageBucket: process.env.STORAGE_BUCKET,
-    messagingSenderId: process.env.MESSAGING_SENDER_ID,
-    appId: process.env.APP_ID,
-    measurementId: process.env.MEASUREMENT_ID, */
     privateKeyId: process.env.PRIVATE_KEY_ID,
     privateKey: process.env.PRIVATE_KEY,
     clientEmail: process.env.CLIENT_EMAIL,
@@ -154,18 +118,17 @@ export default {
     clientCertURL: process.env.CLIENT_CERT_URL
   },
 
-  /*
-   ** Build configuration
-   */
+  // Build configuration
   build: {
-    /*
-     ** You can extend webpack config here
-     */
+    // You can extend webpack config here
     extend(config, ctx) {
       config.node = {
-        fs: "empty"
+        fs: "empty",
+        child_process: "empty",
+        net: "empty",
+        tls: "empty",
+        dns: "empty"
       };
     }
-  },
-  pwa: {}
+  }
 };

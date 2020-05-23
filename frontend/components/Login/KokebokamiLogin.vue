@@ -40,7 +40,7 @@
 </template>
 <script>
 import user from "~/mixins/user.js";
-import { auth, db } from "~/plugins/firebase.js";
+//import { auth, db } from "~/plugins/firebase.js";
 
 export default {
   name: "kokebokami-login",
@@ -56,26 +56,23 @@ export default {
   methods: {
     kokebokamiSignIn() {
       const realThis = this;
-      auth
+      this.$fireAuth
         .signInWithEmailAndPassword(this.email, this.password)
         .then(response => {
-          var displayName = "";
-
           if (response.user !== null) {
             this.$fireDb
               .ref("users/" + response.user.uid)
               .on("value", snapshot => {
-                displayName = snapshot.val().displayName;
                 let user = {
                   id: response.user.uid,
-                  name: displayName
+                  displayName: snapshot.val().displayName
                 };
                 realThis.$store.dispatch("SET_USER", user);
               });
           }
         })
         .catch(error => {
-          console.log("Error signing in: " + error);
+          console.log("Error signing in:", error);
           realThis.systemMessage = "Email and password do not match";
         });
     }

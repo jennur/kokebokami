@@ -1,7 +1,8 @@
+//Must be used in combination with allusers-mixin
 export default {
   computed: {
     followed() {
-      let users = this.$store.state.allUsers;
+      let users = this.allUsers;
       let following = [];
       if (this.user && this.user.following)
         following = Object.values(this.user.following);
@@ -13,7 +14,7 @@ export default {
       );
     },
     followers() {
-      let users = this.$store.state.allUsers;
+      let users = this.allUsers;
       return (
         users &&
         users.filter(user => {

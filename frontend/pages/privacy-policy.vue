@@ -3,7 +3,7 @@
     <breadcrumbs :routes="breadcrumbs" />
 
     <section class="mobile-width margin--auto">
-      <h1>Privacy Policy</h1>
+      <h1 class="article-heading">Privacy Policy</h1>
 
       <p>Effective date: November 08, 2019</p>
 
@@ -26,7 +26,7 @@
         in our Terms and Conditions, accessible from https://kokebokami.com
       </p>
 
-      <h2>Definitions</h2>
+      <h2 class="article-heading">Definitions</h2>
       <ul class="arrow-list">
         <li>
           <p>
@@ -104,15 +104,15 @@
         </li>
       </ul>
 
-      <h2>Information Collection and Use</h2>
+      <h2 class="article-heading">Information Collection and Use</h2>
       <p>
         We collect several different types of information for various purposes
         to provide and improve our Service to you.
       </p>
 
-      <h3>Types of Data Collected</h3>
+      <h3 class="article-heading">Types of Data Collected</h3>
 
-      <h4>Personal Data</h4>
+      <h4 class="article-heading">Personal Data</h4>
       <p>
         While using our Service, we may ask you to provide us with certain
         personally identifiable information that can be used to contact or
@@ -126,7 +126,7 @@
         <li>Cookies and Usage Data</li>
       </ul>
 
-      <h4>Usage Data</h4>
+      <h4 class="article-heading">Usage Data</h4>
 
       <p>
         We may also collect information on how the Service is accessed and used
@@ -137,7 +137,7 @@
         identifiers and other diagnostic data.
       </p>
 
-      <h4>Tracking & Cookies Data</h4>
+      <h4 class="article-heading">Tracking & Cookies Data</h4>
       <p>
         We use cookies and similar tracking technologies to track the activity
         on our Service and we hold certain information.
@@ -170,7 +170,7 @@
         </li>
       </ul>
 
-      <h2>Use of Data</h2>
+      <h2 class="article-heading">Use of Data</h2>
       <p>Kokebokami uses the collected data for various purposes:</p>
       <ul class="arrow-list">
         <li>To provide and maintain our Service</li>
@@ -188,7 +188,7 @@
         <li>To detect, prevent and address technical issues</li>
       </ul>
 
-      <h2>
+      <h2 class="article-heading">
         Legal Basis for Processing Personal Data under the General Data
         Protection Regulation (GDPR)
       </h2>
@@ -209,7 +209,7 @@
         <li>To comply with the law</li>
       </ul>
 
-      <h2>Retention of Data</h2>
+      <h2 class="article-heading">Retention of Data</h2>
       <p>
         Kokebokami will retain your Personal Data only for as long as is
         necessary for the purposes set out in this Privacy Policy. We will
@@ -226,7 +226,7 @@
         data for longer periods.
       </p>
 
-      <h2>Transfer of Data</h2>
+      <h2 class="article-heading">Transfer of Data</h2>
       <p>
         Your information, including Personal Data, may be transferred to - and
         maintained on - computers located outside of your state, province,
@@ -250,9 +250,9 @@
         security of your data and other personal information.
       </p>
 
-      <h2>Disclosure of Data</h2>
+      <h2 class="article-heading">Disclosure of Data</h2>
 
-      <h3>Legal Requirements</h3>
+      <h3 class="article-heading">Legal Requirements</h3>
       <p>
         Kokebokami may disclose your Personal Data in the good faith belief that
         such action is necessary to:
@@ -270,7 +270,7 @@
         <li>To protect against legal liability</li>
       </ul>
 
-      <h2>Security of Data</h2>
+      <h2 class="article-heading">Security of Data</h2>
       <p>
         The security of your data is important to us but remember that no method
         of transmission over the Internet or method of electronic storage is
@@ -278,7 +278,7 @@
         protect your Personal Data, we cannot guarantee its absolute security.
       </p>
 
-      <h2>
+      <h2 class="article-heading">
         Our Policy on "Do Not Track" Signals under the California Online
         Protection Act (CalOPPA)
       </h2>
@@ -292,7 +292,7 @@
         Settings page of your web browser.
       </p>
 
-      <h2>
+      <h2 class="article-heading">
         Your Data Protection Rights under the General Data Protection Regulation
         (GDPR)
       </h2>
@@ -369,7 +369,7 @@
         Area (EEA).
       </p>
 
-      <h2>Service Providers</h2>
+      <h2 class="article-heading">Service Providers</h2>
       <p>
         We may employ third party companies and individuals to facilitate our
         Service ("Service Providers"), provide the Service on our behalf,
@@ -382,7 +382,7 @@
         for any other purpose.
       </p>
 
-      <h3>Analytics</h3>
+      <h3 class="article-heading">Analytics</h3>
       <p>
         We may use third-party Service Providers to monitor and analyse the use
         of our Service.
@@ -446,7 +446,7 @@
         </li>
       </ul>
 
-      <h2>Links to Other Sites</h2>
+      <h2 class="article-heading">Links to Other Sites</h2>
       <p>
         Our Service may contain links to other sites that are not operated by
         us. If you click a third party link, you will be directed to that third
@@ -458,7 +458,7 @@
         privacy policies or practices of any third party sites or services.
       </p>
 
-      <h2>Children's Privacy</h2>
+      <h2 class="article-heading">Children's Privacy</h2>
       <p>
         Our Service does not address anyone under the age of 18 ("Children").
       </p>
@@ -471,7 +471,7 @@
         remove that information from our servers.
       </p>
 
-      <h2>Changes to This Privacy Policy</h2>
+      <h2 class="article-heading">Changes to This Privacy Policy</h2>
       <p>
         We may update our Privacy Policy from time to time. We will notify you
         of any changes by posting the new Privacy Policy on this page.
@@ -487,7 +487,7 @@
         posted on this page.
       </p>
 
-      <h2>Contact Us</h2>
+      <h2 class="article-heading">Contact Us</h2>
       <p>
         If you have any questions about this Privacy Policy, please contact us:
       </p>

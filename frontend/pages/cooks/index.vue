@@ -35,7 +35,9 @@
 </template>
 <script>
 import user from "~/mixins/user.js";
-import connectedUsers from "~/mixins/getConnectedUsers.js";
+import allUsers from "~/mixins/allUsers.js";
+import connectedUsers from "~/mixins/connectedUsers.js";
+
 import CooksSearch from "~/components/Cooks/CooksSearch/CooksSearch.vue";
 import CooksList from "~/components/Cooks/CooksList.vue";
 
@@ -54,7 +56,7 @@ export default {
       default: () => [{ name: "Home", link: "/" }, { name: "Cooks" }]
     }
   },
-  mixins: [user, connectedUsers],
+  mixins: [user, allUsers, connectedUsers],
   methods: {
     toggleCooks(event) {
       if (event.target.id === "followers-tab" && !this.showFollowers) {

@@ -28,7 +28,9 @@
 </template>
 <script>
 import user from "~/mixins/user.js";
-import { db } from "~/plugins/firebase.js";
+import allUsers from "~/mixins/allUsers.js";
+import publicRecipes from "~/mixins/publicRecipes.js";
+
 import ProfileView from "~/components/ProfileView.vue";
 import RecipesList from "~/components/Recipes/RecipesList";
 
@@ -38,18 +40,18 @@ export default {
   data() {
     return { systemMessage: "", key: 0, followed: null };
   },
-  mixins: [user],
+  mixins: [user, allUsers, publicRecipes],
   computed: {
     cookUserID() {
       return this.$route.params.userid;
     },
     userVisited() {
-      let users = this.$store.state.allUsers;
-      if (users) {
-        return users.find(user => {
-          return user[0] === this.cookUserID;
-        });
-      }
+      let users = this.allUsers;
+      return users.find(user => {
+        return user[0] === this.cookUserID;
+      });
+
+      return null;
     },
     breadcrumbs() {
       if (this.userVisited) {
@@ -61,9 +63,9 @@ export default {
       }
     },
     userVisitedsPublicRecipes() {
-      let publicRecipes = this.$store.state.publicRecipes;
+      let publicRecipes = this.publicRecipes;
       let userVisitedsPublicRecipes = [];
-      if (this.userVisited) {
+      if (this.userVisited && publicRecipes) {
         userVisitedsPublicRecipes = publicRecipes.filter(recipe => {
           return recipe[1].ownerID === this.userVisited[0];
         });
@@ -71,8 +73,8 @@ export default {
       return userVisitedsPublicRecipes;
     },
     isFollowingUser() {
-      if (this.followed !== null) return this.followed;
-      if (this.user && this.user.following) {
+      if (this.followed) return this.followed;
+      if (this.user && this.user.following && this.userVisited) {
         return (
           Object.values(this.user.following).indexOf(this.userVisited[0]) > -1
         );

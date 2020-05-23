@@ -2,15 +2,18 @@
   <div>
     <breadcrumbs class="margin-bottom--large" :routes="breadcrumbs" />
     <div class="tablet-width margin-top--xxlarge margin--auto">
-      <recipe-full-view
-        :recipe="recipe"
-        :recipeKey="recipeKey"
-        :isRecipeOwner="isRecipeOwner"
-      />
-      <comments
-        class="mobile-width margin--auto margin-top--xlarge"
-        :path="path"
-      />
+      <expand-transition :show="recipeLoaded">
+        <recipe-full-view
+          :recipe="recipe"
+          :recipeKey="recipeKey"
+          :isRecipeOwner="isRecipeOwner"
+        />
+
+        <comments
+          class="mobile-width margin--auto margin-top--xlarge"
+          :path="path"
+        />
+      </expand-transition>
     </div>
   </div>
 </template>
@@ -18,16 +21,20 @@
 <script>
 import RecipeFullView from "~/components/Recipes/RecipeFullView/RecipeFullView.vue";
 import Comments from "~/components/Comments/Comments.vue";
+import ExpandTransition from "~/components/Transitions/Expand.vue";
 
 import user from "~/mixins/user.js";
+import allUsers from "~/mixins/allUsers.js";
+import allRecipes from "~/mixins/allRecipes.js";
 
 export default {
   name: "recipe",
-  components: { RecipeFullView, Comments },
+  components: { RecipeFullView, Comments, ExpandTransition },
   data() {
     return {
       isRecipeOwner: false,
-      recipeOwnerUsername: null
+      recipeOwnerUsername: null,
+      recipeLoaded: false
     };
   },
   head() {
@@ -41,7 +48,7 @@ export default {
       ]
     };
   },
-  mixins: [user],
+  mixins: [user, allUsers, allRecipes],
   computed: {
     path() {
       return this.$route.path;
@@ -50,14 +57,8 @@ export default {
       return this.$route.params.recipeid;
     },
     recipe() {
-      let userRecipes = this.$store.state.recipes;
-      let sharedRecipes = this.$store.state.sharedRecipes;
-      let publicRecipes = this.$store.state.publicRecipes;
-      let allAvailableRecipes = userRecipes
-        .concat(sharedRecipes)
-        .concat(publicRecipes);
-
-      let currentRecipe = allAvailableRecipes.filter(recipe => {
+      let allRecipes = this.allRecipes;
+      let currentRecipe = allRecipes.filter(recipe => {
         let recipeCheck = recipe[0] === this.recipeKey;
         if (recipeCheck) {
           this.recipeOwnerID = recipe[1].ownerID;
@@ -65,10 +66,14 @@ export default {
         }
         return recipeCheck;
       });
-      return currentRecipe.length ? currentRecipe[0][1] : {};
+      if (currentRecipe.length) {
+        this.recipeLoaded = true;
+        return currentRecipe[0][1];
+      }
+      return {};
     },
     recipeOwner() {
-      let users = this.$store.state.allUsers;
+      let users = this.allUsers;
       if (users) {
         return users.find(user => {
           return user[0] === this.recipe.ownerID;

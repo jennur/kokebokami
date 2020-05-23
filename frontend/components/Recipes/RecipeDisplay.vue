@@ -41,12 +41,13 @@
 </template>
 
 <script>
-import { db } from "~/plugins/firebase.js";
-
 export default {
   name: "recipe-display",
-
   props: {
+    allUsers: {
+      type: Array,
+      default: () => []
+    },
     recipe: {
       type: Object,
       default: () => {}
@@ -60,14 +61,15 @@ export default {
       default: false
     }
   },
+
   computed: {
     recipeUrl() {
       return this.recipeID;
     },
     recipeOwner() {
-      let users = this.$store.state.allUsers;
+      let allUsers = this.allUsers;
       let recipeOwner = null;
-      users.forEach(user => {
+      this.allUsers.forEach(user => {
         if (this.recipe.ownerID === user[0]) {
           recipeOwner = user[1].displayName;
         }

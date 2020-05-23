@@ -1,7 +1,26 @@
+h1,
+h2,
+h3,
+h4 {
+  margin-top: 0px;
+}
+h1.article-heading {
+  margin-top: $spacingXXLarge;
+}
+h2.article-heading {
+  margin-top: $spacingXXLarge;
+}
+h3.article-heading {
+  margin-top: $spacingXLarge;
+}
+h4.article-heading {
+  margin-top: $spacingLarge;
+}
+
 h1 {
   font-family: $headingFont;
   font-size: $fontSizeXXLargeMobile;
-  margin-top: $spacingXXLarge;
+  //margin-top: $spacingXXLarge;
   @media screen and (min-width: $tabletWidth) {
     font-size: $fontSizeXXLarge;
   }
@@ -10,7 +29,7 @@ h1 {
 h2 {
   font-family: $headingFont;
   font-size: $fontSizeXLargeMobile;
-  margin-top: $spacingXXLarge;
+  // margin-top: $spacingXXLarge;
   @media screen and (min-width: $tabletWidth) {
     font-size: $fontSizeXLarge;
   }
@@ -19,7 +38,7 @@ h2 {
 h3 {
   font-family: $subHeadingFont;
   font-size: $fontSizeLargeMobile;
-  margin-top: $spacingXLarge;
+  //margin-top: $spacingXLarge;
   @media screen and (min-width: $tabletWidth) {
     font-size: $fontSizeLarge;
   }
@@ -27,7 +46,7 @@ h3 {
 
 h4 {
   font-size: $fontSizeMediumMobile;
-  margin-top: $spacingLarge;
+  //margin-top: $spacingLarge;
   @media screen and (min-width: $tabletWidth) {
     font-size: $fontSizeMedium;
   }

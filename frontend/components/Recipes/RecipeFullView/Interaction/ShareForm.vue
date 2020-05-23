@@ -22,7 +22,6 @@
   </div>
 </template>
 <script>
-import { db } from "~/plugins/firebase.js";
 import ExpandTransition from "~/components/Transitions/Expand.vue";
 export default {
   name: "share-form",
@@ -69,15 +68,12 @@ export default {
 
                     if (sharedWith.indexOf(userID) === -1) {
                       recipeRef.push(userID);
-                      realThis.systemMessage =
-                        "Successfully shared with " + username;
+                      realThis.systemMessage = `Successfully shared with ${username}`;
                     } else
-                      realThis.systemMessage =
-                        "This recipe is already shared with " + username;
+                      realThis.systemMessage = `This recipe is already shared with ${username}`;
                   } else {
                     recipeRef.push(userID);
-                    realThis.systemMessage =
-                      "Successfully shared with " + username;
+                    realThis.systemMessage = `Successfully shared with ${username}`;
                   }
                 });
               } else {

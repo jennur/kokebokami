@@ -1,34 +1,34 @@
 export default {
   data() {
     return {
-      publicRecipes,
-      publicRecipesError
+      userAuth: !!this.$fireAuth.currentUser,
+      publicRecipes: [],
+      errorMessage: ""
     };
   },
-  mounted() {
+  created() {
     let componentThis = this;
-    const publicRecipesRef = $fireDb.ref("recipes").orderByChild("public");
-    publicRecipesRef.once(
-      "value",
-      recipes => {
-        let publicRecipes = [];
-        recipes.forEach(recipe => {
-          if (recipe.exists()) {
-            if (recipe.val().public) {
-              publicRecipes.push([recipe.key, recipe.val()]);
-            }
+    if (this.userAuth) {
+      let publicRecipesRef = this.$fireDb.ref("recipes").orderByChild("public");
+      publicRecipesRef.once(
+        "value",
+        recipes => {
+          if (recipes.exists()) {
+            recipes = Object.entries(recipes.val());
+            componentThis.publicRecipes = recipes.filter(recipe => {
+              return recipe[1].public;
+            });
           }
-        });
-        componentThis.publicRecipes = publicRecipes;
-      },
-      error => {
-        console.log(
-          "Error: Something failed while trying to set public recipes:",
-          error
-        );
-        componentThis.publicRecipesError =
-          "Something went wrong while trying to load recipes. If the issue continues, please contact us.";
-      }
-    );
+        },
+        error => {
+          console.log(
+            "Error: Something failed while trying to set public recipes:",
+            error
+          );
+          componentThis.errorMessage =
+            "Something went wrong while trying to load recipes. If the issue continues, please contact us.";
+        }
+      );
+    }
   }
 };

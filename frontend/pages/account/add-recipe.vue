@@ -6,6 +6,7 @@
 </template>
 
 <script>
+import userRecipes from "~/mixins/userRecipes.js";
 import AddRecipeForm from "~/components/AddRecipeForm/AddRecipeForm.vue";
 
 export default {
@@ -23,10 +24,13 @@ export default {
   },
   computed: {
     recipe() {
-      let recipes = this.$store.state.recipes;
-      return recipes.find(recipe => {
-        return recipe.id === this.$route.params.recipeid;
-      });
+      let recipes = this.userRecipes;
+      return (
+        recipes &&
+        recipes.find(recipe => {
+          return recipe.id === this.$route.params.recipeid;
+        })
+      );
     }
   }
 };

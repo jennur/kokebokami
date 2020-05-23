@@ -1,30 +1,32 @@
+//Must be used in combination with user-mixin
 export default {
   data() {
     return {
-      userRecipes,
-      userRecipesError
+      userAuth: !!this.$fireAuth.currentUser,
+      userRecipes: [],
+      errorMessage: ""
     };
   },
-  mounted() {
+  created() {
     let componentThis = this;
-    const userRecipesRef = this.$fireDb.ref("recipes").orderByKey();
-    userRecipesRef.once(
-      "value",
-      recipes => {
-        let userRecipes = [];
-        recipes.forEach(recipe => {
-          if (recipe.val().ownerID === user.id)
-            userRecipes.push([recipe.key, recipe.val()]);
-        });
-        componentThis.userRecipes = userRecipes;
-      },
-      error => {
-        console.log(
-          "Error: Something failed when attempting to set recipes: " + error
-        );
-        componentThis.userRecipesError =
-          "Something went wrong while trying to load your recipes. If the issue continues, please contact us.";
-      }
-    );
+    if (this.userAuth) {
+      let userRecipesRef = this.$fireDb.ref("recipes").orderByKey();
+      userRecipesRef.once(
+        "value",
+        recipes => {
+          if (recipes.exists()) {
+            recipes = Object.entries(recipes.val());
+            componentThis.userRecipes = recipes.filter(recipe => {
+              return recipe[1].ownerID === componentThis.user.id;
+            });
+          }
+        },
+        error => {
+          console.log("Error: Failed setting recipes:", error);
+          componentThis.errorMessage =
+            "Something went wrong while trying to load your recipes. If the issue continues, please contact us.";
+        }
+      );
+    }
   }
 };

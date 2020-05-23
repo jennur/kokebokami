@@ -10,9 +10,7 @@
       <button
         class="button button--large button--transparent"
         @click="toggleLoginModal"
-      >
-        ➔ Sign in with username and password
-      </button>
+      >➔ Sign in with username and password</button>
 
       <kokebokami-login :open="loginModalOpen" @toggle="toggleLoginModal" />
     </div>
@@ -28,7 +26,6 @@ import FacebookLogin from "./FacebookLogin.vue";
 import KokebokamiLogin from "./KokebokamiLogin.vue";
 
 import user from "~/mixins/user.js";
-import { auth } from "~/plugins/firebase.js";
 
 export default {
   name: "login-container",

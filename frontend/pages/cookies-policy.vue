@@ -2,7 +2,7 @@
   <div>
     <breadcrumbs :routes="breadcrumbs" />
     <section class="mobile-width margin--auto margin-top--large">
-      <h1>Cookies Policy</h1>
+      <h1 class="article-heading">Cookies Policy</h1>
 
       <p>Last updated: October 23, 2019</p>
 
@@ -18,7 +18,7 @@
         choices regarding cookies and further information about cookies.
       </p>
 
-      <h2>What are cookies</h2>
+      <h2 class="article-heading">What are cookies</h2>
 
       <p>
         Cookies are small pieces of text sent to your web browser by a website
@@ -33,7 +33,7 @@
         while session cookies are deleted as soon as you close your web browser.
       </p>
 
-      <h2>How Kokebokami uses cookies</h2>
+      <h2 class="article-heading">How Kokebokami uses cookies</h2>
 
       <p>
         When you use and access the Service, we may place a number of cookies
@@ -87,7 +87,7 @@
         </li>
       </ul>
 
-      <h2>Third-party cookies</h2>
+      <h2 class="article-heading">Third-party cookies</h2>
 
       <p>
         In addition to our own cookies, we may also use various third-parties
@@ -95,7 +95,7 @@
         advertisements on and through the Service, and so on.
       </p>
 
-      <h2>What are your choices regarding cookies</h2>
+      <h2 class="article-heading">What are your choices regarding cookies</h2>
 
       <p>
         If you'd like to delete cookies or instruct your web browser to delete
@@ -153,7 +153,9 @@
         </li>
       </ul>
 
-      <h2>Where can you find more information about cookies</h2>
+      <h2 class="article-heading">
+        Where can you find more information about cookies
+      </h2>
 
       <p>
         You can learn more about cookies and the following third-party websites:

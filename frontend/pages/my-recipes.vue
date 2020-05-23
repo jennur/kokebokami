@@ -67,7 +67,7 @@ export default {
       filteredKind: ""
     };
   },
-  mixins: [user],
+  mixins: [user, userRecipes, sharedRecipes],
   props: {
     breadcrumbs: {
       type: Array,

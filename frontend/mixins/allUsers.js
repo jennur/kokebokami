@@ -1,25 +1,27 @@
 export default {
   data() {
     return {
-      allUsers,
-      allUsersError
+      userAuth: !!this.$fireAuth.currentUser,
+      allUsers: [],
+      errorMessage: ""
     };
   },
-  mounted() {
+  created() {
     let componentThis = this;
-    this.$fireDb.ref("users").once(
-      "value",
-      users => {
-        users.forEach(user => {
-          usersArray.push([user.key, user.val()]);
-        });
-        componentThis.allUsers = usersArray;
-      },
-      error => {
-        console.log("Error while loading allUsers:", error);
-        this.allUsersError =
-          "Unable to load users. If the issue continues, please contact us.";
-      }
-    );
+    if (this.userAuth) {
+      this.$fireDb.ref("users").once(
+        "value",
+        users => {
+          if (users.exists()) {
+            componentThis.allUsers = Object.entries(users.val());
+          }
+        },
+        error => {
+          console.log("Error while loading allUsers:", error);
+          this.errorMessage =
+            "Unable to load users. If the issue continues, please contact us.";
+        }
+      );
+    }
   }
 };

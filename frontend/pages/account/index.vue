@@ -210,11 +210,13 @@
 
 <script>
 import user from "~/mixins/user.js";
+import allUsers from "~/mixins/allUsers.js";
+import connectedUsers from "~/mixins/connectedUsers.js";
+
 import sharedRecipes from "~/mixins/sharedRecipes.js";
 import userRecipes from "~/mixins/userRecipes.js";
-import connectedUsers from "~/mixins/getConnectedUsers.js";
+
 import RecipesList from "~/components/Recipes/RecipesList.vue";
-//import { auth, db } from "~/plugins/firebase.js";
 
 export default {
   name: "account",
@@ -247,15 +249,7 @@ export default {
     this.biography = this.user.biography;
     this.photoURL = this.user.photoURL;
   },
-  mixins: [user, connectedUsers],
-  computed: {
-    /* recipes() {
-      return this.$store.state.recipes;
-    },
-    sharedRecipes() {
-      return this.$store.state.sharedRecipes;
-    } */
-  },
+  mixins: [user, allUsers, connectedUsers, userRecipes, sharedRecipes],
   methods: {
     updateUserDetailsInStore() {
       let userObj = {

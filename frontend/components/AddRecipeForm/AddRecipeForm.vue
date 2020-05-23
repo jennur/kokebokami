@@ -68,7 +68,7 @@
 
 <script>
 import user from "~/mixins/user.js";
-import { db } from "~/plugins/firebase.js";
+//import { db } from "~/plugins/firebase.js";
 import CategoryFilter from "~/components/CategoryFilter/CategoryFilter.vue";
 import DescriptionInput from "~/components/Input/DescriptionInput.vue";
 
@@ -156,13 +156,13 @@ export default {
         recipeRef
           .remove()
           .then(() => {
-            this.$store.dispatch("SET_USER_RECIPES", this.user);
+            //this.$store.dispatch("SET_USER_RECIPES", this.user);
             this.systemMessage = "Your recipe was deleted successfully!";
             this.deleted = true;
           })
           .catch(error => {
             this.systemMessage = error.message;
-            console.log("ERROR DELETING RECIPE::: " + error);
+            console.log("Error deleting recipe:", error);
           });
       }
     },
@@ -203,24 +203,24 @@ export default {
           .update(recipeObject)
           .then(() => {
             this.$emit("exitEditMode");
-            this.$store.dispatch("SET_USER_RECIPES", this.user);
+            //this.$store.dispatch("SET_USER_RECIPES", this.user);
           })
           .catch(error => {
             this.systemMessage = error.message;
-            console.log("ERROR SAVING RECIPE::: " + error);
+            console.log("Error saving recipe", error);
           });
       } else {
         const recipes = this.$fireDb.ref("recipes");
         const newRecipeKey = recipes.push(recipeObject).key;
 
         if (newRecipeKey !== null) {
-          this.$store.dispatch("SET_USER_RECIPES", this.user);
+          //this.$store.dispatch("SET_USER_RECIPES", this.user);
           this.systemMessage = "Your recipe was saved successfully!";
           this.saved = true;
           this.recipeKey = newRecipeKey;
         } else
           this.systemMessage =
-            "Unable to save recipe. Try again later or contact support if issue continues.";
+            "Unable to save recipe. Please try again later or contact us if the issue continues.";
       }
     }
   }

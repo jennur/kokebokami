@@ -19,7 +19,7 @@
     </div>
     <recipes-filter
       class="margin-bottom--xlarge margin--auto"
-      :recipes="recipes"
+      :recipes="publicRecipes"
       @filter="setVisibleRecipes"
     />
     <recipes-list :recipes="visibleRecipes" :publicRecipe="true" />
@@ -29,6 +29,7 @@
 
 <script>
 import user from "~/mixins/user.js";
+import publicRecipes from "~/mixins/publicRecipes.js";
 import InitialInfoSection from "~/components/InitialInfoSection/InititalInfoSection.vue";
 import SignUpSection from "~/components/SignUp/SignUpSection.vue";
 
@@ -53,15 +54,12 @@ export default {
     };
   },
   computed: {
-    recipes() {
-      return this.$store.state.publicRecipes;
-    },
     visibleRecipes() {
-      if (!this.filtered) return this.recipes;
+      if (!this.filtered) return this.publicRecipes;
       if (this.filtered) return this.filteredRecipes;
     }
   },
-  mixins: [user],
+  mixins: [user, publicRecipes],
   methods: {
     setVisibleRecipes(filteredRecipesObj) {
       this.filteredRecipes = filteredRecipesObj.recipes;

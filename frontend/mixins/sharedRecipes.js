@@ -1,41 +1,39 @@
 export default {
   data() {
     return {
-      sharedRecipes,
-      sharedRecipesError
+      userAuth: !!this.$fireAuth.currentUser,
+      sharedRecipes: [],
+      errorMessage: ""
     };
   },
-  mounted() {
+  created() {
     let componentThis = this;
-    const sharedRecipesRef = $fireDb.ref("recipes").orderByChild("sharedWith");
-    sharedRecipesRef.once(
-      "value",
-      recipes => {
-        let sharedRecipesArray = [];
-        recipes.forEach(recipe => {
-          if (recipe.exists()) {
-            const shares = recipe.val().sharedWith
-              ? Object.values(recipe.val().sharedWith)
-              : [];
-            if (shares.length) {
-              shares.forEach(sharedWithUser => {
-                if (sharedWithUser === user.id) {
-                  sharedRecipesArray.push([recipe.key, recipe.val()]);
-                }
-              });
-            }
+    if (this.userAuth) {
+      let sharedRecipesRef = this.$fireDb
+        .ref("recipes")
+        .orderByChild("sharedWith");
+      sharedRecipesRef.once(
+        "value",
+        recipes => {
+          if (recipes.exists()) {
+            recipes = Object.entries(recipes.val());
+            componentThis.sharedRecipes = recipes.filter(recipe => {
+              let shares = recipe[1].sharedWith
+                ? Object.values(recipe[1].sharedWith)
+                : [];
+              if (shares.length) {
+                return shares.indexOf(componentThis.user.id) > -1;
+              }
+              return false;
+            });
           }
-        });
-        componentThis.sharedRecipes = sharedRecipesArray;
-      },
-      error => {
-        console.log(
-          "Error: Something failed while trying to set shared recipes:",
-          error
-        );
-        componentThis.sharedRecipesError =
-          "Something went wrong while trying to load your shared recipes. If the issue continues, please contact us.";
-      }
-    );
+        },
+        error => {
+          console.log("Error: Failed to set shared recipes:", error);
+          componentThis.errorMessage =
+            "Something went wrong while trying to load your shared recipes. If the issue continues, please contact us.";
+        }
+      );
+    }
   }
 };
