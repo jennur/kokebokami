@@ -1,28 +1,30 @@
 <template>
-  <div v-if="!user">
-    <initial-info-section />
+  <div>
+    <div v-if="!user">
+      <initial-info-section />
 
-    <sign-up-section
-      class="container--blue"
-      :darkBg="true"
-      headline="Sign up to start building your own cookbook"
-    />
-  </div>
-
-  <div
-    class="tablet-width padding-horizontal--large margin-top--xxlarge margin--auto"
-    v-else
-  >
-    <div class="flex-center-container flex-column">
-      <h2>Discover public recipes</h2>
-      <nuxt-link to="/my-recipes/">My cookbook ➔</nuxt-link>
+      <sign-up-section
+        class="container--blue"
+        :darkBg="true"
+        headline="Sign up to start building your own cookbook"
+      />
     </div>
-    <recipes-filter
-      class="margin-bottom--xlarge margin--auto"
-      :recipes="publicRecipes"
-      @filter="setVisibleRecipes"
-    />
-    <recipes-list :recipes="visibleRecipes" :publicRecipe="true" />
+
+    <div
+      class="tablet-width padding-horizontal--large margin-top--xxlarge margin--auto"
+      v-else
+    >
+      <div class="flex-center-container flex-column">
+        <h2>Discover public recipes</h2>
+        <nuxt-link to="/my-recipes/">My cookbook ➔</nuxt-link>
+      </div>
+      <recipes-filter
+        class="margin-bottom--xlarge margin--auto"
+        :recipes="publicRecipes"
+        @filter="setVisibleRecipes"
+      />
+      <recipes-list :recipes="visibleRecipes" :publicRecipe="true" />
+    </div>
   </div>
 </template>
 

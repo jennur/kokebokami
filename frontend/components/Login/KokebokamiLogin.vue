@@ -57,7 +57,7 @@ export default {
     kokebokamiSignIn() {
       const componentThis = this;
       try {
-        this.$router.push("/login?loading=true");
+        this.$router.push("/login?loading");
         this.$fireAuth.signInWithEmailAndPassword(this.email, this.password);
         console.log("Logging in with firebase");
         /* .then(response => {

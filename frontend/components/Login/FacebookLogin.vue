@@ -14,7 +14,7 @@ export default {
   name: "facebook-login",
   methods: {
     facebookSignIn() {
-      this.$router.push("/login?loading=true");
+      this.$router.push("/login?loading");
       const FacebookProvider = new this.$fireAuthObj.FacebookAuthProvider();
       this.$fireAuth.signInWithRedirect(FacebookProvider);
     }
