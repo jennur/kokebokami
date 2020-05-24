@@ -10,10 +10,16 @@
       src="//kokebokami.disqus.com/count.js"
       async
     ></script>
+    <scroll-button />
   </div>
 </template>
 <script>
+import ScrollButton from "~/components/ScrollButton.vue";
+
 export default {
-  name: "fullwidth"
+  name: "fullwidth",
+  components: {
+    ScrollButton
+  }
 };
 </script>

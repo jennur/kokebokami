@@ -5,10 +5,16 @@
       <nuxt />
     </main>
     <footer-component />
+    <scroll-button />
   </div>
 </template>
 <script>
+import ScrollButton from "~/components/ScrollButton.vue";
+
 export default {
-  name: "default-layout"
+  name: "default-layout",
+  components: {
+    ScrollButton
+  }
 };
 </script>
