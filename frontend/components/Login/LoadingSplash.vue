@@ -1,14 +1,14 @@
 <template>
-  <div class="loading-splash">
+  <section class="loading-splash">
     <div class="container container--center mobile-width" v-if="loginError">
-      <p class="system-message">{{ loginError }}</p>
+      <span class="system-message">{{ loginError }}</span>
       <nuxt-link to="/login/">Try again</nuxt-link>
     </div>
     <div v-else>
       <loadingBook />
       <h2>Logging you in ...</h2>
     </div>
-  </div>
+  </section>
 </template>
 
 <script>
