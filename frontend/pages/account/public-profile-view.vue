@@ -24,7 +24,7 @@ export default {
       type: Array,
       default: () => [
         { name: "Home", link: "/" },
-        { name: "My account", link: "/account" },
+        { name: "My account", link: "/account/" },
         { name: "My public profile" }
       ]
     }

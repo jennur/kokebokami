@@ -17,7 +17,7 @@ export default {
       type: Array,
       default: () => [
         { name: "Home", link: "/" },
-        { name: "My recipes", link: "/my-recipes" },
+        { name: "My recipes", link: "/my-recipes/" },
         { name: "Add recipe" }
       ]
     }

@@ -1,23 +1,51 @@
 <template>
   <div>
     <fieldset class="margin-top--xxlarge" v-if="!saved">
-      <div v-if="!deleted" class="flex-row flex-row--align-center flex-row--justify-center">
-        <div class="margin-top--xlarge margin-right--xlarge margin-bottom--xlarge">
+      <div
+        v-if="!deleted"
+        class="flex-row flex-row--align-center flex-row--justify-center"
+      >
+        <div
+          class="margin-top--xlarge margin-right--xlarge margin-bottom--xlarge"
+        >
           <button
             v-if="editMode"
-            @click="() => {this.$emit('deleteRecipe')}"
+            @click="
+              () => {
+                this.$emit('deleteRecipe');
+              }
+            "
             class="button button--small button--red-border"
-          >Delete recipe</button>
+          >
+            Delete recipe
+          </button>
         </div>
 
-        <button @click="() => {this.$emit('save')}" class="button button--small">Save recipe</button>
         <button
-          @click="() => {this.$emit('cancel')}"
+          @click="
+            () => {
+              this.$emit('save');
+            }
+          "
+          class="button button--small"
+        >
+          Save recipe
+        </button>
+        <button
+          @click="
+            () => {
+              this.$emit('cancel');
+            }
+          "
           class="button button--small button--cancel margin--large"
-        >✕ Cancel</button>
+        >
+          ✕ Cancel
+        </button>
       </div>
       <div class="system-message">{{ systemMessage }}</div>
-      <nuxt-link v-if="deleted" to="/my-recipes">Go back to your cookbook</nuxt-link>
+      <nuxt-link v-if="deleted" to="/my-recipes/"
+        >Go back to your cookbook</nuxt-link
+      >
     </fieldset>
 
     <div
@@ -25,7 +53,9 @@
       v-else-if="saved && recipeKey"
     >
       <div class="system-message">{{ systemMessage }}</div>
-      <nuxt-link v-if="recipeKey !== ''" :to="'/recipes/' + recipeKey">Look at your new recipe ➔</nuxt-link>
+      <nuxt-link v-if="recipeKey !== ''" :to="'/recipes/' + recipeKey"
+        >Look at your new recipe ➔</nuxt-link
+      >
     </div>
   </div>
 </template>

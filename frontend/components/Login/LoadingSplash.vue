@@ -2,7 +2,7 @@
   <div class="loading-splash">
     <div class="container container--center mobile-width" v-if="loginError">
       <p class="system-message">{{ loginError }}</p>
-      <nuxt-link to="/login">Try again</nuxt-link>
+      <nuxt-link to="/login/">Try again</nuxt-link>
     </div>
     <div v-else>
       <loadingBook />

@@ -4,11 +4,11 @@
     <h1 class="margin-bottom--large">{{ headlineText }}</h1>
     <div class="flex-column">
       <nuxt-link
-        to="/account/add-recipe"
+        to="/account/add-recipe/"
         class="button button--large button--round margin--auto margin-vertical--xlarge"
         >Add new recipe</nuxt-link
       >
-      <nuxt-link to="/account/add-recipe-from-url"
+      <nuxt-link to="/account/add-recipe-from-url/"
         >Add recipe from url ➔</nuxt-link
       >
     </div>

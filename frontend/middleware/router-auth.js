@@ -11,7 +11,7 @@ export default function(context) {
         !user.emailVerified &&
         user.providerData[0].providerId === "password"
       ) {
-        if (route.name !== "verify-email") redirect("/verify-email");
+        if (route.name !== "verify-email") redirect("/verify-email/");
         console.log("Redirecting to verify email");
       }
       unsubscribe();
@@ -20,7 +20,7 @@ export default function(context) {
         console.log(
           "Redirecting to login, unauthenticated user on admin route"
         );
-        redirect("/login");
+        redirect("/login/");
       }
     }
   });
@@ -47,6 +47,6 @@ function performRedirect(route, redirect) {
     route.name == "verify-email"
   ) {
     console.log("Redirecting to cookbook");
-    redirect("/my-recipes");
+    redirect("/my-recipes/");
   }
 }

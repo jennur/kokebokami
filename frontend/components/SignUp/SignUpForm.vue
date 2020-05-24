@@ -46,9 +46,11 @@
         />
         <span class="padding-horizontal--small">
           I agree to the
-          <nuxt-link to="/terms-and-conditions">Terms and Conditions</nuxt-link>
+          <nuxt-link to="/terms-and-conditions/"
+            >Terms and Conditions</nuxt-link
+          >
           {{ " " }}and
-          <nuxt-link to="/privacy-policy">Privacy Policy</nuxt-link>
+          <nuxt-link to="/privacy-policy/">Privacy Policy</nuxt-link>
         </span>
       </span>
       <span class="system-message margin-top--small">

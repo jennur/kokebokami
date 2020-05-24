@@ -5,7 +5,7 @@
       website, you consent to cookies.
     </p>
     <div class="flex-row-container">
-      <nuxt-link to="/cookies-policy">Learn more</nuxt-link>
+      <nuxt-link to="/cookies-policy/">Learn more</nuxt-link>
       <button
         class="button button--green-border button--small margin-left--large"
         @click="

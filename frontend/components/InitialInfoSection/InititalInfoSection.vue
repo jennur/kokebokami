@@ -17,7 +17,7 @@
           only.
         </p>
         <nuxt-link
-          to="/sign-up"
+          to="/sign-up/"
           class="button button--large padding-horizontal--xlarge margin-top--large"
           >Get started ➔</nuxt-link
         >

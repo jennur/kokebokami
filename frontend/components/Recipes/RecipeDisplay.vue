@@ -1,6 +1,6 @@
 <template>
   <nuxt-link
-    :to="'/recipes/' + recipeUrl"
+    :to="`/recipes/${recipeUrl}/`"
     class="recipe-display padding--xlarge"
   >
     <div>

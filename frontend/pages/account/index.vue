@@ -5,7 +5,7 @@
       <h1 class="margin-top--xxlarge margin-bottom--large">
         My account details
       </h1>
-      <nuxt-link to="/account/public-profile-view">
+      <nuxt-link to="/account/public-profile-view/">
         See my public profile
         <right-arrow class="icon icon--blue" />
       </nuxt-link>
@@ -385,7 +385,7 @@ export default {
                 componentThis.systemMessage =
                   "Your account was deleted successfully.";
                 componentThis.$store.dispatch("REMOVE_USER");
-                componentThis.$router.push("/account/goodbye");
+                componentThis.$router.push("/account/goodbye/");
               })
               .catch(function(error) {
                 componentThis.systemMessage = error.message;

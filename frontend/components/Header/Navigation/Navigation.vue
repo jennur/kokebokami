@@ -4,7 +4,9 @@
     class="navigation-menu padding-horizontal--large margin--auto tablet-width"
   >
     <h1 class="navigation-menu__logo">
-      <nuxt-link class="navigation-menu__logo-link" to="/">Kokebokami</nuxt-link>
+      <nuxt-link class="navigation-menu__logo-link" to="/"
+        >Kokebokami</nuxt-link
+      >
     </h1>
     <burger-icon @click.native="toggleMenu" :open="open" />
     <div
@@ -29,7 +31,8 @@
                 open = false;
               }
             "
-          >{{ menuItem.name }}</nuxt-link>
+            >{{ menuItem.name }}</nuxt-link
+          >
         </li>
         <li v-if="user">
           <button class="logout-button" @click="logOut">Log out</button>
@@ -58,17 +61,17 @@ export default {
       if (this.user !== null && this.user !== undefined) {
         menuItems = [
           {
-            link: "/account",
+            link: "/account/",
             name: "My account",
             img: this.user.photoURL
           },
-          { link: "/my-recipes", name: "My recipes" },
-          { link: "/cooks", name: "Discover cooks" }
+          { link: "/my-recipes/", name: "My recipes" },
+          { link: "/cooks/", name: "Discover cooks" }
         ];
       } else {
         menuItems = [
-          { link: "/sign-up", name: "Sign up" },
-          { link: "/login", name: "Log in" }
+          { link: "/sign-up/", name: "Sign up" },
+          { link: "/login/", name: "Log in" }
         ];
       }
       return menuItems;

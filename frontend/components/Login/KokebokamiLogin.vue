@@ -32,7 +32,7 @@
         </div>
         <div class="kokebokami-login-modal-signup margin-top--large">
           Don't already have an account?
-          <nuxt-link to="/sign-up">Sign up</nuxt-link>
+          <nuxt-link to="/sign-up/">Sign up</nuxt-link>
         </div>
       </form>
     </div>
@@ -57,7 +57,7 @@ export default {
     kokebokamiSignIn() {
       const componentThis = this;
       try {
-        this.$router.push("/login?loading");
+        this.$router.push("/login?loading=true");
         this.$fireAuth.signInWithEmailAndPassword(this.email, this.password);
         console.log("Logging in with firebase");
         /* .then(response => {

@@ -15,7 +15,7 @@
   >
     <div class="flex-center-container flex-column">
       <h2>Discover public recipes</h2>
-      <nuxt-link to="/my-recipes">My cookbook ➔</nuxt-link>
+      <nuxt-link to="/my-recipes/">My cookbook ➔</nuxt-link>
     </div>
     <recipes-filter
       class="margin-bottom--xlarge margin--auto"

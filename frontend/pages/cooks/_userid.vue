@@ -57,7 +57,7 @@ export default {
       if (this.userVisited) {
         return [
           { name: "Home", link: "/" },
-          { name: "Cooks", link: "/cooks" },
+          { name: "Cooks", link: "/cooks/" },
           { name: `${this.userVisited[1].displayName}` }
         ];
       }

@@ -126,7 +126,7 @@ export default {
         ? "Are you sure you want to discard the changes?"
         : "Are you sure you want to discard your new recipe?";
       if (!this.editMode && confirm(confirmText)) {
-        this.$router.push("/my-recipes");
+        this.$router.push("/my-recipes/");
       } else if (this.editMode && confirm(confirmText)) {
         this.$emit("exitEditMode");
       }

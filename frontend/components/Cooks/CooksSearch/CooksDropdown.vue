@@ -1,7 +1,7 @@
 <template>
   <ul class="cooks__result-list margin-top--xlarge padding-left--xlarge">
     <li v-for="cook in cooks" :key="cook[0]">
-      <nuxt-link :to="'cooks/' + cook[0]" class="cooks__user-link">
+      <nuxt-link :to="`/cooks/${cook[0]}/`" class="cooks__user-link">
         <img
           v-if="cook[1].photoURL"
           class="cooks__user-photo"

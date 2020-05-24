@@ -86,10 +86,10 @@ export default {
       if (this.recipe && !this.isRecipeOwner) {
         return [
           { name: "Home", link: "/" },
-          { name: "Cooks", link: "/cooks" },
+          { name: "Cooks", link: "/cooks/" },
           {
             name: recipeOwnerUsername,
-            link: `/cooks/${this.recipe.ownerID}`
+            link: `/cooks/${this.recipe.ownerID}/`
           },
           { name: this.recipe.title }
         ];
@@ -98,7 +98,7 @@ export default {
           { name: "Home", link: "/" },
           {
             name: "My recipes",
-            link: "/my-recipes"
+            link: "/my-recipes/"
           },
           { name: this.recipe.title }
         ];

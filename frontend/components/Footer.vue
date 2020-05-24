@@ -21,13 +21,13 @@
       </ul>
       <ul class="footer__nav margin-horizontal--large">
         <li>
-          <nuxt-link to="/about">About</nuxt-link>
+          <nuxt-link to="/about/">About</nuxt-link>
         </li>
         <li>
-          <nuxt-link to="/privacy-policy">Privacy policy</nuxt-link>
+          <nuxt-link to="/privacy-policy/">Privacy policy</nuxt-link>
         </li>
         <li>
-          <nuxt-link to="/cookies-policy">Cookies policy</nuxt-link>
+          <nuxt-link to="/cookies-policy/">Cookies policy</nuxt-link>
         </li>
       </ul>
     </div>
