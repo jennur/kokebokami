@@ -7,14 +7,25 @@ export default {
     fallback: true,
     routes() {
       return axios
-        .get(
-          `https://${process.env.PROJECT_ID}.firebaseio.com/recipes.json?auth=${process.env.DATABASE_SECRET}`
+        .all([
+          axios.get(
+            `https://${process.env.PROJECT_ID}.firebaseio.com/recipes.json?auth=${process.env.DATABASE_SECRET}`
+          ),
+          axios.get(
+            `https://${process.env.PROJECT_ID}.firebaseio.com/users.json?auth=${process.env.DATABASE_SECRET}`
+          )
+        ])
+        .then(
+          axios.spread((recipes, users) => {
+            recipes = Object.keys(recipes.data).map(key => {
+              return `/recipes/${key}`;
+            });
+            users = Object.keys(users.data).map(key => {
+              return `/cooks/${key}`;
+            });
+            return recipes.concat(users);
+          })
         )
-        .then(res => {
-          return Object.keys(res.data).map(key => {
-            return `/recipes/${key}`;
-          });
-        })
         .catch(error => console.log("Error generating routes:", error));
     }
   },
