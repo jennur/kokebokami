@@ -9,7 +9,6 @@
       :recipeID="recipe[0]"
       :recipe="recipe[1]"
       :publicRecipe="publicRecipe"
-      :allUsers="allUsers"
     />
     <div v-if="!recipesLength">
       <p class="margin--none">
@@ -20,7 +19,6 @@
 </template>
 
 <script>
-import allUsers from "~/mixins/allUsers.js";
 import RecipeDisplay from "./RecipeDisplay.vue";
 
 export default {
@@ -46,7 +44,6 @@ export default {
       default: false
     }
   },
-  mixins: [allUsers],
   computed: {
     recipesLength() {
       return this.recipes ? this.recipes.length : 0;

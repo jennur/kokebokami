@@ -1,25 +1,29 @@
 export default function(context) {
   let { redirect, route, app } = context;
-  if (app.$fireAuth.currentUser) {
-    let user = app.$fireAuth.currentUser;
-    if (
-      user.emailVerified ||
-      user.providerData[0].providerId === "facebook.com"
-    ) {
-      performRedirect(route, redirect);
-    } else if (
-      !user.emailVerified &&
-      user.providerData[0].providerId === "password"
-    ) {
-      redirect("/verify-email");
-      console.log("Redirecting to verify email");
+  let unsubscribe = app.$fireAuth.onAuthStateChanged(user => {
+    if (user) {
+      if (
+        user.emailVerified ||
+        user.providerData[0].providerId === "facebook.com"
+      ) {
+        performRedirect(route, redirect);
+      } else if (
+        !user.emailVerified &&
+        user.providerData[0].providerId === "password"
+      ) {
+        if (route.name !== "verify-email") redirect("/verify-email");
+        console.log("Redirecting to verify email");
+      }
+      unsubscribe();
+    } else {
+      if (onAdminRoute(route)) {
+        console.log(
+          "Redirecting to login, unauthenticated user on admin route"
+        );
+        redirect("/login");
+      }
     }
-  } else {
-    if (onAdminRoute(route)) {
-      console.log("Redirecting to login, unauthenticated user on admin route");
-      redirect("/login");
-    }
-  }
+  });
 }
 
 function onAdminRoute(route) {

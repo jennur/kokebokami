@@ -12,6 +12,7 @@
 <script>
 import user from "~/mixins/user.js";
 import publicRecipes from "~/mixins/publicRecipes.js";
+
 import ProfileView from "~/components/ProfileView.vue";
 import RecipesList from "~/components/Recipes/RecipesList";
 

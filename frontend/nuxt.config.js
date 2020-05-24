@@ -39,7 +39,7 @@ export default {
 
   // Global CSS
   css: ["~/assets/scss/main.scss"],
-  plugins: ["~/plugins/globalComponents.js"],
+  plugins: ["~/plugins/globalComponents.js", "~/plugins/router-auth.client.js"],
 
   router: {
     middleware: "router-auth",

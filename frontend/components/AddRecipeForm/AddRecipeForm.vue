@@ -187,7 +187,7 @@ export default {
         recipeRef
           .update(recipeObject)
           .then(() => {
-            this.$emit("exitEditMode");
+            this.$emit("update");
           })
           .catch(error => {
             this.systemMessage = error.message;

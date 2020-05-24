@@ -73,80 +73,83 @@ export default {
       return userVisitedsPublicRecipes;
     },
     isFollowingUser() {
-      if (this.followed) return this.followed;
-      if (this.user && this.user.following && this.userVisited) {
-        return (
-          Object.values(this.user.following).indexOf(this.userVisited[0]) > -1
-        );
+      if (this.followed !== null) return this.followed;
+      else {
+        if (this.user && this.user.following && this.userVisited) {
+          return (
+            Object.values(this.user.following).indexOf(this.userVisited[0]) > -1
+          );
+        }
       }
     }
   },
   methods: {
     followUser() {
-      const realThis = this;
-      const currentUserRef = this.$fireDb.ref(
-        "users/" + this.user.id + "/following"
-      );
-      currentUserRef
-        .once("value", async snapshot => {
+      let componentThis = this;
+      try {
+        let currentUserRef = this.$fireDb.ref(
+          "users/" + this.user.id + "/following"
+        );
+        currentUserRef.once("value", async snapshot => {
           let followingAlready = false;
-
-          if (await snapshot.exists()) {
-            await snapshot.forEach(value => {
-              if (value.val() === realThis.userVisited[0]) {
+          if (snapshot.exists()) {
+            snapshot.forEach(value => {
+              if (value.val() === componentThis.userVisited[0]) {
                 followingAlready = true;
                 return;
               }
             });
 
             if (followingAlready) {
-              realThis.systemMessage =
+              componentThis.systemMessage =
                 "You're already following " +
-                realThis.userVisited[1].displayName;
+                componentThis.userVisited[1].displayName;
             }
           }
           if (!followingAlready) {
             currentUserRef
-              .push(realThis.userVisited[0])
+              .push(componentThis.userVisited[0])
               .then(() => {
-                realThis.followed = true;
+                componentThis.followed = true;
+                componentThis.$store.dispatch("SET_USER");
               })
               .catch(error => {
                 console.log(error);
-                realThis.systemMessage = error.message;
+                componentThis.systemMessage = error.message;
               });
           }
-        })
-        .catch(error => {
-          console.log(error);
         });
+      } catch (error) {
+        console.log("Error while trying to follow user:", error);
+      }
     },
     unfollowUser() {
-      const realThis = this;
-
-      const userRef = this.$fireDb.ref("users/" + this.user.id + "/following");
-      userRef
-        .once("value", snapshot => {
+      let componentThis = this;
+      try {
+        let userRef = this.$fireDb.ref("users/" + this.user.id + "/following");
+        userRef.once("value", snapshot => {
           if (snapshot.exists()) {
             snapshot.forEach(value => {
-              if (value.val() === realThis.userVisited[0]) {
-                userRef
-                  .child(value.key)
-                  .remove()
-                  .then(() => {
-                    realThis.followed = false;
-                  })
-                  .catch(error => console.log(error));
+              if (value.val() === componentThis.userVisited[0]) {
+                try {
+                  userRef
+                    .child(value.key)
+                    .remove()
+                    .then(() => {
+                      componentThis.followed = false;
+                      componentThis.$store.dispatch("SET_USER");
+                    });
+                } catch (errorr) {
+                  console.log(error);
+                }
                 return;
               }
             });
-          } else {
-            console.log("Error: Snapshot does not exist in unfollowUser()");
           }
-        })
-        .catch(error => {
-          console.log("Error: Something went wrong in userRef()::", error);
         });
+      } catch (error) {
+        console.log("Error while trying to unfollow user:", error);
+      }
     }
   }
 };

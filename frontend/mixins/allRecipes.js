@@ -6,23 +6,24 @@ export default {
       errorMessage: ""
     };
   },
-  beforeMount() {
-    let componentThis = this;
-    if (this.userAuth) {
-      let allRecipesRef = this.$fireDb.ref("recipes").orderByKey();
-      allRecipesRef.once(
-        "value",
-        recipes => {
-          if (recipes.exists()) {
-            componentThis.allRecipes = Object.entries(recipes.val());
-          }
-        },
-        error => {
+  methods: {
+    getAllRecipes() {
+      let componentThis = this;
+      if (this.userAuth) {
+        try {
+          let allRecipesRef = this.$fireDb.ref("recipes").orderByKey();
+          allRecipesRef.once("value", recipes => {
+            if (recipes.exists()) {
+              componentThis.allRecipes = Object.entries(recipes.val());
+            }
+          });
+        } catch (error) {
           console.log("Error: Failed setting recipes:", error);
-          componentThis.errorMessage =
-            "Something went wrong while trying to load the recipes. If the issue continues, please contact us.";
         }
-      );
+      }
     }
+  },
+  mounted() {
+    this.getAllRecipes();
   }
 };

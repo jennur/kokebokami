@@ -8,14 +8,7 @@
   </div>
 </template>
 <script>
-import CookieConsent from "~/components/CookieConsent.vue";
-import cookieConsentLogic from "../mixins/cookieConsent.js";
-
 export default {
-  name: "default-layout",
-  components: {
-    CookieConsent
-  },
-  mixins: [cookieConsentLogic]
+  name: "default-layout"
 };
 </script>

@@ -7,6 +7,7 @@
           :recipe="recipe"
           :recipeKey="recipeKey"
           :isRecipeOwner="isRecipeOwner"
+          @update="handleUpdate"
         />
 
         <comments
@@ -19,13 +20,13 @@
 </template>
 
 <script>
-import RecipeFullView from "~/components/Recipes/RecipeFullView/RecipeFullView.vue";
-import Comments from "~/components/Comments/Comments.vue";
-import ExpandTransition from "~/components/Transitions/Expand.vue";
-
 import user from "~/mixins/user.js";
 import allUsers from "~/mixins/allUsers.js";
 import allRecipes from "~/mixins/allRecipes.js";
+
+import RecipeFullView from "~/components/Recipes/RecipeFullView/RecipeFullView.vue";
+import Comments from "~/components/Comments/Comments.vue";
+import ExpandTransition from "~/components/Transitions/Expand.vue";
 
 export default {
   name: "recipe",
@@ -59,14 +60,10 @@ export default {
     recipe() {
       let allRecipes = this.allRecipes;
       let currentRecipe = allRecipes.filter(recipe => {
-        let recipeCheck = recipe[0] === this.recipeKey;
-        if (recipeCheck) {
-          this.recipeOwnerID = recipe[1].ownerID;
-          this.isRecipeOwner = recipe[1].ownerID === this.user.id;
-        }
-        return recipeCheck;
+        return recipe[0] === this.recipeKey;
       });
       if (currentRecipe.length) {
+        this.isRecipeOwner = currentRecipe[0][1].ownerID === this.user.id;
         this.recipeLoaded = true;
         return currentRecipe[0][1];
       }
@@ -74,11 +71,12 @@ export default {
     },
     recipeOwner() {
       let users = this.allUsers;
-      if (users) {
-        return users.find(user => {
+      return (
+        users &&
+        users.find(user => {
           return user[0] === this.recipe.ownerID;
-        });
-      }
+        })
+      );
     },
     breadcrumbs() {
       let recipeOwnerUsername = this.recipeOwner
@@ -105,6 +103,11 @@ export default {
           { name: this.recipe.title }
         ];
       }
+    }
+  },
+  methods: {
+    handleUpdate() {
+      this.getAllRecipes();
     }
   }
 };

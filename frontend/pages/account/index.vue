@@ -212,7 +212,6 @@
 import user from "~/mixins/user.js";
 import allUsers from "~/mixins/allUsers.js";
 import connectedUsers from "~/mixins/connectedUsers.js";
-
 import sharedRecipes from "~/mixins/sharedRecipes.js";
 import userRecipes from "~/mixins/userRecipes.js";
 
@@ -274,15 +273,15 @@ export default {
       this.editBiography = !this.editBiography;
     },
     updateProfileImg() {
-      let realThis = this;
+      let componentThis = this;
       this.$fireDb
         .ref("/users/" + this.user.id)
         .update({
           photoURL: ""
         })
         .then(() => {
-          realThis.updateUserDetailsInStore();
-          realThis.toggleEditProfileImg();
+          componentThis.updateUserDetailsInStore();
+          componentThis.toggleEditProfileImg();
         })
         .catch(e => {
           this.profileImgSystemMessage = e.message;
@@ -290,15 +289,15 @@ export default {
         });
     },
     updateUsername() {
-      let realThis = this;
+      let componentThis = this;
       this.$fireDb
         .ref("/users/" + this.user.id)
         .update({
           displayName: this.username
         })
         .then(() => {
-          realThis.updateUserDetailsInStore();
-          realThis.toggleEditUsername();
+          componentThis.updateUserDetailsInStore();
+          componentThis.toggleEditUsername();
         })
         .catch(e => {
           this.usernameSystemMessage = e.message;
@@ -306,15 +305,15 @@ export default {
         });
     },
     updateEmail() {
-      let realThis = this;
+      let componentThis = this;
       this.$fireDb
         .ref("/users/" + this.user.id)
         .update({
           email: this.email
         })
         .then(() => {
-          realThis.updateUserDetailsInStore();
-          realThis.toggleEditEmail();
+          componentThis.updateUserDetailsInStore();
+          componentThis.toggleEditEmail();
         })
         .catch(e => {
           this.emailSystemMessage = e.message;
@@ -323,15 +322,15 @@ export default {
     },
 
     updateBiography() {
-      let realThis = this;
+      let componentThis = this;
       this.$fireDb
         .ref("/users/" + this.user.id)
         .update({
           biography: this.biography
         })
         .then(() => {
-          realThis.updateUserDetailsInStore();
-          realThis.toggleEditBiography();
+          componentThis.updateUserDetailsInStore();
+          componentThis.toggleEditBiography();
         })
         .catch(e => {
           this.biographySystemMessage = e.message;
@@ -341,7 +340,7 @@ export default {
     deleteAccount() {
       let user = this.$fireAuth.currentUser;
       let userUID = this.user.id;
-      const realThis = this;
+      const componentThis = this;
       if (
         confirm(
           `Are you sure you want to delete your account and all your recipes?
@@ -376,25 +375,25 @@ export default {
               })
               .catch(function(error) {
                 console.log("Error: User remove failed:: " + error);
-                realThis.systemMessage = error.message;
+                componentThis.systemMessage = error.message;
               });
           })
           .then(() => {
             user
               .delete()
               .then(() => {
-                realThis.systemMessage =
+                componentThis.systemMessage =
                   "Your account was deleted successfully.";
-                realThis.$store.dispatch("REMOVE_USER");
-                realThis.$router.push("/account/goodbye");
+                componentThis.$store.dispatch("REMOVE_USER");
+                componentThis.$router.push("/account/goodbye");
               })
               .catch(function(error) {
-                realThis.systemMessage = error.message;
+                componentThis.systemMessage = error.message;
                 console.log("Error: User delete failed::", error);
               });
           })
           .catch(function(error) {
-            realThis.systemMessage = error.message;
+            componentThis.systemMessage = error.message;
             console.log("Error: Recipes reference failed:: " + error);
           });
       }

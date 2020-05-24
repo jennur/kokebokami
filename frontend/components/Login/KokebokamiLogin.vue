@@ -55,10 +55,12 @@ export default {
   },
   methods: {
     kokebokamiSignIn() {
-      const realThis = this;
-      this.$fireAuth
-        .signInWithEmailAndPassword(this.email, this.password)
-        .then(response => {
+      const componentThis = this;
+      try {
+        this.$router.push("/login?loading");
+        this.$fireAuth.signInWithEmailAndPassword(this.email, this.password);
+        console.log("Logging in with firebase");
+        /* .then(response => {
           if (response.user !== null) {
             this.$fireDb
               .ref("users/" + response.user.uid)
@@ -67,14 +69,14 @@ export default {
                   id: response.user.uid,
                   displayName: snapshot.val().displayName
                 };
-                realThis.$store.dispatch("SET_USER", user);
+                componentThis.$store.dispatch("SET_USER", user);
               });
           }
-        })
-        .catch(error => {
-          console.log("Error signing in:", error);
-          realThis.systemMessage = "Email and password do not match";
-        });
+        }) */
+      } catch (error) {
+        console.log("Error signing in:", error);
+        componentThis.systemMessage = "Email and password do not match";
+      }
     }
   }
 };

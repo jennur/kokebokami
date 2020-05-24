@@ -44,6 +44,7 @@
       <add-recipe-form
         :existingRecipe="recipe"
         @exitEditMode="toggleEditMode"
+        @update="handleUpdate"
         :editMode="editMode"
       />
     </div>
@@ -98,6 +99,10 @@ export default {
     }
   },
   methods: {
+    handleUpdate() {
+      this.$emit("update");
+      this.toggleEditMode();
+    },
     toggleEditMode() {
       this.editMode = !this.editMode;
     },

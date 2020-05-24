@@ -30,9 +30,9 @@
 <script>
 import user from "~/mixins/user.js";
 import publicRecipes from "~/mixins/publicRecipes.js";
+
 import InitialInfoSection from "~/components/InitialInfoSection/InititalInfoSection.vue";
 import SignUpSection from "~/components/SignUp/SignUpSection.vue";
-
 import RecipesFilter from "~/components/RecipesFilter/RecipesFilter.vue";
 import RecipesList from "~/components/Recipes/RecipesList.vue";
 import ScrollButton from "~/components/ScrollButton.vue";
@@ -53,13 +53,13 @@ export default {
       filtered: false
     };
   },
+  mixins: [user, publicRecipes],
   computed: {
     visibleRecipes() {
       if (!this.filtered) return this.publicRecipes;
       if (this.filtered) return this.filteredRecipes;
     }
   },
-  mixins: [user, publicRecipes],
   methods: {
     setVisibleRecipes(filteredRecipesObj) {
       this.filteredRecipes = filteredRecipesObj.recipes;
