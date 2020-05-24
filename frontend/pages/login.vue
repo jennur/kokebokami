@@ -1,7 +1,9 @@
 <template>
   <div class="container container--center">
-    <loading-splash v-show="loading" />
-    <div v-show="!loading" class="flex-center-container margin--auto">
+    <div v-if="loading">
+      <loading-splash />
+    </div>
+    <div v-else class="flex-center-container margin--auto">
       <login-container class="flex-order--tablet-two" />
       <kokebokapen
         class="illustration illustration--kokebokapen flex-order--tablet-one"
