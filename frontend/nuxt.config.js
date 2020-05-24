@@ -56,7 +56,7 @@ export default {
     middleware: "router-auth",
     linkExactActiveClass: "active-link"
   },
-  pageTransition: "fade",
+  //pageTransition: "fade",
 
   // Nuxt.js dev-modules
   buildModules: [
