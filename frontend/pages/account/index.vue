@@ -2,9 +2,7 @@
   <div>
     <breadcrumbs :routes="breadcrumbs" />
     <div class="account container tablet-width padding-horizontal--large">
-      <h1 class="margin-top--xxlarge margin-bottom--large">
-        My account details
-      </h1>
+      <h1 class="margin-top--xxlarge margin-bottom--large">My account details</h1>
       <nuxt-link to="/account/public-profile-view/">
         See my public profile
         <right-arrow class="icon icon--blue" />
@@ -25,25 +23,17 @@
               :alt="user.displayName + '´s profile picture'"
               v-if="photoURL"
             />
-            <form
-              v-on:submit.prevent
-              class="account__detail-edit"
-              v-if="editProfileImg"
-            >
+            <form v-on:submit.prevent class="account__detail-edit" v-if="editProfileImg">
               <button
                 @click="updateProfileImg"
                 class="button button--small margin-top--large"
-              >
-                Remove
-              </button>
+              >Remove</button>
             </form>
             <div class="system-message">{{ profileImgSystemMessage }}</div>
             <button
               @click="toggleEditProfileImg"
               class="button button--small button--transparent account__detail-edit-btn"
-            >
-              {{ editProfileImg ? "Cancel" : "Edit" }}
-            </button>
+            >{{ editProfileImg ? "Cancel" : "Edit" }}</button>
           </dt>
 
           <dt class="account__detail account__detail--flex-column">
@@ -53,48 +43,44 @@
                 <span class="system-message">(visible to other users)</span>
               </span>
             </div>
-            <span class="account__detail-value" v-if="!editUsername">{{
+            <span class="account__detail-value" v-if="!editUsername">
+              {{
               username ? username : null
-            }}</span>
+              }}
+            </span>
             <form v-on:submit.prevent class="account__detail-edit" v-else>
               <label>
                 <input type="text" autocomplete="username" v-model="username" />
               </label>
-              <button @click="updateUsername" class="button button--small">
-                Save
-              </button>
+              <button @click="updateUsername" class="button button--small">Save</button>
             </form>
             <div class="system-message">{{ usernameSystemMessage }}</div>
             <button
               @click="toggleEditUsername"
               class="button button--small button--transparent account__detail-edit-btn"
-            >
-              {{ editUsername ? "Cancel" : "Edit" }}
-            </button>
+            >{{ editUsername ? "Cancel" : "Edit" }}</button>
           </dt>
 
           <dt class="account__detail account__detail--flex-column">
             <div class="account__detail-title">
               <span>E-mail</span>
             </div>
-            <span class="account__detail-value" v-if="!editEmail">{{
+            <span class="account__detail-value" v-if="!editEmail">
+              {{
               email ? email : null
-            }}</span>
+              }}
+            </span>
             <form v-on:submit.prevent class="account__detail-edit" v-else>
               <label>
                 <input type="email" autocomplete="email" v-model="email" />
               </label>
-              <button @click="updateEmail" class="button button--small">
-                Save
-              </button>
+              <button @click="updateEmail" class="button button--small">Save</button>
             </form>
             <div class="system-message">{{ emailSystemMessage }}</div>
             <button
               @click="toggleEditEmail"
               class="button button--small button--transparent account__detail-edit-btn"
-            >
-              {{ editEmail ? "Cancel" : "Edit" }}
-            </button>
+            >{{ editEmail ? "Cancel" : "Edit" }}</button>
           </dt>
 
           <dt class="account__detail account__detail--flex-column">
@@ -104,24 +90,22 @@
                 <span class="system-message">(visible to other users)</span>
               </span>
             </div>
-            <span class="account__detail-value" v-if="!editBiography">{{
+            <span class="account__detail-value" v-if="!editBiography">
+              {{
               biography ? biography : "Not set"
-            }}</span>
+              }}
+            </span>
             <form v-on:submit.prevent class="account__detail-edit" v-else>
               <label>
                 <textarea type="text" v-model="biography" />
               </label>
-              <button @click="updateBiography" class="button button--small">
-                Save
-              </button>
+              <button @click="updateBiography" class="button button--small">Save</button>
             </form>
             <div class="system-message">{{ biographySystemMessage }}</div>
             <button
               @click="toggleEditBiography"
               class="button button--small button--transparent account__detail-edit-btn"
-            >
-              {{ editBiography ? "Cancel" : "Edit" }}
-            </button>
+            >{{ editBiography ? "Cancel" : "Edit" }}</button>
           </dt>
         </dl>
         <h3>Recipes connected to your account</h3>
@@ -136,13 +120,13 @@
             <ol>
               <li v-for="recipe in userRecipes" :key="recipe[1].title">
                 <span>
-                  <nuxt-link :to="'recipes/' + recipe[0]">{{
+                  <nuxt-link :to="`/recipes/${recipe[0]}`">
+                    {{
                     recipe[1].title
-                  }}</nuxt-link>
+                    }}
+                  </nuxt-link>
                 </span>
-                <span class="system-message" v-if="recipe[1].public"
-                  >Public</span
-                >
+                <span class="system-message" v-if="recipe[1].public">Public</span>
               </li>
             </ol>
           </dt>
@@ -155,9 +139,11 @@
             </div>
             <ol>
               <li v-for="recipe in sharedRecipes" :key="recipe[1].title">
-                <nuxt-link :to="'recipes/' + recipe[0]">{{
+                <nuxt-link :to="`/recipes/${recipe[0]}`">
+                  {{
                   recipe[1].title
-                }}</nuxt-link>
+                  }}
+                </nuxt-link>
               </li>
             </ol>
           </dt>
@@ -174,9 +160,11 @@
             </div>
             <ol>
               <li v-for="cook in followed" :key="cook[1].displayName">
-                <nuxt-link :to="'cooks/' + cook[0]">{{
+                <nuxt-link :to="`/cooks/${cook[0]}`">
+                  {{
                   cook[1].displayName
-                }}</nuxt-link>
+                  }}
+                </nuxt-link>
               </li>
             </ol>
           </dt>
@@ -189,9 +177,11 @@
             </div>
             <ol>
               <li v-for="follower in followers" :key="follower[1].displayName">
-                <nuxt-link :to="'cooks/' + follower[0]">{{
+                <nuxt-link :to="`/cooks/${follower[0]}`">
+                  {{
                   follower[1].displayName
-                }}</nuxt-link>
+                  }}
+                </nuxt-link>
               </li>
             </ol>
           </dt>
@@ -199,9 +189,7 @@
         <button
           class="button button--small button--transparent button--transparent-red margin-top--large"
           @click="deleteAccount"
-        >
-          Delete my account
-        </button>
+        >Delete my account</button>
         <p>{{ systemMessage }}</p>
       </div>
     </div>

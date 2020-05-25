@@ -1,11 +1,11 @@
 <template>
   <section class="loading-splash">
-    <div class="container container--center mobile-width" v-if="loginError">
-      <span class="system-message">{{ loginError }}</span>
+    <div class="container container--center mobile-width" v-show="loginError">
+      <p class="system-message">{{ loginError }}</p>
       <nuxt-link to="/login/">Try again</nuxt-link>
     </div>
-    <div v-else>
-      <loadingBook />
+    <div v-show="!loginError">
+      <loadingBook class="loading-book" />
       <h2>Logging you in ...</h2>
     </div>
   </section>
@@ -25,6 +25,7 @@ export default {
         this.$store.dispatch("SET_LOGIN_MESSAGE", "");
         return "We were not able to log you in. Please try again later or use a different provider.";
       }
+      return "";
     }
   }
 };

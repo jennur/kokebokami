@@ -1,5 +1,5 @@
 <template>
-  <div class="login-container">
+  <section class="login-container">
     <h2 class="margin-bottom--xlarge">Log in to kokeboka di</h2>
     <!-- Social Media login -->
     <google-login class="margin-bottom--medium" />
@@ -14,10 +14,7 @@
 
       <kokebokami-login :open="loginModalOpen" @toggle="toggleLoginModal" />
     </div>
-    <div class="system-message margin-top--medium" v-if="systemMessage">
-      <p>{{ systemMessage }}</p>
-    </div>
-  </div>
+  </section>
 </template>
 
 <script>
@@ -35,7 +32,7 @@ export default {
     KokebokamiLogin
   },
   data() {
-    return { systemMessage: "", loginModalOpen: false };
+    return { loginModalOpen: false };
   },
   mixins: [user],
   methods: {
