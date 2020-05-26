@@ -10,8 +10,9 @@
       <button
         class="button button--large button--transparent"
         @click="toggleLoginModal"
-      >➔ Sign in with username and password</button>
-
+      >
+        ➔ Sign in with username and password
+      </button>
       <kokebokami-login :open="loginModalOpen" @toggle="toggleLoginModal" />
     </div>
   </section>

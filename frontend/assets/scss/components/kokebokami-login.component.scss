@@ -7,13 +7,15 @@
   height: 100%;
   background-color: rgba($cream, 0.5);
   z-index: 999;
+  opacity: 0;
+  transition: opacity 0.5s ease-in;
 
   &-modal {
     display: block;
     position: relative;
     background-color: $blue;
     width: 100%;
-    max-width: 350px;
+    max-width: 500px;
     padding: $spacingXXLarge;
     box-sizing: border-box;
     border-radius: $spacingMedium;
@@ -26,8 +28,14 @@
     }
 
     &-form {
+      display: block;
+      margin: 0 auto;
       text-align: center;
 
+      & fieldset {
+        max-width: 300px;
+        margin: 0 auto;
+      }
       & label {
         display: flex;
         flex-direction: column;
@@ -72,5 +80,6 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    opacity: 1;
   }
 }

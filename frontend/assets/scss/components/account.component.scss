@@ -11,6 +11,10 @@
     border: 2px solid rgba($green, 0.3);
     border-radius: $spacingSmall;
     font-size: $fontSizeMedium;
+    transition: all 1s ease-in-out;
+    &:hover {
+      border-color: $green;
+    }
 
     &--flex-column {
       display: inline-flex;

@@ -44,7 +44,7 @@
           type="checkbox"
           v-model="termsAndConditions"
         />
-        <span class="padding-horizontal--small">
+        <span class="sign-up-form_terms padding-horizontal--small">
           I agree to the
           <nuxt-link to="/terms-and-conditions/"
             >Terms and Conditions</nuxt-link

@@ -13,3 +13,19 @@
   transform: scale(0);
   opacity: 0;
 }
+
+.pop-modal-enter-active,
+.pop-modal-leave-active {
+  transition: all 0.2s cubic-bezier(1, 0, 0, 1);
+}
+
+.pop-modal-enter-to,
+.pop-modal-leave {
+  transform: scale(1);
+  opacity: 1;
+}
+.pop-modal-enter,
+.pop-modal-leave-to {
+  transform: scale(0);
+  opacity: 0;
+}
