@@ -1,5 +1,10 @@
 <template>
   <section class="container container--center tablet-width margin-top--xxlarge">
+    <nuxt-link
+      to="/account/add-recipe-from-url/"
+      class="button button--large button--round margin--auto margin-vertical--xlarge"
+      >Add recipe from url</nuxt-link
+    >
     <form class="add-recipe-form--url flex-row margin--auto">
       <input
         ref="urlInput"

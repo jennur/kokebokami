@@ -25,7 +25,7 @@
           :recipeKey="recipeKey"
           :editMode="editMode"
           @edit="toggleEditMode"
-          @download="pdfExport"
+          @download="$fetch"
         />
       </div>
 
@@ -98,6 +98,13 @@ export default {
       return this.editMode ? "Exit edit mode" : "Edit mode";
     }
   },
+  async fetch() {
+    let url = this.$route.path;
+    console.log("Path:", process.env.BASE_URL);
+    let data = await this.$axios
+      .get("/api/download-pdf", { url })
+      .then(data => console.log("Data:", data));
+  },
   methods: {
     handleUpdate() {
       this.$emit("update");
@@ -114,15 +121,15 @@ export default {
       } else {
         this.editMode = true;
       }
-    },
-    pdfExport() {
+    }
+    /* pdfExport() {
       if (this.recipe.title !== undefined) {
         var elementHandler = {
           "#ignorePDF": function(element, renderer) {
             return true;
           }
         };
-        /* if (process.browser) {
+        if (process.browser) {
           let recipe = document.getElementById("recipe");
           var doc = new jsPDF("p", "mm", "a4");
           var img = new Image();
@@ -137,9 +144,9 @@ export default {
             elementHandlers: elementHandler
           });
           doc.save("kokebokami_" + documentTitle + ".pdf");
-        } */
+        }
       }
-    }
+    } */
   }
 };
 </script>

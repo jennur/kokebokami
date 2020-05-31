@@ -84,8 +84,8 @@ export const mutations = {
   },
   setSignupSystemMessage(state, payload) {
     state.signupSystemMessage = payload;
-  },
-  setUserRecipes(state, payload) {
+  }
+  /*  setUserRecipes(state, payload) {
     state.userRecipes = payload;
   },
   setSharedRecipes(state, payload) {
@@ -96,18 +96,13 @@ export const mutations = {
   },
   setAllRecipes(state, payload) {
     state.allRecipes = payload;
-  }
+  } */
 };
 
 export const actions = {
   ON_AUTH_STATE_CHANGED: function(context, { authUser, claims }) {
     if (authUser) {
       context.dispatch("SET_USER");
-      /* context.dispatch("SET_ALL_USERS");
-      context.dispatch("SET_USER_RECIPES", authUser);
-      context.dispatch("SET_SHARED_RECIPES", authUser);
-      context.dispatch("SET_PUBLIC_RECIPES");
-      context.dispatch("SET_ALL_RECIPES"); */
     }
     this.$fireAuthUnsubscribe;
   },
@@ -172,9 +167,9 @@ export const actions = {
     } catch (error) {
       console.log("Error removing user: " + error);
     }
-  },
+  }
 
-  SET_ALL_USERS: function({ commit }) {
+  /* SET_ALL_USERS: function({ commit }) {
     try {
       this.$fireDb.ref("users").once("value", users => {
         if (users.exists()) {
@@ -261,5 +256,5 @@ export const actions = {
         error
       );
     }
-  }
+  } */
 };

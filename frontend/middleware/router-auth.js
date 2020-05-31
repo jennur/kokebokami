@@ -47,6 +47,6 @@ function performRedirect(route, redirect) {
     route.name == "verify-email"
   ) {
     console.log("Redirecting to cookbook");
-    redirect("/my-recipes/");
+    redirect("/account/my-cookbook/");
   }
 }

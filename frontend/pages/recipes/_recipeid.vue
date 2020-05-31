@@ -40,7 +40,7 @@ export default {
   },
   head() {
     return {
-      title: `Kokebokami | ${this.recipe.title}`,
+      title: `${this.recipe.title} | Kokebokami`,
       link: [
         {
           rel: "canonical",
@@ -97,8 +97,8 @@ export default {
         return [
           { name: "Home", link: "/" },
           {
-            name: "My recipes",
-            link: "/my-recipes/"
+            name: "My cookbook",
+            link: "/account/my-cookbook/"
           },
           { name: this.recipe.title }
         ];

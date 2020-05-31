@@ -1,8 +1,5 @@
 <template>
-  <nuxt-link
-    :to="`/recipes/${recipeUrl}/`"
-    class="recipe-display padding--xlarge"
-  >
+  <nuxt-link :to="`/recipes/${recipeUrl}/`" class="recipe-display padding--xlarge">
     <div>
       <div class="recipe-display__category-note">
         <p v-if="typeOfMeal">
@@ -14,12 +11,12 @@
           {{ freeFrom }}
         </p>
       </div>
-      <h3 class="recipe-display__title margin--none margin-bottom--medium">
-        {{ recipe.title ? recipe.title : "Recipe has no title" }}
-      </h3>
+      <h3
+        class="recipe-display__title margin--none margin-bottom--medium"
+      >{{ recipe.title ? recipe.title : "Recipe has no title" }}</h3>
       <div class="recipe-display__description margin-bottom--large">
         {{
-          recipe.description ? recipe.description : "Recipe has no description"
+        recipe.description ? recipe.description : "Recipe has no description"
         }}
       </div>
     </div>
@@ -29,25 +26,22 @@
           class="recipe-display__category margin-bottom--large margin-horizontal--small"
           v-for="category in categories"
           :key="category"
-          >{{ category }}</span
-        >
+        >{{ category }}</span>
       </div>
 
-      <span class="recipe-display__published-by" v-if="publicRecipe"
-        >Published by: {{ recipeOwner ? recipeOwner : "Unknown" }}</span
-      >
+      <span
+        class="recipe-display__published-by"
+        v-if="publicRecipe"
+      >Published by: {{ recipeOwner ? recipeOwner : "Unknown" }}</span>
     </div>
   </nuxt-link>
 </template>
 
 <script>
+import allUsers from "~/mixins/allUsers.js";
 export default {
   name: "recipe-display",
   props: {
-    allUsers: {
-      type: Array,
-      default: () => []
-    },
     recipe: {
       type: Object,
       default: () => {}
@@ -61,7 +55,7 @@ export default {
       default: false
     }
   },
-
+  mixins: [allUsers],
   computed: {
     recipeUrl() {
       return this.recipeID;

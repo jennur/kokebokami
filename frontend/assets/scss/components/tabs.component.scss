@@ -1,0 +1,95 @@
+.tabs {
+  &-wrap {
+    position: relative;
+  }
+  &-mobile-helper {
+    display: block;
+    position: relative;
+    height: 3 * $spacingXLarge;
+    @media screen and (min-width: $tabletWidth) {
+      display: none;
+    }
+  }
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 300px;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+
+  @media screen and (min-width: $tabletWidth) {
+    display: block;
+    max-width: 100%;
+    border-bottom: 1px solid $green;
+    position: relative;
+  }
+}
+
+.tab {
+  display: block;
+  position: relative;
+  padding: $spacingMedium $spacingLarge;
+  margin: 1px 0px;
+  border-radius: $spacingSmall;
+  background-color: $cream;
+  border: 1px solid rgba($green, 0.7);
+  color: $blue;
+  text-align: left;
+  transition: background-color 0.3s;
+  cursor: pointer;
+  z-index: 2;
+  @media screen and (min-width: $tabletWidth) {
+    display: inline-block;
+    border-radius: $spacingSmall $spacingSmall 0px 0px;
+    margin: 0px 0px 0px $spacingXLarge;
+    padding: $spacingMedium $spacingXLarge;
+    text-align: center;
+    background-color: rgba($blue, 0.05);
+    border: 0px;
+  }
+
+  &--active {
+    display: inline-block !important;
+    order: -1;
+    border: 1px solid $green;
+    background-color: $cream;
+    font-weight: bold;
+
+    @media screen and (min-width: $tabletWidth) {
+      order: auto;
+      margin-bottom: -1px;
+    }
+    &::after {
+      display: block;
+      content: "";
+      width: 5px;
+      height: 5px;
+      border-left: 2px solid $green;
+      border-bottom: 2px solid $green;
+      transform: rotate(-45deg);
+      position: absolute;
+      right: $spacingLarge;
+      top: 18px;
+      @media screen and (min-width: $tabletWidth) {
+        display: none;
+      }
+    }
+    @media screen and (min-width: $tabletWidth) {
+      border-bottom: 1px solid $cream;
+      margin-bottom: -1px;
+    }
+  }
+  &--hide-mobile {
+    display: none;
+    @media screen and (min-width: $tabletWidth) {
+      display: inline-block;
+    }
+  }
+  &--dropdown-list {
+    box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.15);
+    @media screen and (min-width: $tabletWidth) {
+      box-shadow: none;
+    }
+  }
+}

@@ -56,8 +56,8 @@ export default {
     middleware: "router-auth",
     linkExactActiveClass: "active-link"
   },
-  //pageTransition: "fade",
-
+  pageTransition: "fade",
+  serverMiddleware: ["~/api/index.js"],
   // Nuxt.js dev-modules
   buildModules: [
     [
@@ -83,7 +83,6 @@ export default {
     "@nuxtjs/dotenv",
     "@nuxtjs/sitemap",
     "nuxt-fontawesome"
-    //"~/modules/api"
   ],
   firebase: {
     config: {

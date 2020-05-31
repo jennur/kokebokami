@@ -65,7 +65,7 @@ export default {
             name: "My account",
             img: this.user.photoURL
           },
-          { link: "/my-recipes/", name: "My recipes" },
+          { link: "/account/my-cookbook/", name: "My cookbook" },
           { link: "/cooks/", name: "Discover cooks" }
         ];
       } else {

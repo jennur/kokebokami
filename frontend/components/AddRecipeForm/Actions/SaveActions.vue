@@ -43,7 +43,7 @@
         </button>
       </div>
       <div class="system-message">{{ systemMessage }}</div>
-      <nuxt-link v-if="deleted" to="/my-recipes/"
+      <nuxt-link v-if="deleted" to="/account/my-cookbook/"
         >Go back to your cookbook</nuxt-link
       >
     </fieldset>

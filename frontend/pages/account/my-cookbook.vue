@@ -6,43 +6,26 @@
       <nuxt-link
         to="/account/add-recipe/"
         class="button button--large button--round margin--auto margin-vertical--xlarge"
-        >Add new recipe</nuxt-link
-      >
-      <nuxt-link to="/account/add-recipe-from-url/"
-        >Add recipe from url ➔</nuxt-link
-      >
+      >Add new recipe</nuxt-link>
+      <nuxt-link to="/account/my-recipe-collection/" class="margin--auto">Add new recipe from URL</nuxt-link>
     </div>
-    <div class="flex-row margin-top--large">
-      <h4
-        id="my-recipes-tab"
-        @click="event => toggleRecipes(event)"
-        :class="
-          'tab margin-right--large ' + (showMyRecipes ? 'tab--active' : '')
-        "
-      >
-        My recipes
-      </h4>
-      <h4 class="margin-right--large">|</h4>
-      <h4
-        id="shared-recipes-tab"
-        @click="event => toggleRecipes(event)"
-        :class="'tab ' + (showSharedRecipes ? 'tab--active' : '')"
-      >
-        Recipes shared with me
-      </h4>
-    </div>
-    <div class="container">
-      <recipes-filter
-        class="margin-bottom--xlarge margin--auto"
-        :recipes="recipesToBeFiltered"
-        @filter="setVisibleRecipes"
+    <Tabs
+      :tabTitles="['My personal recipes', 'My saved recipes', 'Recipes shared with me']"
+      @switchTab="(index) => handleTabSwitch(index)"
+    >
+      <div class="container">
+        <recipes-filter
+          class="margin-bottom--xlarge margin--auto"
+          :recipes="recipesToBeFiltered"
+          @filter="setVisibleRecipes"
+        />
+      </div>
+      <recipes-list
+        class="margin-top--large padding-bottom--large"
+        :recipes="visibleRecipes"
+        :publicRecipe="activeTabIndex === 2"
       />
-    </div>
-    <recipes-list
-      class="margin-top--large padding-bottom--large"
-      :recipes="visibleRecipes"
-      :publicRecipe="showSharedRecipes"
-    />
+    </Tabs>
   </div>
 </template>
 
@@ -51,12 +34,13 @@ import user from "~/mixins/user.js";
 import sharedRecipes from "~/mixins/sharedRecipes.js";
 import userRecipes from "~/mixins/userRecipes.js";
 
+import Tabs from "~/components/Tabs.vue";
 import RecipesList from "~/components/Recipes/RecipesList.vue";
 import RecipesFilter from "~/components/RecipesFilter/RecipesFilter.vue";
 
 export default {
-  name: "my-recipes",
-  components: { RecipesList, RecipesFilter },
+  name: "my-cookbook",
+  components: { Tabs, RecipesList, RecipesFilter },
   data() {
     return {
       addingRecipe: false,
@@ -64,14 +48,15 @@ export default {
       showSharedRecipes: false,
       filteredRecipes: [],
       filtered: false,
-      filteredKind: ""
+      filteredKind: "",
+      activeTabIndex: 0
     };
   },
   mixins: [user, userRecipes, sharedRecipes],
   props: {
     breadcrumbs: {
       type: Array,
-      default: () => [{ name: "Home", link: "/" }, { name: "My recipes" }]
+      default: () => [{ name: "Home", link: "/" }, { name: "My cookbook" }]
     }
   },
   computed: {
@@ -88,20 +73,14 @@ export default {
       if (this.firstName) return `${this.firstName}'s kokebok`;
       else return "My kokebok";
     },
-    /* userRecipes() {
-      return this.$store.state.recipes;
-    },
-    sharedRecipes() {
-      return this.$store.state.sharedRecipes;
-    }, */
     visibleRecipes() {
-      if (this.showMyRecipes) {
+      if (this.activeTabIndex === 0) {
         if (!this.filtered) return this.userRecipes;
         if (this.filtered && this.filteredKind === "myRecipes")
           return this.filteredRecipes;
         else if (this.filtered && this.filteredKind === "sharedRecipes")
           return this.userRecipes;
-      } else if (this.showSharedRecipes) {
+      } else if (this.activeTabIndex === 2) {
         if (!this.filtered) return this.sharedRecipes;
         if (this.filtered && this.filteredKind === "sharedRecipes")
           return this.filteredRecipes;
@@ -118,8 +97,11 @@ export default {
     }
   },
   methods: {
+    handleTabSwitch(index) {
+      this.activeTabIndex = index;
+    },
     toggleRecipes(event) {
-      if (event.target.id === "my-recipes-tab" && !this.showMyRecipes) {
+      if (event.target.id === "my-cookbook-tab" && !this.showMyRecipes) {
         this.showMyRecipes = !this.showMyRecipes;
         this.showSharedRecipes = !this.showSharedRecipes;
       } else if (
