@@ -7,11 +7,20 @@
     </div>
     <div class="margin-top--xlarge">
       <Tabs
+        class="margin-top--xxlarge"
         :tabTitles="['Currently following', 'Followers']"
         @switchTab="(index) => handleTabSwitch(index)"
       >
-        <cooks-list :cooks="followed" v-if="activeTabIndex == 0" />
-        <cooks-list :cooks="followers" v-if="activeTabIndex == 1" />
+        <cooks-list
+          v-if="activeTabIndex == 0"
+          :cooks="followed"
+          emptyListMessage="You have no followers yet 🤷🏻‍♀️"
+        />
+        <cooks-list
+          v-if="activeTabIndex == 1"
+          :cooks="followers"
+          emptyListMessage="You are not following anyone right now 🤷🏽. Follow cooks to get easier access to their profile and see their recipes."
+        />
       </Tabs>
     </div>
   </div>

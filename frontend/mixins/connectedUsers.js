@@ -1,4 +1,4 @@
-//Must be used in combination with allusers-mixin
+//Must be used in combination with user & allusers-mixin
 export default {
   computed: {
     followed() {

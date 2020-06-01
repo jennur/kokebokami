@@ -1,7 +1,5 @@
 <template>
-  <section
-    :class="'kokebokami-login ' + (open ? 'kokebokami-login--open' : '')"
-  >
+  <section :class="'kokebokami-login ' + (open ? 'kokebokami-login--open' : '')">
     <transition name="pop-modal">
       <div v-if="open" class="kokebokami-login-modal">
         <button
@@ -12,34 +10,18 @@
           <fieldset>
             <label>
               E-mail
-              <input
-                type="text"
-                autocomplete="email"
-                v-model="email"
-                required
-              />
+              <input type="text" autocomplete="email" v-model="email" required />
             </label>
             <label>
               Password
-              <input
-                type="password"
-                autocomplete="password"
-                v-model="password"
-                required
-              />
+              <input type="password" autocomplete="password" v-model="password" required />
             </label>
           </fieldset>
           <button
             @click="kokebokamiSignIn"
             class="button button--small button--green margin-top--large"
-          >
-            Log in
-          </button>
-          <div
-            class="system-message system-message--dark-bg margin-top--medium"
-          >
-            {{ systemMessage }}
-          </div>
+          >Log in</button>
+          <div class="system-message system-message--dark-bg margin-top--medium">{{ systemMessage }}</div>
           <div class="kokebokami-login-modal-signup margin-top--large">
             Don't already have an account?
             <nuxt-link to="/sign-up/">Sign up</nuxt-link>
@@ -68,11 +50,15 @@ export default {
       const componentThis = this;
       try {
         this.$router.push("/login?loading");
-        this.$fireAuth.signInWithEmailAndPassword(this.email, this.password);
+        this.$fireAuth
+          .signInWithEmailAndPassword(this.email, this.password)
+          .catch(error => {
+            this.$store.dispatch("SET_LOGIN_MESSAGE", error.message);
+          });
         console.log("Logging in with firebase");
       } catch (error) {
         console.log("Error signing in:", error);
-        componentThis.systemMessage = "Email and password do not match";
+        this.$store.dispatch("SET_LOGIN_MESSAGE", error.message);
       }
     }
   }

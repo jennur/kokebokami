@@ -24,10 +24,14 @@ export default {
     tabTitles: {
       type: Array,
       default: () => []
+    },
+    activeTabIndexControl: {
+      type: Number,
+      default: null
     }
   },
   data() {
-    return { activeTabIndex: 0 };
+    return { activeTabIndex: this.activeTabIndexControl || 0 };
   },
   methods: {
     closeDropDown() {
@@ -57,6 +61,13 @@ export default {
   },
   directives: {
     ClickOutside
+  },
+  updated() {
+    if (
+      this.activeTabIndexControl !== null &&
+      this.activeTabIndex !== this.activeTabIndexControl
+    )
+      this.activeTabIndex = this.activeTabIndexControl;
   }
 };
 </script>

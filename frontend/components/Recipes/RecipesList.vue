@@ -1,8 +1,6 @@
 <template>
-  <div class="recipes-list-container">
-    <h3 class="recipes-list-container__headline" v-if="headline">
-      {{ headline }}
-    </h3>
+  <section class="recipes-list-container">
+    <h3 class="recipes-list-container__headline" v-if="headline">{{ headline }}</h3>
     <recipe-display
       v-for="recipe in recipes"
       :key="recipe[0]"
@@ -10,12 +8,11 @@
       :recipe="recipe[1]"
       :publicRecipe="publicRecipe"
     />
-    <div v-if="!recipesLength">
-      <p class="margin--none">
-        It looks like there are no recipes here at the moment 😕
-      </p>
+    <div v-if="!recipesLength" class="container container--center">
+      <p class="margin--auto margin-bottom--medium mobile-width">{{emptyListMessage}}</p>
+      <nuxt-link v-if="addRecipeUrl" :to="addRecipeUrl">➔ Add a recipe to this list</nuxt-link>
     </div>
-  </div>
+  </section>
 </template>
 
 <script>
@@ -42,6 +39,14 @@ export default {
     publicRecipe: {
       type: Boolean,
       default: false
+    },
+    emptyListMessage: {
+      type: String,
+      default: "Looks like there is nothing here at the moment 😕"
+    },
+    addRecipeUrl: {
+      type: String,
+      default: ""
     }
   },
   computed: {

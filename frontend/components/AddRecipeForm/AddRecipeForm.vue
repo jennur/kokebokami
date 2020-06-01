@@ -3,6 +3,7 @@
     <form v-on:submit.prevent>
       <div class="recipes-filter__form">
         <category-filter
+          :transparent="true"
           :existingCategories="{ language, typeOfMeal, categories, freeFrom }"
           @setLanguage="updateLanguage"
           @setTypeOfMeal="updateTypeOfMeal"
@@ -14,11 +15,7 @@
       <div class="mobile-width margin-top--xlarge margin--auto">
         <!-- TITLE / DESCRIPTION -->
         <fieldset class="flex-column">
-          <title-input
-            id="recipeTitle"
-            class="margin-bottom--medium"
-            :existingTitle="title"
-          />
+          <title-input id="recipeTitle" class="margin-bottom--medium" :existingTitle="title" />
           <description-input
             id="recipeDescription"
             class="margin-bottom--medium"
@@ -44,9 +41,7 @@
         <fieldset class="container">
           <label class="flex-row flex-row--align-center">
             <input type="checkbox" id="publicCheck" v-model="publicCheck" />
-            <span class="margin-left--small"
-              >Make recipe public (share with all users of Kokebokami)</span
-            >
+            <span class="margin-left--small">Make recipe public (share with all users of Kokebokami)</span>
           </label>
         </fieldset>
 

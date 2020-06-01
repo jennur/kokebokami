@@ -14,7 +14,6 @@ select {
   box-shadow: none;
   width: 150px;
   height: 20px;
-
   &:focus {
     border: 2px solid $green;
     outline: none;
@@ -38,7 +37,14 @@ select {
       outline: none;
     }
   }
-
+  &--green {
+    border: 2px solid $green;
+    background-color: $cream;
+    & .select__dropdown {
+      border: 2px solid $green;
+      background-color: $cream;
+    }
+  }
   &__selected {
     display: flex;
     justify-content: flex-start;
