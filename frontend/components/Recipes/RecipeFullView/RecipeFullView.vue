@@ -1,6 +1,11 @@
 <template>
   <section>
-    <div v-if="!editMode" id="recipe" class="recipe mobile-width margin--auto">
+    <div
+      ref="recipe"
+      id="recipe"
+      v-if="!editMode"
+      class="recipe mobile-width margin--auto"
+    >
       <h2 class="recipe__title">{{ recipeTitle }}</h2>
       <div class="recipe__description">{{ description }}</div>
       <div id="ignorePDF">
@@ -25,7 +30,7 @@
           :recipeKey="recipeKey"
           :editMode="editMode"
           @edit="toggleEditMode"
-          @download="$fetch"
+          @download="pdfExport"
         />
       </div>
 
@@ -61,6 +66,9 @@ import IngredientsDisplay from "./Displays/IngredientsDisplay.vue";
 import InstructionsDisplay from "./Displays/InstructionsDisplay.vue";
 //import * as jsPDF from "jspdf";
 import logo from "~/static/kokebokamilogo.png";
+import htmlToPdfMake from "html-to-pdfmake";
+import pdfMake from "pdfmake/build/pdfmake";
+import pdfFonts from "pdfmake/build/vfs_fonts";
 
 export default {
   name: "recipe-full-view",
@@ -98,13 +106,6 @@ export default {
       return this.editMode ? "Exit edit mode" : "Edit mode";
     }
   },
-  async fetch() {
-    let url = this.$route.path;
-    console.log("Path:", process.env.BASE_URL);
-    let data = await this.$axios
-      .get("/api/download-pdf", { url })
-      .then(data => console.log("Data:", data));
-  },
   methods: {
     handleUpdate() {
       this.$emit("update");
@@ -121,32 +122,23 @@ export default {
       } else {
         this.editMode = true;
       }
-    }
-    /* pdfExport() {
-      if (this.recipe.title !== undefined) {
-        var elementHandler = {
-          "#ignorePDF": function(element, renderer) {
-            return true;
-          }
-        };
-        if (process.browser) {
-          let recipe = document.getElementById("recipe");
-          var doc = new jsPDF("p", "mm", "a4");
-          var img = new Image();
-          img.src = logo;
-          doc.addImage(img, "PNG", 163, 10, 27, 5);
+    },
+    pdfExport() {
+      pdfMake.vfs = pdfFonts.pdfMake.vfs;
+      let recipe = document.getElementById("recipe");
+      let ignoreElement = document.getElementById("ignorePDF");
+      recipe.removeChild(ignoreElement);
+      let pdfContent = htmlToPdfMake(recipe.outerHTML);
 
-          let documentTitle = this.recipe.title
-            .replace(/\s/g, "-")
-            .toLowerCase();
-          doc.fromHTML(recipe, 20, 10, {
-            width: 150,
-            elementHandlers: elementHandler
-          });
-          doc.save("kokebokami_" + documentTitle + ".pdf");
-        }
-      }
-    } */
+      let documentTitle = this.recipe.title;
+      let pdf = pdfMake.createPdf(pdfContent);
+      let docDefinition = { content: [pdf.docDefinition[0]] };
+      pdfMake
+        .createPdf(docDefinition)
+        .download(`${documentTitle}_kokebokami.pdf`);
+
+      recipe.insertBefore(ignoreElement, recipe.childNodes[3]);
+    }
   }
 };
 </script>

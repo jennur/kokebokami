@@ -8,7 +8,7 @@
     width: 100%;
     flex-basis: 100%;
     padding: $spacingLarge;
-
+    transition: all 0.2s;
     @media screen and (min-width: $mobileWidth) {
       flex-basis: 50%;
       max-width: 40%;
@@ -17,8 +17,9 @@
       max-width: 380px;
     }
     &:hover {
+      background-color: rgba($green, 0.2);
+      color: $blue;
       text-decoration: none;
-      background-color: $green;
     }
   }
   &__img {

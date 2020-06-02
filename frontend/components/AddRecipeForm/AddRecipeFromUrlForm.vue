@@ -170,7 +170,6 @@ export default {
           labels,
           comment
         };
-        console.log("Data:", dataObject);
         try {
           let userRef = this.$fireDb.ref(`users/${this.user.id}`);
           userRef.child("recipeLinks").push(dataObject);

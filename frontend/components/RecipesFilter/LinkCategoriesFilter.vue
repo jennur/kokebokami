@@ -1,6 +1,8 @@
 <template>
   <section class="container margin-vertical--xlarge">
-    <h3 class="heading--body-font">Show categories</h3>
+    <h4 class="heading--blue margin-bottom--medium margin-left--small">
+      Show categories
+    </h4>
     <form class="link-categories-filter">
       <label
         class="form__input margin-right--medium"
@@ -11,9 +13,9 @@
           type="checkbox"
           :value="category"
           checked
-          @change="(event)=> $emit('updateCategories', event)"
+          @change="event => $emit('updateCategories', event)"
         />
-        {{category}}
+        {{ category }}
       </label>
     </form>
   </section>

@@ -2,30 +2,49 @@
   <div class="container container--center">
     <breadcrumbs :routes="breadcrumbs" />
     <h1 class="margin-bottom--large">{{ headlineText }}</h1>
-    <div v-click-outside="closeDropdown" class="container container--center add-recipe">
+    <div
+      v-click-outside="closeDropdown"
+      class="container container--center add-recipe"
+    >
       <button
         v-if="!addRecipeFromUrl"
         class="button button--large button--round margin--auto margin-vertical--xlarge"
         @click="toggleDropdown"
-      >Add new recipe</button>
+      >
+        Add new recipe
+      </button>
       <transition name="pop-modal" tag="div">
         <div v-if="dropdown" class="add-recipe-dropdown">
-          <nuxt-link to="/account/add-recipe/" class="add-recipe-dropdown__link">Add personal recipe</nuxt-link>
-          <button @click="toggleRecipeForm" class="add-recipe-dropdown__link">Add recipe from URL</button>
+          <nuxt-link to="/account/add-recipe/" class="add-recipe-dropdown__link"
+            >Add personal recipe</nuxt-link
+          >
+          <button @click="toggleRecipeForm" class="add-recipe-dropdown__link">
+            Add recipe from URL
+          </button>
         </div>
       </transition>
     </div>
     <!-- Add recipe from URL -->
     <expand-transition :show="addRecipeFromUrl">
-      <add-recipe-from-url-form @cancel="toggleRecipeForm" @save="handleLinkSave" />
+      <add-recipe-from-url-form
+        @cancel="toggleRecipeForm"
+        @save="handleLinkSave"
+      />
     </expand-transition>
     <!-- Recipe list -->
     <Tabs
-      :tabTitles="['My personal recipes', 'My recipe links', 'Recipes shared with me']"
+      :tabTitles="[
+        'My personal recipes',
+        'My recipe links',
+        'Recipes shared with me'
+      ]"
       :activeTabIndexControl="activeTabIndex"
-      @switchTab="(index) => handleTabSwitch(index)"
+      @switchTab="index => handleTabSwitch(index)"
     >
-      <div class="container" v-if="activeTabIndex === 0 || activeTabIndex === 2">
+      <div
+        class="container"
+        v-if="activeTabIndex === 0 || activeTabIndex === 2"
+      >
         <recipes-filter
           class="margin-bottom--xlarge margin--auto"
           :recipes="recipesToBeFiltered"
@@ -44,9 +63,10 @@
       <div v-if="activeTabIndex === 1">
         <link-categories-filter
           v-if="userRecipeLinks.length"
-          @updateCategories="(event) => updateVisibleCategories(event)"
+          @updateCategories="event => updateVisibleCategories(event)"
         />
         <recipes-link-list
+          class="margin-top--xxlarge"
           :hiddenCategories="hiddenCategories"
           :links="userRecipeLinks"
           :emptyListMessage="emptyListMessage"

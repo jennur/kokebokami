@@ -57,7 +57,6 @@ export default {
     linkExactActiveClass: "active-link"
   },
   pageTransition: "fade",
-  serverMiddleware: ["~/api/index.js"],
   // Nuxt.js dev-modules
   buildModules: [
     [
