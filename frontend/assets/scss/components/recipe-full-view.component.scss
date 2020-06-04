@@ -32,14 +32,38 @@
   }
 
   &__instructions {
-    padding-left: $spacingLarge;
-
+    padding-left: $spacingSmall;
+    counter-reset: b;
     &-step {
-      margin-bottom: $spacingLarge;
-
+      list-style: none;
+      padding-bottom: $spacingXLarge;
+      padding-left: $spacingXXLarge;
+      position: relative;
       &::before {
+        counter-increment: b;
+        content: counter(b);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 20px;
+        height: 20px;
+        position: absolute;
+        left: 0;
+        top: 3px;
+        border-radius: $spacingMedium;
+        background-color: $blue;
+        font-size: 12px;
+        color: $cream;
+        z-index: 1;
+      }
+      &:not(:last-child)::after {
         content: "";
-        padding-right: $spacingSmall;
+        border-left: 1px dotted $blue;
+        height: 100%;
+        position: absolute;
+        top: $spacingLarge;
+        left: 10px;
+        z-index: 0;
       }
     }
   }
