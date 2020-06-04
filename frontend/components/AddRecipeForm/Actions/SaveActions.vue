@@ -5,21 +5,17 @@
         v-if="!deleted"
         class="flex-row flex-row--align-center flex-row--justify-center"
       >
-        <div
-          class="margin-top--xlarge margin-right--xlarge margin-bottom--xlarge"
+        <button
+          v-if="editMode"
+          @click="
+            () => {
+              this.$emit('deleteRecipe');
+            }
+          "
+          class="delete-button button button--small button--red-border"
         >
-          <button
-            v-if="editMode"
-            @click="
-              () => {
-                this.$emit('deleteRecipe');
-              }
-            "
-            class="button button--small button--red-border"
-          >
-            Delete recipe
-          </button>
-        </div>
+          Delete recipe
+        </button>
 
         <button
           @click="
@@ -27,7 +23,7 @@
               this.$emit('save');
             }
           "
-          class="button button--small"
+          class="save-button button button--small"
         >
           Save recipe
         </button>
@@ -37,7 +33,7 @@
               this.$emit('cancel');
             }
           "
-          class="button button--small button--cancel margin--large"
+          class="cancel-button button button--small button--cancel"
         >
           ✕ Cancel
         </button>

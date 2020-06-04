@@ -1,10 +1,17 @@
 <template>
   <section class="container">
     <div v-for="category in categories" :key="`category-${category.title}`">
-      <div v-if="hiddenCategories.indexOf(category.title) === -1 && category.links.length">
-        <h3
+      <div
+        v-if="
+          hiddenCategories.indexOf(category.title) === -1 &&
+            category.links.length
+        "
+      >
+        <h4
           class="recipe-link-list__headline margin-bottom--medium margin-left--small"
-        >{{category && category.title}}</h3>
+        >
+          {{ category && category.title }}
+        </h4>
         <div class="recipe-link-list">
           <recipe-link
             v-for="(link, index) in category.links"
@@ -14,12 +21,17 @@
         </div>
       </div>
     </div>
-    <div v-if="!links.length" class="container container--center margin-bottom--xxlarge">
-      {{emptyListMessage}}
+    <div
+      v-if="!links.length"
+      class="container container--center margin-bottom--xxlarge"
+    >
+      {{ emptyListMessage }}
       <button
         class="button button--transparent margin-top--xxlarge"
         @click="$emit('openForm')"
-      >Add recipe to this list</button>
+      >
+        Add recipe to this list
+      </button>
     </div>
   </section>
 </template>

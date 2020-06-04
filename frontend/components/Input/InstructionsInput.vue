@@ -1,5 +1,5 @@
 <template>
-  <fieldset id="instructionList" class="flex-column margin-bottom--xxlarge">
+  <fieldset id="instructionList" class="flex-column margin-vertical--xxlarge">
     <h4>Instructions</h4>
     <ol class="add-recipe-form__instructions">
       <li
@@ -24,7 +24,11 @@
       </li>
     </ol>
     <increment-button
-      class="margin-top--large"
+      :class="
+        `margin-top--large ${
+          instructionNumbers.length ? 'margin-left--xxlarge' : ''
+        }`
+      "
       @increment="incrementInstructionNumber"
       >Add step</increment-button
     >

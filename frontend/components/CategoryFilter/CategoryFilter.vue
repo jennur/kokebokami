@@ -1,12 +1,20 @@
 <template>
   <fieldset
     class="categories-container"
-    :class="{'categories-container--transparent': transparent}"
+    :class="{ 'categories-container--transparent': transparent }"
   >
-    <language-input :existingLanguage="language" @update="handleLanguage" />
-    <categories-input :existingCategories="categories" @update="handleMealCategory" />
-    <type-of-meal-input :existingTypeOfMeal="typeOfMeal" @update="handleTypeOfMeal" />
-    <free-from-input :existingFreeFrom="freeFrom" @update="handleFreeFrom" />
+    <div class="categories-wrap">
+      <language-input :existingLanguage="language" @update="handleLanguage" />
+      <categories-input
+        :existingCategories="categories"
+        @update="handleMealCategory"
+      />
+      <type-of-meal-input
+        :existingTypeOfMeal="typeOfMeal"
+        @update="handleTypeOfMeal"
+      />
+      <free-from-input :existingFreeFrom="freeFrom" @update="handleFreeFrom" />
+    </div>
   </fieldset>
 </template>
 <script>
