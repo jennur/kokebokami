@@ -43,7 +43,7 @@
 </template>
 
 <script>
-import { user } from "~/mixins/getCurrentUser.js";
+import user from "~/mixins/user.js";
 import BurgerIcon from "./BurgerMenu/BurgerIcon.vue";
 import ClickOutside from "vue-click-outside";
 export default {
@@ -61,17 +61,17 @@ export default {
       if (this.user !== null && this.user !== undefined) {
         menuItems = [
           {
-            link: "/account",
+            link: "/account/",
             name: "My account",
             img: this.user.photoURL
           },
-          { link: "/my-recipes", name: "My recipes" },
-          { link: "/cooks", name: "Discover cooks" }
+          { link: "/account/my-cookbook/", name: "My cookbook" },
+          { link: "/cooks/", name: "Discover cooks" }
         ];
       } else {
         menuItems = [
-          { link: "/sign-up", name: "Sign up" },
-          { link: "/login", name: "Log in" }
+          { link: "/sign-up/", name: "Sign up" },
+          { link: "/login/", name: "Log in" }
         ];
       }
       return menuItems;

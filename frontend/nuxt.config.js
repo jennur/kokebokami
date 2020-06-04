@@ -1,13 +1,36 @@
 require("dotenv").config();
+const axios = require("axios");
 
 export default {
-  mode: "spa",
+  mode: "universal",
   generate: {
-    fallback: true
+    fallback: true,
+    routes() {
+      return axios
+        .all([
+          axios.get(
+            `https://${process.env.PROJECT_ID}.firebaseio.com/recipes.json?auth=${process.env.DATABASE_SECRET}`
+          ),
+          axios.get(
+            `https://${process.env.PROJECT_ID}.firebaseio.com/users.json?auth=${process.env.DATABASE_SECRET}`
+          )
+        ])
+        .then(
+          axios.spread((recipes, users) => {
+            recipes = Object.keys(recipes.data).map(key => {
+              return `/recipes/${key}`;
+            });
+            users = Object.keys(users.data).map(key => {
+              return `/cooks/${key}`;
+            });
+            return recipes.concat(users);
+          })
+        )
+        .catch(error => console.log("Error generating routes:", error));
+    }
   },
-  /*
-   ** Headers of the page
-   */
+
+  // Headers of the page
   head: {
     title: "Kokebokami",
     meta: [
@@ -19,123 +42,22 @@ export default {
         content: process.env.npm_package_description || ""
       }
     ],
-    link: [
-      { rel: "icon", type: "image/png", href: "/favicon.png" },
-      {
-        rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css?family=Roboto&display=swap"
-      }
-    ]
+    link: [{ rel: "icon", type: "image/png", href: "/favicon.png" }]
   },
-  /*
-   ** Customize the progress-bar color
-   */
+
+  // Customize the progress-bar color
   loading: { color: "#ff7300" },
-  /*
-   ** Global CSS
-   */
+
+  // Global CSS
   css: ["~/assets/scss/main.scss"],
-  /*
-   ** Plugins to load before mounting the App
-   */
-  plugins: [
-    "~/plugins/globalComponents.js",
-    "~/plugins/firebase.js",
-    "~/plugins/fireauth.js"
-  ],
+  plugins: ["~/plugins/globalComponents.js", "~/plugins/router-auth.client.js"],
 
   router: {
     middleware: "router-auth",
-    linkExactActiveClass: "active-link",
-    routes: [
-      {
-        name: "index",
-        path: "/",
-        component: "pages/index.vue"
-      },
-      {
-        name: "recipes",
-        path: "/recipes",
-        component: "pages/recipes/index.vue",
-        children: [
-          {
-            name: "recipe",
-            path: "/recipes/:recipeid?",
-            component: "pages/recipes/_recipeid.vue"
-          }
-        ]
-      },
-      {
-        name: "cooks",
-        path: "/cooks",
-        component: "pages/cooks/index.vue",
-        children: [
-          {
-            name: "cook",
-            path: "/cooks/:userid?",
-            component: "pages/cooks/_userid.vue"
-          }
-        ]
-      },
-      {
-        name: "login",
-        path: "/login",
-        component: "pages/login.vue"
-      },
-      { name: "sign-up", path: "/sign-up", component: "pages/sign-up.vue" },
-      {
-        name: "account",
-        path: "/account",
-        component: "pages/account/index.vue",
-        children: [
-          {
-            name: "add-recipe",
-            path: "/account/add-recipe",
-            component: "pages/account/add-recipe.vue"
-          },
-          {
-            name: "public-profile-view",
-            path: "/account/public-profile-view",
-            component: "pages/account/public-profile-view.vue"
-          },
-          {
-            name: "goodbye",
-            path: "/account/goodbye",
-            component: "pages/account/goodbye.vue"
-          }
-        ]
-      },
-      {
-        name: "my-recipes",
-        path: "/my-recipes",
-        component: "pages/my-recipes.vue"
-      },
-      {
-        name: "verify-email",
-        path: "/verify-email",
-        component: "pages/verify-email.vue"
-      },
-      {
-        name: "privacy-policy",
-        path: "/privacy-policy",
-        component: "pages/privacy-policy.vue"
-      },
-      {
-        name: "cookies-policy",
-        path: "/cookies-policy",
-        component: "pages/cookies-policy.vue"
-      },
-      {
-        name: "terms-and-conditions",
-        path: "/terms-and-conditions",
-        component: "pages/terms-and-conditions.vue"
-      }
-    ]
+    linkExactActiveClass: "active-link"
   },
-
-  /*
-   ** Nuxt.js dev-modules
-   */
+  pageTransition: "fade",
+  // Nuxt.js dev-modules
   buildModules: [
     [
       "@nuxtjs/google-gtag",
@@ -150,47 +72,61 @@ export default {
       }
     ]
   ],
-  /*
-   ** Nuxt.js modules
-   */
+
+  // Nuxt.js modules
   modules: [
-    ["nuxt-svg-loader", "@nuxtjs/dotenv", "@nuxtjs/svg", "@nuxtjs/pwa"],
-    [
-      "@nuxtjs/sitemap",
-      {
-        path: "/sitemap.xml",
-        generate: false
-      }
-    ],
-    [
-      "nuxt-fontawesome",
-      {
-        component: "fa",
-        imports: [
-          {
-            set: "@fortawesome/free-brands-svg-icons",
-            icons: ["fab"]
-          }
-        ]
-      }
-    ]
+    "@nuxtjs/firebase",
+    "@nuxtjs/axios",
+    "@nuxtjs/pwa",
+    "nuxt-svg-loader",
+    "@nuxtjs/dotenv",
+    "@nuxtjs/sitemap",
+    "nuxt-fontawesome"
   ],
+  firebase: {
+    config: {
+      apiKey: process.env.API_KEY,
+      authDomain: process.env.AUTH_DOMAIN,
+      databaseURL: process.env.DATABASE_URL,
+      projectId: process.env.PROJECT_ID,
+      storageBucket: process.env.STORAGE_BUCKET,
+      messagingSenderId: process.env.MESSAGING_SENDER_ID,
+      appId: process.env.APP_ID,
+      measurementId: process.env.MEASUREMENT_ID
+    },
+    services: {
+      auth: {
+        persistence: "local",
+
+        // it is recommended to configure either a mutation or action but you can set both
+        initialize: {
+          onAuthStateChangedAction: "ON_AUTH_STATE_CHANGED"
+        },
+        ssr: false
+      },
+      realtimeDb: true
+    }
+  },
+  pwa: {},
   sitemap: {
+    path: "/sitemap.xml",
+    generate: false,
     hostname: "https://kokebokami.com",
     gzip: true,
     exclude: ["/account", "/account/**", "/recipes"],
     routes: ["/", "/login", "/sign-up", "/cookies-policy"]
   },
+  fontawesome: {
+    component: "fa",
+    imports: [
+      {
+        set: "@fortawesome/free-brands-svg-icons",
+        icons: ["fab"]
+      }
+    ]
+  },
   env: {
     baseURL: process.env.BASE_URL || "http://localhost:3000",
-    apiKey: process.env.API_KEY,
-    authDomain: process.env.AUTH_DOMAIN,
-    databaseURL: process.env.DATABASE_URL,
-    projectId: process.env.PROJECT_ID,
-    storageBucket: process.env.STORAGE_BUCKET,
-    messagingSenderId: process.env.MESSAGING_SENDER_ID,
-    appId: process.env.APP_ID,
-    measurementId: process.env.MEASUREMENT_ID,
     privateKeyId: process.env.PRIVATE_KEY_ID,
     privateKey: process.env.PRIVATE_KEY,
     clientEmail: process.env.CLIENT_EMAIL,
@@ -200,18 +136,18 @@ export default {
     authProviderCertURL: process.env.AUTH_PROVIDER_CERT_URL,
     clientCertURL: process.env.CLIENT_CERT_URL
   },
-  /*
-   ** Build configuration
-   */
+
+  // Build configuration
   build: {
-    /*
-     ** You can extend webpack config here
-     */
+    // You can extend webpack config here
     extend(config, ctx) {
       config.node = {
-        fs: "empty"
+        fs: "empty",
+        child_process: "empty",
+        net: "empty",
+        tls: "empty",
+        dns: "empty"
       };
     }
-  },
-  pwa: {}
+  }
 };

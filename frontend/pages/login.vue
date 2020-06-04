@@ -1,9 +1,13 @@
 <template>
   <div class="container container--center">
-    <loading-splash v-if="loading" />
+    <div v-if="loading">
+      <loading-splash />
+    </div>
     <div v-else class="flex-center-container margin--auto">
       <login-container class="flex-order--tablet-two" />
-      <kokebokapen class="illustration illustration--kokebokapen flex-order--tablet-one" />
+      <kokebokapen
+        class="illustration illustration--kokebokapen flex-order--tablet-one"
+      />
     </div>
   </div>
 </template>
@@ -12,7 +16,7 @@
 import kokebokapen from "~/assets/graphics/kokebokapen.svg";
 import LoadingSplash from "~/components/Login/LoadingSplash.vue";
 import LoginContainer from "~/components/Login/LoginContainer.vue";
-import { user } from "~/mixins/getCurrentUser.js";
+import user from "~/mixins/user.js";
 
 export default {
   name: "Login",

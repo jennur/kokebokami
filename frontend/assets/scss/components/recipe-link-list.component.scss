@@ -1,0 +1,13 @@
+.recipe-link-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  width: 100%;
+  box-sizing: border-box;
+  margin-bottom: $spacingXXLarge;
+
+  &__headline {
+    font-family: $bodyFont;
+    color: $blue;
+  }
+}

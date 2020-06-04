@@ -30,6 +30,9 @@
         background-color: rgba($orange, 0.08);
         box-sizing: border-box;
         border-radius: $spacingSmall;
+        &--transparent {
+          background-color: transparent;
+        }
       }
 
       display: inline-block;

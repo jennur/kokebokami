@@ -1,8 +1,61 @@
+.add-recipe {
+  position: relative;
+  width: 100%;
+  max-width: 300px;
+  &-dropdown {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    max-width: 300px;
+    border-radius: $spacingSmall;
+    background-color: $cream;
+    position: absolute;
+    top: 100px;
+    z-index: 3;
+    border: 2px solid $blue;
+    box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.3);
+
+    &::after {
+      content: "";
+      display: block;
+      width: $spacingLarge;
+      height: $spacingLarge;
+      border-left: 2px solid $blue;
+      border-top: 2px solid $blue;
+      background-color: $cream;
+      position: absolute;
+      top: -12px;
+      transform: rotate(45deg);
+    }
+
+    &__link {
+      display: block;
+      border: 0px;
+      background-color: transparent;
+      color: $blue;
+      font-size: $fontSizeMedium;
+      width: 100%;
+      z-index: 4;
+      padding: $spacingLarge 0px;
+      transition: background-color 0.1s;
+      &:first-child {
+        border-bottom: 1px dotted $blue;
+      }
+      &:hover {
+        text-decoration: none;
+        background-color: $blue;
+        color: $cream;
+        cursor: pointer;
+      }
+    }
+  }
+}
 .add-recipe-form {
   display: block;
   width: 100%;
   text-align: left;
-
   &__title,
   &__ingredient,
   &__description,
@@ -31,6 +84,8 @@
     resize: none;
     font-size: $fontSizeLargeMobile;
     color: $blue;
+    font-family: $bodyFont;
+
     @media screen and (min-width: $tabletWidth) {
       font-size: $fontSizeLarge;
     }
@@ -40,6 +95,7 @@
     display: inline-block;
     position: relative;
     height: $spacingXXLarge;
+    width: max-content;
     border: none;
     border-radius: $spacingLarge;
     padding: 0px $spacingLarge 0px $spacingXLarge;
@@ -86,7 +142,11 @@
   &__instruction {
     width: 100%;
     height: 120px;
-
+    font-family: $bodyFont;
     resize: none;
+  }
+
+  &--url {
+    width: 360px;
   }
 }

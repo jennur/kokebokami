@@ -2,37 +2,45 @@
   <div>
     <breadcrumbs class="margin-bottom--large" :routes="breadcrumbs" />
     <div class="tablet-width margin-top--xxlarge margin--auto">
-      <recipe-full-view
-        :recipe="recipe"
-        :recipeKey="recipeKey"
-        :isRecipeOwner="isRecipeOwner"
-      />
-      <comments
-        class="mobile-width margin--auto margin-top--xlarge"
-        :path="path"
-      />
+      <expand-transition :show="recipeLoaded">
+        <recipe-full-view
+          :recipe="recipe"
+          :recipeKey="recipeKey"
+          :isRecipeOwner="isRecipeOwner"
+          @update="handleUpdate"
+        />
+
+        <comments
+          class="mobile-width margin--auto margin-top--xlarge"
+          :path="path"
+        />
+      </expand-transition>
     </div>
   </div>
 </template>
 
 <script>
+import user from "~/mixins/user.js";
+import allUsers from "~/mixins/allUsers.js";
+import allRecipes from "~/mixins/allRecipes.js";
+
 import RecipeFullView from "~/components/Recipes/RecipeFullView/RecipeFullView.vue";
 import Comments from "~/components/Comments/Comments.vue";
-
-import { user } from "~/mixins/getCurrentUser.js";
+import ExpandTransition from "~/components/Transitions/Expand.vue";
 
 export default {
   name: "recipe",
-  components: { RecipeFullView, Comments },
+  components: { RecipeFullView, Comments, ExpandTransition },
   data() {
     return {
       isRecipeOwner: false,
-      recipeOwnerUsername: null
+      recipeOwnerUsername: null,
+      recipeLoaded: false
     };
   },
   head() {
     return {
-      title: `Kokebokami | ${this.recipe.title}`,
+      title: `${this.recipe.title} | Kokebokami`,
       link: [
         {
           rel: "canonical",
@@ -41,7 +49,7 @@ export default {
       ]
     };
   },
-  mixins: [user],
+  mixins: [user, allUsers, allRecipes],
   computed: {
     path() {
       return this.$route.path;
@@ -50,30 +58,25 @@ export default {
       return this.$route.params.recipeid;
     },
     recipe() {
-      let userRecipes = this.$store.state.recipes;
-      let sharedRecipes = this.$store.state.sharedRecipes;
-      let publicRecipes = this.$store.state.publicRecipes;
-      let allAvailableRecipes = userRecipes
-        .concat(sharedRecipes)
-        .concat(publicRecipes);
-
-      let currentRecipe = allAvailableRecipes.filter(recipe => {
-        let recipeCheck = recipe[0] === this.recipeKey;
-        if (recipeCheck) {
-          this.recipeOwnerID = recipe[1].ownerID;
-          this.isRecipeOwner = recipe[1].ownerID === this.user.id;
-        }
-        return recipeCheck;
+      let allRecipes = this.allRecipes;
+      let currentRecipe = allRecipes.filter(recipe => {
+        return recipe[0] === this.recipeKey;
       });
-      return currentRecipe.length ? currentRecipe[0][1] : {};
+      if (currentRecipe.length) {
+        this.isRecipeOwner = currentRecipe[0][1].ownerID === this.user.id;
+        this.recipeLoaded = true;
+        return currentRecipe[0][1];
+      }
+      return {};
     },
     recipeOwner() {
-      let users = this.$store.state.allUsers;
-      if (users) {
-        return users.find(user => {
+      let users = this.allUsers;
+      return (
+        users &&
+        users.find(user => {
           return user[0] === this.recipe.ownerID;
-        });
-      }
+        })
+      );
     },
     breadcrumbs() {
       let recipeOwnerUsername = this.recipeOwner
@@ -83,10 +86,10 @@ export default {
       if (this.recipe && !this.isRecipeOwner) {
         return [
           { name: "Home", link: "/" },
-          { name: "Cooks", link: "/cooks" },
+          { name: "Cooks", link: "/cooks/" },
           {
             name: recipeOwnerUsername,
-            link: `/cooks/${this.recipe.ownerID}`
+            link: `/cooks/${this.recipe.ownerID}/`
           },
           { name: this.recipe.title }
         ];
@@ -94,12 +97,17 @@ export default {
         return [
           { name: "Home", link: "/" },
           {
-            name: "My recipes",
-            link: "/my-recipes"
+            name: "My cookbook",
+            link: "/account/my-cookbook/"
           },
           { name: this.recipe.title }
         ];
       }
+    }
+  },
+  methods: {
+    handleUpdate() {
+      this.getAllRecipes();
     }
   }
 };

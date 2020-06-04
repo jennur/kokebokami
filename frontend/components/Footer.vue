@@ -9,7 +9,7 @@
           >
             <fa
               :icon="['fab', 'facebook-square']"
-              style="font-size: 30px; margin-right: 10px;"
+              style="font-size: 25px; margin-right: 10px;"
             />
             Follow us on Facebook
           </a>
@@ -21,10 +21,13 @@
       </ul>
       <ul class="footer__nav margin-horizontal--large">
         <li>
-          <nuxt-link to="/about">About</nuxt-link>
+          <nuxt-link to="/about/">About</nuxt-link>
         </li>
         <li>
-          <nuxt-link to="/privacy-policy">Privacy policy</nuxt-link>
+          <nuxt-link to="/privacy-policy/">Privacy policy</nuxt-link>
+        </li>
+        <li>
+          <nuxt-link to="/cookies-policy/">Cookies policy</nuxt-link>
         </li>
       </ul>
     </div>

@@ -99,7 +99,7 @@
     }
   }
   &--xsmall {
-    height: 35px;
+    height: 33px;
     width: max-content;
     padding: 0px $spacingMedium;
     font-size: $fontSizeSmall;
@@ -128,7 +128,7 @@
   }
 
   &--cancel {
-    width: auto;
+    width: 125px;
     padding: 0px $spacingXLarge;
     background-color: transparent;
     color: $pink;

@@ -10,7 +10,9 @@
 </template>
 
 <script>
-import { user } from "~/mixins/getCurrentUser.js";
+import user from "~/mixins/user.js";
+import publicRecipes from "~/mixins/publicRecipes.js";
+
 import ProfileView from "~/components/ProfileView.vue";
 import RecipesList from "~/components/Recipes/RecipesList";
 
@@ -22,15 +24,15 @@ export default {
       type: Array,
       default: () => [
         { name: "Home", link: "/" },
-        { name: "My account", link: "/account" },
+        { name: "My account", link: "/account/" },
         { name: "My public profile" }
       ]
     }
   },
-  mixins: [user],
+  mixins: [user, publicRecipes],
   computed: {
     currentUsersPublicRecipes() {
-      let publicRecipes = this.$store.state.publicRecipes;
+      let publicRecipes = this.publicRecipes;
       let currentUsersPublicRecipes = publicRecipes.filter(recipe => {
         return recipe[1].ownerID === this.user.id;
       });

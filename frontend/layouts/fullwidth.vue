@@ -1,20 +1,25 @@
 <template>
   <div>
     <header-component />
-    <div class="full-width margin--auto">
+    <main class="full-width margin--auto">
       <nuxt />
-    </div>
+    </main>
     <footer-component />
-    <cookie-consent />
-    <script id="dsq-count-scr" src="//kokebokami.disqus.com/count.js" async></script>
+    <script
+      id="dsq-count-scr"
+      src="//kokebokami.disqus.com/count.js"
+      async
+    ></script>
+    <scroll-button />
   </div>
 </template>
 <script>
-import CookieConsent from "~/components/CookieConsent.vue";
+import ScrollButton from "~/components/ScrollButton.vue";
+
 export default {
   name: "fullwidth",
   components: {
-    CookieConsent
+    ScrollButton
   }
 };
 </script>

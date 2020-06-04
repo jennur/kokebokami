@@ -1,14 +1,11 @@
 <template>
-  <fieldset class="categories-container">
+  <fieldset
+    class="categories-container"
+    :class="{'categories-container--transparent': transparent}"
+  >
     <language-input :existingLanguage="language" @update="handleLanguage" />
-    <categories-input
-      :existingCategories="categories"
-      @update="handleMealCategory"
-    />
-    <type-of-meal-input
-      :existingTypeOfMeal="typeOfMeal"
-      @update="handleTypeOfMeal"
-    />
+    <categories-input :existingCategories="categories" @update="handleMealCategory" />
+    <type-of-meal-input :existingTypeOfMeal="typeOfMeal" @update="handleTypeOfMeal" />
     <free-from-input :existingFreeFrom="freeFrom" @update="handleFreeFrom" />
   </fieldset>
 </template>
@@ -30,14 +27,19 @@ export default {
     existingCategories: {
       type: Object,
       default: () => {}
+    },
+    transparent: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
+    let existingCategories = this.existingCategories;
     return {
-      categories: [],
-      typeOfMeal: [],
-      language: "",
-      freeFrom: [],
+      categories: (existingCategories && existingCategories.categories) || [],
+      typeOfMeal: (existingCategories && existingCategories.typeOfMeal) || [],
+      language: (existingCategories && existingCategories.language) || "",
+      freeFrom: (existingCategories && existingCategories.freeFrom) || [],
       filteredCategories: []
     };
   },
@@ -66,14 +68,6 @@ export default {
     },
     handleFreeFrom(category) {
       this.$emit("setFreeFrom", category);
-    }
-  },
-  created() {
-    if (this.existingCategories) {
-      this.categories = this.existingCategories.categories;
-      this.language = this.existingCategories.language;
-      this.freeFrom = this.existingCategories.freeFrom;
-      this.typeOfMeal = this.existingCategories.typeOfMeal;
     }
   }
 };

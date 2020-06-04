@@ -1,21 +1,20 @@
 <template>
   <div>
     <header-component />
-    <div class="tablet-width margin--auto padding-horizontal--large">
+    <main class="tablet-width margin--auto padding-horizontal--large">
       <nuxt />
-    </div>
+    </main>
     <footer-component />
-    <cookie-consent />
+    <scroll-button />
   </div>
 </template>
 <script>
-import CookieConsent from "~/components/CookieConsent.vue";
+import ScrollButton from "~/components/ScrollButton.vue";
+
 export default {
   name: "default-layout",
   components: {
-    CookieConsent
+    ScrollButton
   }
 };
 </script>
-
-

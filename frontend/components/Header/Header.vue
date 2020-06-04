@@ -1,10 +1,10 @@
 <template>
-  <div>
+  <header>
     <div class="header--space-reserver"></div>
     <div :class="`header ${scrollDown ? '' : 'header--open'}`">
       <navigation @toggleMenu="handleMenu" />
     </div>
-  </div>
+  </header>
 </template>
 
 <script>
@@ -22,7 +22,7 @@ export default {
       this.menuOpen = status;
     },
     handleScroll() {
-      let currentScrollValue = window.pageYOffset;
+      let currentScrollValue = process.browser && window.pageYOffset;
       if (
         currentScrollValue > 0 &&
         currentScrollValue > this.previousScrollValue
@@ -37,8 +37,12 @@ export default {
       }
     }
   },
-  created() {
-    window.addEventListener("scroll", this.handleScroll);
+  mounted() {
+    if (process.browser) window.addEventListener("scroll", this.handleScroll);
+  },
+  destroyed() {
+    if (process.browser)
+      window.removeEventListener("scroll", this.handleScroll);
   }
 };
 </script>

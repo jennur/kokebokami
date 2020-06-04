@@ -1,46 +1,38 @@
 <template>
-  <section
-    :class="'kokebokami-login ' + (open ? 'kokebokami-login--open' : '')"
-  >
-    <div class="kokebokami-login-modal">
-      <button
-        @click="() => this.$emit('toggle')"
-        class="remove-icon kokebokami-login-modal--close"
-      ></button>
-      <form class="kokebokami-login-modal-form" v-on:submit.prevent>
-        <label>
-          E-mail
-          <input type="text" autocomplete="email" v-model="email" required />
-        </label>
-        <label>
-          Password
-          <input
-            type="password"
-            autocomplete="password"
-            v-model="password"
-            required
-          />
-        </label>
+  <section :class="'kokebokami-login ' + (open ? 'kokebokami-login--open' : '')">
+    <transition name="pop-modal">
+      <div v-if="open" class="kokebokami-login-modal">
         <button
-          @click="kokebokamiSignIn"
-          class="button button--small button--green margin-top--large"
-        >
-          Log in
-        </button>
-        <div class="system-message system-message--dark-bg margin-top--medium">
-          {{ systemMessage }}
-        </div>
-        <div class="kokebokami-login-modal-signup margin-top--large">
-          Don't already have an account?
-          <nuxt-link to="/sign-up">Sign up</nuxt-link>
-        </div>
-      </form>
-    </div>
+          @click="() => this.$emit('toggle')"
+          class="remove-icon kokebokami-login-modal--close"
+        ></button>
+        <form class="kokebokami-login-modal-form" v-on:submit.prevent>
+          <fieldset>
+            <label>
+              E-mail
+              <input type="text" autocomplete="email" v-model="email" required />
+            </label>
+            <label>
+              Password
+              <input type="password" autocomplete="password" v-model="password" required />
+            </label>
+          </fieldset>
+          <button
+            @click="kokebokamiSignIn"
+            class="button button--small button--green margin-top--large"
+          >Log in</button>
+          <div class="system-message system-message--dark-bg margin-top--medium">{{ systemMessage }}</div>
+          <div class="kokebokami-login-modal-signup margin-top--large">
+            Don't already have an account?
+            <nuxt-link to="/sign-up/">Sign up</nuxt-link>
+          </div>
+        </form>
+      </div>
+    </transition>
   </section>
 </template>
 <script>
-import { user } from "~/mixins/getCurrentUser.js";
-import { auth, db } from "~/plugins/firebase.js";
+import user from "~/mixins/user.js";
 
 export default {
   name: "kokebokami-login",
@@ -55,27 +47,19 @@ export default {
   },
   methods: {
     kokebokamiSignIn() {
-      const realThis = this;
-      auth
-        .signInWithEmailAndPassword(this.email, this.password)
-        .then(response => {
-          var displayName = "";
-
-          if (response.user !== null) {
-            db.ref("users/" + response.user.uid).on("value", snapshot => {
-              displayName = snapshot.val().displayName;
-              let user = {
-                id: response.user.uid,
-                name: displayName
-              };
-              realThis.$store.dispatch("SET_USER", user);
-            });
-          }
-        })
-        .catch(error => {
-          console.log("Error signing in: " + error);
-          realThis.systemMessage = "Email and password do not match";
-        });
+      const componentThis = this;
+      try {
+        this.$router.push("/login?loading");
+        this.$fireAuth
+          .signInWithEmailAndPassword(this.email, this.password)
+          .catch(error => {
+            this.$store.dispatch("SET_LOGIN_MESSAGE", error.message);
+          });
+        console.log("Logging in with firebase");
+      } catch (error) {
+        console.log("Error signing in:", error);
+        this.$store.dispatch("SET_LOGIN_MESSAGE", error.message);
+      }
     }
   }
 };

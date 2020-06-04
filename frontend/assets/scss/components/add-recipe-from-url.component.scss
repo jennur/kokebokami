@@ -1,0 +1,97 @@
+.add-recipe-from-url {
+  display: block;
+  width: 100%;
+  background-color: rgba($green, 0.1);
+  &__heading {
+    font-family: $headingFont;
+    color: $blue;
+  }
+  .form {
+    text-align: left;
+    max-width: 400px;
+    fieldset {
+      position: relative;
+    }
+    label {
+      margin-top: $spacingMedium;
+      margin-bottom: $spacingXSmall;
+      color: $blue;
+      font-size: $fontSizeSmall;
+    }
+    .select {
+      width: 195px;
+      &__dropdown {
+        width: 205px;
+      }
+    }
+
+    &__category {
+      width: 100%;
+      max-width: 170px;
+      &-btn {
+        margin-top: $spacingSmall;
+        @media screen and (min-width: $mobileWidth) {
+          margin-top: 0px;
+        }
+      }
+    }
+    & input[type="text"],
+    & input[type="url"] {
+      height: 35px;
+      font-size: $fontSizeMedium;
+      border: 2px solid $green;
+      border-radius: $spacingSmall;
+      caret-color: $blue;
+      background-color: $cream;
+      padding-left: $spacingMedium;
+      font-family: $bodyFont;
+      &:focus {
+        border: 2px solid $blue;
+      }
+    }
+    textarea {
+      border: 2px solid $green;
+      border-radius: $spacingSmall;
+      background-color: $cream;
+      padding-left: $spacingMedium;
+      resize: none;
+      width: 100%;
+      height: 80px;
+      font-family: $bodyFont;
+    }
+    &__url {
+      width: 100%;
+      max-width: 100%;
+      position: relative;
+    }
+    &--required {
+      color: $pink;
+      position: absolute;
+      right: -$spacingLarge;
+      bottom: $spacingSmall;
+    }
+    &__category {
+      margin-top: $spacingSmall;
+      @media screen and(min-width: $mobileWidth) {
+        margin-top: 0px;
+      }
+    }
+    &__submit {
+      display: inline-block;
+      height: 40px;
+      width: 70px;
+      background-color: $green;
+      color: $blue;
+      border-radius: $spacingSmall;
+      z-index: 2;
+      &:hover {
+        background-color: $blue;
+        padding: 0px;
+        border: 2px solid $green;
+        border-radius: $spacingSmall;
+        color: $green;
+        cursor: pointer;
+      }
+    }
+  }
+}

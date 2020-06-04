@@ -1,6 +1,6 @@
 .footer {
   border-top: 2px solid $green;
-  //background-color: lighten($orange, 35%);
+
   &__nav {
     list-style: none;
     padding: 0px;
@@ -9,8 +9,5 @@
     & li {
       margin-bottom: $spacingMedium;
     }
-  }
-
-  &__copyright {
   }
 }

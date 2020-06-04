@@ -6,27 +6,31 @@
 </template>
 
 <script>
+import userRecipes from "~/mixins/userRecipes.js";
 import AddRecipeForm from "~/components/AddRecipeForm/AddRecipeForm.vue";
 
 export default {
-  name: "recipe",
+  name: "addRecipe",
   components: { AddRecipeForm },
   props: {
     breadcrumbs: {
       type: Array,
       default: () => [
         { name: "Home", link: "/" },
-        { name: "My recipes", link: "/my-recipes" },
+        { name: "My cookbook", link: "/account/my-cookbook/" },
         { name: "Add recipe" }
       ]
     }
   },
   computed: {
     recipe() {
-      let recipes = this.$store.state.recipes;
-      return recipes.find(recipe => {
-        return recipe.id === this.$route.params.recipeid;
-      });
+      let recipes = this.userRecipes;
+      return (
+        recipes &&
+        recipes.find(recipe => {
+          return recipe.id === this.$route.params.recipeid;
+        })
+      );
     }
   }
 };

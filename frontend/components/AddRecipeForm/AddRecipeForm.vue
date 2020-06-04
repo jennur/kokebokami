@@ -3,6 +3,7 @@
     <form v-on:submit.prevent>
       <div class="recipes-filter__form">
         <category-filter
+          :transparent="true"
           :existingCategories="{ language, typeOfMeal, categories, freeFrom }"
           @setLanguage="updateLanguage"
           @setTypeOfMeal="updateTypeOfMeal"
@@ -23,18 +24,24 @@
         </fieldset>
 
         <!-- INGREDIENTS -->
-        <ingredients-input :existingIngredients="existingRecipe ? existingRecipe.ingredients : []" />
+        <ingredients-input
+          :existingIngredients="
+            existingRecipe ? existingRecipe.ingredients : []
+          "
+        />
 
         <!-- INSTRUCTIONS -->
         <instructions-input
-          :existingInstructions="existingRecipe ? existingRecipe.instructions : []"
+          :existingInstructions="
+            existingRecipe ? existingRecipe.instructions : []
+          "
         />
 
         <!-- PUBLIC CHECK -->
         <fieldset class="container">
-          <label>
-            <input type="checkbox" id="publicCheck" v-model="publicCheck" /> Make
-            recipe public (share with all users of Kokebokami)
+          <label class="flex-row flex-row--align-center">
+            <input type="checkbox" id="publicCheck" v-model="publicCheck" />
+            <span class="margin-left--small">Make recipe public (share with all users of Kokebokami)</span>
           </label>
         </fieldset>
 
@@ -55,8 +62,7 @@
 </template>
 
 <script>
-import { user } from "~/mixins/getCurrentUser.js";
-import { db } from "~/plugins/firebase.js";
+import user from "~/mixins/user.js";
 import CategoryFilter from "~/components/CategoryFilter/CategoryFilter.vue";
 import DescriptionInput from "~/components/Input/DescriptionInput.vue";
 
@@ -75,40 +81,26 @@ export default {
     SaveActions,
     TitleInput
   },
-  mixins: [user],
-  data() {
-    return {
-      categories: [],
-      deleted: false,
-      description: "",
-      freeFrom: [],
-      typeOfMeal: [],
-      language: "",
-      publicCheck: false,
-      recipeKey: "",
-      systemMessage: "",
-      saved: false,
-      title: ""
-    };
-  },
   props: {
     existingRecipe: { type: Object, default: () => null },
     editMode: { type: Boolean, default: false }
   },
-  created: function() {
-    let recipeKey = this.$route.params.recipeid;
-    if (this.existingRecipe !== null && recipeKey !== undefined) {
-      this.recipeKey = recipeKey;
-      let recipe = this.existingRecipe;
-      if (recipe.title !== undefined) this.title = recipe.title;
-      if (recipe.description !== undefined)
-        this.description = recipe.description;
-      if (recipe.public !== undefined) this.publicCheck = recipe.public;
-      if (recipe.language !== undefined) this.language = recipe.language;
-      if (recipe.categories !== undefined) this.categories = recipe.categories;
-      if (recipe.freeFrom !== undefined) this.freeFrom = recipe.freeFrom;
-      if (recipe.typeOfMeal !== undefined) this.typeOfMeal = recipe.typeOfMeal;
-    }
+  mixins: [user],
+  data() {
+    let existingRecipe = this.existingRecipe;
+    return {
+      recipeKey: this.$route.params.recipeid || "",
+      title: (existingRecipe && existingRecipe.title) || "",
+      description: (existingRecipe && existingRecipe.description) || "",
+      language: (existingRecipe && existingRecipe.language) || "",
+      categories: (existingRecipe && existingRecipe.categories) || [],
+      freeFrom: (existingRecipe && existingRecipe.freeFrom) || [],
+      typeOfMeal: (existingRecipe && existingRecipe.typeOfMeal) || [],
+      publicCheck: (existingRecipe && existingRecipe.public) || false,
+      systemMessage: "",
+      saved: false,
+      deleted: false
+    };
   },
   methods: {
     updateLanguage(language) {
@@ -129,7 +121,7 @@ export default {
         ? "Are you sure you want to discard the changes?"
         : "Are you sure you want to discard your new recipe?";
       if (!this.editMode && confirm(confirmText)) {
-        this.$router.push("/my-recipes");
+        this.$router.push("/account/my-cookbook/");
       } else if (this.editMode && confirm(confirmText)) {
         this.$emit("exitEditMode");
       }
@@ -140,17 +132,17 @@ export default {
           "Are you sure you want to delete this recipe? This operation cannot be undone."
         )
       ) {
-        const recipeRef = db.ref("recipes/" + this.recipeKey);
+        const recipeRef = this.$fireDb.ref("recipes/" + this.recipeKey);
         recipeRef
           .remove()
           .then(() => {
-            this.$store.dispatch("SET_USER_RECIPES", this.user);
+            //this.$store.dispatch("SET_USER_RECIPES", this.user);
             this.systemMessage = "Your recipe was deleted successfully!";
             this.deleted = true;
           })
           .catch(error => {
             this.systemMessage = error.message;
-            console.log("ERROR DELETING RECIPE::: " + error);
+            console.log("Error deleting recipe:", error);
           });
       }
     },
@@ -186,29 +178,27 @@ export default {
       };
 
       if (this.recipeKey !== "") {
-        const recipeRef = db.ref("recipes/" + this.recipeKey);
+        const recipeRef = this.$fireDb.ref("recipes/" + this.recipeKey);
         recipeRef
           .update(recipeObject)
           .then(() => {
-            this.$emit("exitEditMode");
-            this.$store.dispatch("SET_USER_RECIPES", this.user);
+            this.$emit("update");
           })
           .catch(error => {
             this.systemMessage = error.message;
-            console.log("ERROR SAVING RECIPE::: " + error);
+            console.log("Error saving recipe", error);
           });
       } else {
-        const recipes = db.ref("recipes");
+        const recipes = this.$fireDb.ref("recipes");
         const newRecipeKey = recipes.push(recipeObject).key;
 
         if (newRecipeKey !== null) {
-          this.$store.dispatch("SET_USER_RECIPES", this.user);
           this.systemMessage = "Your recipe was saved successfully!";
           this.saved = true;
           this.recipeKey = newRecipeKey;
         } else
           this.systemMessage =
-            "Unable to save recipe. Try again later or contact support if issue continues.";
+            "Unable to save recipe. Please try again later or contact us if the issue continues.";
       }
     }
   }

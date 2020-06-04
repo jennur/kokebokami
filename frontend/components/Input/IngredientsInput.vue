@@ -1,5 +1,8 @@
 <template>
-  <fieldset id="ingredientList" class="add-recipe-form__ingredients flex-column">
+  <fieldset
+    id="ingredientList"
+    class="add-recipe-form__ingredients flex-column"
+  >
     <h4>Ingredients</h4>
     <span
       class="flex-row flex-row--align-center margin-bottom--small"
@@ -19,16 +22,17 @@
       <decrement-button
         :data-ingredient-ref="number"
         @decrement="
-              event => {
-                removeIngredient(event.target);
-              }
-            "
+          event => {
+            removeIngredient(event.target);
+          }
+        "
       ></decrement-button>
     </span>
     <increment-button
       class="margin-top--large"
       @increment="incrementIngredientNumber"
-    >Add ingredient</increment-button>
+      >Add ingredient</increment-button
+    >
   </fieldset>
 </template>
 
@@ -67,7 +71,7 @@ export default {
       );
     }
   },
-  created() {
+  mounted() {
     let counter = 0;
 
     if (this.existingIngredients !== undefined) {

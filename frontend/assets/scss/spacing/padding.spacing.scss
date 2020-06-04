@@ -63,8 +63,8 @@
       padding-right: $spacingLargeMobile;
       box-sizing: border-box;
       @media screen and (min-width: $tabletWidth) {
-        padding-left: $spacingSmall;
-        padding-right: $spacingSmall;
+        padding-left: $spacingLarge;
+        padding-right: $spacingLarge;
       }
     }
     &--xlarge {
@@ -74,6 +74,44 @@
       @media screen and (min-width: $tabletWidth) {
         padding-left: $spacingXLarge;
         padding-right: $spacingXLarge;
+      }
+    }
+  }
+  &-vertical {
+    &--small {
+      padding-top: $spacingSmallMobile;
+      padding-bottom: $spacingSmallMobile;
+      box-sizing: border-box;
+      @media screen and (min-width: $tabletWidth) {
+        padding-top: $spacingSmall;
+        padding-bottom: $spacingSmall;
+      }
+    }
+    &--medium {
+      padding-top: $spacingMediumMobile;
+      padding-bottom: $spacingMediumMobile;
+      box-sizing: border-box;
+      @media screen and (min-width: $tabletWidth) {
+        padding-top: $spacingMedium;
+        padding-bottom: $spacingMedium;
+      }
+    }
+    &--large {
+      padding-top: $spacingLargeMobile;
+      padding-bottom: $spacingLargeMobile;
+      box-sizing: border-box;
+      @media screen and (min-width: $tabletWidth) {
+        padding-top: $spacingLarge;
+        padding-bottom: $spacingLarge;
+      }
+    }
+    &--xlarge {
+      padding-top: $spacingXLargeMobile;
+      padding-bottom: $spacingXLargeMobile;
+      box-sizing: border-box;
+      @media screen and (min-width: $tabletWidth) {
+        padding-top: $spacingXLarge;
+        padding-bottom: $spacingXLarge;
       }
     }
   }

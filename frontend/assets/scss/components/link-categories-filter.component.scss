@@ -1,0 +1,9 @@
+.link-categories-filter {
+  .form {
+    &__input {
+      display: inline-flex;
+      flex-direction: row;
+      align-items: center;
+    }
+  }
+}

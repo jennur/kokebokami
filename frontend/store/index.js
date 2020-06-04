@@ -1,20 +1,13 @@
-import {
-  GoogleProvider,
-  FacebookProvider,
-  auth,
-  db
-} from "~/plugins/firebase.js";
-
 export function state() {
   return {
-    cookieConsent: false,
     user: null,
-    allUsers: null,
-    loginSystemMessage: "",
-    signupSystemMessage: "",
-    recipes: [],
+    allUsers: [],
+    userRecipes: [],
     sharedRecipes: [],
     publicRecipes: [],
+    allRecipes: [],
+    loginSystemMessage: "",
+    signupSystemMessage: "",
     allCategories: [
       {
         languages: [
@@ -80,14 +73,8 @@ export function state() {
 }
 
 export const mutations = {
-  acceptCookies(state) {
-    state.cookieConsent = true;
-  },
   setUser(state, payload) {
     state.user = payload;
-  },
-  removeUser(state) {
-    state.user = null;
   },
   setAllUsers(state, payload) {
     state.allUsers = payload;
@@ -97,146 +84,177 @@ export const mutations = {
   },
   setSignupSystemMessage(state, payload) {
     state.signupSystemMessage = payload;
-  },
-  setRecipes(state, payload) {
-    state.recipes = payload;
+  }
+  /*  setUserRecipes(state, payload) {
+    state.userRecipes = payload;
   },
   setSharedRecipes(state, payload) {
     state.sharedRecipes = payload;
   },
   setPublicRecipes(state, payload) {
     state.publicRecipes = payload;
-  }
+  },
+  setAllRecipes(state, payload) {
+    state.allRecipes = payload;
+  } */
 };
 
 export const actions = {
-  ACCEPT_COOKIES: ({ commit }) => {
-    commit("acceptCookies");
+  ON_AUTH_STATE_CHANGED: function(context, { authUser, claims }) {
+    if (authUser) {
+      context.dispatch("SET_USER");
+    }
+    this.$fireAuthUnsubscribe;
   },
+
   SET_LOGIN_MESSAGE: ({ commit }, payload) => {
     commit("setLoginSystemMessage", payload);
   },
-  SET_USER: ({ commit }, user) => {
-    commit("setUser", user);
+
+  SET_USER: function({ commit }) {
+    console.log("Setting user");
+    try {
+      let authUser = this.$fireAuth.currentUser;
+      let userRef = this.$fireDb.ref("users/" + authUser.uid);
+      userRef.once("value", snapshot => {
+        let loggedinUser = {
+          id: authUser.uid,
+          emailVerified: authUser.emailVerified
+        };
+        if (snapshot.exists()) {
+          loggedinUser = {
+            ...loggedinUser,
+            photoURL: snapshot.val().photoURL,
+            displayName: snapshot.val().displayName,
+            email: snapshot.val().email,
+            biography: snapshot.val().biography,
+            following: snapshot.val().following
+          };
+        } else {
+          let databaseUser = {
+            displayName: authUser.displayName ? authUser.displayName : "User",
+            photoURL: authUser.photoURL && authUser.photoURL,
+            email: authUser.email
+            // No more details available upon first login
+          };
+          userRef.set(databaseUser);
+
+          loggedinUser = {
+            ...loggedinUser,
+            photoURL: authUser.photoURL && authUser.photoURL,
+            displayName: authUser.displayName && authUser.displayName,
+            email: authUser.email
+            // No more details available upon first login
+          };
+        }
+        commit("setUser", loggedinUser);
+      });
+    } catch (error) {
+      console.log("Error while setting user:", error);
+    }
   },
+
   REMOVE_USER: ({ commit }) => {
-    commit("removeUser");
+    commit("setUser", null);
   },
-  SET_ALL_USERS: ({ commit }) => {
-    let usersArray = [];
-    db.ref("users").once("value", users => {
-      users.forEach(user => {
-        usersArray.push([user.key, user.val()]);
+
+  USER_SIGN_OUT: function({ commit }) {
+    try {
+      this.$fireAuth.signOut().then(() => {
+        commit("setUser", null);
+        console.log("User logged out");
       });
-      commit("setAllUsers", usersArray);
-    });
+    } catch (error) {
+      console.log("Error removing user: " + error);
+    }
+  }
+
+  /* SET_ALL_USERS: function({ commit }) {
+    try {
+      this.$fireDb.ref("users").once("value", users => {
+        if (users.exists()) {
+          let allUsers = Object.entries(users.val());
+          commit("setAllUsers", allUsers);
+        }
+      });
+    } catch (error) {
+      console.log("Error while loading allUsers:", error);
+    }
   },
-  GOOGLE_SIGN_IN: () => {
-    auth.signInWithRedirect(GoogleProvider);
-  },
-  FACEBOOK_SIGN_IN: () => {
-    auth.signInWithRedirect(FacebookProvider);
-  },
-  KOKEBOKAMI_SIGN_UP: ({ commit }, credentials) => {
-    auth
-      .createUserWithEmailAndPassword(credentials.email, credentials.password)
-      .then(response => {
-        response.user
-          .sendEmailVerification()
-          .then(() => {
-            console.log("Verification email sent");
-          })
-          .catch(error => {
-            console.log("Error sending verification email:", error);
+
+  SET_USER_RECIPES: function({ commit }, user) {
+    try {
+      let userRecipesRef = this.$fireDb.ref("recipes").orderByKey();
+      userRecipesRef.once("value", recipes => {
+        if (recipes.exists()) {
+          recipes = Object.entries(recipes.val());
+          let userRecipes = recipes.filter(recipe => {
+            return recipe[1].ownerID === user.uid;
           });
-      })
-      .catch(function(error) {
-        commit("setSignupSystemMessage", error.message);
-        console.log(
-          "Failed with error code: " + error.code + " " + error.message
-        );
+          commit("setUserRecipes", userRecipes);
+        }
       });
+    } catch (error) {
+      console.log("Error: Failed setting recipes:", error);
+    }
   },
-  USER_SIGN_OUT: ({ commit }) => {
-    auth
-      .signOut()
-      .then(() => {
-        commit("removeUser");
-      })
-      .catch(error => {
-        console.log("Error removing user: " + error);
+
+  SET_ALL_RECIPES: function({ commit }) {
+    try {
+      let allRecipesRef = this.$fireDb.ref("recipes").orderByKey();
+      allRecipesRef.once("value", recipes => {
+        if (recipes.exists()) {
+          let allRecipes = Object.entries(recipes.val());
+          commit("setAllRecipes", allRecipes);
+        }
       });
+    } catch (error) {
+      console.log("Error: Failed setting recipes:", error);
+    }
   },
-  SET_USER_RECIPES: ({ commit }, user) => {
-    const recipesRef = db.ref("recipes").orderByKey();
-    let recipesArray = [];
-    recipesRef.once(
-      "value",
-      recipes => {
-        recipes.forEach(recipe => {
-          if (recipe.val().ownerID === user.id)
-            recipesArray.push([recipe.key, recipe.val()]);
-        });
-        commit("setRecipes", recipesArray);
-      },
-      error => {
-        console.log(
-          "Error: Something failed when attempting to set recipes: " + error
-        );
-      }
-    );
-  },
-  SET_SHARED_RECIPES: async ({ commit }, user) => {
-    const recipesRef = db.ref("recipes").orderByChild("sharedWith");
-    let recipesArray = [];
-    await recipesRef.once(
-      "value",
-      recipes => {
-        recipes.forEach(recipe => {
-          if (recipe.exists()) {
-            const shares = recipe.val().sharedWith
-              ? Object.values(recipe.val().sharedWith)
+
+  SET_SHARED_RECIPES: function({ commit }, user) {
+    try {
+      let sharedRecipesRef = this.$fireDb
+        .ref("recipes")
+        .orderByChild("sharedWith");
+      sharedRecipesRef.once("value", recipes => {
+        if (recipes.exists()) {
+          recipes = Object.entries(recipes.val());
+          let sharedRecipes = recipes.filter(recipe => {
+            let shares = recipe[1].sharedWith
+              ? Object.values(recipe[1].sharedWith)
               : [];
             if (shares.length) {
-              shares.forEach(share => {
-                if (share === user.id) {
-                  recipesArray.push([recipe.key, recipe.val()]);
-                }
-              });
+              return shares.indexOf(user.uid) > -1;
             }
-          }
-        });
-      },
-      error => {
-        console.log(
-          "Error: Something failed when attempting to set shared recipes: " +
-            error
-        );
-      }
-    );
-    commit("setSharedRecipes", recipesArray);
+            return false;
+          });
+          commit("setSharedRecipes", sharedRecipes);
+        }
+      });
+    } catch (error) {
+      console.log("Error: Failed to set shared recipes:", error);
+    }
   },
-  SET_PUBLIC_RECIPES: ({ commit }) => {
-    const recipesRef = db.ref("recipes").orderByChild("public");
-    let recipesArray = [];
-    recipesRef.once(
-      "value",
-      recipes => {
-        recipes.forEach(recipe => {
-          if (recipe.exists()) {
-            if (recipe.val().public) {
-              recipesArray.push([recipe.key, recipe.val()]);
-            }
-          }
-        });
-        commit("setPublicRecipes", recipesArray);
-      },
-      error => {
-        console.log(
-          "Error: Something failed when attempting to set public recipes: " +
-            error
-        );
-      }
-    );
-  }
+
+  SET_PUBLIC_RECIPES: function({ commit }) {
+    try {
+      let publicRecipesRef = this.$fireDb.ref("recipes").orderByChild("public");
+      publicRecipesRef.once("value", recipes => {
+        if (recipes.exists()) {
+          recipes = Object.entries(recipes.val());
+          let publicRecipes = recipes.filter(recipe => {
+            return recipe[1].public;
+          });
+          commit("setPublicRecipes", publicRecipes);
+        }
+      });
+    } catch (error) {
+      console.log(
+        "Error: Something failed while trying to set public recipes:",
+        error
+      );
+    }
+  } */
 };

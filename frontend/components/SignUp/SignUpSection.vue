@@ -1,18 +1,24 @@
 <template>
-  <section class="container padding--xlarge">
+  <section class="padding--xlarge">
+    <div class="container container--center">
+      <h2 v-if="bigHeadline">{{ headline }}</h2>
+      <h3 v-else>{{ headline }}</h3>
+    </div>
     <div class="flex-row flex-row--justify-center tablet-width margin--auto">
       <div
         class="flex-row__half flex-column max-width--300-600 margin-right--xlarge margin-top--large"
       >
-        <h3 v-if="headline">{{headline}}</h3>
-        <p
-          class="margin-bottom--xlarge"
-        >If you have a Google or Facebook account, there is no need to sign up - just login directly.</p>
+        <p class="margin-bottom--xlarge">
+          If you have a Google or Facebook account, there is no need to sign up
+          - just login directly.
+        </p>
         <google-login class="margin-bottom--medium" />
         <facebook-login class="margin-bottom--medium" />
       </div>
       <sign-up-form
-        :class="'flex-row__half '+ (darkBg ? 'dark-bg' : '')  + ' margin-top--xxlarge'"
+        :class="
+          'flex-row__half ' + (darkBg ? 'dark-bg' : '') + ' margin-top--xxlarge'
+        "
       />
     </div>
   </section>
@@ -32,6 +38,10 @@ export default {
   },
   props: {
     darkBg: {
+      type: Boolean,
+      default: false
+    },
+    bigHeadline: {
       type: Boolean,
       default: false
     },

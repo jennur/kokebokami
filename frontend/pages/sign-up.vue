@@ -1,25 +1,22 @@
 <template>
-  <div class="container container--center margin-top--xxlarge">
-    <h2>Sign up to start building your own cookbook.</h2>
-    <sign-up-section :darkBg="darkBg" />
+  <div>
+    <sign-up-section
+      headline="Sign up to start adding your recipes"
+      :bigHeadline="true"
+      :darkBg="false"
+    />
   </div>
 </template>
 
 <script>
 import SignUpSection from "~/components/SignUp/SignUpSection.vue";
-import { user } from "~/mixins/getCurrentUser.js";
+import user from "~/mixins/user.js";
 
 export default {
   name: "sign-up",
   components: {
     SignUpSection
   },
-  mixins: [user],
-  props: {
-    darkBg: {
-      type: Boolean,
-      default: false
-    }
-  }
+  mixins: [user]
 };
 </script>

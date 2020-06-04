@@ -2,10 +2,8 @@
   <div>
     <breadcrumbs :routes="breadcrumbs" />
     <div class="account container tablet-width padding-horizontal--large">
-      <h1 class="margin-top--xxlarge margin-bottom--large">
-        My account details
-      </h1>
-      <nuxt-link to="/account/public-profile-view">
+      <h1 class="margin-top--xxlarge margin-bottom--large">My account details</h1>
+      <nuxt-link to="/account/public-profile-view/">
         See my public profile
         <right-arrow class="icon icon--blue" />
       </nuxt-link>
@@ -25,25 +23,17 @@
               :alt="user.displayName + '´s profile picture'"
               v-if="photoURL"
             />
-            <form
-              v-on:submit.prevent
-              class="account__detail-edit"
-              v-if="editProfileImg"
-            >
+            <form v-on:submit.prevent class="account__detail-edit" v-if="editProfileImg">
               <button
                 @click="updateProfileImg"
                 class="button button--small margin-top--large"
-              >
-                Remove
-              </button>
+              >Remove</button>
             </form>
             <div class="system-message">{{ profileImgSystemMessage }}</div>
             <button
               @click="toggleEditProfileImg"
               class="button button--small button--transparent account__detail-edit-btn"
-            >
-              {{ editProfileImg ? "Cancel" : "Edit" }}
-            </button>
+            >{{ editProfileImg ? "Cancel" : "Edit" }}</button>
           </dt>
 
           <dt class="account__detail account__detail--flex-column">
@@ -53,48 +43,44 @@
                 <span class="system-message">(visible to other users)</span>
               </span>
             </div>
-            <span class="account__detail-value" v-if="!editUsername">{{
+            <span class="account__detail-value" v-if="!editUsername">
+              {{
               username ? username : null
-            }}</span>
+              }}
+            </span>
             <form v-on:submit.prevent class="account__detail-edit" v-else>
               <label>
                 <input type="text" autocomplete="username" v-model="username" />
               </label>
-              <button @click="updateUsername" class="button button--small">
-                Save
-              </button>
+              <button @click="updateUsername" class="button button--small">Save</button>
             </form>
             <div class="system-message">{{ usernameSystemMessage }}</div>
             <button
               @click="toggleEditUsername"
               class="button button--small button--transparent account__detail-edit-btn"
-            >
-              {{ editUsername ? "Cancel" : "Edit" }}
-            </button>
+            >{{ editUsername ? "Cancel" : "Edit" }}</button>
           </dt>
 
           <dt class="account__detail account__detail--flex-column">
             <div class="account__detail-title">
               <span>E-mail</span>
             </div>
-            <span class="account__detail-value" v-if="!editEmail">{{
+            <span class="account__detail-value" v-if="!editEmail">
+              {{
               email ? email : null
-            }}</span>
+              }}
+            </span>
             <form v-on:submit.prevent class="account__detail-edit" v-else>
               <label>
                 <input type="email" autocomplete="email" v-model="email" />
               </label>
-              <button @click="updateEmail" class="button button--small">
-                Save
-              </button>
+              <button @click="updateEmail" class="button button--small">Save</button>
             </form>
             <div class="system-message">{{ emailSystemMessage }}</div>
             <button
               @click="toggleEditEmail"
               class="button button--small button--transparent account__detail-edit-btn"
-            >
-              {{ editEmail ? "Cancel" : "Edit" }}
-            </button>
+            >{{ editEmail ? "Cancel" : "Edit" }}</button>
           </dt>
 
           <dt class="account__detail account__detail--flex-column">
@@ -104,24 +90,22 @@
                 <span class="system-message">(visible to other users)</span>
               </span>
             </div>
-            <span class="account__detail-value" v-if="!editBiography">{{
+            <span class="account__detail-value" v-if="!editBiography">
+              {{
               biography ? biography : "Not set"
-            }}</span>
+              }}
+            </span>
             <form v-on:submit.prevent class="account__detail-edit" v-else>
               <label>
                 <textarea type="text" v-model="biography" />
               </label>
-              <button @click="updateBiography" class="button button--small">
-                Save
-              </button>
+              <button @click="updateBiography" class="button button--small">Save</button>
             </form>
             <div class="system-message">{{ biographySystemMessage }}</div>
             <button
               @click="toggleEditBiography"
               class="button button--small button--transparent account__detail-edit-btn"
-            >
-              {{ editBiography ? "Cancel" : "Edit" }}
-            </button>
+            >{{ editBiography ? "Cancel" : "Edit" }}</button>
           </dt>
         </dl>
         <h3>Recipes connected to your account</h3>
@@ -130,19 +114,19 @@
             <div class="account__detail-title">
               <span>
                 My recipes:
-                <span>{{ recipes ? recipes.length : null }}</span>
+                <span>{{ userRecipes ? userRecipes.length : null }}</span>
               </span>
             </div>
             <ol>
-              <li v-for="recipe in recipes" :key="recipe[1].title">
+              <li v-for="recipe in userRecipes" :key="recipe[1].title">
                 <span>
-                  <nuxt-link :to="'recipes/' + recipe[0]">{{
+                  <nuxt-link :to="`/recipes/${recipe[0]}`">
+                    {{
                     recipe[1].title
-                  }}</nuxt-link>
+                    }}
+                  </nuxt-link>
                 </span>
-                <span class="system-message" v-if="recipe[1].public"
-                  >Public</span
-                >
+                <span class="system-message" v-if="recipe[1].public">Public</span>
               </li>
             </ol>
           </dt>
@@ -155,9 +139,11 @@
             </div>
             <ol>
               <li v-for="recipe in sharedRecipes" :key="recipe[1].title">
-                <nuxt-link :to="'recipes/' + recipe[0]">{{
+                <nuxt-link :to="`/recipes/${recipe[0]}`">
+                  {{
                   recipe[1].title
-                }}</nuxt-link>
+                  }}
+                </nuxt-link>
               </li>
             </ol>
           </dt>
@@ -174,9 +160,11 @@
             </div>
             <ol>
               <li v-for="cook in followed" :key="cook[1].displayName">
-                <nuxt-link :to="'cooks/' + cook[0]">{{
+                <nuxt-link :to="`/cooks/${cook[0]}`">
+                  {{
                   cook[1].displayName
-                }}</nuxt-link>
+                  }}
+                </nuxt-link>
               </li>
             </ol>
           </dt>
@@ -189,9 +177,11 @@
             </div>
             <ol>
               <li v-for="follower in followers" :key="follower[1].displayName">
-                <nuxt-link :to="'cooks/' + follower[0]">{{
+                <nuxt-link :to="`/cooks/${follower[0]}`">
+                  {{
                   follower[1].displayName
-                }}</nuxt-link>
+                  }}
+                </nuxt-link>
               </li>
             </ol>
           </dt>
@@ -199,9 +189,7 @@
         <button
           class="button button--small button--transparent button--transparent-red margin-top--large"
           @click="deleteAccount"
-        >
-          Delete my account
-        </button>
+        >Delete my account</button>
         <p>{{ systemMessage }}</p>
       </div>
     </div>
@@ -209,10 +197,13 @@
 </template>
 
 <script>
-import { user } from "~/mixins/getCurrentUser.js";
-import connectedUsers from "~/mixins/getConnectedUsers.js";
+import user from "~/mixins/user.js";
+import allUsers from "~/mixins/allUsers.js";
+import connectedUsers from "~/mixins/connectedUsers.js";
+import sharedRecipes from "~/mixins/sharedRecipes.js";
+import userRecipes from "~/mixins/userRecipes.js";
+
 import RecipesList from "~/components/Recipes/RecipesList.vue";
-import { auth, db } from "~/plugins/firebase.js";
 
 export default {
   name: "account",
@@ -245,15 +236,7 @@ export default {
     this.biography = this.user.biography;
     this.photoURL = this.user.photoURL;
   },
-  mixins: [user, connectedUsers],
-  computed: {
-    recipes() {
-      return this.$store.state.recipes;
-    },
-    sharedRecipes() {
-      return this.$store.state.sharedRecipes;
-    }
-  },
+  mixins: [user, allUsers, connectedUsers, userRecipes, sharedRecipes],
   methods: {
     updateUserDetailsInStore() {
       let userObj = {
@@ -278,14 +261,15 @@ export default {
       this.editBiography = !this.editBiography;
     },
     updateProfileImg() {
-      let realThis = this;
-      db.ref("/users/" + this.user.id)
+      let componentThis = this;
+      this.$fireDb
+        .ref("/users/" + this.user.id)
         .update({
           photoURL: ""
         })
         .then(() => {
-          realThis.updateUserDetailsInStore();
-          realThis.toggleEditProfileImg();
+          componentThis.updateUserDetailsInStore();
+          componentThis.toggleEditProfileImg();
         })
         .catch(e => {
           this.profileImgSystemMessage = e.message;
@@ -293,14 +277,15 @@ export default {
         });
     },
     updateUsername() {
-      let realThis = this;
-      db.ref("/users/" + this.user.id)
+      let componentThis = this;
+      this.$fireDb
+        .ref("/users/" + this.user.id)
         .update({
           displayName: this.username
         })
         .then(() => {
-          realThis.updateUserDetailsInStore();
-          realThis.toggleEditUsername();
+          componentThis.updateUserDetailsInStore();
+          componentThis.toggleEditUsername();
         })
         .catch(e => {
           this.usernameSystemMessage = e.message;
@@ -308,14 +293,15 @@ export default {
         });
     },
     updateEmail() {
-      let realThis = this;
-      db.ref("/users/" + this.user.id)
+      let componentThis = this;
+      this.$fireDb
+        .ref("/users/" + this.user.id)
         .update({
           email: this.email
         })
         .then(() => {
-          realThis.updateUserDetailsInStore();
-          realThis.toggleEditEmail();
+          componentThis.updateUserDetailsInStore();
+          componentThis.toggleEditEmail();
         })
         .catch(e => {
           this.emailSystemMessage = e.message;
@@ -324,14 +310,15 @@ export default {
     },
 
     updateBiography() {
-      let realThis = this;
-      db.ref("/users/" + this.user.id)
+      let componentThis = this;
+      this.$fireDb
+        .ref("/users/" + this.user.id)
         .update({
           biography: this.biography
         })
         .then(() => {
-          realThis.updateUserDetailsInStore();
-          realThis.toggleEditBiography();
+          componentThis.updateUserDetailsInStore();
+          componentThis.toggleEditBiography();
         })
         .catch(e => {
           this.biographySystemMessage = e.message;
@@ -339,23 +326,24 @@ export default {
         });
     },
     deleteAccount() {
-      let user = auth.currentUser;
+      let user = this.$fireAuth.currentUser;
       let userUID = this.user.id;
-      const realThis = this;
+      const componentThis = this;
       if (
         confirm(
           `Are you sure you want to delete your account and all your recipes?
           \nThis operation cannot be undone.`
         )
       ) {
-        let recipesRef = db.ref("recipes").orderByChild("ownerID");
+        let recipesRef = this.$fireDb.ref("recipes").orderByChild("ownerID");
 
         //Remove user's recipes
         recipesRef
           .once("value", recipes => {
             recipes.forEach(recipe => {
               if (recipe.val().ownerID === user.uid) {
-                db.ref("recipes/" + recipe.key)
+                this.$fireDb
+                  .ref("recipes/" + recipe.key)
                   .remove()
                   .then(() => {
                     console.log("Success: Deleted recipe:: " + recipe.key);
@@ -367,32 +355,33 @@ export default {
             });
           })
           .then(() => {
-            db.ref("users/" + user.uid)
+            this.$fireDb
+              .ref("users/" + user.uid)
               .remove()
               .then(function() {
                 console.log("Success: User was removed from database");
               })
               .catch(function(error) {
                 console.log("Error: User remove failed:: " + error);
-                realThis.systemMessage = error.message;
+                componentThis.systemMessage = error.message;
               });
           })
           .then(() => {
             user
               .delete()
               .then(() => {
-                realThis.systemMessage =
+                componentThis.systemMessage =
                   "Your account was deleted successfully.";
-                realThis.$store.dispatch("REMOVE_USER");
-                realThis.$router.push("/account/goodbye");
+                componentThis.$store.dispatch("REMOVE_USER");
+                componentThis.$router.push("/account/goodbye/");
               })
               .catch(function(error) {
-                realThis.systemMessage = error.message;
+                componentThis.systemMessage = error.message;
                 console.log("Error: User delete failed::", error);
               });
           })
           .catch(function(error) {
-            realThis.systemMessage = error.message;
+            componentThis.systemMessage = error.message;
             console.log("Error: Recipes reference failed:: " + error);
           });
       }

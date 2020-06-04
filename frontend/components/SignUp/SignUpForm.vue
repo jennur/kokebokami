@@ -31,9 +31,9 @@
         autocomplete="new-password"
         v-model="passwordRepeat"
       />
-      <span class="system-message margin-top--small">{{
-        passwordRepeatError
-      }}</span>
+      <span class="system-message margin-top--small">
+        {{ passwordRepeatError }}
+      </span>
     </label>
     <label class="flex-column margin-bottom--medium">
       <span class="flex-row flex-row--nowrap">
@@ -44,16 +44,18 @@
           type="checkbox"
           v-model="termsAndConditions"
         />
-        <span class="padding-horizontal--small">
+        <span class="sign-up-form_terms padding-horizontal--small">
           I agree to the
-          <nuxt-link to="/terms-and-conditions">Terms and Conditions</nuxt-link>
+          <nuxt-link to="/terms-and-conditions/"
+            >Terms and Conditions</nuxt-link
+          >
           {{ " " }}and
-          <nuxt-link to="/privacy-policy">Privacy Policy</nuxt-link>
+          <nuxt-link to="/privacy-policy/">Privacy Policy</nuxt-link>
         </span>
       </span>
-      <span class="system-message margin-top--small">{{
-        termsAndConditionsError
-      }}</span>
+      <span class="system-message margin-top--small">
+        {{ termsAndConditionsError }}
+      </span>
     </label>
     <div class="flex-column margin-top--small">
       <button @click="validateForm" class="button button--small button--green">
@@ -64,7 +66,6 @@
   </form>
 </template>
 <script>
-import { auth, db } from "~/plugins/firebase.js";
 export default {
   name: "sign-up-form",
   data() {
@@ -87,7 +88,24 @@ export default {
   methods: {
     signUp() {
       let credentials = { email: this.email, password: this.password };
-      this.$store.dispatch("KOKEBOKAMI_SIGN_UP", credentials);
+      this.$fireAuth
+        .createUserWithEmailAndPassword(credentials.email, credentials.password)
+        .then(response => {
+          response.user
+            .sendEmailVerification()
+            .then(() => {
+              console.log("Verification email sent");
+            })
+            .catch(error => {
+              console.log("Error sending verification email:", error);
+            });
+        })
+        .catch(function(error) {
+          commit("setSignupSystemMessage", error.message);
+          console.log(
+            "Failed with error code: " + error.code + " " + error.message
+          );
+        });
     },
     validateForm() {
       const emailRegex = /.{1,}@[^.]{1,}/;

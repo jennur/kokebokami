@@ -9,16 +9,24 @@
     height: 70px;
   }
 
-  &__logo-link {
-    color: $orange !important;
-    font-size: 25px;
-    cursor: pointer !important;
-    text-decoration: none;
-    font-family: $displayFont;
-    &:hover {
+  &__logo {
+    margin-top: auto;
+    &-link {
+      color: $orange !important;
+      font-size: 22px;
+      cursor: pointer !important;
       text-decoration: none;
+      font-family: $displayFont;
+      margin-top: auto;
+      @media screen and (min-width: $tabletWidth) {
+        font-size: 25px;
+      }
+      &:hover {
+        text-decoration: none;
+      }
     }
   }
+
   &__list-container {
     display: flex;
     justify-content: center;
