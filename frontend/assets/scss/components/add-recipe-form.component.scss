@@ -56,6 +56,31 @@
   display: block;
   width: 100%;
   text-align: left;
+
+  fieldset {
+    max-width: 100%;
+  }
+  input[type="text"],
+  input[type="number"],
+  textarea {
+    border: 1px solid $green;
+    border-radius: $spacingSmall;
+  }
+  &__ingredient-wrap {
+    width: 265px;
+  }
+  &__ingredient-heading {
+    font-size: $fontSizeSmall;
+    font-family: $bodyFont;
+    width: 275px;
+  }
+  &__servings,
+  &__amount {
+    display: block;
+    padding: $spacingMediumMobile 0px;
+    width: 60px;
+    padding-left: $spacingMedium;
+  }
   &__title,
   &__ingredient,
   &__description,
@@ -63,6 +88,7 @@
     display: block;
     padding: $spacingMediumMobile;
     caret-color: $green;
+    width: 100%;
   }
 
   &__headline {
@@ -132,7 +158,40 @@
     width: 200px;
   }
   &__instructions {
-    padding-left: $spacingLarge;
+    padding-left: $spacingSmall;
+    list-style: none;
+    counter-reset: a;
+
+    li {
+      padding-left: $spacingXXLarge;
+      position: relative;
+      &::before {
+        counter-increment: a;
+        content: counter(a);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 20px;
+        height: 20px;
+        position: absolute;
+        left: 0;
+        top: 10px;
+        border-radius: $spacingMedium;
+        background-color: $green;
+        font-size: 12px;
+        color: $blue;
+        z-index: 1;
+      }
+      &:not(:last-child)::after {
+        content: "";
+        border-left: 1px dotted $green;
+        height: 100%;
+        position: absolute;
+        top: $spacingLarge;
+        left: 10px;
+        z-index: 0;
+      }
+    }
 
     & label {
       width: 100%;
@@ -148,5 +207,22 @@
 
   &--url {
     width: 360px;
+  }
+  .delete-button,
+  .save-button {
+    margin: $spacingXXLarge $spacingMedium $spacingLarge $spacingMedium;
+    @media screen and (min-width: $mobileWidth) {
+      margin: $spacingLarge;
+    }
+  }
+
+  .save-button {
+    order: -1;
+    @media screen and (min-width: 366px) {
+      order: 0;
+    }
+  }
+  .cancel-button {
+    margin: $spacingLarge;
   }
 }

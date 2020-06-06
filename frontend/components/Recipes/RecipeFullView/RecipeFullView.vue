@@ -37,6 +37,7 @@
       <ingredients-display
         v-if="recipe.ingredients"
         :ingredients="recipe.ingredients"
+        :servings="recipe.servings || ''"
       />
       <instructions-display
         v-if="recipe.instructions"
@@ -64,7 +65,7 @@ import FreeFromDisplay from "./Displays/FreeFromDisplay";
 import TypeOfMealDisplay from "./Displays/TypeOfMealDisplay";
 import IngredientsDisplay from "./Displays/IngredientsDisplay.vue";
 import InstructionsDisplay from "./Displays/InstructionsDisplay.vue";
-//import * as jsPDF from "jspdf";
+
 import logo from "~/static/kokebokamilogo.png";
 import htmlToPdfMake from "html-to-pdfmake";
 import pdfMake from "pdfmake/build/pdfmake";

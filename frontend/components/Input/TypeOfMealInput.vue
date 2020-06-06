@@ -1,5 +1,5 @@
 <template>
-  <div id="typeOfMeal" class="categories">
+  <fieldset id="typeOfMeal" class="categories">
     <h4 class="categories__title margin-bottom--medium">Type of meal</h4>
     <label
       class="categories__category margin-right--large"
@@ -18,7 +18,7 @@
       />
       {{ typeOfMeal }}
     </label>
-  </div>
+  </fieldset>
 </template>
 <script>
 export default {

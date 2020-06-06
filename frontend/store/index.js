@@ -85,18 +85,6 @@ export const mutations = {
   setSignupSystemMessage(state, payload) {
     state.signupSystemMessage = payload;
   }
-  /*  setUserRecipes(state, payload) {
-    state.userRecipes = payload;
-  },
-  setSharedRecipes(state, payload) {
-    state.sharedRecipes = payload;
-  },
-  setPublicRecipes(state, payload) {
-    state.publicRecipes = payload;
-  },
-  setAllRecipes(state, payload) {
-    state.allRecipes = payload;
-  } */
 };
 
 export const actions = {
@@ -168,93 +156,4 @@ export const actions = {
       console.log("Error removing user: " + error);
     }
   }
-
-  /* SET_ALL_USERS: function({ commit }) {
-    try {
-      this.$fireDb.ref("users").once("value", users => {
-        if (users.exists()) {
-          let allUsers = Object.entries(users.val());
-          commit("setAllUsers", allUsers);
-        }
-      });
-    } catch (error) {
-      console.log("Error while loading allUsers:", error);
-    }
-  },
-
-  SET_USER_RECIPES: function({ commit }, user) {
-    try {
-      let userRecipesRef = this.$fireDb.ref("recipes").orderByKey();
-      userRecipesRef.once("value", recipes => {
-        if (recipes.exists()) {
-          recipes = Object.entries(recipes.val());
-          let userRecipes = recipes.filter(recipe => {
-            return recipe[1].ownerID === user.uid;
-          });
-          commit("setUserRecipes", userRecipes);
-        }
-      });
-    } catch (error) {
-      console.log("Error: Failed setting recipes:", error);
-    }
-  },
-
-  SET_ALL_RECIPES: function({ commit }) {
-    try {
-      let allRecipesRef = this.$fireDb.ref("recipes").orderByKey();
-      allRecipesRef.once("value", recipes => {
-        if (recipes.exists()) {
-          let allRecipes = Object.entries(recipes.val());
-          commit("setAllRecipes", allRecipes);
-        }
-      });
-    } catch (error) {
-      console.log("Error: Failed setting recipes:", error);
-    }
-  },
-
-  SET_SHARED_RECIPES: function({ commit }, user) {
-    try {
-      let sharedRecipesRef = this.$fireDb
-        .ref("recipes")
-        .orderByChild("sharedWith");
-      sharedRecipesRef.once("value", recipes => {
-        if (recipes.exists()) {
-          recipes = Object.entries(recipes.val());
-          let sharedRecipes = recipes.filter(recipe => {
-            let shares = recipe[1].sharedWith
-              ? Object.values(recipe[1].sharedWith)
-              : [];
-            if (shares.length) {
-              return shares.indexOf(user.uid) > -1;
-            }
-            return false;
-          });
-          commit("setSharedRecipes", sharedRecipes);
-        }
-      });
-    } catch (error) {
-      console.log("Error: Failed to set shared recipes:", error);
-    }
-  },
-
-  SET_PUBLIC_RECIPES: function({ commit }) {
-    try {
-      let publicRecipesRef = this.$fireDb.ref("recipes").orderByChild("public");
-      publicRecipesRef.once("value", recipes => {
-        if (recipes.exists()) {
-          recipes = Object.entries(recipes.val());
-          let publicRecipes = recipes.filter(recipe => {
-            return recipe[1].public;
-          });
-          commit("setPublicRecipes", publicRecipes);
-        }
-      });
-    } catch (error) {
-      console.log(
-        "Error: Something failed while trying to set public recipes:",
-        error
-      );
-    }
-  } */
 };

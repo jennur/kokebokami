@@ -1,6 +1,6 @@
 <template>
   <section class="margin--auto margin-top--xlarge">
-    <form v-on:submit.prevent>
+    <form v-on:submit.prevent class="add-recipe-form">
       <div class="recipes-filter__form">
         <category-filter
           :transparent="true"
@@ -15,7 +15,11 @@
       <div class="mobile-width margin-top--xlarge margin--auto">
         <!-- TITLE / DESCRIPTION -->
         <fieldset class="flex-column">
-          <title-input id="recipeTitle" class="margin-bottom--medium" :existingTitle="title" />
+          <title-input
+            id="recipeTitle"
+            class="margin-bottom--medium"
+            :existingTitle="title"
+          />
           <description-input
             id="recipeDescription"
             class="margin-bottom--medium"
@@ -28,6 +32,7 @@
           :existingIngredients="
             existingRecipe ? existingRecipe.ingredients : []
           "
+          :existingServings="existingRecipe ? existingRecipe.servings : ''"
         />
 
         <!-- INSTRUCTIONS -->
@@ -39,9 +44,11 @@
 
         <!-- PUBLIC CHECK -->
         <fieldset class="container">
-          <label class="flex-row flex-row--align-center">
+          <label class="flex-row flex-row--align-center flex-row--nowrap">
             <input type="checkbox" id="publicCheck" v-model="publicCheck" />
-            <span class="margin-left--small">Make recipe public (share with all users of Kokebokami)</span>
+            <span class="margin-left--small"
+              >Make recipe public (share with all users of Kokebokami)</span
+            >
           </label>
         </fieldset>
 
@@ -151,12 +158,21 @@ export default {
       const recipeDescription = document.querySelector(
         "#recipeDescription textarea"
       );
+      const servings = document.querySelector(".add-recipe-form__servings");
 
-      let ingredients = document.querySelectorAll("#ingredientList input");
+      let ingredientAmounts = document.querySelectorAll(
+        "#ingredientList .add-recipe-form__amount"
+      );
+      let ingredientItems = document.querySelectorAll(
+        "#ingredientList .add-recipe-form__ingredient"
+      );
+
       let ingredientList = [];
-      ingredients.forEach(ingredient => {
-        ingredientList.push(ingredient.value);
-      });
+      for (let i = 0; i < ingredientAmounts.length; i++) {
+        ingredientList.push(
+          `${ingredientAmounts[i].value} ${ingredientItems[i].value}`
+        );
+      }
 
       let instructions = document.querySelectorAll("#instructionList textarea");
       let instructionList = [];
@@ -166,8 +182,9 @@ export default {
 
       let recipeObject = {
         title: recipeTitle.value,
-        ingredients: ingredientList,
         description: recipeDescription.value,
+        servings: servings.value,
+        ingredients: ingredientList,
         instructions: instructionList,
         categories: this.categories,
         freeFrom: this.freeFrom,

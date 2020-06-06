@@ -82,6 +82,27 @@ export default {
     "@nuxtjs/dotenv",
     "@nuxtjs/sitemap",
     "nuxt-fontawesome"
+    /* [
+      "nuxt-i18n",
+      {
+        locales: [
+          {
+            name: "Norsk",
+            code: "no",
+            iso: "no-NO",
+            file: "no-NO.js"
+          },
+          {
+            name: "English",
+            code: "en",
+            iso: "en-US",
+            file: "en-US.js"
+          }
+        ],
+        langDir: "lang/",
+        defaultLocale: "en"
+      }
+    ] */
   ],
   firebase: {
     config: {

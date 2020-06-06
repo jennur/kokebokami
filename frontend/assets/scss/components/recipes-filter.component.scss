@@ -24,23 +24,38 @@
     }
     & .categories {
       &-container {
-        display: block;
-        margin-top: $spacingMedium;
-        padding: $spacingMedium;
+        width: 100%;
         background-color: rgba($orange, 0.08);
-        box-sizing: border-box;
+        margin: $spacingMedium auto;
         border-radius: $spacingSmall;
+        box-sizing: border-box;
+
         &--transparent {
           background-color: transparent;
+
+          .categories-wrap {
+            margin: 0px auto;
+            .select__dropdown {
+              background-color: $cream;
+            }
+          }
         }
+      }
+      &-wrap {
+        display: block;
+        max-width: max-content;
+        width: 100%;
+        padding: $spacingMedium;
       }
 
       display: inline-block;
       width: 100%;
       color: $blue;
       @media screen and (min-width: $tabletWidth) {
-        float: left;
-        width: 200px;
+        //float: left;
+        vertical-align: top;
+        width: max-content;
+        margin-left: $spacingXLarge;
       }
 
       &__title {
