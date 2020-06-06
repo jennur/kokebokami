@@ -63,7 +63,7 @@
   input[type="text"],
   input[type="number"],
   textarea {
-    border: 2px solid $green;
+    border: 1px solid $green;
     border-radius: $spacingSmall;
   }
   &__ingredient-wrap {
@@ -74,6 +74,7 @@
     font-family: $bodyFont;
     width: 275px;
   }
+  &__servings,
   &__amount {
     display: block;
     padding: $spacingMediumMobile 0px;

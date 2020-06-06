@@ -15,19 +15,41 @@
     }
     color: $blue;
   }
+  &__servings {
+    width: 50px;
+    border: 1px solid $green;
+    border-radius: $spacingSmall;
+    position: relative;
+    &:disabled {
+      border-color: lightgray;
+      position: relative;
+    }
+    &-wrap {
+      position: relative;
+      h4.disabled {
+        color: lightgray;
+      }
+    }
+    &-disabled-dash {
+      position: absolute;
+      left: $spacingLarge;
+      top: 50%;
+      transform: translateY(-50%);
+      color: lightgray;
+    }
+  }
   &__ingredients {
     padding: 0px;
     margin-bottom: $spacingXXLarge;
 
+    &-amount {
+      font-weight: bold;
+      color: $blue;
+      font-family: "Be Vietnam Extra Bold";
+    }
     & li {
       list-style: none;
-      margin-bottom: $spacingSmall;
-
-      &::before {
-        content: "➔";
-        margin-right: $spacingLarge;
-        color: $green;
-      }
+      margin-bottom: $spacingMedium;
     }
   }
 

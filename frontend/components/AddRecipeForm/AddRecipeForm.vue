@@ -32,6 +32,7 @@
           :existingIngredients="
             existingRecipe ? existingRecipe.ingredients : []
           "
+          :existingServings="existingRecipe ? existingRecipe.servings : ''"
         />
 
         <!-- INSTRUCTIONS -->
@@ -157,12 +158,21 @@ export default {
       const recipeDescription = document.querySelector(
         "#recipeDescription textarea"
       );
+      const servings = document.querySelector(".add-recipe-form__servings");
 
-      let ingredients = document.querySelectorAll("#ingredientList input");
+      let ingredientAmounts = document.querySelectorAll(
+        "#ingredientList .add-recipe-form__amount"
+      );
+      let ingredientItems = document.querySelectorAll(
+        "#ingredientList .add-recipe-form__ingredient"
+      );
+
       let ingredientList = [];
-      ingredients.forEach(ingredient => {
-        ingredientList.push(ingredient.value);
-      });
+      for (let i = 0; i < ingredientAmounts.length; i++) {
+        ingredientList.push(
+          `${ingredientAmounts[i].value} ${ingredientItems[i].value}`
+        );
+      }
 
       let instructions = document.querySelectorAll("#instructionList textarea");
       let instructionList = [];
@@ -172,8 +182,9 @@ export default {
 
       let recipeObject = {
         title: recipeTitle.value,
-        ingredients: ingredientList,
         description: recipeDescription.value,
+        servings: servings.value,
+        ingredients: ingredientList,
         instructions: instructionList,
         categories: this.categories,
         freeFrom: this.freeFrom,

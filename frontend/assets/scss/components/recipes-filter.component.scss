@@ -35,6 +35,9 @@
 
           .categories-wrap {
             margin: 0px auto;
+            .select__dropdown {
+              background-color: $cream;
+            }
           }
         }
       }

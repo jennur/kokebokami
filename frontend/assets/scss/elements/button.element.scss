@@ -11,11 +11,13 @@
   font-size: $fontSizeMedium;
   text-decoration: none;
   cursor: pointer;
+  transition: transform 0.1s;
 
   &:hover {
     background-color: $green;
     color: $blue;
     text-decoration: none;
+    transform: scale(1.03);
   }
   &--block {
     display: block;
@@ -48,7 +50,7 @@
     color: $black;
 
     &:hover {
-      background-color: $green;
+      background-color: rgba($green, 0.1);
       color: $blue;
     }
 

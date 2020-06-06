@@ -5,7 +5,7 @@
     >
       <h4 class="margin--none">Number of servings:</h4>
       <input
-        class="add-recipe-form__amount margin-left--medium"
+        class="add-recipe-form__servings margin-left--medium"
         type="number"
         id="servings-amount"
         placeholder="4"
@@ -20,6 +20,7 @@
     >
       <h4>Ingredients</h4>
       <div
+        v-if="ingredientNumbers.length"
         class="add-recipe-form__ingredient-heading flex-row flex-row--space-between flex-row--nowrap margin-bottom--medium"
       >
         <span>Amount</span>
@@ -83,12 +84,16 @@ export default {
     DecrementButton
   },
   data() {
-    return { servings: 4, ingredientAmounts: [], ingredients: [] };
+    return { servings: "", ingredientAmounts: [], ingredients: [] };
   },
   props: {
     existingIngredients: {
       type: Array,
       default: () => []
+    },
+    existingServings: {
+      type: String,
+      default: ""
     },
     ingredientNumbers: { type: Array, default: () => [] }
   },
@@ -109,14 +114,23 @@ export default {
   },
   mounted() {
     let counter = 0;
-
+    let amountReg = /^\d+$/;
+    if (this.existingServings !== undefined) {
+      this.servings = this.existingServings;
+    }
     if (this.existingIngredients !== undefined) {
       this.existingIngredients.forEach(ingredient => {
         this.ingredientNumbers.push(counter++);
-        if (typeof ingredient === Array) {
-          this.amount.push(ingredient[0]);
-          this.ingredients.push(ingredient[1]);
+
+        let amount = ingredient.match(/(?:\d+|\d(?:,\d)+)(?:(\.|,)\d+)?/);
+
+        if (amount && amount.length) {
+          let ingredientItem = ingredient.replace(amount[0], "");
+          amount = amount.map(Number)[0];
+          this.ingredientAmounts.push(amount);
+          this.ingredients.push(ingredientItem);
         } else {
+          this.ingredientAmounts.push("");
           this.ingredients.push(ingredient);
         }
       });
