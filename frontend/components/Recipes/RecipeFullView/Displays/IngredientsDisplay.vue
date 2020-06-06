@@ -72,7 +72,6 @@ export default {
         let amount = ingredient.match(numberRegex);
         if (amount && amount.length) {
           amount = amount[0];
-          console.log("Amount:", amount);
 
           let ingredientItem = ingredient.replace(amount, " ");
 
