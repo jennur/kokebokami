@@ -1,8 +1,7 @@
 <template
-  ><div>
-    <label
-      class="flex-row flex-row--align-center flex-row--nowrap margin-top--xxlarge"
-    >
+  >
+  <div>
+    <label class="flex-row flex-row--align-center flex-row--nowrap margin-top--xxlarge">
       <h4 class="margin--none">Number of servings:</h4>
       <input
         class="add-recipe-form__servings margin-left--medium"
@@ -24,36 +23,39 @@
         class="add-recipe-form__ingredient-heading flex-row flex-row--space-between flex-row--nowrap margin-bottom--medium"
       >
         <span>Amount</span>
-        <span>Measurement unit & ingredient</span>
+        <span>Ingredient</span>
       </div>
       <span
         class="flex-row flex-row--align-center flex-row--nowrap margin-bottom--small"
         v-for="number in ingredientNumbers"
         :key="number"
       >
-        <label
+        <div
           class="add-recipe-form__ingredient-wrap flex-row flex-row--space-between flex-row--nowrap"
         >
-          <input
-            class="add-recipe-form__amount"
-            type="number"
-            :id="`ingredient-amount-${number}`"
-            :placeholder="(number % 2 && '3') || (number % 3 && '100') || '2'"
-            min="0"
-            step=".05"
-            v-model="ingredientAmounts[number]"
-          />
-
-          <input
-            class="add-recipe-form__ingredient"
-            type="text"
-            :placeholder="
+          <label>
+            <input
+              class="add-recipe-form__amount"
+              type="number"
+              :id="`ingredient-amount-${number}`"
+              :placeholder="(number % 2 && '3') || (number % 3 && '100') || '2'"
+              min="0"
+              step=".05"
+              v-model="ingredientAmounts[number]"
+            />
+          </label>
+          <label>
+            <input
+              class="add-recipe-form__ingredient"
+              type="text"
+              :placeholder="
               (number % 2 && 'dl milk') || (number % 3 && 'g sugar') || 'eggs'
             "
-            :id="'ingredient' + number"
-            v-model="ingredients[number]"
-          />
-        </label>
+              :id="'ingredient' + number"
+              v-model="ingredients[number]"
+            />
+          </label>
+        </div>
 
         <decrement-button
           :data-ingredient-ref="number"
@@ -67,8 +69,7 @@
       <increment-button
         class="margin-top--large"
         @increment="incrementIngredientNumber"
-        >Add ingredient</increment-button
-      >
+      >Add ingredient</increment-button>
     </fieldset>
   </div>
 </template>

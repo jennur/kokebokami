@@ -10,16 +10,13 @@
       />
     </div>
 
-    <div
-      class="tablet-width padding-horizontal--large margin-top--xxlarge margin--auto"
-      v-else
-    >
+    <div class="tablet-width padding-horizontal--medium margin-top--xxlarge margin--auto" v-else>
       <div class="flex-center-container flex-column">
         <h2>Discover public recipes</h2>
         <nuxt-link to="/account/my-cookbook/">My cookbook ➔</nuxt-link>
       </div>
       <recipes-filter
-        class="margin-bottom--xlarge margin--auto"
+        class="margin-bottom--xlarge margin-top--large margin-left--xsmall margin--auto"
         :recipes="publicRecipes"
         @filter="setVisibleRecipes"
       />
