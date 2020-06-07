@@ -114,6 +114,13 @@
   }
 
   &-left {
+    &--xsmall {
+      margin-left: $spacingSmallMobile;
+
+      @media screen and (min-width: $tabletWidth) {
+        margin-left: $spacingXSmall;
+      }
+    }
     &--small {
       margin-left: $spacingSmallMobile;
 

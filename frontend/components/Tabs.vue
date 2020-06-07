@@ -36,25 +36,25 @@ export default {
   methods: {
     closeDropDown() {
       let tabs = this.$refs.tabs;
+      tabs.classList.remove("tab--dropdown-list");
       let tabElems = Object.values(tabs.getElementsByClassName("tab"));
       tabElems.forEach(tab => {
         if (!tab.classList.contains("tab--active-tab")) {
           tab.classList.add("tab--hide-mobile");
-          tab.classList.remove("tab--dropdown-list");
         }
       });
     },
     switchTab(event, index) {
       this.activeTabIndex = index;
       let tabs = this.$refs.tabs;
+      tabs.classList.add("tab--dropdown-list");
       let tabElems = Object.values(tabs.getElementsByClassName("tab"));
       tabElems.forEach(tab => {
         if (tab.classList.contains("tab--hide-mobile")) {
           tab.classList.remove("tab--hide-mobile");
-          tab.classList.add("tab--dropdown-list");
         } else if (tab !== event.target) {
           tab.classList.add("tab--hide-mobile");
-        } else tab.classList.remove("tab--dropdown-list");
+        }
       });
       this.$emit("switchTab", index);
     }
