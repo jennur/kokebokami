@@ -48,6 +48,7 @@
       <div v-if="activeTabIndex === 1">
         <link-categories-filter
           v-if="userRecipeLinks.length"
+          :links="userRecipeLinks"
           @updateCategories="event => updateVisibleCategories(event)"
         />
         <recipes-link-list
@@ -56,6 +57,7 @@
           :links="userRecipeLinks"
           :emptyListMessage="emptyListMessage"
           @openForm="toggleRecipeForm"
+          @update="updateLinkList"
         />
       </div>
     </Tabs>
@@ -155,6 +157,9 @@ export default {
     }
   },
   methods: {
+    updateLinkList() {
+      this.getRecipeLinks();
+    },
     updateVisibleCategories(event) {
       let indexOfTargetValue = this.hiddenCategories.indexOf(
         event.target.value

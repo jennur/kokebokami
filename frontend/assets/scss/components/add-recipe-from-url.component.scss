@@ -95,3 +95,49 @@
     }
   }
 }
+
+.recipe-link-edit-form {
+  position: relative;
+  min-width: 280px;
+  border-radius: $spacingMedium;
+
+  form {
+    border-radius: $spacingMedium;
+  }
+
+  @media screen and (min-width: $mobileWidth) {
+    min-width: 345px;
+  }
+  &.recipe-display:hover {
+    background-color: transparent;
+    cursor: default;
+  }
+  &:hover {
+    background-color: transparent;
+  }
+  fieldset {
+    position: relative;
+    margin-top: $spacingLarge;
+  }
+
+  &__url,
+  &__title,
+  &__labels,
+  &__comment {
+    width: 100%;
+    max-width: 100%;
+  }
+  &__category {
+    max-width: 138px;
+  }
+
+  &--required {
+    color: $pink;
+    position: absolute;
+    right: -$spacingLarge;
+    bottom: $spacingSmall;
+  }
+  &__comment {
+    min-height: 100px;
+  }
+}

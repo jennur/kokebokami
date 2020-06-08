@@ -4,7 +4,7 @@
     <div class="account container tablet-width padding-horizontal--large">
       <h1 class="margin-top--xxlarge margin-bottom--large">My account details</h1>
       <nuxt-link to="/account/public-profile-view/">
-        See my public profile
+        See your public profile
         <right-arrow class="icon icon--blue" />
       </nuxt-link>
       <div>
@@ -147,6 +147,24 @@
               </li>
             </ol>
           </dt>
+          <dt class="account__detail">
+            <div class="account__detail-title">
+              <span>
+                My recipe links:
+                <span>{{ userRecipeLinks ? userRecipeLinks.length : null }}</span>
+              </span>
+            </div>
+            <ol>
+              <li v-for="link in userRecipeLinks" :key="link[0]">
+                <a :href="link[1] && link[1].url" target="_blank">
+                  {{
+                  link[1].title || backupTitle(link[1])
+                  }}
+                </a>
+                <new-tab-icon class="account__recipe-link-icon" />
+              </li>
+            </ol>
+          </dt>
         </dl>
 
         <h3>Cooks connected to your account</h3>
@@ -190,7 +208,7 @@
           class="button button--small button--transparent button--transparent-red margin-top--large"
           @click="deleteAccount"
         >Delete my account</button>
-        <p>{{ systemMessage }}</p>
+        <p class="system-message">{{ systemMessage }}</p>
       </div>
     </div>
   </div>
@@ -202,11 +220,21 @@ import allUsers from "~/mixins/allUsers.js";
 import connectedUsers from "~/mixins/connectedUsers.js";
 import sharedRecipes from "~/mixins/sharedRecipes.js";
 import userRecipes from "~/mixins/userRecipes.js";
+import userRecipeLinks from "~/mixins/userRecipeLinks.js";
 
-import RecipesList from "~/components/Recipes/RecipesList.vue";
+import newTabIcon from "~/assets/graphics/new-tab-icon.svg";
 
 export default {
   name: "account",
+  components: {
+    newTabIcon
+  },
+  props: {
+    breadcrumbs: {
+      type: Array,
+      default: () => [{ name: "Home", link: "/" }, { name: "My account" }]
+    }
+  },
   data() {
     return {
       systemMessage: "",
@@ -224,20 +252,24 @@ export default {
       editBiography: false
     };
   },
-  props: {
-    breadcrumbs: {
-      type: Array,
-      default: () => [{ name: "Home", link: "/" }, { name: "My account" }]
-    }
-  },
-  mounted() {
-    this.username = this.user.displayName;
-    this.email = this.user.email;
-    this.biography = this.user.biography;
-    this.photoURL = this.user.photoURL;
-  },
-  mixins: [user, allUsers, connectedUsers, userRecipes, sharedRecipes],
+  mixins: [
+    user,
+    allUsers,
+    connectedUsers,
+    userRecipes,
+    sharedRecipes,
+    userRecipeLinks
+  ],
   methods: {
+    backupTitle(link) {
+      let regex = /-/gi;
+      let url = link.url;
+      let title = url
+        .split("/")
+        .pop()
+        .replace(regex, " ");
+      return title;
+    },
     updateUserDetailsInStore() {
       let userObj = {
         id: this.user.id,
@@ -346,10 +378,10 @@ export default {
                   .ref("recipes/" + recipe.key)
                   .remove()
                   .then(() => {
-                    console.log("Success: Deleted recipe:: " + recipe.key);
+                    console.log("Success: Deleted recipe:", recipe.key);
                   })
                   .catch(error => {
-                    console.log("Error: Recipe removal failed:: " + error);
+                    console.log("Error: Recipe removal failed:", error);
                   });
               }
             });
@@ -362,7 +394,7 @@ export default {
                 console.log("Success: User was removed from database");
               })
               .catch(function(error) {
-                console.log("Error: User remove failed:: " + error);
+                console.log("Error: User remove failed:", error);
                 componentThis.systemMessage = error.message;
               });
           })
@@ -377,15 +409,21 @@ export default {
               })
               .catch(function(error) {
                 componentThis.systemMessage = error.message;
-                console.log("Error: User delete failed::", error);
+                console.log("Error: User delete failed:", error);
               });
           })
           .catch(function(error) {
             componentThis.systemMessage = error.message;
-            console.log("Error: Recipes reference failed:: " + error);
+            console.log("Error: Recipes reference failed:", error);
           });
       }
     }
+  },
+  mounted() {
+    this.username = this.user.displayName;
+    this.email = this.user.email;
+    this.biography = this.user.biography;
+    this.photoURL = this.user.photoURL;
   }
 };
 </script>

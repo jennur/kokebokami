@@ -8,6 +8,7 @@ textarea {
   box-sizing: border-box;
   max-width: 100%;
   box-sizing: border-box;
+  font-family: $bodyFont;
   &:focus {
     outline: none;
     border: 2px solid $green;
