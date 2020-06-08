@@ -7,31 +7,35 @@
             category.links.length
         "
       >
-        <h4
-          class="recipe-link-list__headline margin-bottom--medium margin-left--small"
-        >
-          {{ category && category.title }}
-        </h4>
+        <div class="flex-row flex-row--align-center">
+          <h4
+            class="recipe-link-list__headline margin-left--small margin-bottom--medium"
+          >{{ category && category.title }}</h4>
+          <button
+            class="button button--small margin-bottom--medium"
+            :class="{
+              'button--cancel': editMode,
+            'button--transparent margin-left--large': !editMode
+            }"
+            @click="toggleEditMode"
+          >{{editMode ? "✕ Close" : "Edit mode"}}</button>
+        </div>
         <div class="recipe-link-list">
           <recipe-link
             v-for="(link, index) in category.links"
             :key="`recipe-link-${index}`"
             :link="link"
+            :editMode="editMode"
           />
         </div>
       </div>
     </div>
-    <div
-      v-if="!links.length"
-      class="container container--center margin-bottom--xxlarge"
-    >
+    <div v-if="!links.length" class="container container--center margin-bottom--xxlarge">
       {{ emptyListMessage }}
       <button
         class="button button--transparent margin-top--xxlarge"
         @click="$emit('openForm')"
-      >
-        Add recipe to this list
-      </button>
+      >Add recipe to this list</button>
     </div>
   </section>
 </template>
@@ -55,6 +59,11 @@ export default {
       type: String,
       default: "Looks like there is nothing here at the moment 😕"
     }
+  },
+  data() {
+    return {
+      editMode: false
+    };
   },
   computed: {
     categories() {
@@ -82,6 +91,12 @@ export default {
       });
       categories.push(categories.shift());
       return categories;
+    }
+  },
+  methods: {
+    toggleEditMode() {
+      this.editMode = !this.editMode;
+      this.$emit("update");
     }
   }
 };

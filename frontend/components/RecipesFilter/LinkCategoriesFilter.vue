@@ -1,8 +1,6 @@
 <template>
   <section class="container margin-vertical--xlarge">
-    <h4 class="heading--blue margin-bottom--medium margin-left--small">
-      Show categories
-    </h4>
+    <h4 class="heading--blue margin-bottom--medium margin-left--small">Show categories</h4>
     <form class="link-categories-filter">
       <label
         class="form__input margin-right--medium"
@@ -26,10 +24,15 @@ import userRecipeLinks from "~/mixins/userRecipeLinks.js";
 
 export default {
   name: "link-categories-filter",
-  mixins: [userRecipeLinks],
+  props: {
+    links: {
+      type: Array,
+      default: () => []
+    }
+  },
   computed: {
     categories() {
-      let links = this.userRecipeLinks;
+      let links = this.links;
       let categories = ["No category"];
       links.forEach(link => {
         if (link[1].category) {

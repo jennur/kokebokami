@@ -38,7 +38,6 @@
 </template>
 
 <script>
-import allUsers from "~/mixins/allUsers.js";
 export default {
   name: "recipe-display",
   props: {
@@ -53,9 +52,13 @@ export default {
     publicRecipe: {
       type: Boolean,
       default: false
+    },
+    allUsers: {
+      type: Array,
+      default: () => []
     }
   },
-  mixins: [allUsers],
+
   computed: {
     recipeUrl() {
       return this.recipeID;

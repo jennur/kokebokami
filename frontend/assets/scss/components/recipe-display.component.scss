@@ -20,10 +20,18 @@
 
   &:hover {
     background-color: rgba($green, 0.2);
-    color: $blue;
     text-decoration: none;
+    a {
+      text-decoration: none;
+    }
   }
 
+  &--no-link {
+    cursor: default;
+    &:hover {
+      background-color: transparent;
+    }
+  }
   &--left-aligned {
     text-align: left;
   }

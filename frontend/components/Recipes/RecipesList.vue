@@ -7,6 +7,7 @@
       :recipeID="recipe[0]"
       :recipe="recipe[1]"
       :publicRecipe="publicRecipe"
+      :allUsers="allUsers"
     />
     <div v-if="!recipesLength" class="container container--center">
       <p class="margin--auto margin-bottom--medium mobile-width">{{emptyListMessage}}</p>
@@ -17,7 +18,7 @@
 
 <script>
 import RecipeDisplay from "./RecipeDisplay.vue";
-
+import allUsers from "~/mixins/allUsers.js";
 export default {
   name: "recipes-list",
   components: {
@@ -49,6 +50,7 @@ export default {
       default: ""
     }
   },
+  mixins: [allUsers],
   computed: {
     recipesLength() {
       return this.recipes ? this.recipes.length : 0;
