@@ -28,7 +28,7 @@
             @click="handlePasswordReset"
             class="button button--small button--green margin-top--large"
           >Send</button>
-          <expand-transition :show="systemMessage.length">
+          <expand-transition :show="!!systemMessage">
             <div class="system-message system-message--dark-bg margin-top--large">
               {{ systemMessage }}
               <span

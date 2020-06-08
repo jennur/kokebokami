@@ -83,19 +83,21 @@
           class="recipe-link-edit-form__comment"
         />
       </fieldset>
-      <fieldset class="flex-row flex-row--justify-center">
-        <button
-          type="submit"
-          name="Delete"
-          class="button button--small button--red-border margin-top--xxlarge"
-          @click.prevent="deleteLink"
-        >Delete link</button>
-        <button
-          type="submit"
-          name="submit"
-          class="button button--small margin-top--xxlarge"
-          @click.prevent="update"
-        >Save updates</button>
+      <fieldset>
+        <div class="flex-center-container">
+          <button
+            type="submit"
+            name="submit"
+            class="button button--small margin-horizontal--xlarge margin-top--xxlarge"
+            @click.prevent="update"
+          >Save updates</button>
+          <button
+            type="submit"
+            name="Delete"
+            class="recipe-link-edit-form__delete-btn button button--small button--transparent button--transparent-red margin-top--xxlarge margin-horizontal--xlarge"
+            @click.prevent="deleteLink"
+          >Delete link</button>
+        </div>
         <expand-transition :show="!!submitSystemMessage">
           <div class="system-message margin-top--small">{{submitSystemMessage}}</div>
         </expand-transition>
