@@ -81,6 +81,7 @@ export default {
     closeModal() {
       this.resettingPassword = false;
       this.$emit("toggle");
+      this.systemMessage = "";
     },
     openPasswordReset() {
       this.resettingPassword = true;
