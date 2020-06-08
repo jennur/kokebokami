@@ -31,12 +31,12 @@
       </fieldset>
       <fieldset class="flex-column">
         <label for="category">Category</label>
-        <div class="flex-row flex-row--align-center flex-row--nowrap">
+        <div class="flex-row flex-row--align-center">
           <select-component
             ref="categorySelect"
             id="category-select"
             name="category-select"
-            class="select--green margin-right--medium"
+            class="select--green margin-right--medium margin-top--medium"
             :options="categories"
             defaultValue="No category"
             :preSelected="selectedCategory"
@@ -44,7 +44,7 @@
           />
           <button
             v-if="!newCategory"
-            class="recipe-link-edit-form__category-btn button button--xsmall button--green button--round"
+            class="recipe-link-edit-form__category-btn button button--xsmall button--green button--round margin-top--medium"
             @click.prevent="addNewCategory"
           >New category</button>
           <input
@@ -55,7 +55,7 @@
             name="category"
             id="category"
             placeholder="Category name"
-            class="recipe-link-edit-form__category"
+            class="recipe-link-edit-form__category margin-top--medium"
           />
         </div>
       </fieldset>
@@ -83,14 +83,19 @@
           class="recipe-link-edit-form__comment"
         />
       </fieldset>
-      <fieldset class="container container--center margin-top--xxlarge">
+      <fieldset class="flex-row flex-row--justify-center">
+        <button
+          type="submit"
+          name="Delete"
+          class="button button--small button--red-border margin-top--xxlarge"
+          @click.prevent="deleteLink"
+        >Delete link</button>
         <button
           type="submit"
           name="submit"
-          value="Save"
-          class="button button--small form__submit margin-right--xlarge"
+          class="button button--small margin-top--xxlarge"
           @click.prevent="update"
-        >Save</button>
+        >Save updates</button>
         <expand-transition :show="!!submitSystemMessage">
           <div class="system-message margin-top--small">{{submitSystemMessage}}</div>
         </expand-transition>
@@ -148,6 +153,27 @@ export default {
     }
   },
   methods: {
+    deleteLink() {
+      if (
+        confirm(
+          "Are you sure you want to delete this link? This operation cannot be undone."
+        )
+      ) {
+        const recipeLinkRef = this.$fireDb.ref(
+          `users/${this.user.id}/recipeLinks/${this.recipeLinkID}`
+        );
+        recipeLinkRef
+          .remove()
+          .then(res => {
+            this.submitSystemMessage =
+              "Your recipe link was deleted successfully";
+          })
+          .catch(error => {
+            this.submitSystemMessage = error.message;
+            console.log("Error deleting recipe:", error);
+          });
+      }
+    },
     update() {
       let url = this.url || "";
       let title = this.title || "";
@@ -159,7 +185,7 @@ export default {
       console.log("URL Test:", urlCheck.test(url));
 
       if (urlCheck.test(url)) {
-        this.systemMessage = "";
+        this.errorSystemMessage = "";
         let dataObject = {
           url,
           title,
