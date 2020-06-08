@@ -1,4 +1,8 @@
 .flex-order {
+  &--zero {
+    order: 0;
+  }
+
   &--one {
     order: 1;
   }
@@ -7,6 +11,11 @@
     order: 2;
   }
 
+  &--mobile-zero {
+    @media screen and (min-width: $mobileWidth) {
+      order: 0;
+    }
+  }
   &--tablet-one {
     @media screen and (min-width: $tabletWidth) {
       order: 1;

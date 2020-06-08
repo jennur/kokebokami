@@ -174,7 +174,6 @@ export default {
       this.getRecipeLinks();
       this.activeTabIndex = 1;
       this.addRecipeFromUrl = false;
-      console.log("ActiveTab:", this.activeTabIndex);
     },
     closeDropdown() {
       this.dropdown = false;
