@@ -1,7 +1,7 @@
 <template>
   <section class="padding--xlarge">
     <div class="container container--center">
-      <h2 v-if="bigHeadline">{{ headline }}</h2>
+      <h2 v-if="bigHeadline" class="margin-top--xlarge">{{ headline }}</h2>
       <h3 v-else>{{ headline }}</h3>
     </div>
     <div class="flex-row flex-row--justify-center tablet-width margin--auto">

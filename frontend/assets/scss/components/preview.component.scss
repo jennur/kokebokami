@@ -1,0 +1,31 @@
+.preview {
+  &-container {
+  }
+
+  &__iphone {
+    width: 200px;
+    border: 8px solid black;
+    border-radius: $spacingXLarge;
+    position: relative;
+    padding: 0px;
+    box-shadow: 5px 5px rgba(0, 0, 0, 0.2);
+
+    &::before {
+      content: "";
+      width: 100px;
+      height: 12px;
+      border-radius: 0px 0px $spacingMedium $spacingMedium;
+      background-color: black;
+      position: absolute;
+      top: 0px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    &-video {
+      max-width: 100%;
+      margin: 0px;
+      border-radius: $spacingLarge;
+    }
+  }
+}

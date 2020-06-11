@@ -1,12 +1,15 @@
 <template>
   <div>
     <div v-if="!user">
-      <initial-info-section />
+      <initial-info-section class="padding-vertical--xxlarge" nextSection="lookup" />
+
+      <preview id="lookup" class="padding--large" />
 
       <sign-up-section
         class="container--blue"
         :darkBg="true"
         headline="Sign up to start building your own cookbook"
+        :bigHeadline="true"
       />
     </div>
 
@@ -30,6 +33,7 @@ import user from "~/mixins/user.js";
 import publicRecipes from "~/mixins/publicRecipes.js";
 
 import InitialInfoSection from "~/components/InitialInfoSection/InititalInfoSection.vue";
+import Preview from "~/components/Preview.vue";
 import SignUpSection from "~/components/SignUp/SignUpSection.vue";
 import RecipesFilter from "~/components/RecipesFilter/RecipesFilter.vue";
 import RecipesList from "~/components/Recipes/RecipesList.vue";
@@ -39,6 +43,7 @@ export default {
   layout: "fullwidth",
   components: {
     InitialInfoSection,
+    Preview,
     SignUpSection,
     RecipesFilter,
     RecipesList

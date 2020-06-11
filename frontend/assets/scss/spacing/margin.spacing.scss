@@ -188,6 +188,14 @@
         margin-right: $spacingXLarge;
       }
     }
+
+    &--xxlarge {
+      margin-right: $spacingXXLargeMobile;
+
+      @media screen and (min-width: $tabletWidth) {
+        margin-right: $spacingXXLarge;
+      }
+    }
   }
 
   &-horizontal {

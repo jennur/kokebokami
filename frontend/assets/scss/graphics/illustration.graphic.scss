@@ -38,4 +38,10 @@
   &--loading-book {
     max-width: 220px;
   }
+  &--guy-in-market {
+    max-width: 350px;
+    @media screen and (min-width: $tabletWidth) {
+      max-width: 450px;
+    }
+  }
 }

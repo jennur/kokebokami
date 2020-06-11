@@ -1,52 +1,52 @@
 <template>
-  <section class="container--orange">
-    <div class="tablet-width margin--auto padding-horizontal--large">
-      <div
-        class="flex-center-container flex-center-container--column tablet-width padding--none margin--auto"
-      >
-        <h1
-          class="container--center padding-horizontal--large margin-top--xxlarge"
-        >
-          Build your personal cookbook online
-        </h1>
-        <p
-          class="padding-horizontal--large color--blue mobile-width text-align--center"
-        >
-          Start storing your personal recipes online to make sure they never get
-          lost. Keep them private, share them with the public or your friends
-          only.
-        </p>
-        <nuxt-link
-          to="/sign-up/"
-          class="button button--large padding-horizontal--xlarge margin-top--large"
-          >Get started ➔</nuxt-link
-        >
-      </div>
-      <div class="flex-center-container"></div>
+  <section class="position-relative container--orange">
+    <div
+      class="flex-center-container flex-center-container--column tablet-width padding--none margin--auto"
+    >
+      <h1 class="container--center padding-horizontal--large">Build your personal cookbook online</h1>
+      <p class="padding-horizontal--large color--blue mobile-width text-align--center">
+        Store your personal recipes online to make sure they don't get lost. Keep them private, share them with the public or your friends
+        only.
+      </p>
+      <nuxt-link
+        to="/sign-up/"
+        class="button button--large padding-horizontal--xlarge margin-top--large"
+      >Get started ➔</nuxt-link>
     </div>
     <client-only>
-      <kokebokaMobile
-        v-if="isMobile"
-        class="illustration illustration--kokeboka"
+      <component
+        :is="kokebokamiIllustration"
+        class="illustration illustration--kokeboka margin-top--xxlarge"
       />
-      <kokeboka v-else class="illustration illustration--kokeboka" />
     </client-only>
+    <anchor-button :scrollTo="nextSection" />
   </section>
 </template>
 
 <script>
 import kokeboka from "~/assets/graphics/foodboard-wide.svg";
 import kokebokaMobile from "~/assets/graphics/foodboard-mobile.svg";
+import AnchorButton from "~/components/AnchorButton.vue";
 
 export default {
   name: "initial-info-section",
   components: {
     kokeboka,
-    kokebokaMobile
+    kokebokaMobile,
+    AnchorButton
+  },
+  props: {
+    nextSection: {
+      type: String,
+      default: ""
+    }
   },
   computed: {
     isMobile() {
       if (process.browser) return window.innerWidth < 600;
+    },
+    kokebokamiIllustration() {
+      return this.isMobile ? "kokebokaMobile" : "kokeboka";
     }
   }
 };
