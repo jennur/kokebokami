@@ -15,7 +15,9 @@
           loop="true"
         />
       </div>
-      <guyInMarket v-if="!isMobile" class="illustration illustration--guy-in-market" />
+      <client-only>
+        <guyInMarket v-if="!isMobile" class="illustration illustration--guy-in-market" />
+      </client-only>
     </div>
   </section>
 </template>
