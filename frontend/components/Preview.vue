@@ -10,9 +10,10 @@
         <video
           class="preview__iphone-video"
           src="~assets/videos/my-kokebok_preview.mp4"
-          autoplay="true"
-          muted="true"
-          loop="true"
+          autoplay
+          muted
+          loop
+          playsinline
         />
       </div>
       <client-only>
