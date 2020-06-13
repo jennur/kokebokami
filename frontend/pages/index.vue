@@ -35,7 +35,7 @@ import publicRecipes from "~/mixins/publicRecipes.js";
 import InitialInfoSection from "~/components/InitialInfoSection/InititalInfoSection.vue";
 import Preview from "~/components/Preview.vue";
 import SignUpSection from "~/components/SignUp/SignUpSection.vue";
-import RecipesFilter from "~/components/RecipesFilter/RecipesFilter.vue";
+import RecipesFilter from "~/components/Filter/RecipesFilter.vue";
 import RecipesList from "~/components/Recipes/RecipesList.vue";
 
 export default {

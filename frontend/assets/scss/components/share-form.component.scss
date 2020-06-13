@@ -1,8 +1,21 @@
 .share-form {
-  display: flex;
-  flex-direction: column;
+  display: block;
 
-  & input {
-    width: 190px;
+  &__followers {
+    width: 265px;
+  }
+
+  &__email {
+    width: 205px;
+    input {
+      width: 205px;
+    }
+  }
+  &__select {
+    width: 250px;
+    .select__dropdown {
+      width: 260px;
+      background-color: $cream;
+    }
   }
 }

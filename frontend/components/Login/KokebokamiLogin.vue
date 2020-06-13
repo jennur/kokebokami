@@ -105,7 +105,7 @@ export default {
         .catch(function(error) {
           // An error happened.
           componentThis.systemMessage = error.message;
-          console.log("Error", error);
+          console.log("Error", error.message);
         });
     },
     kokebokamiSignIn() {
@@ -119,7 +119,7 @@ export default {
           });
         console.log("Logging in with firebase");
       } catch (error) {
-        console.log("Error signing in:", error);
+        console.log("Error signing in:", error.message);
         this.$store.dispatch("SET_LOGIN_MESSAGE", error.message);
       }
     }

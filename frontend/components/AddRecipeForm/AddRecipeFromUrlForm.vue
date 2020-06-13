@@ -175,7 +175,7 @@ export default {
           userRef.child("recipeLinks").push(dataObject);
           this.$emit("save");
         } catch (error) {
-          console.log("Error saving recipe link:", error);
+          console.log("Error saving recipe link:", error.message);
         }
       } else {
         console.log("Error in url:", url);

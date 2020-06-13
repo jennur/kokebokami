@@ -138,7 +138,7 @@ export const actions = {
         commit("setUser", loggedinUser);
       });
     } catch (error) {
-      console.log("Error while setting user:", error);
+      console.log("Error while setting user:", error.message);
     }
   },
 

@@ -11,7 +11,7 @@
           type="checkbox"
           :value="category"
           checked
-          @change="event => $emit('updateCategories', event)"
+          @change="event => updateVisibleCategories(event)"
         />
         {{ category }}
       </label>
@@ -20,28 +20,27 @@
 </template>
 
 <script>
-import userRecipeLinks from "~/mixins/userRecipeLinks.js";
-
 export default {
-  name: "link-categories-filter",
+  name: "user-categories-filter",
   props: {
-    links: {
+    categories: {
       type: Array,
       default: () => []
     }
   },
-  computed: {
-    categories() {
-      let links = this.links;
-      let categories = ["No category"];
-      links.forEach(link => {
-        if (link[1].category) {
-          if (categories.indexOf(link[1].category) === -1)
-            categories.push(link[1].category);
-        }
-      });
-      categories.push(categories.shift());
-      return categories;
+  data() {
+    return { hiddenCategories: [] };
+  },
+  methods: {
+    updateVisibleCategories(event) {
+      let hiddenCategories = this.hiddenCategories;
+      let indexOfTargetValue = hiddenCategories.indexOf(event.target.value);
+      if (indexOfTargetValue > -1) {
+        hiddenCategories.splice(indexOfTargetValue, 1);
+      } else {
+        hiddenCategories.push(event.target.value);
+      }
+      this.$emit("updateCategories", hiddenCategories);
     }
   }
 };

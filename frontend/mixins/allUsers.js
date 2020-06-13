@@ -19,7 +19,7 @@ export default {
             }
           },
           error => {
-            console.log("Error while loading allUsers:", error);
+            console.log("Error while loading allUsers:", error.message);
             this.errorMessage =
               "Unable to load users. If the issue continues, please contact us.";
           }

@@ -1,11 +1,6 @@
 <template>
   <section>
-    <div
-      ref="recipe"
-      id="recipe"
-      v-if="!editMode"
-      class="recipe mobile-width margin--auto"
-    >
+    <div ref="recipe" id="recipe" v-if="!editMode" class="recipe mobile-width margin--auto">
       <h2 class="recipe__title">{{ recipeTitle }}</h2>
       <div class="recipe__description">{{ description }}</div>
       <div id="ignorePDF">
@@ -24,9 +19,9 @@
           :freeFrom="recipe.freeFrom"
           class="margin-bottom--xlarge"
         />
-
         <action-bar
           :isRecipeOwner="isRecipeOwner"
+          :recipeOwnerID="recipeOwnerID"
           :recipeKey="recipeKey"
           :editMode="editMode"
           @edit="toggleEditMode"
@@ -39,21 +34,20 @@
         :ingredients="recipe.ingredients"
         :servings="recipe.servings || ''"
       />
-      <instructions-display
-        v-if="recipe.instructions"
-        :instructions="recipe.instructions"
-      />
+      <instructions-display v-if="recipe.instructions" :instructions="recipe.instructions" />
     </div>
 
     <!-- EDIT FORM -->
-    <div v-if="editMode">
-      <add-recipe-form
-        :existingRecipe="recipe"
-        @exitEditMode="toggleEditMode"
-        @update="handleUpdate"
-        :editMode="editMode"
-      />
-    </div>
+    <transition name="fade">
+      <div v-if="editMode">
+        <add-recipe-form
+          :existingRecipe="recipe"
+          @exitEditMode="toggleEditMode"
+          @update="handleUpdate"
+          :editMode="editMode"
+        />
+      </div>
+    </transition>
   </section>
 </template>
 
@@ -84,13 +78,13 @@ export default {
   },
   data() {
     return {
-      recipeOwnerID: "",
       editMode: false,
       hide: false
     };
   },
   props: {
     isRecipeOwner: { type: Boolean, default: false },
+    recipeOwnerID: { type: String, default: "" },
     recipe: { type: Object, default: () => {} },
     recipeKey: { type: String, default: "" }
   },
@@ -114,6 +108,10 @@ export default {
     },
     toggleEditMode() {
       this.editMode = !this.editMode;
+      if (process.browser) {
+        document.documentElement.scrollTop = 0;
+        document.body.scrollTop = 0;
+      }
     },
     toggleWarning() {
       if (this.editMode) {

@@ -29,7 +29,7 @@ export default {
             }
           });
         } catch (error) {
-          console.log("Error: Failed to set shared recipes:", error);
+          console.log("Error: Failed to set shared recipes:", error.message);
           componentThis.errorMessage =
             "Something went wrong while trying to load your shared recipes. If the issue continues, please contact us.";
         }

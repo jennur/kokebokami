@@ -381,7 +381,7 @@ export default {
                     console.log("Success: Deleted recipe:", recipe.key);
                   })
                   .catch(error => {
-                    console.log("Error: Recipe removal failed:", error);
+                    console.log("Error: Recipe removal failed:", error.message);
                   });
               }
             });
@@ -394,7 +394,7 @@ export default {
                 console.log("Success: User was removed from database");
               })
               .catch(function(error) {
-                console.log("Error: User remove failed:", error);
+                console.log("Error: User remove failed:", error.message);
                 componentThis.systemMessage = error.message;
               });
           })
@@ -409,12 +409,12 @@ export default {
               })
               .catch(function(error) {
                 componentThis.systemMessage = error.message;
-                console.log("Error: User delete failed:", error);
+                console.log("Error: User delete failed:", error.message);
               });
           })
           .catch(function(error) {
             componentThis.systemMessage = error.message;
-            console.log("Error: Recipes reference failed:", error);
+            console.log("Error: Recipes reference failed:", error.message);
           });
       }
     }

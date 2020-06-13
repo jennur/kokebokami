@@ -21,7 +21,7 @@ export default {
             }
           });
         } catch (error) {
-          console.log("Error: Failed setting recipes:", error);
+          console.log("Error: Failed setting recipes:", error.message);
         }
       }
     }

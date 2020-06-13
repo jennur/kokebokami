@@ -11,10 +11,7 @@
       "
       class="button button--small button--green-border margin-bottom--large"
     >
-      <search-icon
-        class="icon icon--in-button margin-right--medium"
-        v-if="!search"
-      />
+      <search-icon class="icon icon--in-button margin-right--medium" v-if="!search" />
       {{ search ? "Exit search" : "Search" }}
     </span>
     <expand-transition :show="search">
@@ -31,7 +28,7 @@
   </div>
 </template>
 <script>
-import CategoryFilter from "~/components/CategoryFilter/CategoryFilter.vue";
+import CategoryFilter from "./CategoryFilter.vue";
 import SearchForm from "./SearchForm.vue";
 import ExpandTransition from "~/components/Transitions/Expand.vue";
 
@@ -41,6 +38,12 @@ export default {
     CategoryFilter,
     SearchForm,
     ExpandTransition
+  },
+  props: {
+    recipes: {
+      type: Array,
+      default: () => []
+    }
   },
   data() {
     return {
@@ -53,12 +56,7 @@ export default {
       categories: []
     };
   },
-  props: {
-    recipes: {
-      type: Array,
-      default: () => []
-    }
-  },
+
   methods: {
     toggleSearchForm() {
       this.search = !this.search;

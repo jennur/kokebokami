@@ -26,7 +26,7 @@ export default {
             return recipes.concat(users);
           })
         )
-        .catch(error => console.log("Error generating routes:", error));
+        .catch(error => console.log("Error generating routes:", error.message));
     }
   },
 

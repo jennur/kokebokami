@@ -9,8 +9,14 @@
   transform: translateY(0px) translateX(-50%);
   cursor: pointer;
   padding: $spacingSmall;
+  path {
+    transition: 0.3s;
+  }
 
   &:hover {
     transform: translateY($spacingSmall) translateX(-50%);
+    path {
+      stroke: $green;
+    }
   }
 }

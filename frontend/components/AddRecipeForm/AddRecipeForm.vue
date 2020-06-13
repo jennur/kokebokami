@@ -64,7 +64,7 @@
 
 <script>
 import user from "~/mixins/user.js";
-import CategoryFilter from "~/components/CategoryFilter/CategoryFilter.vue";
+import CategoryFilter from "~/components/Filter/CategoryFilter.vue";
 import DescriptionInput from "~/components/Input/DescriptionInput.vue";
 
 import IngredientsInput from "~/components/Input/IngredientsInput.vue";
@@ -143,7 +143,7 @@ export default {
           })
           .catch(error => {
             this.systemMessage = error.message;
-            console.log("Error deleting recipe:", error);
+            console.log("Error deleting recipe:", error.message);
           });
       }
     },
@@ -197,7 +197,7 @@ export default {
           })
           .catch(error => {
             this.systemMessage = error.message;
-            console.log("Error saving recipe", error);
+            console.log("Error saving recipe", error.message);
           });
       } else {
         const recipes = this.$fireDb.ref("recipes");

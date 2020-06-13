@@ -121,7 +121,7 @@ export default {
           }
         });
       } catch (error) {
-        console.log("Error while trying to follow user:", error);
+        console.log("Error while trying to follow user:", error.message);
       }
     },
     unfollowUser() {
@@ -149,7 +149,7 @@ export default {
           }
         });
       } catch (error) {
-        console.log("Error while trying to unfollow user:", error);
+        console.log("Error while trying to unfollow user:", error.message);
       }
     }
   }

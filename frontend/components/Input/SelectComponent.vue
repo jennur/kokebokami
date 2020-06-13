@@ -29,8 +29,7 @@
             event.keyCode === 13 && handleOption(defaultValue);
           }
         "
-        >{{ defaultValue }}</span
-      >
+      >{{ defaultValue }}</span>
       <span
         tabindex="0"
         role="option"
@@ -49,8 +48,7 @@
             event.keyCode === 13 && handleOption(option);
           }
         "
-        >{{ option }}</span
-      >
+      >{{ option }}</span>
     </div>
   </div>
 </template>
@@ -76,7 +74,7 @@ export default {
     },
     defaultValue: {
       type: String,
-      default: "Default"
+      default: "Choose option"
     },
     preSelected: {
       type: String,
