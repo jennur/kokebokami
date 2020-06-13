@@ -10,199 +10,65 @@
       <div>
         <h3 class="margin-top--xxlarge">Personal data</h3>
         <dl class="flex-row">
-          <dt class="account__detail account__detail--flex-column">
-            <div class="account__detail-title">
-              <span>
-                Profile picture
-                <span class="system-message">(visible to other users)</span>
-              </span>
-            </div>
-            <img
-              class="profile__img margin-top--large"
-              :src="photoURL"
-              :alt="user.displayName + '´s profile picture'"
-              v-if="photoURL"
-            />
-            <form v-on:submit.prevent class="account__detail-edit" v-if="editProfileImg">
-              <button
-                @click="updateProfileImg"
-                class="button button--small margin-top--large"
-              >Remove</button>
-            </form>
-            <div class="system-message">{{ profileImgSystemMessage }}</div>
-            <button
-              @click="toggleEditProfileImg"
-              class="button button--small button--transparent account__detail-edit-btn"
-            >{{ editProfileImg ? "Cancel" : "Edit" }}</button>
-          </dt>
+          <account-detail
+            title="Profile image"
+            :systemMessage="systemMessage"
+            :visibleToPublic="true"
+            :editOption="true"
+            :removeOption="true"
+            @update="(value) => updateProfileImg(value)"
+            @remove="removeProfileImg"
+            :currentValue="photoURL"
+            :isImage="true"
+          />
 
-          <dt class="account__detail account__detail--flex-column">
-            <div class="account__detail-title">
-              <span>
-                Username
-                <span class="system-message">(visible to other users)</span>
-              </span>
-            </div>
-            <span class="account__detail-value" v-if="!editUsername">
-              {{
-              username ? username : null
-              }}
-            </span>
-            <form v-on:submit.prevent class="account__detail-edit" v-else>
-              <label>
-                <input type="text" autocomplete="username" v-model="username" />
-              </label>
-              <button @click="updateUsername" class="button button--small">Save</button>
-            </form>
-            <div class="system-message">{{ usernameSystemMessage }}</div>
-            <button
-              @click="toggleEditUsername"
-              class="button button--small button--transparent account__detail-edit-btn"
-            >{{ editUsername ? "Cancel" : "Edit" }}</button>
-          </dt>
+          <account-detail
+            title="Username"
+            :systemMessage="systemMessage"
+            :visibleToPublic="true"
+            :editOption="true"
+            autocompleteType="username"
+            @update="(value) => updateUsername(value)"
+            :currentValue="username && username.length ? username : 'User'"
+          />
 
-          <dt class="account__detail account__detail--flex-column">
-            <div class="account__detail-title">
-              <span>E-mail</span>
-            </div>
-            <span class="account__detail-value" v-if="!editEmail">
-              {{
-              email ? email : null
-              }}
-            </span>
-            <form v-on:submit.prevent class="account__detail-edit" v-else>
-              <label>
-                <input type="email" autocomplete="email" v-model="email" />
-              </label>
-              <button @click="updateEmail" class="button button--small">Save</button>
-            </form>
-            <div class="system-message">{{ emailSystemMessage }}</div>
-            <button
-              @click="toggleEditEmail"
-              class="button button--small button--transparent account__detail-edit-btn"
-            >{{ editEmail ? "Cancel" : "Edit" }}</button>
-          </dt>
+          <account-detail
+            :systemMessage="systemMessage"
+            :visibleToPublic="false"
+            :editOption="true"
+            title="E-mail"
+            inputType="email"
+            autocompleteType="email"
+            @update="(value) => updateEmail(value)"
+            :currentValue="email"
+          />
 
-          <dt class="account__detail account__detail--flex-column">
-            <div class="account__detail-title">
-              <span>
-                Biography
-                <span class="system-message">(visible to other users)</span>
-              </span>
-            </div>
-            <span class="account__detail-value" v-if="!editBiography">
-              {{
-              biography ? biography : "Not set"
-              }}
-            </span>
-            <form v-on:submit.prevent class="account__detail-edit" v-else>
-              <label>
-                <textarea type="text" v-model="biography" />
-              </label>
-              <button @click="updateBiography" class="button button--small">Save</button>
-            </form>
-            <div class="system-message">{{ biographySystemMessage }}</div>
-            <button
-              @click="toggleEditBiography"
-              class="button button--small button--transparent account__detail-edit-btn"
-            >{{ editBiography ? "Cancel" : "Edit" }}</button>
-          </dt>
+          <account-detail
+            title="Biography"
+            :systemMessage="systemMessage"
+            :visibleToPublic="true"
+            :editOption="true"
+            inputType="textarea"
+            @update="(value) => updateBiography(value)"
+            :currentValue="biography"
+          />
         </dl>
+
         <h3>Recipes connected to your account</h3>
         <dl class="flex-row">
-          <dt class="account__detail">
-            <div class="account__detail-title">
-              <span>
-                My recipes:
-                <span>{{ userRecipes ? userRecipes.length : null }}</span>
-              </span>
-            </div>
-            <ol>
-              <li v-for="recipe in userRecipes" :key="recipe[1].title">
-                <span>
-                  <nuxt-link :to="`/recipes/${recipe[0]}`">
-                    {{
-                    recipe[1].title
-                    }}
-                  </nuxt-link>
-                </span>
-                <span class="system-message" v-if="recipe[1].public">Public</span>
-              </li>
-            </ol>
-          </dt>
-          <dt class="account__detail">
-            <div class="account__detail-title">
-              <span>
-                Recipes shared with me:
-                <span>{{ sharedRecipes ? sharedRecipes.length : null }}</span>
-              </span>
-            </div>
-            <ol>
-              <li v-for="recipe in sharedRecipes" :key="recipe[1].title">
-                <nuxt-link :to="`/recipes/${recipe[0]}`">
-                  {{
-                  recipe[1].title
-                  }}
-                </nuxt-link>
-              </li>
-            </ol>
-          </dt>
-          <dt class="account__detail">
-            <div class="account__detail-title">
-              <span>
-                My recipe links:
-                <span>{{ userRecipeLinks ? userRecipeLinks.length : null }}</span>
-              </span>
-            </div>
-            <ol>
-              <li v-for="link in userRecipeLinks" :key="link[0]">
-                <a :href="link[1] && link[1].url" target="_blank">
-                  {{
-                  link[1].title || backupTitle(link[1])
-                  }}
-                </a>
-                <new-tab-icon class="account__recipe-link-icon" />
-              </li>
-            </ol>
-          </dt>
+          <account-link-list title="My recipes:" :links="userRecipes" basePath="/recipes/" />
+          <account-link-list
+            title="Recipes shared with me:"
+            :links="sharedRecipes"
+            basePath="/recipes/"
+          />
+          <account-link-list title="My recipe links:" :links="recipeLinks" :externalURL="true" />
         </dl>
 
         <h3>Cooks connected to your account</h3>
         <dl class="flex-row">
-          <dt class="account__detail">
-            <div class="account__detail-title">
-              <span>
-                Following:
-                <span>{{ followed ? followed.length : null }}</span>
-              </span>
-            </div>
-            <ol>
-              <li v-for="cook in followed" :key="cook[1].displayName">
-                <nuxt-link :to="`/cooks/${cook[0]}`">
-                  {{
-                  cook[1].displayName
-                  }}
-                </nuxt-link>
-              </li>
-            </ol>
-          </dt>
-          <dt class="account__detail">
-            <div class="account__detail-title">
-              <span>
-                Followers:
-                <span>{{ followers ? followers.length : null }}</span>
-              </span>
-            </div>
-            <ol>
-              <li v-for="follower in followers" :key="follower[1].displayName">
-                <nuxt-link :to="`/cooks/${follower[0]}`">
-                  {{
-                  follower[1].displayName
-                  }}
-                </nuxt-link>
-              </li>
-            </ol>
-          </dt>
+          <account-link-list title="Following:" :links="cooksFollowed" basePath="/cooks/" />
+          <account-link-list title="Followers:" :links="cookFollowers" basePath="/cooks/" />
         </dl>
         <button
           class="button button--small button--transparent button--transparent-red margin-top--large"
@@ -222,12 +88,14 @@ import sharedRecipes from "~/mixins/sharedRecipes.js";
 import userRecipes from "~/mixins/userRecipes.js";
 import userRecipeLinks from "~/mixins/userRecipeLinks.js";
 
-import newTabIcon from "~/assets/graphics/new-tab-icon.svg";
+import AccountDetail from "~/components/Account/Displays/AccountDetail.vue";
+import AccountLinkList from "~/components/Account/Displays/AccountLinkList.vue";
 
 export default {
   name: "account",
   components: {
-    newTabIcon
+    AccountDetail,
+    AccountLinkList
   },
   props: {
     breadcrumbs: {
@@ -238,18 +106,10 @@ export default {
   data() {
     return {
       systemMessage: "",
-      profileImgSystemMessage: "",
-      usernameSystemMessage: "",
-      emailSystemMessage: "",
-      biographySystemMessage: "",
       photoURL: "",
       username: "",
       email: "",
-      biography: "",
-      editProfileImg: false,
-      editUsername: false,
-      editEmail: false,
-      editBiography: false
+      biography: ""
     };
   },
   mixins: [
@@ -260,8 +120,32 @@ export default {
     sharedRecipes,
     userRecipeLinks
   ],
+  computed: {
+    recipeLinks() {
+      let links = this.userRecipeLinks;
+      links = links.map(link => {
+        link[1].title = link[1].title || this.makeBackupTitle(link[1]);
+        return link;
+      });
+      return links;
+    },
+    cooksFollowed() {
+      let followed = this.followed;
+      return followed.map(cook => {
+        cook[1].title = cook[1].displayName;
+        return cook;
+      });
+    },
+    cookFollowers() {
+      let followers = this.followers;
+      return followers.map(cook => {
+        cook[1].title = cook[1].displayName;
+        return cook;
+      });
+    }
+  },
   methods: {
-    backupTitle(link) {
+    makeBackupTitle(link) {
       let regex = /-/gi;
       let url = link.url;
       let title = url
@@ -280,19 +164,8 @@ export default {
       };
       this.$store.dispatch("SET_USER", userObj);
     },
-    toggleEditProfileImg() {
-      this.editProfileImg = !this.editProfileImg;
-    },
-    toggleEditUsername() {
-      this.editUsername = !this.editUsername;
-    },
-    toggleEditEmail() {
-      this.editEmail = !this.editEmail;
-    },
-    toggleEditBiography() {
-      this.editBiography = !this.editBiography;
-    },
-    updateProfileImg() {
+    updateProfileImg() {},
+    removeProfileImg() {
       let componentThis = this;
       this.$fireDb
         .ref("/users/" + this.user.id)
@@ -304,62 +177,62 @@ export default {
           componentThis.toggleEditProfileImg();
         })
         .catch(e => {
-          this.profileImgSystemMessage = e.message;
+          this.systemMessage = e.message;
           console.log(e);
         });
     },
-    updateUsername() {
+    updateUsername(value) {
       let componentThis = this;
       this.$fireDb
         .ref("/users/" + this.user.id)
         .update({
-          displayName: this.username
+          displayName: value
         })
         .then(() => {
+          componentThis.username = value;
           componentThis.updateUserDetailsInStore();
-          componentThis.toggleEditUsername();
         })
         .catch(e => {
-          this.usernameSystemMessage = e.message;
+          this.systemMessage = e.message;
           console.log(e);
         });
     },
-    updateEmail() {
+    updateEmail(value) {
+      //Fix this with firebase
       let componentThis = this;
-      this.$fireDb
+      /* this.$fireDb
         .ref("/users/" + this.user.id)
         .update({
-          email: this.email
+          email: value
         })
         .then(() => {
+          componentThis.email = value;
           componentThis.updateUserDetailsInStore();
-          componentThis.toggleEditEmail();
         })
         .catch(e => {
           this.emailSystemMessage = e.message;
           console.log(e);
-        });
+        }); */
     },
 
-    updateBiography() {
+    updateBiography(value) {
       let componentThis = this;
       this.$fireDb
         .ref("/users/" + this.user.id)
         .update({
-          biography: this.biography
+          biography: value
         })
         .then(() => {
+          componentThis.biography = value;
           componentThis.updateUserDetailsInStore();
-          componentThis.toggleEditBiography();
         })
         .catch(e => {
-          this.biographySystemMessage = e.message;
+          this.systemMessage = e.message;
           console.log(e);
         });
     },
     deleteAccount() {
       let user = this.$fireAuth.currentUser;
-      let userUID = this.user.id;
       const componentThis = this;
       if (
         confirm(
@@ -419,7 +292,7 @@ export default {
       }
     }
   },
-  mounted() {
+  created() {
     this.username = this.user.displayName;
     this.email = this.user.email;
     this.biography = this.user.biography;

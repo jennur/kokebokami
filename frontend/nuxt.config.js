@@ -125,7 +125,8 @@ export default {
         },
         ssr: false
       },
-      realtimeDb: true
+      realtimeDb: true,
+      storage: true
     }
   },
   pwa: {},
