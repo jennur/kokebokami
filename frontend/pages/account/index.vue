@@ -12,7 +12,7 @@
         <dl class="flex-row">
           <account-detail
             title="Profile image"
-            :systemMessage="systemMessage"
+            :systemMessage="removeProfileImgSystemMessage || updateProfileImgSystemMessage"
             :visibleToPublic="true"
             :editOption="true"
             :removeOption="true"
@@ -24,7 +24,7 @@
 
           <account-detail
             title="Username"
-            :systemMessage="systemMessage"
+            :systemMessage="usernameSystemMessage"
             :visibleToPublic="true"
             :editOption="true"
             autocompleteType="username"
@@ -33,7 +33,7 @@
           />
 
           <account-detail
-            :systemMessage="systemMessage"
+            :systemMessage="emailSystemMessage"
             :visibleToPublic="false"
             :editOption="true"
             title="E-mail"
@@ -45,7 +45,7 @@
 
           <account-detail
             title="Biography"
-            :systemMessage="systemMessage"
+            :systemMessage="biographySystemMessage"
             :visibleToPublic="true"
             :editOption="true"
             inputType="textarea"
@@ -105,7 +105,11 @@ export default {
   },
   data() {
     return {
-      systemMessage: "",
+      updateProfileImgSystemMessage: "",
+      removeProfileImgSystemMessage: "",
+      emailSystemMessage: "",
+      usernameSystemMessage: "",
+      biographySystemMessage: "",
       photoURL: "",
       username: "",
       email: "",
@@ -173,11 +177,12 @@ export default {
           photoURL: ""
         })
         .then(() => {
+          this.removeProfileImgSystemMessage = "";
+          this.photoURL = "";
           componentThis.updateUserDetailsInStore();
-          componentThis.toggleEditProfileImg();
         })
         .catch(e => {
-          this.systemMessage = e.message;
+          this.removeProfileImgSystemMessage = e.message;
           console.log(e);
         });
     },
@@ -191,9 +196,10 @@ export default {
         .then(() => {
           componentThis.username = value;
           componentThis.updateUserDetailsInStore();
+          this.usernameSystemMessage = "";
         })
         .catch(e => {
-          this.systemMessage = e.message;
+          this.usernameSystemMessage = e.message;
           console.log(e);
         });
     },
@@ -208,6 +214,7 @@ export default {
         .then(() => {
           componentThis.email = value;
           componentThis.updateUserDetailsInStore();
+          this.emailSystemMessage = "";
         })
         .catch(e => {
           this.emailSystemMessage = e.message;
@@ -225,9 +232,10 @@ export default {
         .then(() => {
           componentThis.biography = value;
           componentThis.updateUserDetailsInStore();
+          this.biographySystemMessage = "";
         })
         .catch(e => {
-          this.systemMessage = e.message;
+          this.biographySystemMessage = e.message;
           console.log(e);
         });
     },

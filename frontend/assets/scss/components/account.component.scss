@@ -16,6 +16,10 @@
       border-color: $green;
     }
 
+    h4 {
+      font-family: $bodyFont;
+    }
+
     &--flex-column {
       display: inline-flex;
       flex-direction: column;

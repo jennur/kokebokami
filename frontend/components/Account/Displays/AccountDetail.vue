@@ -21,21 +21,26 @@
           <input v-else :type="inputType" :autocomplete="autocompleteType" v-model="inputValue" />
         </label>
       </fieldset>
-      <button
-        v-if="removeOption"
-        @click="$emit('remove')"
-        class="button button--small button--cancel margin-top--large"
-      >Remove</button>
-      <button @click="handleSave" class="button button--small margin-top--large">Save</button>
+      <fieldset>
+        <div class="flex-row flex-row--nowrap margin-top--large">
+          <button
+            v-if="removeOption"
+            @click="handleRemoval"
+            class="button button--small button--red-border margin-right--medium"
+          >Remove</button>
+          <button @click="handleSave" class="button button--small">Save</button>
+          <button class="button button--small button--cancel" @click="toggleEditMode">✕ Cancel</button>
+        </div>
+      </fieldset>
     </form>
     <expand-transition :show="!!systemMessage">
       <div class="system-message">{{ systemMessage }}</div>
     </expand-transition>
     <button
-      v-if="editOption"
+      v-if="editOption && !editMode"
       @click="toggleEditMode"
       class="button button--small button--transparent account__detail-edit-btn"
-    >{{ editMode ? "Cancel" : "Edit" }}</button>
+    >Edit</button>
   </dt>
 </template>
 <script>
@@ -96,6 +101,10 @@ export default {
     handleSave() {
       this.toggleEditMode();
       this.$emit("update", this.inputValue);
+    },
+    handleRemoval() {
+      this.toggleEditMode();
+      this.$emit("remove");
     }
   }
 };
