@@ -18,6 +18,11 @@
               <input type="password" autocomplete="password" v-model="password" required />
             </label>
           </fieldset>
+          <expand-transition :show="!!loginSystemMessage">
+            <div
+              class="system-message system-message--dark-bg margin-top--large"
+            >{{ loginSystemMessage }}</div>
+          </expand-transition>
           <button
             v-if="!resettingPassword"
             @click="kokebokamiSignIn"
@@ -28,9 +33,9 @@
             @click="handlePasswordReset"
             class="button button--small button--green margin-top--large"
           >Send</button>
-          <expand-transition :show="!!systemMessage">
+          <expand-transition :show="!!resetEmailMessage">
             <div class="system-message system-message--dark-bg margin-top--large">
-              {{ systemMessage }}
+              {{ resetEmailMessage }}
               <span
                 v-if="successReset"
                 class="link--orange-underline"
@@ -64,7 +69,8 @@ export default {
   },
   data() {
     return {
-      systemMessage: "",
+      loginSystemMessage: "",
+      resetEmailMessage: "",
       email: "",
       password: "",
       resettingPassword: false,
@@ -81,15 +87,16 @@ export default {
     closeModal() {
       this.resettingPassword = false;
       this.$emit("toggle");
-      this.systemMessage = "";
+      this.resetEmailMessage = "";
+      this.loginSystemMessage = "";
     },
     openPasswordReset() {
       this.resettingPassword = true;
-      this.systemMessage = "";
+      this.resetEmailMessage = "";
     },
     closePasswordReset() {
       this.resettingPassword = false;
-      this.systemMessage = "";
+      this.resetEmailMessage = "";
     },
     handlePasswordReset() {
       let email = this.email;
@@ -98,29 +105,28 @@ export default {
         .sendPasswordResetEmail(email)
         .then(function() {
           // Email sent.
-          componentThis.systemMessage = "A reset link was sent to your email.";
+          componentThis.resetEmailMessage =
+            "A reset link was sent to your email.";
           console.log("Email sent");
           componentThis.successReset = true;
         })
         .catch(function(error) {
           // An error happened.
-          componentThis.systemMessage = error.message;
+          componentThis.resetEmailMessage = error.message;
           console.log("Error", error.message);
         });
     },
     kokebokamiSignIn() {
       const componentThis = this;
       try {
-        this.$router.push("/login?loading");
         this.$fireAuth
           .signInWithEmailAndPassword(this.email, this.password)
+          .then(() => console.log("Logging in with firebase"))
           .catch(error => {
-            this.$store.dispatch("SET_LOGIN_MESSAGE", error.message);
+            componentThis.loginSystemMessage = error.message;
           });
-        console.log("Logging in with firebase");
       } catch (error) {
         console.log("Error signing in:", error.message);
-        this.$store.dispatch("SET_LOGIN_MESSAGE", error.message);
       }
     }
   }
