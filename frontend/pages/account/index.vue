@@ -20,10 +20,11 @@
             :visibleToPublic="true"
             :editOption="true"
             :removeOption="true"
-            @update="value => updateProfileImg(value)"
+            @update="value => compressImage(value)"
             @remove="removeProfileImg"
             :currentValue="photoURL"
             :isImage="true"
+            :isLoading="isLoading"
           />
 
           <account-detail
@@ -104,6 +105,7 @@
 
 <script>
 const uuid = require("uuid");
+import Compressor from "compressorjs";
 
 import user from "~/mixins/user.js";
 import allUsers from "~/mixins/allUsers.js";
@@ -138,7 +140,8 @@ export default {
       photoURL: "",
       username: "",
       email: "",
-      biography: ""
+      biography: "",
+      isLoading: false
     };
   },
   mixins: [
@@ -196,7 +199,26 @@ export default {
       };
       this.$store.dispatch("SET_USER", userObj);
     },
+    compressImage(file) {
+      this.isLoading = true;
+      let componentThis = this;
+      const imageCompressor = new Compressor(file, {
+        checkOrientation: true,
+        maxWidth: 300,
+        maxHeight: 300,
+        quality: 0.6,
+        // Convert ALL PNG images to JPEG
+        convertSize: 0,
+        success(result) {
+          componentThis.updateProfileImg(result);
+        },
+        error(error) {
+          console.log("Error compressing image:", error.message);
+        }
+      });
+    },
     async updateProfileImg(upload) {
+      this.removeProfileImg();
       let componentThis = this;
       var imageName = uuid.v1();
       try {
@@ -221,6 +243,9 @@ export default {
           .then(() => {
             this.updateProfileImgSystemMessage = "";
             componentThis.updateUserDetailsInStore();
+          })
+          .then(() => {
+            componentThis.isLoading = false;
           })
           .catch(error => {
             this.removeProfileImgSystemMessage = error.message;

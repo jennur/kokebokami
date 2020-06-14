@@ -11,7 +11,12 @@
       <span v-if="!isImage">
         {{ currentValue ? currentValue : null }}
       </span>
-      <img class="account__detail-picture" v-else :src="currentValue" />
+      <img
+        class="account__detail-picture"
+        v-if="isImage && !isLoading"
+        :src="currentValue"
+      />
+      <span v-if="isLoading" class="simple-loading-spinner"></span>
     </div>
 
     <div v-if="editMode && isImage" class="account__detail-edit">
@@ -84,9 +89,11 @@
   </dt>
 </template>
 <script>
-import ExpandTransition from "~/components/Transitions/Expand.vue";
 import Dropzone from "nuxt-dropzone";
 import "nuxt-dropzone/dropzone.css";
+import Compressor from "compressorjs";
+
+import ExpandTransition from "~/components/Transitions/Expand.vue";
 
 export default {
   name: "account-detail",
@@ -130,6 +137,10 @@ export default {
     isImage: {
       type: Boolean,
       default: false
+    },
+    isLoading: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -139,14 +150,11 @@ export default {
       options: {
         url: "https://httpbin.org/post",
         acceptedFiles: ".jpg, .jpeg, .png",
-        dictDefaultMessage: `<p class='text-default'><i class='fa fa-cloud-upload mr-2'></i> Drag image or click here</p>
+        dictDefaultMessage: `<p class='text-default'><i class='fa fa-cloud-upload mr-2'></i> Drag image or Click here</p>
           <p class="form-text">Allowed Files: .jpg, .jpeg, .png</p>
-          `
-      },
-      thumbnailWidth: 150,
-      thumbnailHeight: 150,
-      maxFiles: 1,
-      addRemoveLinks: true
+          `,
+        maxFiles: 1
+      }
     };
   },
   methods: {
