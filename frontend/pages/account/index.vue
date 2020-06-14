@@ -2,7 +2,9 @@
   <div>
     <breadcrumbs :routes="breadcrumbs" />
     <div class="account container tablet-width padding-horizontal--large">
-      <h1 class="margin-top--xxlarge margin-bottom--large">My account details</h1>
+      <h1 class="margin-top--xxlarge margin-bottom--large">
+        My account details
+      </h1>
       <nuxt-link to="/account/public-profile-view/">
         See your public profile
         <right-arrow class="icon icon--blue" />
@@ -12,11 +14,13 @@
         <dl class="flex-row">
           <account-detail
             title="Profile image"
-            :systemMessage="removeProfileImgSystemMessage || updateProfileImgSystemMessage"
+            :systemMessage="
+              removeProfileImgSystemMessage || updateProfileImgSystemMessage
+            "
             :visibleToPublic="true"
             :editOption="true"
             :removeOption="true"
-            @update="(value) => updateProfileImg(value)"
+            @update="value => updateProfileImg(value)"
             @remove="removeProfileImg"
             :currentValue="photoURL"
             :isImage="true"
@@ -28,7 +32,7 @@
             :visibleToPublic="true"
             :editOption="true"
             autocompleteType="username"
-            @update="(value) => updateUsername(value)"
+            @update="value => updateUsername(value)"
             :currentValue="username && username.length ? username : 'User'"
           />
 
@@ -39,7 +43,7 @@
             title="E-mail"
             inputType="email"
             autocompleteType="email"
-            @update="(value) => updateEmail(value)"
+            @update="value => updateEmail(value)"
             :currentValue="email"
           />
 
@@ -49,31 +53,49 @@
             :visibleToPublic="true"
             :editOption="true"
             inputType="textarea"
-            @update="(value) => updateBiography(value)"
+            @update="value => updateBiography(value)"
             :currentValue="biography"
           />
         </dl>
 
         <h3>Recipes connected to your account</h3>
         <dl class="flex-row">
-          <account-link-list title="My recipes:" :links="userRecipes" basePath="/recipes/" />
+          <account-link-list
+            title="My recipes:"
+            :links="userRecipes"
+            basePath="/recipes/"
+          />
           <account-link-list
             title="Recipes shared with me:"
             :links="sharedRecipes"
             basePath="/recipes/"
           />
-          <account-link-list title="My recipe links:" :links="recipeLinks" :externalURL="true" />
+          <account-link-list
+            title="My recipe links:"
+            :links="recipeLinks"
+            :externalURL="true"
+          />
         </dl>
 
         <h3>Cooks connected to your account</h3>
         <dl class="flex-row">
-          <account-link-list title="Following:" :links="cooksFollowed" basePath="/cooks/" />
-          <account-link-list title="Followers:" :links="cookFollowers" basePath="/cooks/" />
+          <account-link-list
+            title="Following:"
+            :links="cooksFollowed"
+            basePath="/cooks/"
+          />
+          <account-link-list
+            title="Followers:"
+            :links="cookFollowers"
+            basePath="/cooks/"
+          />
         </dl>
         <button
           class="button button--small button--transparent button--transparent-red margin-top--large"
           @click="deleteAccount"
-        >Delete my account</button>
+        >
+          Delete my account
+        </button>
         <p class="system-message">{{ systemMessage }}</p>
       </div>
     </div>
@@ -81,6 +103,8 @@
 </template>
 
 <script>
+const uuid = require("uuid");
+
 import user from "~/mixins/user.js";
 import allUsers from "~/mixins/allUsers.js";
 import connectedUsers from "~/mixins/connectedUsers.js";
@@ -105,6 +129,7 @@ export default {
   },
   data() {
     return {
+      systemMessage: "",
       updateProfileImgSystemMessage: "",
       removeProfileImgSystemMessage: "",
       emailSystemMessage: "",
@@ -149,6 +174,9 @@ export default {
     }
   },
   methods: {
+    setProfileImgSystemMessage(message) {
+      this.updateProfileImgSystemMessage = message;
+    },
     makeBackupTitle(link) {
       let regex = /-/gi;
       let url = link.url;
@@ -168,22 +196,81 @@ export default {
       };
       this.$store.dispatch("SET_USER", userObj);
     },
-    updateProfileImg() {},
+    async updateProfileImg(upload) {
+      let componentThis = this;
+      var imageName = uuid.v1();
+      try {
+        //save image
+        let file = upload;
+        var metadata = {
+          contentType: "image/png"
+        };
+        var storageRef = this.$fireStorage.ref();
+
+        var imageRef = storageRef.child(
+          `images/${componentThis.user.id}/profileImg/${imageName}.png`
+        );
+        await imageRef.put(file, metadata);
+        this.photoURL = await imageRef.getDownloadURL();
+
+        this.$fireDb
+          .ref("/users/" + this.user.id)
+          .update({
+            photoURL: componentThis.photoURL
+          })
+          .then(() => {
+            this.updateProfileImgSystemMessage = "";
+            componentThis.updateUserDetailsInStore();
+          })
+          .catch(error => {
+            this.removeProfileImgSystemMessage = error.message;
+            console.log(error.message);
+          });
+      } catch (error) {
+        console.log("Error updating profile image:", error.message);
+        this.updateProfileImgSystemMessage = error.message;
+      }
+    },
     removeProfileImg() {
       let componentThis = this;
+      let userID = this.user.id;
+      let fileName = this.photoURL;
+
+      var storageRef = this.$fireStorage.ref();
+      var profileImgRef = storageRef.child(`images/${userID}/profileImg`);
+
+      profileImgRef
+        .listAll()
+        .then(function(res) {
+          res.items.forEach(function(itemRef) {
+            itemRef.delete();
+          });
+        })
+        .then(() => {
+          componentThis.removeProfileImageFromDb();
+        })
+        .catch(function(error) {
+          console.log("Error deleting files:", error.message);
+          componentThis.removeProfileImgSystemMessage =
+            "We're having trouble deleting your profile image. Please try again later or contact us.";
+        });
+    },
+    removeProfileImageFromDb() {
+      let componentThis = this;
+
       this.$fireDb
         .ref("/users/" + this.user.id)
         .update({
           photoURL: ""
         })
         .then(() => {
-          this.removeProfileImgSystemMessage = "";
-          this.photoURL = "";
+          componentThis.removeProfileImgSystemMessage = "";
+          componentThis.photoURL = "";
           componentThis.updateUserDetailsInStore();
+          console.log("Successfully deleted profile img");
         })
-        .catch(e => {
-          this.removeProfileImgSystemMessage = e.message;
-          console.log(e);
+        .catch(error => {
+          console.log(error.message);
         });
     },
     updateUsername(value) {

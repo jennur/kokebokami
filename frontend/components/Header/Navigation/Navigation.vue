@@ -21,7 +21,7 @@
             v-if="menuItem.img"
             class="google-profile-picture"
             :src="menuItem.img"
-            alt="Google profile picture"
+            :alt="`${user.displayName} profile picture`"
           />
           <nuxt-link
             class="navigation-menu__link"

@@ -20,6 +20,9 @@
       font-family: $bodyFont;
     }
 
+    &-picture {
+      max-width: 150px;
+    }
     &--flex-column {
       display: inline-flex;
       flex-direction: column;
@@ -56,6 +59,10 @@
       & input {
         max-width: 230px;
       }
+    }
+    &-warning-btn {
+      padding-left: 0px;
+      width: auto;
     }
   }
   &__recipe-link-icon {
