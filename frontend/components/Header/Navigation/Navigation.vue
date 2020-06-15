@@ -86,9 +86,13 @@ export default {
             name: "My account",
             img: {
               url: this.user.photoURL
-            }
+            },
+            subLinks: [
+              { link: "/account/my-cookbook/", name: "My cookbook" },
+              { link: "/account/shopping-list/", name: "Shopping list" },
+              { link: "/account/account-details/", name: "Account details" }
+            ]
           },
-          { link: "/account/my-cookbook/", name: "My cookbook" },
           { link: "/cooks/", name: "Discover cooks" }
         ];
       } else {

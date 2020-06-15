@@ -28,8 +28,16 @@
     height: 80px;
     border-radius: inherit;
     margin: $spacingXSmall;
-    background-color: rgba($blue, 0.5);
+    background-color: rgba($orange, 0.35);
     background-repeat: no-repeat;
     background-size: cover;
+
+    svg {
+      height: 70px;
+      path,
+      ellipse {
+        fill: $orange;
+      }
+    }
   }
 }

@@ -10,7 +10,12 @@
       :style="`background-image: url(${photoURL})`"
       :aria-label="displayName + '´s profile picture'"
     />
-    <div v-else class="following-cooks__img margin-right--xlarge"></div>
+    <div
+      v-else
+      class="following-cooks__img flex-row flex-row--justify-center flex-row--align-center margin-right--xlarge"
+    >
+      <BackupImg />
+    </div>
     <div class="flex-column">
       <h2 class="margin-bottom--small margin--none">
         {{ displayName ? displayName : "" }}
@@ -26,8 +31,12 @@
   </nuxt-link>
 </template>
 <script>
+import BackupImg from "~/assets/graphics/cook-silhouette.svg";
 export default {
   name: "cook-display",
+  components: {
+    BackupImg
+  },
   props: {
     cookID: { type: String, default: "" },
     photoURL: { type: String, default: "" },
