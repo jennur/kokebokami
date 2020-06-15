@@ -24,20 +24,32 @@
       <h4>Ingredients</h4>
       <ul class="recipe__ingredients">
         <li
-          v-for="(ingredient, index) in ingredientArray[1]"
+          v-for="(ingredient, index) in ingredientArray"
           :key="`ingredient-${index}`"
         >
           <span class="recipe__ingredients-amount">{{
-            ingredientArray[0][index]
+            ingredientArray[index][0]
           }}</span>
-          {{ ingredient }}
+          {{ ingredientArray[index][1] }}
         </li>
       </ul>
+    </div>
+    <div class="margin-bottom--xxlarge">
+      <button
+        v-if="!addedToShoppingList"
+        class="button--increment"
+        @click="addToShoppingList"
+      >
+        Add to shopping list
+      </button>
+      <span v-else class="button--checked">Added to shopping list</span>
     </div>
   </section>
 </template>
 
 <script>
+import user from "~/mixins/user.js";
+
 export default {
   name: "ingredients-display",
   props: {
@@ -50,17 +62,18 @@ export default {
       default: () => []
     }
   },
+  mixins: [user],
+
   data() {
     return {
       updatedServings: this.servings,
       amounts: [],
-      ingredientItems: []
+      addedToShoppingList: false
     };
   },
   computed: {
     ingredientArray() {
       let ingredients = this.ingredients;
-      let amounts = [];
       let ingredientItems = [];
       let updatedServings = this.updatedServings;
       let servings = this.servings;
@@ -90,14 +103,12 @@ export default {
             let oneServing = amount / servings;
             amount = Math.round(oneServing * updatedServings * 100) / 100;
           }
-          amounts.push(amount);
-          ingredientItems.push(ingredientItem);
+          ingredientItems.push([amount, ingredientItem]);
         } else {
-          amounts.push("");
-          ingredientItems.push(ingredient);
+          ingredientItems.push(["", ingredient]);
         }
       });
-      return [amounts, ingredientItems];
+      return ingredientItems;
     }
   },
   methods: {
@@ -106,6 +117,27 @@ export default {
       let dividend = parseInt(fraction[0]);
       let divisor = parseInt(fraction[1]);
       return Math.round((dividend / divisor) * 100) / 100;
+    },
+    addToShoppingList() {
+      let ingredientElements = this.ingredientArray;
+      let ingredients = ingredientElements.map(ingredient => {
+        return ingredient.join(" ");
+      });
+
+      let shoppingList = this.user.shoppingList
+        ? JSON.parse(JSON.stringify(this.user.shoppingList))
+        : [];
+      shoppingList = shoppingList.concat(ingredients);
+
+      let userRef = this.$fireDb.ref(`users/${this.user.id}/shoppingList`);
+      userRef.set(shoppingList);
+
+      let userObj = {
+        ...this.user,
+        shoppingList
+      };
+      this.$store.dispatch("SET_USER", userObj);
+      this.addedToShoppingList = true;
     }
   }
 };

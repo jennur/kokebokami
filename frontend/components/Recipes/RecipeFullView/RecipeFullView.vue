@@ -39,16 +39,7 @@
         :ingredients="recipe.ingredients"
         :servings="recipe.servings || ''"
       />
-      <div class="margin-bottom--xxlarge">
-        <button
-          v-if="!addedToShoppingList"
-          class="button--increment"
-          @click="addToShoppingList"
-        >
-          Add to shopping list
-        </button>
-        <span v-else class="button--checked">Added to shopping list</span>
-      </div>
+
       <instructions-display
         v-if="recipe.instructions"
         :instructions="recipe.instructions"
@@ -75,8 +66,6 @@ import htmlToPdfMake from "html-to-pdfmake";
 import pdfMake from "pdfmake/build/pdfmake";
 import pdfFonts from "pdfmake/build/vfs_fonts";
 
-import user from "~/mixins/user.js";
-
 import AddRecipeForm from "~/components/AddRecipeForm/AddRecipeForm.vue";
 import ActionBar from "./Interaction/ActionBar.vue";
 import CategoryDisplay from "./Displays/CategoryDisplay.vue";
@@ -98,12 +87,10 @@ export default {
     InstructionsDisplay,
     ExpandTransform
   },
-  mixins: [user],
   data() {
     return {
       editMode: false,
-      hide: false,
-      addedToShoppingList: false
+      hide: false
     };
   },
   props: {
@@ -126,23 +113,6 @@ export default {
     }
   },
   methods: {
-    addToShoppingList() {
-      let ingredients = this.recipe.ingredients;
-      let shoppingList = this.user.shoppingList
-        ? JSON.parse(JSON.stringify(this.user.shoppingList))
-        : [];
-      shoppingList = shoppingList.concat(ingredients);
-
-      let userRef = this.$fireDb.ref(`users/${this.user.id}/shoppingList`);
-      userRef.set(shoppingList);
-
-      let userObj = {
-        ...this.user,
-        shoppingList
-      };
-      this.$store.dispatch("SET_USER", userObj);
-      this.addedToShoppingList = true;
-    },
     handleUpdate() {
       this.$emit("update");
       this.toggleEditMode();
