@@ -401,7 +401,7 @@ export default {
                 componentThis.systemMessage =
                   "Your account was deleted successfully.";
                 componentThis.$store.dispatch("REMOVE_USER");
-                componentThis.$router.push("/account/goodbye/");
+                componentThis.$router.push("/goodbye/");
               })
               .catch(function(error) {
                 componentThis.systemMessage = error.message;

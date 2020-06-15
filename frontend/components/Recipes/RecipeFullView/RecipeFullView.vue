@@ -1,6 +1,11 @@
 <template>
   <section>
-    <div ref="recipe" id="recipe" v-if="!editMode" class="recipe mobile-width margin--auto">
+    <div
+      ref="recipe"
+      id="recipe"
+      v-if="!editMode"
+      class="recipe mobile-width margin--auto"
+    >
       <h2 class="recipe__title">{{ recipeTitle }}</h2>
       <div class="recipe__description">{{ description }}</div>
       <div id="ignorePDF">
@@ -34,7 +39,20 @@
         :ingredients="recipe.ingredients"
         :servings="recipe.servings || ''"
       />
-      <instructions-display v-if="recipe.instructions" :instructions="recipe.instructions" />
+      <div class="margin-bottom--xxlarge">
+        <button
+          v-if="!addedToShoppingList"
+          class="button--increment"
+          @click="addToShoppingList"
+        >
+          Add to shopping list
+        </button>
+        <span v-else class="button--checked">Added to shopping list</span>
+      </div>
+      <instructions-display
+        v-if="recipe.instructions"
+        :instructions="recipe.instructions"
+      />
     </div>
 
     <!-- EDIT FORM -->
@@ -52,6 +70,13 @@
 </template>
 
 <script>
+import logo from "~/static/kokebokamilogo.png";
+import htmlToPdfMake from "html-to-pdfmake";
+import pdfMake from "pdfmake/build/pdfmake";
+import pdfFonts from "pdfmake/build/vfs_fonts";
+
+import user from "~/mixins/user.js";
+
 import AddRecipeForm from "~/components/AddRecipeForm/AddRecipeForm.vue";
 import ActionBar from "./Interaction/ActionBar.vue";
 import CategoryDisplay from "./Displays/CategoryDisplay.vue";
@@ -59,11 +84,7 @@ import FreeFromDisplay from "./Displays/FreeFromDisplay";
 import TypeOfMealDisplay from "./Displays/TypeOfMealDisplay";
 import IngredientsDisplay from "./Displays/IngredientsDisplay.vue";
 import InstructionsDisplay from "./Displays/InstructionsDisplay.vue";
-
-import logo from "~/static/kokebokamilogo.png";
-import htmlToPdfMake from "html-to-pdfmake";
-import pdfMake from "pdfmake/build/pdfmake";
-import pdfFonts from "pdfmake/build/vfs_fonts";
+import ExpandTransform from "~/components/Transitions/Expand.vue";
 
 export default {
   name: "recipe-full-view",
@@ -74,12 +95,15 @@ export default {
     FreeFromDisplay,
     TypeOfMealDisplay,
     IngredientsDisplay,
-    InstructionsDisplay
+    InstructionsDisplay,
+    ExpandTransform
   },
+  mixins: [user],
   data() {
     return {
       editMode: false,
-      hide: false
+      hide: false,
+      addedToShoppingList: false
     };
   },
   props: {
@@ -102,6 +126,23 @@ export default {
     }
   },
   methods: {
+    addToShoppingList() {
+      let ingredients = this.recipe.ingredients;
+      let shoppingList = this.user.shoppingList
+        ? JSON.parse(JSON.stringify(this.user.shoppingList))
+        : [];
+      shoppingList = shoppingList.concat(ingredients);
+
+      let userRef = this.$fireDb.ref(`users/${this.user.id}/shoppingList`);
+      userRef.set(shoppingList);
+
+      let userObj = {
+        ...this.user,
+        shoppingList
+      };
+      this.$store.dispatch("SET_USER", userObj);
+      this.addedToShoppingList = true;
+    },
     handleUpdate() {
       this.$emit("update");
       this.toggleEditMode();

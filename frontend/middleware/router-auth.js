@@ -46,9 +46,10 @@ function performRedirect(route, redirect) {
   if (
     route.name == "login" ||
     route.name == "sign-up" ||
-    route.name == "verify-email"
+    route.name == "verify-email" ||
+    route.name == "goodbye"
   ) {
-    console.log("Redirecting to cookbook");
-    redirect("/account/my-cookbook/");
+    console.log("Redirecting to account");
+    redirect("/account/");
   }
 }

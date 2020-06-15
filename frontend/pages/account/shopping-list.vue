@@ -1,16 +1,20 @@
 <template>
-  <div>
+  <div class="tablet-width margin--auto">
     <breadcrumbs :routes="breadcrumbs" />
+    <div class="margin-vertical--xxlarge">
+      <h2>Shopping list</h2>
+      <shopping-list :shoppingList="shoppingList" :user="user" />
+    </div>
   </div>
 </template>
 
 <script>
-import userRecipes from "~/mixins/userRecipes.js";
-import AddRecipeForm from "~/components/AddRecipeForm/AddRecipeForm.vue";
+import ShoppingList from "~/components/ShoppingList/ShoppingList.vue";
+import user from "~/mixins/user.js";
 
 export default {
   name: "addRecipe",
-  components: { AddRecipeForm },
+  components: { ShoppingList },
   props: {
     breadcrumbs: {
       type: Array,
@@ -21,6 +25,11 @@ export default {
       ]
     }
   },
-  computed: {}
+  mixins: [user],
+  computed: {
+    shoppingList() {
+      return this.user.shoppingList;
+    }
+  }
 };
 </script>

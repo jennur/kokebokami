@@ -1,7 +1,8 @@
-<template
-  >
+<template>
   <div>
-    <label class="flex-row flex-row--align-center flex-row--nowrap margin-top--xxlarge">
+    <label
+      class="flex-row flex-row--align-center flex-row--nowrap margin-top--xxlarge"
+    >
       <h4 class="margin--none">Number of servings:</h4>
       <input
         class="add-recipe-form__servings margin-left--medium"
@@ -49,8 +50,8 @@
               class="add-recipe-form__ingredient"
               type="text"
               :placeholder="
-              (number % 2 && 'dl milk') || (number % 3 && 'g sugar') || 'eggs'
-            "
+                (number % 2 && 'dl milk') || (number % 3 && 'g sugar') || 'eggs'
+              "
               :id="'ingredient' + number"
               v-model="ingredients[number]"
             />
@@ -69,14 +70,15 @@
       <increment-button
         class="margin-top--large"
         @increment="incrementIngredientNumber"
-      >Add ingredient</increment-button>
+        >Add ingredient</increment-button
+      >
     </fieldset>
   </div>
 </template>
 
 <script>
-import IncrementButton from "~/components/AddRecipeForm/Actions/IncrementButton.vue";
-import DecrementButton from "~/components/AddRecipeForm/Actions/DecrementButton.vue";
+import IncrementButton from "./IncrementButton.vue";
+import DecrementButton from "./DecrementButton.vue";
 
 export default {
   name: "ingredients-input",
