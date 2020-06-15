@@ -14,10 +14,3 @@
   width: 100%;
   max-width: $mobileWidth;
 }
-
-.max-width--300-600 {
-  max-width: 300px;
-  @media screen and (min-width: $desktopWidth) {
-    max-width: 600px;
-  }
-}
