@@ -1,39 +1,41 @@
 <template>
   <dt class="account__detail account__detail--flex-column">
-    <h4 class="account__detail-title">
-      {{ title }}
-      <span v-if="visibleToPublic" class="system-message"
-        >(visible to other users)</span
-      >
-    </h4>
-
-    <div class="account__detail-value" v-if="!editMode">
-      <span v-if="!isImage">
-        {{ currentValue ? currentValue : null }}
-      </span>
-      <img
-        class="account__detail-picture"
-        v-if="isImage && !isLoading"
-        :src="currentValue"
-      />
-      <span v-if="isLoading" class="simple-loading-spinner"></span>
-    </div>
-
-    <div v-if="editMode && isImage" class="account__detail-edit">
-      <dropzone
-        id="dropImage"
-        ref="dropImage"
-        :options="options"
-        :destroyDropzone="true"
-        @vdropzone-complete="handlePictureUpload"
-      />
-      <div class="flex-row">
-        <button
-          class="button button--small button--cancel account__detail-warning-btn margin-top--medium"
-          @click="toggleEditMode"
+    <div>
+      <h4 class="account__detail-title">
+        {{ title }}
+        <span v-if="visibleToPublic" class="system-message"
+          >(visible to other users)</span
         >
-          ✕ Cancel
-        </button>
+      </h4>
+
+      <div class="account__detail-value" v-if="!editMode">
+        <span v-if="!isImage">
+          {{ currentValue ? currentValue : null }}
+        </span>
+        <img
+          class="account__detail-picture"
+          v-if="isImage && !isLoading"
+          :src="currentValue"
+        />
+        <span v-if="isLoading" class="simple-loading-spinner"></span>
+      </div>
+
+      <div v-if="editMode && isImage" class="account__detail-edit">
+        <dropzone
+          id="dropImage"
+          ref="dropImage"
+          :options="options"
+          :destroyDropzone="true"
+          @vdropzone-complete="handlePictureUpload"
+        />
+        <div class="flex-row">
+          <button
+            class="button button--small button--cancel account__detail-warning-btn margin-top--medium"
+            @click="toggleEditMode"
+          >
+            ✕ Cancel
+          </button>
+        </div>
       </div>
     </div>
     <form

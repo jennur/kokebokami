@@ -1,10 +1,14 @@
 <template>
   <section>
     <breadcrumbs :routes="breadcrumbs" />
-    <span class="system-message">This is how other users of Kokebokami see your profile</span>
+    <div class="system-message margin-vertical--large">
+      This is how other users of Kokebokami see your profile
+    </div>
     <profile-view :user="user" />
     <h3>Check out my recipes</h3>
-    <recipes-list :recipes="currentUsersPublicRecipes ? currentUsersPublicRecipes : []" />
+    <recipes-list
+      :recipes="currentUsersPublicRecipes ? currentUsersPublicRecipes : []"
+    />
   </section>
 </template>
 
