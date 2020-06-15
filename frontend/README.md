@@ -6,17 +6,20 @@
 
 ``` bash
 # install dependencies
-$ yarn install
+$ npm install
 
-# serve with hot reload at localhost:3000
-$ yarn dev
+# Add environment variables
+Log in to heroku.com to get the env-variables. Add them to a new .env file in the root folder (frontend). Make sure to never push this file to the repository.
+
+# Serve with hot reload at localhost:3000
+$ npm run dev
 
 # build for production and launch server
-$ yarn build
-$ yarn start
+$ npm build
+$ npm start
 
 # generate static project
-$ yarn generate
+$ npm generate
 ```
 
 For detailed explanation on how things work, check out [Nuxt.js docs](https://nuxtjs.org).
