@@ -1,7 +1,7 @@
 <template>
   <div v-click-outside="closeDropdown" class="cooks__search margin--auto">
     <label>
-      <userIcon class="cooks__waving-icon" />
+      <userIcon class="cooks__user-icon" />
       <input
         type="text"
         placeholder="Search for username"
@@ -15,7 +15,7 @@
 <script>
 import ClickOutside from "vue-click-outside";
 import CooksDropdown from "./CooksDropdown.vue";
-import userIcon from "~/assets/graphics/user.svg";
+import userIcon from "~/assets/graphics/cook-silhouette.svg";
 
 export default {
   name: "cooks-search",

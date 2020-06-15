@@ -8,28 +8,32 @@
       position: relative;
     }
     & input {
-      padding: $spacingMedium;
+      padding: $spacingSmall;
       padding-left: $spacingXXLarge;
       font-size: $fontSizeLarge;
       width: 100%;
     }
   }
 
-  &__waving-icon {
-    width: 20px;
-    height: 20px;
+  &__user-icon {
+    width: 25px;
+    height: 25px;
     position: absolute;
-    top: 0;
-    left: $spacingMedium;
+    top: -2px;
+    left: $spacingSmall;
   }
 
   &__result-list {
     max-width: 350px;
     width: inherit;
-    background-color: $white;
+    background-color: $cream;
     list-style: none;
     text-align: left;
     position: absolute;
+    top: $spacingXXLarge;
+    @media screen and (min-width: $tabletWidth) {
+      top: $spacingXLarge;
+    }
     border-radius: $spacingSmall;
     padding: 0px;
     box-shadow: 0px $spacingMedium $spacingMedium rgba(0, 0, 0, 0.25);
@@ -47,10 +51,14 @@
     }
   }
   &__user-photo {
+    display: block;
     width: 30px;
     height: 30px;
     border-radius: 50%;
     margin-right: $spacingMedium;
     background-color: rgba($blue, 0.5);
+    background-position: 50% 50%;
+    background-size: cover;
+    background-repeat: no-repeat;
   }
 }

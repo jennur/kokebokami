@@ -28,12 +28,13 @@
 @import "./components/add-recipe-form.component.scss";
 @import "./components/add-recipe-from-url.component.scss";
 @import "./components/anchor-button.component.scss";
-@import "./components/burger-icon.component.scss";
+@import "./components/burger-menu.component.scss";
 @import "./components/breadcrumbs.component.scss";
 @import "./components/cookie-consent.component.scss";
 @import "./components/cooks.component.scss";
 @import "./components/footer.component.scss";
 @import "./components/following-cooks.component.scss";
+@import "./components/gateways.component.scss";
 @import "./components/header.component.scss";
 @import "./components/kokebokami-login.component.scss";
 @import "./components/link-categories-filter.component.scss";
@@ -50,6 +51,7 @@
 @import "./components/scroll-button.component.scss";
 @import "./components/select.component.scss";
 @import "./components/share-form.component.scss";
+@import "./components/shopping-list.component.scss";
 @import "./components/sign-up-form.component.scss";
 @import "./components/tabs.component.scss";
 
@@ -72,3 +74,4 @@
 @import "./transitions/expand.transition.scss";
 @import "./transitions/fade.transition.scss";
 @import "./transitions/pop.transition.scss";
+@import "./transitions/slide.transition.scss";

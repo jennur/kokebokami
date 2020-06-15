@@ -54,3 +54,61 @@
     }
   }
 }
+
+.burger-menu {
+  &__list-container {
+    display: flex;
+    justify-content: center;
+    position: fixed;
+    top: 0;
+    right: 0;
+    //transform: translateX(330px);
+    width: 300px;
+    height: 100vh;
+    background-color: $cream;
+    box-shadow: 0px 5px 20px rgba($blue, 0.5);
+    //transition: 0.3s transform ease-in;
+    z-index: 100;
+
+    .burger-menu__list {
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      top: 80px;
+      padding: 0px;
+
+      & li {
+        display: flex;
+        align-items: center;
+        margin-bottom: $spacingMedium;
+        margin-left: 0px;
+      }
+    }
+  }
+  &__list {
+    display: flex;
+    align-items: flex-start;
+
+    list-style: none;
+    & li {
+      display: inline-flex;
+      align-items: center;
+      justify-content: space-around;
+      height: 30px;
+      margin-left: 25px;
+    }
+  }
+
+  &__link {
+    color: $blue;
+    text-decoration: none;
+    margin-bottom: 2px;
+    border-bottom: 2px solid $green;
+    &:hover {
+      margin-bottom: 0px;
+      color: $blue;
+      border-bottom: 4px solid $green;
+      text-decoration: none;
+    }
+  }
+}

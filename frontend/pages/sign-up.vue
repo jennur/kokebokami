@@ -10,13 +10,11 @@
 
 <script>
 import SignUpSection from "~/components/SignUp/SignUpSection.vue";
-import user from "~/mixins/user.js";
 
 export default {
   name: "sign-up",
   components: {
     SignUpSection
-  },
-  mixins: [user]
+  }
 };
 </script>

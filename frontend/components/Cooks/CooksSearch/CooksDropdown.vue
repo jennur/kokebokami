@@ -1,12 +1,13 @@
 <template>
-  <ul class="cooks__result-list margin-top--xlarge padding-left--xlarge">
+  <ul class="cooks__result-list padding-left--xlarge">
     <li v-for="cook in cooks" :key="cook[0]">
       <nuxt-link :to="`/cooks/${cook[0]}/`" class="cooks__user-link">
-        <img
+        <div
           v-if="cook[1].photoURL"
+          role="img"
           class="cooks__user-photo"
-          :src="cook[1].photoURL"
-          alt="User profile"
+          :style="`background-image: url(${cook[1].photoURL});`"
+          aria-label="User profile picture"
         />
         <span v-else class="cooks__user-photo" />
         {{ cook[1].displayName }}

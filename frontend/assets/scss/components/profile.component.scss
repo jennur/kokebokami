@@ -1,7 +1,18 @@
 .profile {
   &__img {
+    display: block;
     width: 4 * $spacingXLarge;
     height: 4 * $spacingXLarge;
     border-radius: 50%;
+    background-position: 50% 50%;
+    background-size: cover;
+    background-repeat: no-repeat;
+
+    &--backup {
+      width: 4 * $spacingXLarge;
+      height: 4 * $spacingXLarge;
+      display: block;
+      opacity: 0.9;
+    }
   }
 }

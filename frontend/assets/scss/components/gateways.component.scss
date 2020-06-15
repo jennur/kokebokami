@@ -1,0 +1,20 @@
+.gateway-link {
+  min-width: 200px;
+  border: 2px solid $green;
+  border-radius: $spacingMedium;
+  padding: $spacingLarge;
+  margin: $spacingSmall;
+  text-align: center;
+  transition: 0.3s;
+  flex: 1 1 0;
+
+  &--illustration {
+    max-width: 150px;
+  }
+
+  &:hover {
+    text-decoration: none;
+    background-color: rgba($green, 0.1);
+    transform: scale(1.03);
+  }
+}

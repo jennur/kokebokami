@@ -1,28 +1,44 @@
 <template>
   <nav
     v-click-outside="closeMenu"
-    class="navigation-menu padding-horizontal--large margin--auto tablet-width"
+    class="navigation-menu padding-horizontal--large margin--auto desktop-width"
   >
     <h1 class="navigation-menu__logo">
       <nuxt-link class="navigation-menu__logo-link" to="/"
         >Kokebokami</nuxt-link
       >
     </h1>
+    <!-- Burger menu -->
     <burger-icon @click.native="toggleMenu" :open="open" />
-    <div
-      :class="
-        'navigation-menu__list-container ' +
-          (open ? 'navigation-menu__list-container--open' : '')
-      "
-    >
+    <transition name="burger-list-slide">
+      <burger-list
+        v-if="open"
+        :menuItems="menuItems"
+        :user="user"
+        @closeMenu="toggleMenu"
+        @logout="logOut"
+      />
+    </transition>
+
+    <!-- Desktop menu -->
+    <div class="navigation-menu__list-container">
       <ul class="navigation-menu__list">
         <li v-for="menuItem in menuItems" :key="menuItem.name">
+          <!-- User profile img-->
           <img
-            v-if="menuItem.img"
+            v-if="menuItem.img && menuItem.img.url"
             class="google-profile-picture"
-            :src="menuItem.img"
+            :src="menuItem.img.url"
             :alt="`${user.displayName} profile picture`"
           />
+          <span
+            v-if="menuItem.img && !menuItem.img.url"
+            class="google-profile-picture--backup"
+          >
+            <BackupImg />
+          </span>
+
+          <!-- Link -->
           <nuxt-link
             class="navigation-menu__link"
             :to="menuItem.link"
@@ -45,11 +61,16 @@
 <script>
 import user from "~/mixins/user.js";
 import BurgerIcon from "./BurgerMenu/BurgerIcon.vue";
+import BackupImg from "~/assets/graphics/cook-silhouette-circle.svg";
+import BurgerList from "./BurgerMenu/BurgerList.vue";
 import ClickOutside from "vue-click-outside";
+
 export default {
   name: "navigation",
   components: {
-    BurgerIcon
+    BurgerIcon,
+    BurgerList,
+    BackupImg
   },
   data() {
     return { open: false };
@@ -63,7 +84,9 @@ export default {
           {
             link: "/account/",
             name: "My account",
-            img: this.user.photoURL
+            img: {
+              url: this.user.photoURL
+            }
           },
           { link: "/account/my-cookbook/", name: "My cookbook" },
           { link: "/cooks/", name: "Discover cooks" }
