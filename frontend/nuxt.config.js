@@ -134,7 +134,7 @@ export default {
     generate: false,
     hostname: "https://www.kokebokami.com",
     gzip: true,
-    exclude: ["/account", "/recipes", "/verify-email", "/cooks"],
+    exclude: ["/account", "/account/*", "/recipes", "/verify-email", "/cooks"],
     routes: ["/", "/login", "/sign-up", "/cookies-policy"]
   },
   fontawesome: {
