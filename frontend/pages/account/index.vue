@@ -2,7 +2,9 @@
   <div>
     <breadcrumbs :routes="breadcrumbs" />
     <div class="account container tablet-width padding-horizontal--large">
-      <h1 class="margin-top--xxlarge margin-bottom--large">My account details</h1>
+      <h1 class="margin-top--xxlarge margin-bottom--large">
+        My account details
+      </h1>
       <nuxt-link to="/account/public-profile-view/">
         See your public profile
         <right-arrow class="icon icon--blue" />
@@ -23,17 +25,25 @@
               :alt="user.displayName + '´s profile picture'"
               v-if="photoURL"
             />
-            <form v-on:submit.prevent class="account__detail-edit" v-if="editProfileImg">
+            <form
+              v-on:submit.prevent
+              class="account__detail-edit"
+              v-if="editProfileImg"
+            >
               <button
                 @click="updateProfileImg"
                 class="button button--small margin-top--large"
-              >Remove</button>
+              >
+                Remove
+              </button>
             </form>
             <div class="system-message">{{ profileImgSystemMessage }}</div>
             <button
               @click="toggleEditProfileImg"
               class="button button--small button--transparent account__detail-edit-btn"
-            >{{ editProfileImg ? "Cancel" : "Edit" }}</button>
+            >
+              {{ editProfileImg ? "Cancel" : "Edit" }}
+            </button>
           </dt>
 
           <dt class="account__detail account__detail--flex-column">
@@ -44,21 +54,23 @@
               </span>
             </div>
             <span class="account__detail-value" v-if="!editUsername">
-              {{
-              username ? username : null
-              }}
+              {{ username ? username : null }}
             </span>
             <form v-on:submit.prevent class="account__detail-edit" v-else>
               <label>
                 <input type="text" autocomplete="username" v-model="username" />
               </label>
-              <button @click="updateUsername" class="button button--small">Save</button>
+              <button @click="updateUsername" class="button button--small">
+                Save
+              </button>
             </form>
             <div class="system-message">{{ usernameSystemMessage }}</div>
             <button
               @click="toggleEditUsername"
               class="button button--small button--transparent account__detail-edit-btn"
-            >{{ editUsername ? "Cancel" : "Edit" }}</button>
+            >
+              {{ editUsername ? "Cancel" : "Edit" }}
+            </button>
           </dt>
 
           <dt class="account__detail account__detail--flex-column">
@@ -66,21 +78,23 @@
               <span>E-mail</span>
             </div>
             <span class="account__detail-value" v-if="!editEmail">
-              {{
-              email ? email : null
-              }}
+              {{ email ? email : null }}
             </span>
             <form v-on:submit.prevent class="account__detail-edit" v-else>
               <label>
                 <input type="email" autocomplete="email" v-model="email" />
               </label>
-              <button @click="updateEmail" class="button button--small">Save</button>
+              <button @click="updateEmail" class="button button--small">
+                Save
+              </button>
             </form>
             <div class="system-message">{{ emailSystemMessage }}</div>
             <button
               @click="toggleEditEmail"
               class="button button--small button--transparent account__detail-edit-btn"
-            >{{ editEmail ? "Cancel" : "Edit" }}</button>
+            >
+              {{ editEmail ? "Cancel" : "Edit" }}
+            </button>
           </dt>
 
           <dt class="account__detail account__detail--flex-column">
@@ -91,21 +105,23 @@
               </span>
             </div>
             <span class="account__detail-value" v-if="!editBiography">
-              {{
-              biography ? biography : "Not set"
-              }}
+              {{ biography ? biography : "Not set" }}
             </span>
             <form v-on:submit.prevent class="account__detail-edit" v-else>
               <label>
                 <textarea type="text" v-model="biography" />
               </label>
-              <button @click="updateBiography" class="button button--small">Save</button>
+              <button @click="updateBiography" class="button button--small">
+                Save
+              </button>
             </form>
             <div class="system-message">{{ biographySystemMessage }}</div>
             <button
               @click="toggleEditBiography"
               class="button button--small button--transparent account__detail-edit-btn"
-            >{{ editBiography ? "Cancel" : "Edit" }}</button>
+            >
+              {{ editBiography ? "Cancel" : "Edit" }}
+            </button>
           </dt>
         </dl>
         <h3>Recipes connected to your account</h3>
@@ -121,12 +137,12 @@
               <li v-for="recipe in userRecipes" :key="recipe[1].title">
                 <span>
                   <nuxt-link :to="`/recipes/${recipe[0]}`">
-                    {{
-                    recipe[1].title
-                    }}
+                    {{ recipe[1].title }}
                   </nuxt-link>
                 </span>
-                <span class="system-message" v-if="recipe[1].public">Public</span>
+                <span class="system-message" v-if="recipe[1].public"
+                  >Public</span
+                >
               </li>
             </ol>
           </dt>
@@ -140,9 +156,7 @@
             <ol>
               <li v-for="recipe in sharedRecipes" :key="recipe[1].title">
                 <nuxt-link :to="`/recipes/${recipe[0]}`">
-                  {{
-                  recipe[1].title
-                  }}
+                  {{ recipe[1].title }}
                 </nuxt-link>
               </li>
             </ol>
@@ -151,15 +165,15 @@
             <div class="account__detail-title">
               <span>
                 My recipe links:
-                <span>{{ userRecipeLinks ? userRecipeLinks.length : null }}</span>
+                <span>{{
+                  userRecipeLinks ? userRecipeLinks.length : null
+                }}</span>
               </span>
             </div>
             <ol>
               <li v-for="link in userRecipeLinks" :key="link[0]">
                 <a :href="link[1] && link[1].url" target="_blank">
-                  {{
-                  link[1].title || backupTitle(link[1])
-                  }}
+                  {{ link[1].title || backupTitle(link[1]) }}
                 </a>
                 <new-tab-icon class="account__recipe-link-icon" />
               </li>
@@ -179,9 +193,7 @@
             <ol>
               <li v-for="cook in followed" :key="cook[1].displayName">
                 <nuxt-link :to="`/cooks/${cook[0]}`">
-                  {{
-                  cook[1].displayName
-                  }}
+                  {{ cook[1].displayName }}
                 </nuxt-link>
               </li>
             </ol>
@@ -196,9 +208,7 @@
             <ol>
               <li v-for="follower in followers" :key="follower[1].displayName">
                 <nuxt-link :to="`/cooks/${follower[0]}`">
-                  {{
-                  follower[1].displayName
-                  }}
+                  {{ follower[1].displayName }}
                 </nuxt-link>
               </li>
             </ol>
@@ -207,7 +217,9 @@
         <button
           class="button button--small button--transparent button--transparent-red margin-top--large"
           @click="deleteAccount"
-        >Delete my account</button>
+        >
+          Delete my account
+        </button>
         <p class="system-message">{{ systemMessage }}</p>
       </div>
     </div>
@@ -226,6 +238,17 @@ import newTabIcon from "~/assets/graphics/new-tab-icon.svg";
 
 export default {
   name: "account",
+  head() {
+    return {
+      title: `My account | Kokebokami`,
+      link: [
+        {
+          rel: "canonical",
+          href: "https://www.kokebokami.com/account/"
+        }
+      ]
+    };
+  },
   components: {
     newTabIcon
   },

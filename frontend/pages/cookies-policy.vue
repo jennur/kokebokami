@@ -186,6 +186,17 @@
 <script>
 export default {
   name: "cookies-policy",
+  head() {
+    return {
+      title: `Cookies policy | Kokebokami`,
+      link: [
+        {
+          rel: "canonical",
+          href: "https://www.kokebokami.com/cookies-policy/"
+        }
+      ]
+    };
+  },
   props: {
     breadcrumbs: {
       type: Array,

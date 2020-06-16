@@ -20,6 +20,17 @@ import user from "~/mixins/user.js";
 
 export default {
   name: "Login",
+  head() {
+    return {
+      title: `Login | Kokebokami`,
+      link: [
+        {
+          rel: "canonical",
+          href: "https://www.kokebokami.com/login/"
+        }
+      ]
+    };
+  },
   components: {
     LoadingSplash,
     LoginContainer,

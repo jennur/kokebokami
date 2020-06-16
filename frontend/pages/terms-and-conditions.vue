@@ -166,6 +166,17 @@
 <script>
 export default {
   name: "terms-and-conditions",
+  head() {
+    return {
+      title: `Terms and conditions | Kokebokami`,
+      link: [
+        {
+          rel: "canonical",
+          href: "https://www.kokebokami.com/terms-and-conditions/"
+        }
+      ]
+    };
+  },
   props: {
     breadcrumbs: {
       type: Array,

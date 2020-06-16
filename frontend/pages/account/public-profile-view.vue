@@ -1,10 +1,14 @@
 <template>
   <section>
     <breadcrumbs :routes="breadcrumbs" />
-    <span class="system-message">This is how other users of Kokebokami see your profile</span>
+    <span class="system-message"
+      >This is how other users of Kokebokami see your profile</span
+    >
     <profile-view :user="user" />
     <h3>Check out my recipes</h3>
-    <recipes-list :recipes="currentUsersPublicRecipes ? currentUsersPublicRecipes : []" />
+    <recipes-list
+      :recipes="currentUsersPublicRecipes ? currentUsersPublicRecipes : []"
+    />
   </section>
 </template>
 
@@ -17,6 +21,17 @@ import RecipesList from "~/components/Recipes/RecipesList";
 
 export default {
   name: "profile",
+  head() {
+    return {
+      title: `Profile preview | Kokebokami`,
+      link: [
+        {
+          rel: "canonical",
+          href: "https://www.kokebokami.com/public-profile-view/"
+        }
+      ]
+    };
+  },
   components: { ProfileView, RecipesList },
   props: {
     breadcrumbs: {

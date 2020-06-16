@@ -18,6 +18,17 @@
 <script>
 export default {
   name: "verify-email",
+  head() {
+    return {
+      title: `Verify email | Kokebokami`,
+      link: [
+        {
+          rel: "canonical",
+          href: "https://www.kokebokami.com/verify-email/"
+        }
+      ]
+    };
+  },
   props: {
     breadcrumbs: {
       type: Array,
