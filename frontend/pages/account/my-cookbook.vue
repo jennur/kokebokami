@@ -99,6 +99,17 @@ import UserCategoriesFilter from "~/components/Filter/UserCategoriesFilter.vue";
 
 export default {
   name: "my-cookbook",
+  head() {
+    return {
+      title: `My cookbook | Kokebokami`,
+      link: [
+        {
+          rel: "canonical",
+          href: "https://www.kokebokami.com/account/my-cookbook/"
+        }
+      ]
+    };
+  },
   components: {
     ExpandTransition,
     AddRecipeFromUrlForm,

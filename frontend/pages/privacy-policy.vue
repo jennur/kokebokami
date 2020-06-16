@@ -504,6 +504,17 @@
 <script>
 export default {
   name: "privacy-policy",
+  head() {
+    return {
+      title: `Privacy Policy | Kokebokami`,
+      link: [
+        {
+          rel: "canonical",
+          href: "https://www.kokebokami.com/privacy-policy/"
+        }
+      ]
+    };
+  },
   props: {
     breadcrumbs: {
       type: Array,

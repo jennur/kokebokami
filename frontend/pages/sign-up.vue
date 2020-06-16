@@ -13,6 +13,17 @@ import SignUpSection from "~/components/SignUp/SignUpSection.vue";
 
 export default {
   name: "sign-up",
+  head() {
+    return {
+      title: `Sign up | Kokebokami`,
+      link: [
+        {
+          rel: "canonical",
+          href: "https://www.kokebokami.com/sign-up/"
+        }
+      ]
+    };
+  },
   components: {
     SignUpSection
   }

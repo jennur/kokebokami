@@ -21,6 +21,17 @@ import RecipesList from "~/components/Recipes/RecipesList";
 
 export default {
   name: "profile",
+  head() {
+    return {
+      title: `Profile preview | Kokebokami`,
+      link: [
+        {
+          rel: "canonical",
+          href: "https://www.kokebokami.com/public-profile-view/"
+        }
+      ]
+    };
+  },
   components: { ProfileView, RecipesList },
   props: {
     breadcrumbs: {

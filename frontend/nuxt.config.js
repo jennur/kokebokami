@@ -133,9 +133,9 @@ export default {
   sitemap: {
     path: "/sitemap.xml",
     generate: false,
-    hostname: "https://kokebokami.com",
+    hostname: "https://www.kokebokami.com",
     gzip: true,
-    exclude: ["/account", "/account/**", "/recipes"],
+    exclude: ["/account", "/recipes", "/verify-email", "/cooks"],
     routes: ["/", "/login", "/sign-up", "/cookies-policy"]
   },
   fontawesome: {

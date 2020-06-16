@@ -43,6 +43,17 @@ export default {
     CooksSearch,
     CooksList
   },
+  head() {
+    return {
+      title: `Discover cooks | Kokebokami`,
+      link: [
+        {
+          rel: "canonical",
+          href: "https://www.kokebokami.com/cooks/"
+        }
+      ]
+    };
+  },
   data() {
     return {
       activeTabIndex: 0,

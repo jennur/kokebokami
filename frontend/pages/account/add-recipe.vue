@@ -11,6 +11,17 @@ import AddRecipeForm from "~/components/AddRecipeForm/AddRecipeForm.vue";
 
 export default {
   name: "addRecipe",
+  head() {
+    return {
+      title: `Add new recipe | Kokebokami`,
+      link: [
+        {
+          rel: "canonical",
+          href: "https://www.kokebokami.com/add-recipe/"
+        }
+      ]
+    };
+  },
   components: { AddRecipeForm },
   props: {
     breadcrumbs: {

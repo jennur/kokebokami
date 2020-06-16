@@ -15,6 +15,17 @@
 import GatewayLink from "~/components/GatewayLink.vue";
 export default {
   name: "account",
+  head() {
+    return {
+      title: `My account | Kokebokami`,
+      link: [
+        {
+          rel: "canonical",
+          href: "https://www.kokebokami.com/account/"
+        }
+      ]
+    };
+  },
   components: {
     GatewayLink
   },

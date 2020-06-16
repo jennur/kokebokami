@@ -15,6 +15,17 @@
 <script>
 export default {
   name: "goodbye",
+  head() {
+    return {
+      title: `Goodbye | Kokebokami`,
+      link: [
+        {
+          rel: "canonical",
+          href: "https://www.kokebokami.com/goodbye/"
+        }
+      ]
+    };
+  },
   props: {
     breadcrumbs: {
       type: Array,
