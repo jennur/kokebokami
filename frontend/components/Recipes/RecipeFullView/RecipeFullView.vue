@@ -1,11 +1,6 @@
 <template>
   <section>
-    <div
-      ref="recipe"
-      id="recipe"
-      v-if="!editMode"
-      class="recipe mobile-width margin--auto"
-    >
+    <div ref="recipe" id="recipe" v-if="!editMode" class="recipe mobile-width margin--auto">
       <h2 class="recipe__title">{{ recipeTitle }}</h2>
       <div class="recipe__description">{{ description }}</div>
       <div id="ignorePDF">
@@ -38,12 +33,10 @@
         v-if="recipe.ingredients"
         :ingredients="recipe.ingredients"
         :servings="recipe.servings || ''"
+        :recipeTitle="recipeTitle"
       />
 
-      <instructions-display
-        v-if="recipe.instructions"
-        :instructions="recipe.instructions"
-      />
+      <instructions-display v-if="recipe.instructions" :instructions="recipe.instructions" />
     </div>
 
     <!-- EDIT FORM -->

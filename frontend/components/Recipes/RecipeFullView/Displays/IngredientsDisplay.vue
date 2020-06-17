@@ -1,8 +1,6 @@
 <template>
   <section>
-    <div
-      class="recipe__servings-wrap flex-row flex-row--align-center margin-vertical--xxlarge"
-    >
+    <div class="recipe__servings-wrap flex-row flex-row--align-center margin-vertical--xxlarge">
       <span v-if="!servings" class="recipe__servings-disabled-dash">-</span>
       <input
         class="recipe__servings margin-right--medium"
@@ -16,20 +14,17 @@
       <h4
         class="margin--none margin-bottom--small"
         :class="{ disabled: !servings }"
-      >
-        Servings {{ !servings ? "🤷" : "" }}
-      </h4>
+      >Servings {{ !servings ? "🤷" : "" }}</h4>
     </div>
     <div>
       <h4>Ingredients</h4>
       <ul class="recipe__ingredients">
-        <li
-          v-for="(ingredient, index) in ingredientArray"
-          :key="`ingredient-${index}`"
-        >
-          <span class="recipe__ingredients-amount">{{
+        <li v-for="(ingredient, index) in ingredientArray" :key="`ingredient-${index}`">
+          <span class="recipe__ingredients-amount">
+            {{
             ingredientArray[index][0]
-          }}</span>
+            }}
+          </span>
           {{ ingredientArray[index][1] }}
         </li>
       </ul>
@@ -39,9 +34,7 @@
         v-if="!addedToShoppingList"
         class="button--increment"
         @click="addToShoppingList"
-      >
-        Add to shopping list
-      </button>
+      >Add to shopping list</button>
       <span v-else class="button--checked">Added to shopping list</span>
     </div>
   </section>
@@ -60,6 +53,10 @@ export default {
     ingredients: {
       type: Array,
       default: () => []
+    },
+    recipeTitle: {
+      type: String,
+      default: ""
     }
   },
   mixins: [user],
@@ -119,18 +116,23 @@ export default {
       return Math.round((dividend / divisor) * 100) / 100;
     },
     addToShoppingList() {
+      let recipeTitle = this.recipeTitle;
       let ingredientElements = this.ingredientArray;
-      let ingredients = ingredientElements.map(ingredient => {
-        return ingredient.join(" ");
+      let shoppingListIngredients = ingredientElements.map(ingredient => {
+        let text = ingredient.join(" ");
+        let complete = false;
+        return { text, complete };
       });
+
+      let shoppingListRef = this.$fireDb.ref(
+        `users/${this.user.id}/shoppingList/${recipeTitle}`
+      );
+      shoppingListRef.set(shoppingListIngredients);
 
       let shoppingList = this.user.shoppingList
         ? JSON.parse(JSON.stringify(this.user.shoppingList))
-        : [];
-      shoppingList = shoppingList.concat(ingredients);
-
-      let userRef = this.$fireDb.ref(`users/${this.user.id}/shoppingList`);
-      userRef.set(shoppingList);
+        : {};
+      shoppingList[recipeTitle] = shoppingListIngredients;
 
       let userObj = {
         ...this.user,

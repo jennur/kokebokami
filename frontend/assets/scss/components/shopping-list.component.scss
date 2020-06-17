@@ -1,60 +1,73 @@
 .shopping-list {
-  padding: $spacingLarge;
   background-color: rgba($orange, 0.05);
   border-radius: $spacingMedium;
-  flex: 1 1 0;
-  @media screen and (min-width: $mobileWidth) {
-    margin-right: $spacingLarge;
-  }
+  padding: $spacingLarge;
+
   &__title {
-    h3 {
-      font-family: $headingFont;
-    }
-    label {
-      color: $blue;
-    }
-    input {
-      width: 100%;
-      max-width: 250px;
-      color: $blue;
-      font-size: $fontSizeLargeMobile;
+    input[type="text"] {
+      font-size: $fontSizeXLargeMobile;
       @media screen and (min-width: $tabletWidth) {
-        font-size: $fontSizeLarge;
+        font-size: $fontSizeXLarge;
       }
-      &::placeholder {
-        color: rgba($blue, 0.7);
+    }
+  }
+  .sub-list {
+    padding: 0px;
+
+    flex: 1 1 0;
+    @media screen and (min-width: $mobileWidth) {
+      margin-right: $spacingLarge;
+    }
+    &__title {
+      h3 {
+        font-family: $headingFont;
+      }
+      label {
+        color: $blue;
+      }
+      input {
+        width: 100%;
+        max-width: 250px;
+        color: $blue;
         font-size: $fontSizeLargeMobile;
         @media screen and (min-width: $tabletWidth) {
           font-size: $fontSizeLarge;
         }
+        &::placeholder {
+          color: rgba($blue, 0.7);
+          font-size: $fontSizeLargeMobile;
+          @media screen and (min-width: $tabletWidth) {
+            font-size: $fontSizeLarge;
+          }
+        }
       }
     }
-  }
-  &__items {
-    min-width: 250px;
-    list-style: none;
-    padding-left: 0px;
-    label {
-      position: relative;
-      display: flex;
-      align-items: center;
-      width: max-content;
-      input[type="checkbox"] {
-        margin-right: $spacingMedium;
-      }
-
-      &.complete {
-        color: $orange;
-        &::after {
-          content: "";
-          border-bottom: 1px solid $orange;
-          width: 100%;
-          position: absolute;
-        }
+    &__items {
+      min-width: 250px;
+      list-style: none;
+      padding-left: 0px;
+      label {
+        position: relative;
+        display: flex;
+        align-items: center;
+        width: max-content;
         input[type="checkbox"] {
-          border-color: $orange;
+          margin-right: $spacingMedium;
+        }
+
+        &.complete {
+          color: $orange;
           &::after {
+            content: "";
+            border-bottom: 1px solid $orange;
+            width: 100%;
+            position: absolute;
+          }
+          input[type="checkbox"] {
             border-color: $orange;
+            &::after {
+              border-color: $orange;
+            }
           }
         }
       }

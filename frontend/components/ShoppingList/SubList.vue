@@ -1,12 +1,12 @@
 <template>
-  <section class="shopping-list margin-bottom--large">
-    <div class="shopping-list__title">
+  <section class="sub-list margin-bottom--large">
+    <div class="sub-list__title">
       <h3 v-if="!editMode && title" class="heading--blue">{{title}}</h3>
       <label v-if="editMode" class="flex-column">
-        <input type="text" v-model="title" placeholder="Shopping list title" />
+        <input type="text" v-model="title" placeholder="Sublist title" />
       </label>
     </div>
-    <ul class="shopping-list__items">
+    <ul class="sub-list__items">
       <li
         v-for="(item, index) in listItems"
         :key="`list-item-${index}`"
@@ -30,18 +30,18 @@
         </label>
       </li>
     </ul>
-    <div class="flex-row margin-bottom--xlarge">
+    <div class="flex-row margin-vertical--xlarge">
       <increment-button class="margin-right--medium" @increment="addNewListItem">Add item</increment-button>
       <button
         v-if="editMode"
         class="button button--round button--round-small padding-horizontal--xlarge"
         @click="saveShoppingList"
-      >Save</button>
+      >Save sublist</button>
     </div>
     <button
       class="button button--small button--transparent button--transparent-red margin-top--xxlarge"
-      @click="clearShoppingList"
-    >Clear shopping list</button>
+      @click="deleteSubList"
+    >Remove sublist</button>
   </section>
 </template>
 
@@ -58,18 +58,30 @@ export default {
     DecrementButton
   },
   props: {
+    parentTitle: {
+      type: String,
+      default: ""
+    },
+    parentKey: {
+      type: String,
+      default: ""
+    },
     subList: {
-      type: Array,
-      default: () => []
+      type: Object,
+      default: () => {}
+    },
+    subListKey: {
+      type: String,
+      default: ""
     }
   },
   mixins: [user],
   data() {
     let subList = this.subList && JSON.parse(JSON.stringify(this.subList));
     return {
-      editMode: this.subList && !this.subList[1].length,
-      title: (subList && subList[0]) || "",
-      listItems: (subList && subList[1]) || []
+      editMode: this.subList && !this.subList.listItems.length,
+      title: (subList && subList.title) || "",
+      listItems: (subList && subList.listItems) || []
     };
   },
   methods: {
@@ -82,6 +94,90 @@ export default {
       this.listItems.splice(index, 1);
     },
     saveShoppingList() {
+      let componentThis = this;
+      let shoppingLists = [];
+      let backupTitle = this.createBackupTitle();
+      let title = this.title || backupTitle;
+      this.title = title;
+      let listItems = this.listItems;
+      let originalTitle = this.subList.title;
+      let subListKey = this.subListKey;
+      let parentTitle = this.parentTitle || "New shopping list";
+
+      let shoppingListsRef = this.$fireDb.ref(
+        `users/${this.user.id}/shoppingLists`
+      );
+
+      let subListRef = this.$fireDb.ref(
+        `users/${this.user.id}/shoppingLists/${this.parentKey}`
+      );
+      if (this.parentKey) {
+        subListRef.once("value", snapshot => {
+          if (snapshot.exists()) {
+            console.log("Snapshot exists:", snapshot.val());
+
+            if (subListKey !== "") {
+              subListRef
+                .child("subLists")
+                .child(subListKey)
+                .set({ title, listItems })
+                .then(() => console.log("Update shoppingList in store"))
+                .catch(error =>
+                  console.log("Error updating subList:", error.message)
+                );
+            } else {
+              console.log("No sublist key");
+              subListRef
+                .child("subLists")
+                .push({ title, listItems })
+                .then(() => console.log("Update shoppingList in store"))
+                .catch(error =>
+                  console.log("Error setting subList:", error.message)
+                );
+            }
+          }
+        });
+      } else {
+        console.log("Main list does not exist");
+        console.log("Title:", parentTitle);
+        let listKey = shoppingListsRef.push({
+          title: parentTitle
+        }).key;
+        shoppingListsRef
+          .child(listKey)
+          .child("subLists")
+          .push({ title, listItems });
+      }
+      /*
+      let userObj = { ...this.user, shoppingLists };
+      this.$store.dispatch("SET_USER", userObj);
+      this.editMode = false; */
+    },
+    deleteSubList() {
+      if (this.user && this.user.shoppingLists) {
+        let shoppingLists = JSON.parse(JSON.stringify(this.user.shoppingLists));
+        let userObj = { ...this.user, shoppingLists };
+        this.$store.dispatch("SET_USER", userObj);
+
+        let subListRef = this.$fireDb.ref(
+          `users/${this.user.id}/shoppingLists/${this.parentTitle}/${this.title}`
+        );
+        subListRef
+          .remove()
+          .then(() => {
+            console.log("Succesfully deleted sublist");
+          })
+          .catch(error =>
+            console.log("Error deleting sublist:", error.message)
+          );
+      }
+    },
+    handleComplete(index) {
+      let complete = this.listItems[index].complete;
+      this.listItems[index].complete = !complete;
+      this.saveShoppingList();
+    },
+    createBackupTitle() {
       let randomList1 = [
         "Surprise",
         "Glorious",
@@ -118,36 +214,13 @@ export default {
         "treasures",
         "novelties"
       ];
-      let subList = this.listItems;
-      let shoppingList = [];
-      if (this.user && this.user.shoppingList) {
-        shoppingList = JSON.parse(JSON.stringify(this.user.shoppingList));
-      }
-      let backupTitle = `${randomList1[Math.round(Math.random() * 10) - 1]} ${
-        randomList2[Math.round(Math.random() * 10) - 1]
-      } of ${randomList3[Math.round(Math.random() * 10) - 1]}`;
-      this.title = this.title || backupTitle;
-
-      shoppingList[this.title] = subList;
-
-      let shoppingListRef = this.$fireDb.ref(
-        `users/${this.user.id}/shoppingList/${this.title}`
-      );
-      shoppingListRef.set(subList);
-
-      let userObj = { ...this.user, shoppingList };
-      this.$store.dispatch("SET_USER", userObj);
-      this.editMode = false;
-    },
-    clearShoppingList() {
-      this.listItems = [];
-      this.saveShoppingList();
-    },
-    handleComplete(index) {
-      let complete = this.listItems[index].complete;
-      this.listItems[index].complete = !complete;
-      this.saveShoppingList();
+      return `${randomList1[Math.round(Math.random() * 10)]} ${
+        randomList2[Math.round(Math.random() * 10)]
+      } of ${randomList3[Math.round(Math.random() * 10)]}`;
     }
+  },
+  created() {
+    console.log("SubList:", this.subList);
   }
 };
 </script>

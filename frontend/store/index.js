@@ -117,7 +117,7 @@ export const actions = {
             email: snapshot.val().email,
             biography: snapshot.val().biography,
             following: snapshot.val().following,
-            shoppingList: snapshot.val().shoppingList
+            shoppingLists: snapshot.val().shoppingLists
           };
         } else {
           let databaseUser = {
