@@ -1,5 +1,37 @@
 .shopping-list {
-  ul {
+  padding: $spacingLarge;
+  background-color: rgba($orange, 0.05);
+  border-radius: $spacingMedium;
+  flex: 1 1 0;
+  @media screen and (min-width: $mobileWidth) {
+    margin-right: $spacingLarge;
+  }
+  &__title {
+    h3 {
+      font-family: $headingFont;
+    }
+    label {
+      color: $blue;
+    }
+    input {
+      width: 100%;
+      max-width: 250px;
+      color: $blue;
+      font-size: $fontSizeLargeMobile;
+      @media screen and (min-width: $tabletWidth) {
+        font-size: $fontSizeLarge;
+      }
+      &::placeholder {
+        color: rgba($blue, 0.7);
+        font-size: $fontSizeLargeMobile;
+        @media screen and (min-width: $tabletWidth) {
+          font-size: $fontSizeLarge;
+        }
+      }
+    }
+  }
+  &__items {
+    min-width: 250px;
     list-style: none;
     padding-left: 0px;
     label {

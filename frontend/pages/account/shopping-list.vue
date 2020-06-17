@@ -3,14 +3,13 @@
     <breadcrumbs :routes="breadcrumbs" />
     <div class="margin-vertical--xxlarge">
       <h2>Shopping list</h2>
-      <shopping-list :shoppingList="shoppingList" :user="user" />
+      <shopping-list />
     </div>
   </div>
 </template>
 
 <script>
 import ShoppingList from "~/components/ShoppingList/ShoppingList.vue";
-import user from "~/mixins/user.js";
 
 export default {
   name: "addRecipe",
@@ -23,12 +22,6 @@ export default {
         { name: "My account", link: "/account/" },
         { name: "Shopping list" }
       ]
-    }
-  },
-  mixins: [user],
-  computed: {
-    shoppingList() {
-      return this.user.shoppingList;
     }
   }
 };
