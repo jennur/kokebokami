@@ -1,104 +1,122 @@
 <template>
-  <nav
-    v-click-outside="closeMenu"
-    class="navigation-menu padding-horizontal--large margin--auto desktop-width"
-  >
-    <h1 class="navigation-menu__logo">
-      <nuxt-link class="navigation-menu__logo-link" to="/"
-        >Kokebokami</nuxt-link
-      >
-    </h1>
-    <!-- Burger menu -->
-    <burger-icon @click.native="toggleMenu" :open="open" />
-    <transition name="burger-list-slide">
-      <burger-list
-        v-if="open"
-        :menuItems="menuItems"
+  <nav class="navigation-menu-wrapper padding-horizontal--large margin--auto desktop-width">
+    <logo />
+    <div class="navigation-menu">
+      <desktop-menu
+        class="navigation-menu__desktop-menu"
+        :accountMenu="accountMenu"
+        :loginMenu="loginMenu"
         :user="user"
-        @closeMenu="toggleMenu"
         @logout="logOut"
       />
-    </transition>
 
-    <!-- Desktop menu -->
-    <div class="navigation-menu__list-container">
-      <ul class="navigation-menu__list">
-        <li v-for="menuItem in menuItems" :key="menuItem.name">
-          <!-- User profile img-->
-          <img
-            v-if="menuItem.img && menuItem.img.url"
-            class="google-profile-picture"
-            :src="menuItem.img.url"
-            :alt="`${user.displayName} profile picture`"
-          />
-          <span
-            v-if="menuItem.img && !menuItem.img.url"
-            class="google-profile-picture--backup"
-          >
-            <BackupImg />
-          </span>
+      <div v-if="user" class="navigation-menu__icons">
+        <nuxt-link class="shopping-list__link" to="/account/shopping-list/" title="Shopping list">
+          <shopping-list-icon class="icon--shopping-list" />
+          <transition name="pop">
+            <span
+              v-show="user.shoppingList && $route.path !== '/account/shopping-list/'"
+              class="icon__notification"
+            >{{user.shoppingList && user.shoppingList.length}}</span>
+          </transition>
+        </nuxt-link>
+        <favorites-icon class="icon--favorites" />
+      </div>
 
-          <!-- Link -->
-          <nuxt-link
-            class="navigation-menu__link"
-            :to="menuItem.link"
-            @click.native="
-              () => {
-                open = false;
-              }
-            "
-            >{{ menuItem.name }}</nuxt-link
-          >
-        </li>
-        <li v-if="user">
-          <button class="logout-button" @click="logOut">Log out</button>
-        </li>
-      </ul>
+      <burger-menu
+        :open="burgerMenuOpen"
+        :user="user"
+        :menuItems="menuItems"
+        @toggleMenu="toggleMenu"
+        @logout="logOut"
+        v-click-outside="closeMenu"
+      />
     </div>
   </nav>
 </template>
 
 <script>
-import user from "~/mixins/user.js";
-import BurgerIcon from "./BurgerMenu/BurgerIcon.vue";
-import BackupImg from "~/assets/graphics/cook-silhouette-circle.svg";
-import BurgerList from "./BurgerMenu/BurgerList.vue";
 import ClickOutside from "vue-click-outside";
+
+import Logo from "./Logo.vue";
+import ShoppingListIcon from "~/assets/graphics/shopping-list-icon.svg";
+import FavoritesIcon from "~/assets/graphics/favorites-icon.svg";
+
+import user from "~/mixins/user.js";
+
+import BurgerMenu from "./BurgerMenu/BurgerMenu.vue";
+import DesktopMenu from "./DesktopMenu/DesktopMenu.vue";
 
 export default {
   name: "navigation",
   components: {
-    BurgerIcon,
-    BurgerList,
-    BackupImg
+    Logo,
+    BurgerMenu,
+    DesktopMenu,
+    ShoppingListIcon,
+    FavoritesIcon
   },
   data() {
-    return { open: false };
+    return { burgerMenuOpen: false };
   },
   mixins: [user],
   computed: {
+    accountMenu() {
+      return {
+        link: "/account/",
+        title: `${this.user && this.user.displayName}`,
+        img: {
+          url: this.user && this.user.photoURL
+        },
+        subLinks: [
+          {
+            path: "/account/",
+            title: "Dashboard",
+            icon: () => import(`~/assets/graphics/dashboard-icon.svg`)
+          },
+          {
+            path: "/account/my-cookbook/",
+            title: "My cookbook",
+            icon: () => import(`~/assets/graphics/cookbook-icon.svg`)
+          },
+
+          {
+            path: "/account/account-details/",
+            title: "Account details",
+            icon: () => import(`~/assets/graphics/locker-icon.svg`)
+          }
+        ]
+      };
+    },
+    loginMenu() {
+      return [
+        { path: "/sign-up/", title: "Sign up" },
+        { path: "/login/", title: "Log in" }
+      ];
+    },
     menuItems() {
       let menuItems = [];
       if (this.user !== null && this.user !== undefined) {
         menuItems = [
           {
-            link: "/account/",
-            name: "My account",
+            path: "/account/",
+            title: `${this.user.displayName}`,
             img: {
               url: this.user.photoURL
             },
             subLinks: [
-              { link: "/account/my-cookbook/", name: "My cookbook" },
-              { link: "/account/shopping-list/", name: "Shopping list" },
-              { link: "/account/account-details/", name: "Account details" }
+              { path: "/account/my-cookbook/", title: "My cookbook" },
+              { path: "/account/shopping-list/", title: "Shopping list" },
+              { path: "/account/account-details/", title: "Account details" }
             ]
           },
-          { link: "/cooks/", name: "Discover cooks" }
+          { path: "/", title: "Discover public recipes" },
+          { path: "/cooks/", title: "Discover cooks" }
         ];
       } else {
         menuItems = [
-          { link: "/sign-up/", name: "Sign up" },
-          { link: "/login/", name: "Log in" }
+          { path: "/sign-up/", title: "Sign up" },
+          { path: "/login/", title: "Log in" }
         ];
       }
       return menuItems;
@@ -106,17 +124,17 @@ export default {
   },
   methods: {
     toggleMenu() {
-      this.open = !this.open;
-      this.$emit("toggleMenu", this.open);
+      this.burgerMenuOpen = !this.burgerMenuOpen;
+      this.$emit("toggleMenu", this.burgerMenuOpen);
     },
     closeMenu() {
-      this.open = false;
+      this.burgerMenuOpen = false;
       this.$emit("toggleMenu", false);
     },
     logOut() {
       this.$store.dispatch("USER_SIGN_OUT");
       this.$router.push("/");
-      this.open = false;
+      this.burgerMenuOpen = false;
     }
   },
   directives: {

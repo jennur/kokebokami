@@ -1,0 +1,77 @@
+<template>
+  <!-- Desktop menu -->
+  <div class="desktop-menu" v-click-outside="closeDropdown">
+    <ul v-if="!user" class="login-menu">
+      <li v-for="link in loginMenu" :key="`login-link-${link.title}`">
+        <nuxt-link
+          :class="{
+            'login-menu__signup-btn': link.path === '/sign-up/',
+            'login-menu__link': link.path !== 'sign-up'
+          }"
+          :to="link.path"
+        >{{ link.title }}</nuxt-link>
+      </li>
+    </ul>
+    <div v-else class="account-menu margin-bottom--small">
+      <user-image :username="user.displayName" :photoURL="user.photoURL" />
+      <!-- Link -->
+      <span class="account-menu__button" @click="toggleDropdown">
+        {{
+        accountMenu.title
+        }}
+      </span>
+      <transition name="pop-dropdown">
+        <dropdown-menu
+          v-if="open"
+          :links="accountMenu.subLinks"
+          @logout="$emit('logout')"
+          @close="closeDropdown"
+        />
+      </transition>
+    </div>
+  </div>
+</template>
+<script>
+import ClickOutside from "vue-click-outside";
+
+import UserImage from "../UserImage.vue";
+import DropdownMenu from "./DropdownMenu.vue";
+
+export default {
+  name: "desktop-menu",
+  components: {
+    UserImage,
+    DropdownMenu
+  },
+  props: {
+    accountMenu: {
+      type: Object,
+      default: {}
+    },
+    loginMenu: {
+      type: Array,
+      default: []
+    },
+    user: {
+      type: Object,
+      default: {}
+    }
+  },
+  data() {
+    return {
+      open: false
+    };
+  },
+  methods: {
+    toggleDropdown() {
+      this.open = !this.open;
+    },
+    closeDropdown() {
+      this.open = false;
+    }
+  },
+  directives: {
+    ClickOutside
+  }
+};
+</script>

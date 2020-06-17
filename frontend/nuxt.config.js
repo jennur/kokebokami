@@ -162,7 +162,7 @@ export default {
   // Build configuration
   build: {
     // You can extend webpack config here
-    extend(config, ctx) {
+    /*  extend(config, ctx) {
       config.node = {
         fs: "empty",
         child_process: "empty",
@@ -170,6 +170,6 @@ export default {
         tls: "empty",
         dns: "empty"
       };
-    }
+    } */
   }
 };

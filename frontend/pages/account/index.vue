@@ -47,14 +47,14 @@ export default {
           }
         },
         {
-          title: "Account details",
-          link: "/account/account-details/",
-          description: "See and manage your account details"
-        },
-        {
           title: "Shopping list",
           link: "/account/shopping-list/",
           description: "See and manage your shopping list"
+        },
+        {
+          title: "Account details",
+          link: "/account/account-details/",
+          description: "See and manage your account details"
         }
       ];
     }
