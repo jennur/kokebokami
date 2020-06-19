@@ -1,7 +1,6 @@
 <template>
   <section class="shopping-list margin-bottom--large">
     <!-- Shopping list title -->
-
     <div class="shopping-list__title">
       <div
         v-if="title && !editTitle"
@@ -27,13 +26,18 @@
         :subList="subList[1]"
         :subListKey="subList[0]"
         :parentTitle="title"
-        :parentKey="listKey"
+        :mainListKey="existingListKey"
       />
     </div>
-    <increment-button
-      class="margin-bottom--xxlarge margin-top--large"
-      @increment="addNewSubList"
-    >Add new sublist</increment-button>
+    <div class="flex-row flex--space-between full-width">
+      <increment-button
+        class="margin-bottom--xxlarge margin-top--large"
+        @increment="addNewSubList"
+      >Add new sublist</increment-button>
+      <div
+        class="button button--small button--transparent button--transparent-red"
+      >Delete collection</div>
+    </div>
   </section>
 </template>
 
@@ -70,7 +74,8 @@ export default {
     return {
       mainListTitle: this.title,
       editTitle: false,
-      updatedSubLists: []
+      updatedSubLists: [],
+      existingListKey: this.listKey
     };
   },
   methods: {
@@ -79,24 +84,46 @@ export default {
     },
     saveTitle() {
       let componentThis = this;
+      let thisListKey = this.listKey;
+      let shoppingLists = JSON.parse(JSON.stringify(this.user.shoppingLists));
+      let title = this.mainListTitle;
+
       let shoppingListRef = this.$fireDb.ref(
         `users/${this.user.id}/shoppingLists/`
       );
-      let title = this.mainListTitle;
-      shoppingListRef
-        .once("value", snapshot => {
+      let thisListRef = this.$fireDb.ref(
+        `users/${this.user.id}/shoppingLists/${thisListKey}`
+      );
+
+      if (thisListKey) {
+        thisListRef
+          .update({ title })
+          .then(() => {
+            console.log("Title updated");
+
+            shoppingLists[thisListKey].title = title;
+            let userObj = { ...componentThis.user, shoppingLists };
+            componentThis.$store.dispatch("SET_USER", userObj);
+            componentThis.editTitle = false;
+          })
+          .catch(error => {
+            console.log(
+              "Title update failed for listRef:",
+              thisListKey,
+              error.message
+            );
+          });
+      } else {
+        shoppingListRef.once("value", snapshot => {
           if (snapshot.exists()) {
-            let listKey = Object.keys(snapshot.val())[0];
-            let thisListRef = shoppingListRef.child(listKey);
-            //Update title
-            thisListRef
-              .update({ title })
-              .then(() => {
-                console.log("Title updated");
-                let shoppingLists = JSON.parse(
-                  JSON.stringify(componentThis.user.shoppingLists)
-                );
-                shoppingLists[listKey].title = title;
+            console.log("Snapshot exists", snapshot.val());
+            shoppingListRef
+              .push({ title })
+              .then(mainListObject => {
+                console.log("New main list added", mainListObject.key);
+                let newListKey = mainListObject.key;
+                componentThis.existingListKey = newListKey;
+                shoppingLists[newListKey] = { title };
                 let userObj = { ...componentThis.user, shoppingLists };
                 componentThis.$store.dispatch("SET_USER", userObj);
                 componentThis.editTitle = false;
@@ -105,14 +132,9 @@ export default {
                 console.log("Title update failed:", error.message);
               });
           } else {
-            //Create a new list object
-            shoppingListRef.push({
-              title: componentThis.mainListTitle,
-              subLists: []
-            });
           }
-        })
-        .catch(error => console.log("Error saving title:", error));
+        });
+      }
     },
     addNewSubList() {
       this.updatedSubLists.push(["", { title: "", listItems: [] }]);

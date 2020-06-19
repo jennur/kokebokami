@@ -39,7 +39,8 @@
       >Save sublist</button>
     </div>
     <button
-      class="button button--small button--transparent button--transparent-red margin-top--xxlarge"
+      v-if="newSubListKey"
+      class="button button--small button--transparent button--transparent-red margin-vertical--xxlarge"
       @click="deleteSubList"
     >Remove sublist</button>
   </section>
@@ -62,7 +63,7 @@ export default {
       type: String,
       default: ""
     },
-    parentKey: {
+    mainListKey: {
       type: String,
       default: ""
     },
@@ -81,7 +82,8 @@ export default {
     return {
       editMode: this.subList && !this.subList.listItems.length,
       title: (subList && subList.title) || "",
-      listItems: (subList && subList.listItems) || []
+      listItems: (subList && subList.listItems) || [],
+      newSubListKey: this.subListKey || ""
     };
   },
   methods: {
@@ -95,33 +97,46 @@ export default {
     },
     saveShoppingList() {
       let componentThis = this;
-      let shoppingLists = [];
+
+      let shoppingLists = JSON.parse(JSON.stringify(this.user.shoppingLists));
+      let mainListKey = this.mainListKey;
+      let parentTitle = this.parentTitle || "New shopping list";
+      let originalTitle = this.subList.title;
+
       let backupTitle = this.createBackupTitle();
       let title = this.title || backupTitle;
       this.title = title;
       let listItems = this.listItems;
-      let originalTitle = this.subList.title;
       let subListKey = this.subListKey;
-      let parentTitle = this.parentTitle || "New shopping list";
 
       let shoppingListsRef = this.$fireDb.ref(
         `users/${this.user.id}/shoppingLists`
       );
 
       let subListRef = this.$fireDb.ref(
-        `users/${this.user.id}/shoppingLists/${this.parentKey}`
+        `users/${this.user.id}/shoppingLists/${mainListKey}`
       );
-      if (this.parentKey) {
+      if (mainListKey) {
         subListRef.once("value", snapshot => {
           if (snapshot.exists()) {
             console.log("Snapshot exists:", snapshot.val());
 
-            if (subListKey !== "") {
+            //Check if subList exists and is not recently deleted
+            if (subListKey !== "" && componentThis.newSubListKey !== "") {
               subListRef
                 .child("subLists")
                 .child(subListKey)
                 .set({ title, listItems })
-                .then(() => console.log("Update shoppingList in store"))
+                .then(() => {
+                  console.log("Updating shoppingList in store");
+                  shoppingLists[mainListKey].subLists[subListKey] = {
+                    title,
+                    listItems
+                  };
+                  let userObj = { ...componentThis.user, shoppingLists };
+                  componentThis.$store.dispatch("SET_USER", userObj);
+                  componentThis.editMode = false;
+                })
                 .catch(error =>
                   console.log("Error updating subList:", error.message)
                 );
@@ -130,7 +145,28 @@ export default {
               subListRef
                 .child("subLists")
                 .push({ title, listItems })
-                .then(() => console.log("Update shoppingList in store"))
+                .then(result => {
+                  console.log("Updating shoppingList in store", result);
+                  let subListKey = result.key;
+                  componentThis.newSubListKey = subListKey;
+                  if (shoppingLists[mainListKey].subLists) {
+                    shoppingLists[mainListKey].subLists[result.key] = {
+                      title,
+                      listItems
+                    };
+                  } else {
+                    shoppingLists[mainListKey].subLists = {
+                      resultKey: {
+                        title,
+                        listItems
+                      }
+                    };
+                  }
+
+                  let userObj = { ...componentThis.user, shoppingLists };
+                  componentThis.$store.dispatch("SET_USER", userObj);
+                  componentThis.editMode = false;
+                })
                 .catch(error =>
                   console.log("Error setting subList:", error.message)
                 );
@@ -139,32 +175,54 @@ export default {
         });
       } else {
         console.log("Main list does not exist");
-        console.log("Title:", parentTitle);
-        let listKey = shoppingListsRef.push({
+        let newMainListKey = shoppingListsRef.push({
           title: parentTitle
         }).key;
         shoppingListsRef
-          .child(listKey)
+          .child(newMainListKey)
           .child("subLists")
-          .push({ title, listItems });
+          .push({ title, listItems })
+          .then(result => {
+            console.log("Updating shoppingList in store", result);
+            shoppingLists[newMainListKey].subLists[result.key] = {
+              title,
+              listItems
+            };
+            let userObj = { ...componentThis.user, shoppingLists };
+            console.log("UserObjs:", userObj);
+            componentThis.$store.dispatch("SET_USER", userObj);
+            componentThis.editMode = false;
+          });
       }
-      /*
-      let userObj = { ...this.user, shoppingLists };
-      this.$store.dispatch("SET_USER", userObj);
-      this.editMode = false; */
     },
     deleteSubList() {
+      let componentThis = this;
+
+      let mainListKey = this.mainListKey;
+      let subListKey = this.subListKey;
+
       if (this.user && this.user.shoppingLists) {
         let shoppingLists = JSON.parse(JSON.stringify(this.user.shoppingLists));
         let userObj = { ...this.user, shoppingLists };
         this.$store.dispatch("SET_USER", userObj);
 
         let subListRef = this.$fireDb.ref(
-          `users/${this.user.id}/shoppingLists/${this.parentTitle}/${this.title}`
+          `users/${this.user.id}/shoppingLists/${mainListKey}/subLists/${subListKey}`
+        );
+        console.log(
+          "SublistRef:",
+          `users/${this.user.id}/shoppingLists/${mainListKey}/subLists/${subListKey}`
         );
         subListRef
           .remove()
           .then(() => {
+            console.log("Updating shoppingList in store");
+            delete shoppingLists[mainListKey].subLists[subListKey];
+            let userObj = { ...componentThis.user, shoppingLists };
+            componentThis.listItems = [];
+            componentThis.title = "";
+            componentThis.newSubListKey = "";
+            componentThis.$store.dispatch("SET_USER", userObj);
             console.log("Succesfully deleted sublist");
           })
           .catch(error =>

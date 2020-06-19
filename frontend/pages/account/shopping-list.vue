@@ -38,16 +38,15 @@ export default {
   },
   mixins: [user],
   data() {
+    let newList = [
+      "",
+      {
+        title: "My shopping list",
+        subLists: [{ title: "", listItems: [] }]
+      }
+    ];
     return {
-      shoppingLists: [
-        [
-          "",
-          {
-            title: "My shopping list",
-            subLists: [{ title: "", listItems: [] }]
-          }
-        ]
-      ]
+      shoppingLists: [newList]
     };
   },
   methods: {

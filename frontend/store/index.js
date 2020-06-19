@@ -1,11 +1,11 @@
 export function state() {
   return {
     user: null,
-    allUsers: [],
-    userRecipes: [],
+    /*    allUsers: [],
+     userRecipes: [],
     sharedRecipes: [],
     publicRecipes: [],
-    allRecipes: [],
+    allRecipes: [], */
     loginSystemMessage: "",
     signupSystemMessage: "",
     allCategories: [
