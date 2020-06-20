@@ -7,36 +7,53 @@
         class="flex-row flex-rot--align-center margin-bottom--xxlarge"
       >
         <h2 class="margin-bottom--small margin-right--large">{{mainListTitle}}</h2>
-        <button class="button button--small button--transparent" @click="openEditTitle">Edit title</button>
+        <button class="button button--small button--transparent" @click="toggleEditTitle">Edit title</button>
       </div>
       <!-- Edit mode for title -->
       <div v-if="editTitle" class="flex-row flex-row--align-center margin-bottom--xxlarge">
         <input type="text" v-model="mainListTitle" />
         <div class="flex-row flex-row--align-center flex-row--nowrap margin-top--medium">
           <button class="button button--small button--round" @click="saveTitle">Save title</button>
-          <button class="button button--small button--cancel" @click="editTitle = false">✕ Cancel</button>
+          <button class="button button--small button--cancel" @click="toggleEditTitle">✕ Cancel</button>
         </div>
       </div>
     </div>
     <!-- Sublists -->
     <div class="flex-row">
       <sub-list
-        v-for="(subList, index) in updatedSubLists"
+        v-for="(subList, index) in subLists"
         :key="`shopping-list-${index}`"
         :subList="subList[1]"
         :subListKey="subList[0]"
         :parentTitle="title"
-        :mainListKey="existingListKey"
+        :mainListKey="mainListKey"
+        @update="updateSubLists"
+      />
+      <sub-list
+        v-if="addingNewSubList"
+        :subList="{title: '', listItems: []}"
+        :subListKey="''"
+        :parentTitle="title"
+        :mainListKey="mainListKey"
+        @update="updateSubLists"
       />
     </div>
-    <div class="flex-row flex--space-between full-width">
+    <div class="flex-row flex--align-center flex--space-between full-width">
       <increment-button
-        class="margin-bottom--xxlarge margin-top--large"
-        @increment="addNewSubList"
+        class="margin-vertical--large margin-right--xxlarge"
+        @increment="addingNewSubList = true"
       >Add new sublist</increment-button>
+
       <div
-        class="button button--small button--transparent button--transparent-red"
+        v-if="mainListKey"
+        class="button button--small button--transparent button--transparent-red margin-vertical--large"
+        @click="deleteShoppingList"
       >Delete collection</div>
+      <button
+        v-if="!mainListKey"
+        class="button button--small button--cancel"
+        @click="$emit('cancel')"
+      >Cancel</button>
     </div>
   </section>
 </template>
@@ -60,13 +77,13 @@ export default {
       type: String,
       default: ""
     },
-    listKey: {
+    mainListKey: {
       type: String,
       default: ""
     },
     subLists: {
-      type: Object,
-      default: () => {}
+      type: Array,
+      default: () => []
     }
   },
   mixins: [user],
@@ -74,76 +91,76 @@ export default {
     return {
       mainListTitle: this.title,
       editTitle: false,
-      updatedSubLists: [],
-      existingListKey: this.listKey
+      addingNewSubList: false
     };
   },
   methods: {
-    openEditTitle() {
-      this.editTitle = true;
+    toggleEditTitle() {
+      this.editTitle = !this.editTitle;
+      this.$emit("update");
     },
     saveTitle() {
       let componentThis = this;
-      let thisListKey = this.listKey;
-      let shoppingLists = JSON.parse(JSON.stringify(this.user.shoppingLists));
+      let mainListKey = this.mainListKey;
       let title = this.mainListTitle;
 
       let shoppingListRef = this.$fireDb.ref(
         `users/${this.user.id}/shoppingLists/`
       );
       let thisListRef = this.$fireDb.ref(
-        `users/${this.user.id}/shoppingLists/${thisListKey}`
+        `users/${this.user.id}/shoppingLists/${mainListKey}`
       );
-
-      if (thisListKey) {
+      if (mainListKey) {
         thisListRef
           .update({ title })
           .then(() => {
             console.log("Title updated");
-
-            shoppingLists[thisListKey].title = title;
-            let userObj = { ...componentThis.user, shoppingLists };
-            componentThis.$store.dispatch("SET_USER", userObj);
-            componentThis.editTitle = false;
+            componentThis.toggleEditTitle();
           })
           .catch(error => {
-            console.log(
-              "Title update failed for listRef:",
-              thisListKey,
-              error.message
-            );
+            console.log("Title update failed:", error.message);
           });
       } else {
         shoppingListRef.once("value", snapshot => {
-          if (snapshot.exists()) {
-            console.log("Snapshot exists", snapshot.val());
-            shoppingListRef
-              .push({ title })
-              .then(mainListObject => {
-                console.log("New main list added", mainListObject.key);
-                let newListKey = mainListObject.key;
-                componentThis.existingListKey = newListKey;
-                shoppingLists[newListKey] = { title };
-                let userObj = { ...componentThis.user, shoppingLists };
-                componentThis.$store.dispatch("SET_USER", userObj);
-                componentThis.editTitle = false;
-              })
-              .catch(error => {
-                console.log("Title update failed:", error.message);
-              });
-          } else {
-          }
+          shoppingListRef
+            .push({ title })
+            .then(mainListObject => {
+              console.log("New main list added", mainListObject.key);
+              componentThis.toggleEditTitle();
+            })
+            .catch(error => {
+              console.log("Title update failed:", error.message);
+            });
         });
       }
     },
     addNewSubList() {
-      this.updatedSubLists.push(["", { title: "", listItems: [] }]);
+      this.addingNewSubList = true;
+    },
+    updateSubLists() {
+      console.log("Updating in shoppingListComponent");
+      this.addingNewSubList = false;
+      this.$emit("update");
+    },
+    deleteShoppingList() {
+      let componentThis = this;
+      let mainListKey = this.mainListKey;
+      let mainListRef = this.$fireDb.ref(
+        `users/${this.user.id}/shoppingLists/${mainListKey}`
+      );
+      mainListRef
+        .remove()
+        .then(() => {
+          console.log("Successfully deleted shopping list", mainListKey);
+          componentThis.$emit("update");
+        })
+        .catch(error =>
+          console.log("Error deleting shopping list:", error.message)
+        );
     }
   },
-  created() {
-    this.updatedSubLists =
-      (this.subLists && Object.entries(this.subLists)) || [];
-    console.log("UpdatedSubLists:", this.updatedSubLists);
+  updated() {
+    console.log("SubLists:", this.subLists);
   }
 };
 </script>
