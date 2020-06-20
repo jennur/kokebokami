@@ -62,10 +62,6 @@ export default {
       console.log("Updating in shopping-list");
       this.addingNewShoppingList = false;
       this.getShoppingLists();
-      let user = this.user;
-      let shoppingList = this.shoppingLists;
-      let userObj = { ...user, shoppingLists };
-      this.$store.dispatch("SET_USER", userObj);
     },
     objectToEntries(object) {
       return object ? Object.entries(object) : [];

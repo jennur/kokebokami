@@ -6,12 +6,12 @@
         v-if="title && !editTitle"
         class="flex-row flex-rot--align-center margin-bottom--xxlarge"
       >
-        <h2 class="margin-bottom--small margin-right--large">{{mainListTitle}}</h2>
+        <h2 class="margin-bottom--small margin-right--large">{{title}}</h2>
         <button class="button button--small button--transparent" @click="toggleEditTitle">Edit title</button>
       </div>
       <!-- Edit mode for title -->
       <div v-if="editTitle" class="flex-row flex-row--align-center margin-bottom--xxlarge">
-        <input type="text" v-model="mainListTitle" />
+        <input type="text" v-model="updatedTitle" />
         <div class="flex-row flex-row--align-center flex-row--nowrap margin-top--medium">
           <button class="button button--small button--round" @click="saveTitle">Save title</button>
           <button class="button button--small button--cancel" @click="toggleEditTitle">✕ Cancel</button>
@@ -53,7 +53,7 @@
         v-if="!mainListKey"
         class="button button--small button--cancel"
         @click="$emit('cancel')"
-      >Cancel</button>
+      >✕ Cancel</button>
     </div>
   </section>
 </template>
@@ -89,7 +89,7 @@ export default {
   mixins: [user],
   data() {
     return {
-      mainListTitle: this.title,
+      updatedTitle: this.title,
       editTitle: false,
       addingNewSubList: false
     };
@@ -97,12 +97,15 @@ export default {
   methods: {
     toggleEditTitle() {
       this.editTitle = !this.editTitle;
-      this.$emit("update");
+    },
+    addNewSubList() {
+      this.addingNewSubList = true;
     },
     saveTitle() {
+      this.addingNewSubList = false;
       let componentThis = this;
       let mainListKey = this.mainListKey;
-      let title = this.mainListTitle;
+      let title = this.updatedTitle;
 
       let shoppingListRef = this.$fireDb.ref(
         `users/${this.user.id}/shoppingLists/`
@@ -116,6 +119,7 @@ export default {
           .then(() => {
             console.log("Title updated");
             componentThis.toggleEditTitle();
+            componentThis.$emit("update");
           })
           .catch(error => {
             console.log("Title update failed:", error.message);
@@ -127,6 +131,7 @@ export default {
             .then(mainListObject => {
               console.log("New main list added", mainListObject.key);
               componentThis.toggleEditTitle();
+              componentThis.$emit("update");
             })
             .catch(error => {
               console.log("Title update failed:", error.message);
@@ -158,9 +163,6 @@ export default {
           console.log("Error deleting shopping list:", error.message)
         );
     }
-  },
-  updated() {
-    console.log("SubLists:", this.subLists);
   }
 };
 </script>

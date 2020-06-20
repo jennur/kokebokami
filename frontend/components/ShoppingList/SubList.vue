@@ -1,33 +1,39 @@
 <template>
   <section class="sub-list margin-bottom--large">
     <div class="sub-list__title">
-      <h3 v-if="!editMode && title" class="heading--blue">{{title}}</h3>
+      <h3 v-if="!editMode && title" class="heading--blue">{{subList && subList.title}}</h3>
       <label v-if="editMode" class="flex-column">
         <input type="text" v-model="title" placeholder="Sublist title" />
       </label>
     </div>
-    <ul class="sub-list__items">
+    <ul v-if="!editMode && subList && subList.listItems" class="sub-list__items">
       <li
-        v-for="(item, index) in listItems"
+        v-for="(item, index) in subList.listItems"
         :key="`list-item-${index}`"
         :data-list-item="`list-item-${index}`"
         class="margin-top--small"
       >
-        <div v-if="editMode">
-          <input type="text" v-model="listItems[index].text" />
-          <decrement-button @decrement="removeListItem(index)" />
-        </div>
-        <label v-else :class="{
-            'complete': listItems[index].complete
+        <label :class="{
+            'complete': subList.listItems[index].complete
             }">
           <input
             tabindex="0"
             type="checkbox"
-            :checked="listItems[index].complete"
+            :checked="subList.listItems[index].complete"
             @change="event => handleComplete(index)"
           />
           {{ item.text }}
         </label>
+      </li>
+    </ul>
+    <ul v-if="editMode" class="sub-list__items">
+      <li
+        v-for="(listItem, index) in listItems"
+        :key="`edit-list-item-${index}`"
+        class="margin-top--small"
+      >
+        <input type="text" v-model="listItems[index].text" />
+        <decrement-button @decrement="removeListItem(index)" />
       </li>
     </ul>
     <div class="flex-row margin-vertical--xlarge">
@@ -110,63 +116,59 @@ export default {
         `users/${this.user.id}/shoppingLists`
       );
 
-      let subListRef = this.$fireDb.ref(
+      let mainListRef = this.$fireDb.ref(
         `users/${this.user.id}/shoppingLists/${mainListKey}`
       );
-      if (mainListKey) {
-        subListRef.once("value", snapshot => {
-          if (snapshot.exists()) {
-            if (subListKey !== "") {
-              subListRef
-                .child("subLists")
-                .child(subListKey)
-                .set({ title, listItems })
-                .then(() => {
-                  console.log("Sublist successfully updated");
-                  componentThis.editMode = false;
-                  componentThis.$emit("update");
-                })
-                .catch(error =>
-                  console.log("Error updating subList:", error.message)
-                );
-            } else {
-              console.log("No sublist key");
-              subListRef
-                .child("subLists")
-                .push({ title, listItems })
-                .then(result => {
-                  console.log("Sublist successfully added");
-                  componentThis.editMode = false;
-                  componentThis.$emit("update");
-                })
-                .catch(error =>
-                  console.log("Error setting subList:", error.message)
-                );
-            }
-          }
-        });
-      } else {
-        console.log("Main list does not exist");
-        let newMainListKey = shoppingListsRef.push({
-          title: mainListTitle
-        }).key;
-        shoppingListsRef
-          .child(newMainListKey)
+      if (mainListKey && subListKey !== "") {
+        mainListRef
+          .child("subLists")
+          .child(subListKey)
+          .set({ title, listItems })
+          .then(() => {
+            console.log("Sublist successfully updated");
+            componentThis.editMode = false;
+            componentThis.$emit("update");
+          })
+          .catch(error =>
+            console.log("Error updating subList:", error.message)
+          );
+      } else if (mainListKey && subListKey === "") {
+        console.log("No sublist key");
+        mainListRef
           .child("subLists")
           .push({ title, listItems })
           .then(result => {
+            console.log("Sublist successfully added");
             componentThis.editMode = false;
             componentThis.$emit("update");
+          })
+          .catch(error => console.log("Error setting subList:", error.message));
+      } else if (!mainListKey) {
+        console.log("Main list does not exist");
+        let newMainListKey = shoppingListsRef
+          .push({
+            title: mainListTitle
+          })
+          .then(result => {
+            shoppingListsRef
+              .child(result.key)
+              .child("subLists")
+              .push({ title, listItems })
+              .then(result => {
+                componentThis.editMode = false;
+                componentThis.$emit("update");
+              });
           });
+      } else {
+        console.log("None of the above....");
       }
     },
     deleteSubList() {
       let componentThis = this;
-      let userHasShoppingLists = this.user && this.user.shoppingLists;
       let mainListKey = this.mainListKey;
       let subListKey = this.subListKey;
 
-      if (userHasShoppingLists) {
+      if (mainListKey && subListKey) {
         let subListRef = this.$fireDb.ref(
           `users/${this.user.id}/shoppingLists/${mainListKey}/subLists/${subListKey}`
         );
@@ -229,9 +231,6 @@ export default {
       console.log("Indexes:", index1, index2, index3);
       return `${randomList1[index1]} ${randomList2[index2]} of ${randomList3[index3]}`;
     }
-  },
-  updated() {
-    console.log("SubList:", this.subList);
   }
 };
 </script>

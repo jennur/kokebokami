@@ -19,7 +19,13 @@ export default {
             if (shoppingLists.exists()) {
               componentThis.shoppingLists = Object.entries(shoppingLists.val());
             } else {
-              shoppingListsRef.push({ title: "My shopping list" });
+              shoppingListsRef.push({ title: "My shopping list" }).then(() => {
+                shoppingListsRef.once("value", shoppingLists => {
+                  componentThis.shoppingLists = Object.entries(
+                    shoppingLists.val()
+                  );
+                });
+              });
             }
           })
           .then(() => {
