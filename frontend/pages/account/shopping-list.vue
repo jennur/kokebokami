@@ -59,7 +59,6 @@ export default {
       this.addingNewShoppingList = true;
     },
     updateShoppingLists() {
-      console.log("Updating in shopping-list");
       this.addingNewShoppingList = false;
       this.getShoppingLists();
     },

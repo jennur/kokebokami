@@ -84,12 +84,18 @@ export default {
   },
   mixins: [user],
   data() {
-    let subList = this.subList && JSON.parse(JSON.stringify(this.subList));
+    let subList = this.subList;
     return {
       editMode: subList && subList.listItems && !subList.listItems.length,
       title: (subList && subList.title) || "",
       listItems: (subList && subList.listItems) || []
     };
+  },
+  watch: {
+    subList: function(val) {
+      this.listItems = (val && val.listItems) || [];
+      this.title = (val && val.title) || "";
+    }
   },
   methods: {
     addNewListItem() {
@@ -133,18 +139,18 @@ export default {
             console.log("Error updating subList:", error.message)
           );
       } else if (mainListKey && subListKey === "") {
-        console.log("No sublist key");
+        console.log("Adding new sublist");
         mainListRef
           .child("subLists")
           .push({ title, listItems })
           .then(result => {
-            console.log("Sublist successfully added");
+            console.log("Successfully added new sublist");
             componentThis.editMode = false;
             componentThis.$emit("update");
           })
           .catch(error => console.log("Error setting subList:", error.message));
       } else if (!mainListKey) {
-        console.log("Main list does not exist");
+        console.log("Adding new main list");
         let newMainListKey = shoppingListsRef
           .push({
             title: mainListTitle
@@ -155,12 +161,13 @@ export default {
               .child("subLists")
               .push({ title, listItems })
               .then(result => {
+                console.log("Successfully added new mainlist");
                 componentThis.editMode = false;
                 componentThis.$emit("update");
               });
           });
       } else {
-        console.log("None of the above....");
+        console.log("Something went wrong while trying to add/update sublist");
       }
     },
     deleteSubList() {
@@ -175,7 +182,7 @@ export default {
         subListRef
           .remove()
           .then(() => {
-            console.log("Succesfully deleted sublist", subListKey);
+            console.log("Succesfully deleted sublist");
             componentThis.$emit("update");
           })
           .catch(error =>
@@ -228,7 +235,6 @@ export default {
       let index1 = Math.floor(Math.random() * 10);
       let index2 = Math.floor(Math.random() * 10);
       let index3 = Math.floor(Math.random() * 10);
-      console.log("Indexes:", index1, index2, index3);
       return `${randomList1[index1]} ${randomList2[index2]} of ${randomList3[index3]}`;
     }
   }

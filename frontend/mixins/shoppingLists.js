@@ -14,8 +14,6 @@ export default {
         );
         shoppingListsRef
           .once("value", shoppingLists => {
-            console.log("Getting shoppingLists", shoppingLists.val());
-
             if (shoppingLists.exists()) {
               componentThis.shoppingLists = Object.entries(shoppingLists.val());
             } else {
@@ -27,12 +25,6 @@ export default {
                 });
               });
             }
-          })
-          .then(() => {
-            console.log(
-              "ShoppingLists after get:",
-              componentThis.shoppingLists
-            );
           })
           .catch(error => {
             console.log("Error: Failed getting shopping list:", error.message);

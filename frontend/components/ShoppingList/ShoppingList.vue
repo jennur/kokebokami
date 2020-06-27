@@ -1,14 +1,18 @@
 <template>
   <section class="shopping-list margin-bottom--large">
-    <!-- Shopping list title -->
-    <div class="shopping-list__title">
+    <div v-if="mainListKey" class="flex-column">
       <div
-        v-if="title && !editTitle"
-        class="flex-row flex-rot--align-center margin-bottom--xxlarge"
-      >
+        class="shopping-list__delete-collection-btn button button--small button--transparent button--transparent-red"
+        @click="deleteShoppingList"
+      >Delete collection</div>
+    </div>
+    <!-- Shopping list title -->
+    <div class="shopping-list__title margin-bottom--xlarge">
+      <div v-if="title && !editTitle" class="flex-row flex-row--align-center">
         <h2 class="margin-bottom--small margin-right--large">{{title}}</h2>
         <button class="button button--small button--transparent" @click="toggleEditTitle">Edit title</button>
       </div>
+
       <!-- Edit mode for title -->
       <div v-if="editTitle" class="flex-row flex-row--align-center margin-bottom--xxlarge">
         <input type="text" v-model="updatedTitle" />
@@ -38,17 +42,12 @@
         @update="updateSubLists"
       />
     </div>
-    <div class="flex-row flex--align-center flex--space-between full-width">
+    <div class="flex-row flex-row--align-center flex-row--space-between full-width">
       <increment-button
         class="margin-vertical--large margin-right--xxlarge"
         @increment="addingNewSubList = true"
       >Add new sublist</increment-button>
 
-      <div
-        v-if="mainListKey"
-        class="button button--small button--transparent button--transparent-red margin-vertical--large"
-        @click="deleteShoppingList"
-      >Delete collection</div>
       <button
         v-if="!mainListKey"
         class="button button--small button--cancel"
@@ -94,6 +93,11 @@ export default {
       addingNewSubList: false
     };
   },
+  watch: {
+    title: function(val) {
+      this.updatedTitle = val;
+    }
+  },
   methods: {
     toggleEditTitle() {
       this.editTitle = !this.editTitle;
@@ -129,7 +133,7 @@ export default {
           shoppingListRef
             .push({ title })
             .then(mainListObject => {
-              console.log("New main list added", mainListObject.key);
+              console.log("New main list added");
               componentThis.toggleEditTitle();
               componentThis.$emit("update");
             })
@@ -143,7 +147,6 @@ export default {
       this.addingNewSubList = true;
     },
     updateSubLists() {
-      console.log("Updating in shoppingListComponent");
       this.addingNewSubList = false;
       this.$emit("update");
     },
@@ -156,7 +159,7 @@ export default {
       mainListRef
         .remove()
         .then(() => {
-          console.log("Successfully deleted shopping list", mainListKey);
+          console.log("Successfully deleted shopping list");
           componentThis.$emit("update");
         })
         .catch(error =>

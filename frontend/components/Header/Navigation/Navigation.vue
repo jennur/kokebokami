@@ -20,7 +20,8 @@
             >{{shoppingListCount}}</span>
           </transition>
         </nuxt-link>
-        <favorites-icon class="icon--favorites" />
+        <!--         <favorites-icon class="icon--favorites" />
+        -->
       </div>
 
       <burger-menu

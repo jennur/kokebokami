@@ -2,7 +2,19 @@
   background-color: rgba($orange, 0.05);
   border-radius: $spacingMedium;
   padding: $spacingLarge;
+  position: relative;
 
+  &__delete-collection-btn {
+    margin-top: -$spacingMedium;
+    margin-bottom: $spacingLarge;
+    align-self: flex-end;
+    @media screen and (min-width: $mobileWidth) {
+      margin-top: 0px;
+      position: absolute;
+      top: $spacingMedium;
+      right: $spacingLarge;
+    }
+  }
   &__title {
     input[type="text"] {
       font-size: $fontSizeXLargeMobile;
