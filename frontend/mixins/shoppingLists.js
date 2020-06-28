@@ -15,7 +15,23 @@ export default {
         shoppingListsRef
           .once("value", shoppingLists => {
             if (shoppingLists.exists()) {
-              componentThis.shoppingLists = Object.entries(shoppingLists.val());
+              shoppingLists = Object.entries(shoppingLists.val());
+              componentThis.shoppingLists = shoppingLists;
+              let shoppingListCount = 0;
+              shoppingLists.forEach(list => {
+                if (list && list[1] && list[1].subLists) {
+                  let subLists = Object.entries(list[1].subLists) || [];
+                  subLists.forEach(subList => {
+                    if (subList && subList[1] && subList[1].listItems) {
+                      shoppingListCount += subList[1].listItems.length;
+                    }
+                  });
+                }
+              });
+              componentThis.$store.dispatch(
+                "SET_SHOPPING_LIST_COUNT",
+                shoppingListCount
+              );
             } else {
               shoppingListsRef.push({ title: "My shopping list" }).then(() => {
                 shoppingListsRef.once("value", shoppingLists => {

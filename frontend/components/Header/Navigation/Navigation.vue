@@ -15,7 +15,7 @@
           <shopping-list-icon class="icon--shopping-list" />
           <transition name="pop">
             <span
-              v-show="user.shoppingList && $route.path !== '/account/shopping-list/'"
+              v-show="shoppingListCount && $route.path !== '/account/shopping-list/'"
               class="icon__notification"
             >{{shoppingListCount}}</span>
           </transition>
@@ -63,16 +63,7 @@ export default {
   mixins: [user],
   computed: {
     shoppingListCount() {
-      let shoppingList = [this.user.shoppingList] || [];
-      let count = 0;
-      shoppingList.forEach(list => {
-        if (list) {
-          Object.values(list).forEach(subList => {
-            count += subList.length;
-          });
-        }
-      });
-      return count;
+      return this.$store.state.shoppingListCount;
     },
     accountMenu() {
       return {

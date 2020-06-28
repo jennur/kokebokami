@@ -1,11 +1,7 @@
 export function state() {
   return {
     user: null,
-    /*    allUsers: [],
-     userRecipes: [],
-    sharedRecipes: [],
-    publicRecipes: [],
-    allRecipes: [], */
+    shoppingListCount: 0,
     loginSystemMessage: "",
     signupSystemMessage: "",
     allCategories: [
@@ -76,6 +72,9 @@ export const mutations = {
   setUser(state, payload) {
     state.user = payload;
   },
+  setShoppingListCount(state, payload) {
+    state.shoppingListCount = payload;
+  },
   setAllUsers(state, payload) {
     state.allUsers = payload;
   },
@@ -97,6 +96,9 @@ export const actions = {
 
   SET_LOGIN_MESSAGE: ({ commit }, payload) => {
     commit("setLoginSystemMessage", payload);
+  },
+  SET_SHOPPING_LIST_COUNT: ({ commit }, payload) => {
+    commit("setShoppingListCount", payload);
   },
 
   SET_USER: function({ commit }) {

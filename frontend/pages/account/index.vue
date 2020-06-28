@@ -49,12 +49,18 @@ export default {
         {
           title: "Shopping list",
           link: "/account/shopping-list/",
-          description: "See and manage your shopping list"
+          description: "See and manage your shopping list",
+          graphic: {
+            name: "shopping-list"
+          }
         },
         {
           title: "Account details",
           link: "/account/account-details/",
-          description: "See and manage your account details"
+          description: "See and manage your account details",
+          graphic: {
+            name: "account-details"
+          }
         }
       ];
     }

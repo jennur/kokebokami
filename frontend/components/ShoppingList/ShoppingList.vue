@@ -28,7 +28,7 @@
 
       <!-- Edit mode for title -->
       <div v-if="editMode" class="flex-row flex-row--align-center margin-bottom--xxlarge">
-        <input type="text" v-model="updatedTitle" />
+        <input type="text" v-model="updatedTitle" class="margin-right--large margin-top--medium" />
         <div class="flex-row flex-row--align-center flex-row--nowrap margin-top--medium">
           <button class="button button--small button--round" @click="saveTitle">Save title</button>
         </div>
@@ -168,16 +168,22 @@ export default {
       let mainListRef = this.$fireDb.ref(
         `users/${this.user.id}/shoppingLists/${mainListKey}`
       );
-      mainListRef
-        .remove()
-        .then(() => {
-          console.log("Successfully deleted shopping list");
-          componentThis.toggleEditMode();
-          componentThis.$emit("update");
-        })
-        .catch(error =>
-          console.log("Error deleting shopping list:", error.message)
-        );
+      if (
+        confirm(
+          `Are you sure you want to delete shopping list collection "${this.title}"?`
+        )
+      ) {
+        mainListRef
+          .remove()
+          .then(() => {
+            console.log("Successfully deleted shopping list");
+            componentThis.toggleEditMode();
+            componentThis.$emit("update");
+          })
+          .catch(error =>
+            console.log("Error deleting shopping list:", error.message)
+          );
+      }
     }
   }
 };

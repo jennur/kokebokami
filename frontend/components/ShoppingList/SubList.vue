@@ -199,7 +199,7 @@ export default {
       if (
         mainListKey &&
         subListKey &&
-        confirm(`Are you sure you want to delete sublist ${this.title}`)
+        confirm(`Are you sure you want to delete sublist "${this.title}"?`)
       ) {
         let subListRef = this.$fireDb.ref(
           `users/${this.user.id}/shoppingLists/${mainListKey}/subLists/${subListKey}`
