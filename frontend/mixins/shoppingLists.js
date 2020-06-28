@@ -38,6 +38,7 @@ export default {
                   componentThis.shoppingLists = Object.entries(
                     shoppingLists.val()
                   );
+                  componentThis.$store.dispatch("SET_SHOPPING_LIST_COUNT", 0);
                 });
               });
             }
