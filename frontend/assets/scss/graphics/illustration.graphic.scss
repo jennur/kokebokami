@@ -6,6 +6,7 @@
 
   &--kokeboka {
     width: 100%;
+    max-width: $desktopWidth;
     margin: 0 auto;
     padding-bottom: $spacingXXLarge;
   }

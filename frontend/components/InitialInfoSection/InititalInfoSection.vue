@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import kokeboka from "~/assets/graphics/foodboard-wide.svg";
+import kokeboka from "~/assets/graphics/foodboard.svg";
 import kokebokaMobile from "~/assets/graphics/foodboard-mobile.svg";
 import AnchorButton from "~/components/AnchorButton.vue";
 

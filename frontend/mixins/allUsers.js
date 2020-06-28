@@ -8,7 +8,6 @@ export default {
   },
   methods: {
     getAllUsers() {
-      console.log("Getting users");
       let componentThis = this;
       if (this.userAuth) {
         this.$fireDb.ref("users").once(
