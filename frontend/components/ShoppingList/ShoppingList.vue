@@ -1,24 +1,36 @@
 <template>
   <section class="shopping-list margin-bottom--large">
-    <div v-if="mainListKey" class="flex-column">
+    <button
+      v-if="!editMode"
+      class="button button--small button--transparent margin-bottom--xxlarge"
+      @click="toggleEditMode"
+    >Edit list collection</button>
+
+    <div
+      v-else
+      class="flex-row flex-row--align-center flex-row--space-between margin-bottom--xxlarge"
+    >
+      <button
+        class="button button--xsmall button--dynamic button--cancel"
+        @click="toggleEditMode"
+      >✕ Cancel</button>
       <div
+        v-if="mainListKey"
         class="shopping-list__delete-collection-btn button button--small button--transparent button--transparent-red"
         @click="deleteShoppingList"
       >Delete collection</div>
     </div>
     <!-- Shopping list title -->
     <div class="shopping-list__title margin-bottom--xlarge">
-      <div v-if="title && !editTitle" class="flex-row flex-row--align-center">
+      <div v-if="title && !editMode" class="flex-row flex-row--align-center">
         <h2 class="margin-bottom--small margin-right--large">{{title}}</h2>
-        <button class="button button--small button--transparent" @click="toggleEditTitle">Edit title</button>
       </div>
 
       <!-- Edit mode for title -->
-      <div v-if="editTitle" class="flex-row flex-row--align-center margin-bottom--xxlarge">
+      <div v-if="editMode" class="flex-row flex-row--align-center margin-bottom--xxlarge">
         <input type="text" v-model="updatedTitle" />
         <div class="flex-row flex-row--align-center flex-row--nowrap margin-top--medium">
           <button class="button button--small button--round" @click="saveTitle">Save title</button>
-          <button class="button button--small button--cancel" @click="toggleEditTitle">✕ Cancel</button>
         </div>
       </div>
     </div>
@@ -89,7 +101,7 @@ export default {
   data() {
     return {
       updatedTitle: this.title,
-      editTitle: false,
+      editMode: false,
       addingNewSubList: false
     };
   },
@@ -99,8 +111,8 @@ export default {
     }
   },
   methods: {
-    toggleEditTitle() {
-      this.editTitle = !this.editTitle;
+    toggleEditMode() {
+      this.editMode = !this.editMode;
     },
     addNewSubList() {
       this.addingNewSubList = true;
@@ -122,7 +134,7 @@ export default {
           .update({ title })
           .then(() => {
             console.log("Title updated");
-            componentThis.toggleEditTitle();
+            componentThis.toggleEditMode();
             componentThis.$emit("update");
           })
           .catch(error => {
@@ -134,7 +146,7 @@ export default {
             .push({ title })
             .then(mainListObject => {
               console.log("New main list added");
-              componentThis.toggleEditTitle();
+              componentThis.toggleEditMode();
               componentThis.$emit("update");
             })
             .catch(error => {
@@ -160,6 +172,7 @@ export default {
         .remove()
         .then(() => {
           console.log("Successfully deleted shopping list");
+          componentThis.toggleEditMode();
           componentThis.$emit("update");
         })
         .catch(error =>

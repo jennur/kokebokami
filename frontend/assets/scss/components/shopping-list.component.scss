@@ -5,9 +5,9 @@
   position: relative;
 
   &__delete-collection-btn {
-    margin-top: -$spacingMedium;
-    margin-bottom: $spacingLarge;
-    align-self: flex-end;
+    /* margin-top: -$spacingMedium;
+    margin-bottom: $spacingLarge; */
+    /* align-self: flex-end; */
     @media screen and (min-width: $mobileWidth) {
       margin-top: 0px;
       position: absolute;

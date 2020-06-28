@@ -27,6 +27,7 @@
     border-radius: $spacingXLarge;
     &-small {
       font-size: $fontSizeSmall;
+      height: $spacingXLarge;
     }
   }
 
@@ -104,6 +105,7 @@
       }
     }
   }
+
   &--xsmall {
     height: 33px;
     width: max-content;
@@ -171,10 +173,6 @@
     background-color: $green;
     cursor: pointer;
 
-    @media screen and (min-width: $mobileWidth) {
-      height: $spacingXLarge;
-    }
-
     &:hover {
       background-color: $blue;
       color: $green;
@@ -209,5 +207,9 @@
       left: $spacingXSmall;
       bottom: $spacingSmall;
     }
+  }
+  &--dynamic {
+    width: max-content;
+    padding: 0px;
   }
 }

@@ -10,11 +10,6 @@
           <input type="text" v-model="title" placeholder="Sublist title" />
         </label>
       </div>
-      <button
-        v-if="subListKey"
-        class="button button--small button--transparent button--transparent-red margin-left--large"
-        @click="deleteSubList"
-      >Remove sublist</button>
     </div>
     <ul v-if="!editMode && subList && subList.listItems" class="sub-list__items">
       <li
@@ -46,14 +41,27 @@
         <decrement-button @decrement="removeListItem(index)" />
       </li>
     </ul>
-    <div class="flex-row margin-vertical--xlarge">
-      <increment-button class="margin-right--medium" @increment="addNewListItem">Add item</increment-button>
+    <div v-if="!editMode">
       <button
-        v-if="editMode"
-        class="button button--round button--round-small padding-horizontal--xlarge"
+        class="button button--small button--transparent margin-right--medium margin-vertical--large"
+        @click="openEditMode"
+      >Edit sublist</button>
+    </div>
+    <div v-if="editMode" class="flex-row flex-row--align-center">
+      <increment-button
+        class="margin-right--medium margin-vertical--large"
+        @increment="addNewListItem"
+      >Add item</increment-button>
+      <button
+        class="button button--round button--round-small padding-horizontal--xlarge margin-right--medium margin-vertical--large"
         @click="saveSubList"
       >Save sublist</button>
     </div>
+    <button
+      v-if="editMode && subListKey"
+      class="button button--round button--round-small button--red-border padding-horizontal--large margin-right--medium margin-vertical--large"
+      @click="deleteSubList"
+    >Delete sublist</button>
   </section>
 </template>
 
@@ -103,8 +111,10 @@ export default {
     }
   },
   methods: {
-    addNewListItem() {
+    openEditMode() {
       this.editMode = true;
+    },
+    addNewListItem() {
       this.listItems.push({ text: "", complete: false });
     },
     removeListItem(index) {
@@ -180,7 +190,11 @@ export default {
       let mainListKey = this.mainListKey;
       let subListKey = this.subListKey;
 
-      if (mainListKey && subListKey) {
+      if (
+        mainListKey &&
+        subListKey &&
+        confirm(`Are you sure you want to delete sublist ${this.title}`)
+      ) {
         let subListRef = this.$fireDb.ref(
           `users/${this.user.id}/shoppingLists/${mainListKey}/subLists/${subListKey}`
         );
@@ -188,6 +202,7 @@ export default {
           .remove()
           .then(() => {
             console.log("Succesfully deleted sublist");
+            componentThis.editMode = false;
             componentThis.$emit("update");
           })
           .catch(error =>
