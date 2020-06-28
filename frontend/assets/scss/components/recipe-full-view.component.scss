@@ -52,6 +52,15 @@
       margin-bottom: $spacingMedium;
     }
   }
+  .add-to-shopping-list {
+    .select {
+      width: 180px;
+      &__dropdown {
+        width: 190px;
+        background-color: $cream;
+      }
+    }
+  }
 
   &__instructions {
     padding-left: $spacingSmall;

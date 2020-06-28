@@ -14,6 +14,7 @@
     <span class="select__selected">{{ selected }}</span>
     <div v-if="open" class="select__dropdown">
       <span
+        v-if="defaultValue !== 'none'"
         tabindex="0"
         role="option"
         :aria-label="defaultValue"

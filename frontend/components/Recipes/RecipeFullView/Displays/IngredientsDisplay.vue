@@ -29,22 +29,24 @@
         </li>
       </ul>
     </div>
-    <div class="margin-bottom--xxlarge">
-      <button
-        v-if="!addedToShoppingList"
-        class="button--increment"
-        @click="addToShoppingList"
-      >Add to shopping list</button>
-      <span v-else class="button--checked">Added to shopping list</span>
-    </div>
+    <add-to-shopping-list
+      class="margin-bottom--xxlarge"
+      :recipeTitle="recipeTitle"
+      :ingredients="ingredientArray"
+    />
   </section>
 </template>
 
 <script>
 import user from "~/mixins/user.js";
 
+import AddToShoppingList from "../Interaction/AddToShoppingList.vue";
+
 export default {
   name: "ingredients-display",
+  components: {
+    AddToShoppingList
+  },
   props: {
     servings: {
       type: String,
@@ -64,8 +66,7 @@ export default {
   data() {
     return {
       updatedServings: this.servings,
-      amounts: [],
-      addedToShoppingList: false
+      amounts: []
     };
   },
   computed: {
@@ -114,32 +115,6 @@ export default {
       let dividend = parseInt(fraction[0]);
       let divisor = parseInt(fraction[1]);
       return Math.round((dividend / divisor) * 100) / 100;
-    },
-    addToShoppingList() {
-      let recipeTitle = this.recipeTitle;
-      let ingredientElements = this.ingredientArray;
-      let shoppingListIngredients = ingredientElements.map(ingredient => {
-        let text = ingredient.join(" ");
-        let complete = false;
-        return { text, complete };
-      });
-
-      let shoppingListRef = this.$fireDb.ref(
-        `users/${this.user.id}/shoppingList/${recipeTitle}`
-      );
-      shoppingListRef.set(shoppingListIngredients);
-
-      let shoppingList = this.user.shoppingList
-        ? JSON.parse(JSON.stringify(this.user.shoppingList))
-        : {};
-      shoppingList[recipeTitle] = shoppingListIngredients;
-
-      let userObj = {
-        ...this.user,
-        shoppingList
-      };
-      this.$store.dispatch("SET_USER", userObj);
-      this.addedToShoppingList = true;
     }
   }
 };

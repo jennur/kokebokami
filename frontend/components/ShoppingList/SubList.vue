@@ -1,17 +1,27 @@
 <template>
-  <section class="sub-list margin-bottom--large">
-    <div class="sub-list__title">
-      <h3 v-if="!editMode && title" class="heading--blue">{{subList && subList.title}}</h3>
-      <label v-if="editMode" class="flex-column">
-        <input type="text" v-model="title" placeholder="Sublist title" />
-      </label>
+  <section class="sub-list margin-vertical--large">
+    <div class="flex-row flex-row--align-center margin-bottom--xlarge">
+      <div class="sub-list__title">
+        <h3
+          v-if="!editMode && title"
+          class="heading--blue margin--none"
+        >{{subList && subList.title}}</h3>
+        <label v-if="editMode" class="flex-column">
+          <input type="text" v-model="title" placeholder="Sublist title" />
+        </label>
+      </div>
+      <button
+        v-if="subListKey"
+        class="button button--small button--transparent button--transparent-red margin-left--large"
+        @click="deleteSubList"
+      >Remove sublist</button>
     </div>
     <ul v-if="!editMode && subList && subList.listItems" class="sub-list__items">
       <li
         v-for="(item, index) in subList.listItems"
         :key="`list-item-${index}`"
         :data-list-item="`list-item-${index}`"
-        class="margin-top--small"
+        class="margin-vertical--medium"
       >
         <label :class="{
             'complete': subList.listItems[index].complete
@@ -44,11 +54,6 @@
         @click="saveSubList"
       >Save sublist</button>
     </div>
-    <button
-      v-if="subListKey"
-      class="button button--small button--transparent button--transparent-red margin-vertical--xxlarge"
-      @click="deleteSubList"
-    >Remove sublist</button>
   </section>
 </template>
 
