@@ -91,7 +91,7 @@ export default {
           {
             path: "/account/account-details/",
             title: "Account details",
-            icon: () => import(`~/assets/graphics/locker-icon.svg`)
+            icon: () => import(`~/assets/graphics/account-details-icon.svg`)
           }
         ]
       };

@@ -25,6 +25,9 @@
 .icon__link {
   position: relative;
   display: inline-block;
+  &:hover {
+    margin: 0px;
+  }
   .icon__notification {
     display: flex;
     justify-content: center;
