@@ -3,8 +3,8 @@
     <div v-if="!user">
       <initial-info-section class="padding-vertical--xxlarge" nextSection="lookup" />
 
-      <preview id="lookup" class="padding--large" />
-
+      <!--       <preview id="lookup" class="padding--large" />
+      -->
       <sign-up-section
         class="container--blue"
         :darkBg="true"
