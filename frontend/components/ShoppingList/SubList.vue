@@ -44,7 +44,7 @@
     <div v-if="!editMode">
       <button
         class="button button--small button--transparent margin-right--medium margin-vertical--large"
-        @click="openEditMode"
+        @click="toggleEditMode"
       >Edit sublist</button>
     </div>
     <div v-if="editMode" class="flex-row flex-row--align-center">
@@ -57,11 +57,17 @@
         @click="saveSubList"
       >Save sublist</button>
     </div>
-    <button
-      v-if="editMode && subListKey"
-      class="button button--round button--round-small button--red-border padding-horizontal--large margin-right--medium margin-vertical--large"
-      @click="deleteSubList"
-    >Delete sublist</button>
+    <div v-if="editMode" class="flex-row flex-row--align-center">
+      <button
+        v-if="subListKey"
+        class="button button--round button--round-small button--red-border padding-horizontal--large margin-right--large margin-vertical--large"
+        @click="deleteSubList"
+      >Delete sublist</button>
+      <button
+        class="button button--xsmall button--dynamic button--cancel margin-left--medium margin-vertical--large"
+        @click="toggleEditMode"
+      >✕ Cancel</button>
+    </div>
   </section>
 </template>
 
@@ -111,8 +117,8 @@ export default {
     }
   },
   methods: {
-    openEditMode() {
-      this.editMode = true;
+    toggleEditMode() {
+      this.editMode = !this.editMode;
     },
     addNewListItem() {
       this.listItems.push({ text: "", complete: false });
