@@ -25,6 +25,10 @@ export default {
     BurgerList
   },
   props: {
+    loginMenu: {
+      type: Array,
+      default: () => []
+    },
     menuItems: {
       type: Array,
       default: () => []

@@ -13,11 +13,14 @@
 
     &__link {
       color: $orange;
-      font-size: 22px;
+      font-size: 18px;
       cursor: pointer;
       text-decoration: none;
       font-family: $displayFont;
       margin: 0px;
+      @media screen and (min-width: $mobileWidth) {
+        font-size: 22px;
+      }
       @media screen and (min-width: $tabletWidth) {
         font-size: 25px;
       }
@@ -32,6 +35,58 @@
 .navigation-menu {
   display: flex;
   align-items: center;
+
+  .login-menu {
+    padding: 0px;
+    li {
+      display: inline-flex;
+      align-items: center;
+      margin: $spacingMedium;
+      position: relative;
+      @media screen and (min-width: $mobileWidth) {
+        margin: $spacingLarge;
+      }
+    }
+    &__link {
+      color: $blue;
+      text-decoration: none;
+      position: relative;
+      border-bottom: 2px solid $green;
+      margin-bottom: 2px;
+      font-size: $fontSizeSmall;
+      @media screen and (min-width: $mobileWidth) {
+        font-size: $fontSizeMedium;
+      }
+      &:hover {
+        margin-bottom: 0px;
+        color: $blue;
+        border-bottom: 4px solid $green;
+        text-decoration: none;
+      }
+    }
+    &__signup-btn {
+      display: inline-block;
+      background-color: rgba($green, 1);
+      color: $blue;
+      border-radius: $spacingSmall;
+      padding: $spacingSmall $spacingMedium;
+      border-bottom: 0px;
+      transition: 0.1s;
+      margin-bottom: 0px;
+      font-size: $fontSizeSmall;
+
+      @media screen and (min-width: $mobileWidth) {
+        font-size: $fontSizeMedium;
+      }
+
+      &:hover {
+        text-decoration: none;
+        transform: scale(1.05);
+        border-bottom: 0px;
+        margin-bottom: 0px;
+      }
+    }
+  }
   .desktop-menu {
     display: none;
 

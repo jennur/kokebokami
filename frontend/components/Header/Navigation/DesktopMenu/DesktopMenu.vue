@@ -1,18 +1,7 @@
 <template>
   <!-- Desktop menu -->
   <div class="desktop-menu" v-click-outside="closeDropdown">
-    <ul v-if="!user" class="login-menu">
-      <li v-for="link in loginMenu" :key="`login-link-${link.title}`">
-        <nuxt-link
-          :class="{
-            'login-menu__signup-btn': link.path === '/sign-up/',
-            'login-menu__link': link.path !== 'sign-up'
-          }"
-          :to="link.path"
-        >{{ link.title }}</nuxt-link>
-      </li>
-    </ul>
-    <div v-else class="account-menu margin-bottom--small">
+    <div v-if="user" class="account-menu margin-bottom--small">
       <user-image :username="user.displayName" :photoURL="user.photoURL" />
       <!-- Link -->
       <span class="account-menu__button" @click="toggleDropdown">

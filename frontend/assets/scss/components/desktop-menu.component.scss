@@ -80,44 +80,4 @@
       }
     }
   }
-
-  .login-menu {
-    li {
-      display: inline-flex;
-      align-items: center;
-      margin: $spacingLarge;
-      position: relative;
-
-      &__link {
-        color: $blue;
-        text-decoration: none;
-        position: relative;
-        border-bottom: 2px solid $green;
-        margin-bottom: 2px;
-        &:hover {
-          margin-bottom: 0px;
-          color: $blue;
-          border-bottom: 4px solid $green;
-          text-decoration: none;
-        }
-      }
-    }
-
-    &__signup-btn {
-      display: inline-block;
-      background-color: rgba($green, 1);
-      color: $blue;
-      border-radius: $spacingSmall;
-      padding: $spacingSmall $spacingMedium;
-      border-bottom: 0px;
-      transition: 0.2s;
-      margin-bottom: 0px;
-
-      &:hover {
-        transform: scale(1.05);
-        border-bottom: 0px;
-        margin-bottom: 0px;
-      }
-    }
-  }
 }

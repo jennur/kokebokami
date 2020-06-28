@@ -11,8 +11,7 @@
           class="burger-menu__link"
           :to="menuItem.path"
           @click.native="$emit('closeMenu')"
-          >{{ menuItem.title }}</nuxt-link
-        >
+        >{{ menuItem.title }}</nuxt-link>
       </div>
       <ul
         v-if="menuItem.subLinks"
@@ -23,8 +22,7 @@
             class="burger-menu__link"
             :to="link.path"
             @click.native="$emit('closeMenu')"
-            >{{ link.title }}</nuxt-link
-          >
+          >{{ link.title }}</nuxt-link>
         </li>
       </ul>
     </li>

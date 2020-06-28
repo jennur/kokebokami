@@ -2,6 +2,17 @@
   <nav class="navigation-menu-wrapper padding-horizontal--large margin--auto desktop-width">
     <logo />
     <div class="navigation-menu">
+      <ul v-if="!user" class="login-menu">
+        <li v-for="link in loginMenu" :key="`login-link-${link.title}`">
+          <nuxt-link
+            :class="{
+            'login-menu__signup-btn': link.path === '/sign-up/',
+            'login-menu__link': link.path !== '/sign-up/'
+          }"
+            :to="link.path"
+          >{{ link.title }}</nuxt-link>
+        </li>
+      </ul>
       <desktop-menu
         class="navigation-menu__desktop-menu"
         :accountMenu="accountMenu"
@@ -28,9 +39,10 @@
       </div>
 
       <burger-menu
+        v-if="user"
         :open="burgerMenuOpen"
         :user="user"
-        :menuItems="menuItems"
+        :menuItems="burgerMenuItems"
         @toggleMenu="toggleMenu"
         @logout="logOut"
         v-click-outside="closeMenu"
@@ -102,7 +114,7 @@ export default {
         { path: "/login/", title: "Log in" }
       ];
     },
-    menuItems() {
+    burgerMenuItems() {
       let menuItems = [];
       if (this.user !== null && this.user !== undefined) {
         menuItems = [

@@ -1,5 +1,7 @@
 <template>
   <section>
+    <breadcrumbs :routes="breadcrumbs" />
+
     <foodclouds class="illustration illustration--food-clouds" />
 
     <div class="mobile-width margin--auto">
@@ -44,6 +46,12 @@ export default {
   components: {
     foodclouds,
     clouds
+  },
+  props: {
+    breadcrumbs: {
+      type: Array,
+      default: () => [{ name: "Home", link: "/" }, { name: "About" }]
+    }
   }
 };
 </script>
