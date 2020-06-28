@@ -12,6 +12,7 @@
   }
 
   &--shopping-list,
+  &--cooks,
   &--favorites {
     max-width: 1.5em;
     height: 23px;
@@ -21,7 +22,7 @@
   }
 }
 
-.shopping-list__link {
+.icon__link {
   position: relative;
   display: inline-block;
   .icon__notification {

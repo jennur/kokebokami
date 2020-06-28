@@ -11,7 +11,7 @@
       />
 
       <div v-if="user" class="navigation-menu__icons">
-        <nuxt-link class="shopping-list__link" to="/account/shopping-list/" title="Shopping list">
+        <nuxt-link class="icon__link" to="/account/shopping-list/" title="Shopping list">
           <shopping-list-icon class="icon--shopping-list" />
           <transition name="pop">
             <span
@@ -19,6 +19,9 @@
               class="icon__notification"
             >{{shoppingListCount}}</span>
           </transition>
+        </nuxt-link>
+        <nuxt-link class="icon__link" to="/cooks/" title="Discover cooks">
+          <cooks-icon class="icon--cooks" />
         </nuxt-link>
         <!--         <favorites-icon class="icon--favorites" />
         -->
@@ -41,6 +44,7 @@ import ClickOutside from "vue-click-outside";
 
 import Logo from "./Logo.vue";
 import ShoppingListIcon from "~/assets/graphics/shopping-list-icon.svg";
+import CooksIcon from "~/assets/graphics/cooks-icon.svg";
 import FavoritesIcon from "~/assets/graphics/favorites-icon.svg";
 
 import user from "~/mixins/user.js";
@@ -55,6 +59,7 @@ export default {
     BurgerMenu,
     DesktopMenu,
     ShoppingListIcon,
+    CooksIcon,
     FavoritesIcon
   },
   data() {
@@ -83,7 +88,6 @@ export default {
             title: "My cookbook",
             icon: () => import(`~/assets/graphics/cookbook-icon.svg`)
           },
-
           {
             path: "/account/account-details/",
             title: "Account details",

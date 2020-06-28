@@ -47,9 +47,9 @@ export default {
           }
         },
         {
-          title: "Shopping list",
+          title: "Shopping lists",
           link: "/account/shopping-list/",
-          description: "See and manage your shopping list",
+          description: "See and manage your shopping lists",
           graphic: {
             name: "shopping-list"
           }
