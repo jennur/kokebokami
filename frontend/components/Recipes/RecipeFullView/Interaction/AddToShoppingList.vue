@@ -116,6 +116,13 @@ export default {
               "Successfully added to shoppingList:",
               chosenShoppingList[1].title
             );
+            let shoppingListCount =
+              componentThis.$store.state.shoppingListCount;
+            shoppingListCount += shoppingListIngredients.length;
+            componentThis.$store.dispatch(
+              "SET_SHOPPING_LIST_COUNT",
+              shoppingListCount
+            );
             componentThis.addedToShoppingList = true;
             componentThis.addingToShoppingList = false;
           })
@@ -139,6 +146,13 @@ export default {
             })
             .then(() => {
               console.log("Successfully added to shoppingList:", title);
+              let shoppingListCount =
+                componentThis.$store.state.shoppingListCount;
+              shoppingListCount += shoppingListIngredients.length;
+              componentThis.$store.dispatch(
+                "SET_SHOPPING_LIST_COUNT",
+                shoppingListCount
+              );
               componentThis.addedToShoppingList = true;
               componentThis.addingToShoppingList = false;
               componentThis.addNewShoppingList = false;

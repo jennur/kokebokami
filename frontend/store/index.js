@@ -93,15 +93,38 @@ export const actions = {
     }
     this.$fireAuthUnsubscribe;
   },
-
   SET_LOGIN_MESSAGE: ({ commit }, payload) => {
     commit("setLoginSystemMessage", payload);
   },
-  SET_SHOPPING_LIST_COUNT: ({ commit }, payload) => {
-    commit("setShoppingListCount", payload);
+  SET_SHOPPING_LIST_COUNT: function({ commit }, payload) {
+    if (!payload) {
+      let authUser = this.$fireAuth.currentUser;
+      let shoppingListsRef = this.$fireDb.ref(
+        `users/${authUser.uid}/shoppingLists`
+      );
+      shoppingListsRef.once("value", shoppingLists => {
+        if (shoppingLists.exists()) {
+          shoppingLists = Object.entries(shoppingLists.val());
+          let shoppingListCount = 0;
+          shoppingLists.forEach(list => {
+            if (list && list[1] && list[1].subLists) {
+              let subLists = Object.entries(list[1].subLists) || [];
+              subLists.forEach(subList => {
+                if (subList && subList[1] && subList[1].listItems) {
+                  shoppingListCount += subList[1].listItems.length;
+                }
+              });
+            }
+          });
+          commit("setShoppingListCount", shoppingListCount);
+        }
+      });
+    } else {
+      commit("setShoppingListCount", payload);
+    }
   },
 
-  SET_USER: function({ commit }) {
+  SET_USER: function({ commit, dispatch }) {
     console.log("Setting user");
     try {
       let authUser = this.$fireAuth.currentUser;
@@ -139,6 +162,7 @@ export const actions = {
         }
         commit("setUser", loggedinUser);
       });
+      dispatch("SET_SHOPPING_LIST_COUNT");
     } catch (error) {
       console.log("Error while setting user:", error.message);
     }
