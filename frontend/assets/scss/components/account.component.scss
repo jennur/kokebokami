@@ -8,7 +8,7 @@
     padding-top: $spacingMedium;
     margin-bottom: $spacingLarge;
     margin-right: $spacingMedium;
-    border: 2px solid rgba($green, 0.3);
+    background-color: rgba($orange, 0.07);
     border-radius: $spacingSmall;
     font-size: $fontSizeMedium;
     transition: all 1s ease-in-out;
@@ -16,6 +16,13 @@
       border-color: $green;
     }
 
+    h4 {
+      font-family: $bodyFont;
+    }
+
+    &-picture {
+      max-width: 150px;
+    }
     &--flex-column {
       display: inline-flex;
       flex-direction: column;
@@ -52,6 +59,10 @@
       & input {
         max-width: 230px;
       }
+    }
+    &-warning-btn {
+      padding-left: 0px;
+      width: auto;
     }
   }
   &__recipe-link-icon {

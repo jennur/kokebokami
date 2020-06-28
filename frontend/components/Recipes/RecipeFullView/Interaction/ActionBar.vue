@@ -3,8 +3,14 @@
     <div id="actionBar" class="flex-row">
       <span
         role="button"
+        tabindex="0"
         class="button button--small button--green-border button--mobile-expand margin-bottom--large margin-right--large"
         @click="handlePdfExport"
+        @keydown="
+          event => {
+            if (event.keyCode === 13) handlePdfExport();
+          }
+        "
       >
         <download-icon
           class="icon icon--in-button margin-right--medium"
@@ -12,7 +18,13 @@
       </span>
       <span
         role="button"
+        tabindex="0"
         @click="toggleShareBox"
+        @keydown="
+          event => {
+            if (event.keyCode === 13) toggleShareBox();
+          }
+        "
         class="button button--small button--green-border button--mobile-expand margin-right--large"
       >
         <share-icon class="icon icon--in-button margin-right--medium" />
@@ -28,7 +40,11 @@
         </button>
       </div>
     </div>
-    <share-form :open="sharing" :recipeKey="recipeKey" />
+    <share-form
+      :open="sharing"
+      :recipeKey="recipeKey"
+      :recipeOwnerID="recipeOwnerID"
+    />
   </div>
 </template>
 <script>
@@ -55,6 +71,10 @@ export default {
       default: false
     },
     recipeKey: {
+      type: String,
+      default: ""
+    },
+    recipeOwnerID: {
       type: String,
       default: ""
     }

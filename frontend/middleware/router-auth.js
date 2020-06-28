@@ -29,6 +29,8 @@ export default function(context) {
 function onAdminRoute(route) {
   if (route.matched.some(record => record.path.indexOf("account") > -1)) {
     return true;
+  } else if (route.matched.some(record => record.path.indexOf("cooks") > -1)) {
+    return true;
   } else if (
     route.matched.some(record => record.path.indexOf("recipes") > -1)
   ) {
@@ -44,9 +46,10 @@ function performRedirect(route, redirect) {
   if (
     route.name == "login" ||
     route.name == "sign-up" ||
-    route.name == "verify-email"
+    route.name == "verify-email" ||
+    route.name == "goodbye"
   ) {
-    console.log("Redirecting to cookbook");
-    redirect("/account/my-cookbook/");
+    console.log("Redirecting to account");
+    redirect("/account/");
   }
 }

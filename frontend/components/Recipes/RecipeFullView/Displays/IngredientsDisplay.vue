@@ -1,8 +1,6 @@
 <template>
   <section>
-    <div
-      class="recipe__servings-wrap flex-row flex-row--align-center margin-vertical--xxlarge"
-    >
+    <div class="recipe__servings-wrap flex-row flex-row--align-center margin-vertical--xxlarge">
       <span v-if="!servings" class="recipe__servings-disabled-dash">-</span>
       <input
         class="recipe__servings margin-right--medium"
@@ -16,30 +14,39 @@
       <h4
         class="margin--none margin-bottom--small"
         :class="{ disabled: !servings }"
-      >
-        Servings {{ !servings ? "🤷" : "" }}
-      </h4>
+      >Servings {{ !servings ? "🤷" : "" }}</h4>
     </div>
     <div>
       <h4>Ingredients</h4>
       <ul class="recipe__ingredients">
-        <li
-          v-for="(ingredient, index) in ingredientArray[1]"
-          :key="`ingredient-${index}`"
-        >
-          <span class="recipe__ingredients-amount">{{
-            ingredientArray[0][index]
-          }}</span>
-          {{ ingredient }}
+        <li v-for="(ingredient, index) in ingredientArray" :key="`ingredient-${index}`">
+          <span class="recipe__ingredients-amount">
+            {{
+            ingredientArray[index][0]
+            }}
+          </span>
+          {{ ingredientArray[index][1] }}
         </li>
       </ul>
     </div>
+    <add-to-shopping-list
+      class="margin-bottom--xxlarge"
+      :recipeTitle="recipeTitle"
+      :ingredients="ingredientArray"
+    />
   </section>
 </template>
 
 <script>
+import user from "~/mixins/user.js";
+
+import AddToShoppingList from "../Interaction/AddToShoppingList.vue";
+
 export default {
   name: "ingredients-display",
+  components: {
+    AddToShoppingList
+  },
   props: {
     servings: {
       type: String,
@@ -48,19 +55,23 @@ export default {
     ingredients: {
       type: Array,
       default: () => []
+    },
+    recipeTitle: {
+      type: String,
+      default: ""
     }
   },
+  mixins: [user],
+
   data() {
     return {
       updatedServings: this.servings,
-      amounts: [],
-      ingredientItems: []
+      amounts: []
     };
   },
   computed: {
     ingredientArray() {
       let ingredients = this.ingredients;
-      let amounts = [];
       let ingredientItems = [];
       let updatedServings = this.updatedServings;
       let servings = this.servings;
@@ -90,14 +101,12 @@ export default {
             let oneServing = amount / servings;
             amount = Math.round(oneServing * updatedServings * 100) / 100;
           }
-          amounts.push(amount);
-          ingredientItems.push(ingredientItem);
+          ingredientItems.push([amount, ingredientItem]);
         } else {
-          amounts.push("");
-          ingredientItems.push(ingredient);
+          ingredientItems.push(["", ingredient]);
         }
       });
-      return [amounts, ingredientItems];
+      return ingredientItems;
     }
   },
   methods: {

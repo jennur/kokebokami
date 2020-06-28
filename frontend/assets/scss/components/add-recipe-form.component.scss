@@ -117,39 +117,6 @@
     }
   }
 
-  &__add-input-btn {
-    display: inline-block;
-    position: relative;
-    height: $spacingXXLarge;
-    width: max-content;
-    border: none;
-    border-radius: $spacingLarge;
-    padding: 0px $spacingLarge 0px $spacingXLarge;
-    font-size: $fontSizeSmall;
-    color: $blue;
-    background-color: $green;
-    cursor: pointer;
-
-    @media screen and (min-width: $mobileWidth) {
-      height: $spacingXLarge;
-    }
-
-    &:hover {
-      background-color: $blue;
-      color: $green;
-    }
-    &::before {
-      content: "+";
-      font-weight: bold;
-      position: relative;
-      margin-left: -$spacingLargeMobile;
-      top: -1px;
-      margin-right: $spacingSmall;
-      @media screen and (min-width: $mobileWidth) {
-        left: 0px;
-      }
-    }
-  }
   &__ingredients {
     margin-bottom: $spacingMedium;
   }

@@ -1,0 +1,109 @@
+.burger-menu {
+  @media screen and (min-width: $tabletWidth) {
+    display: none;
+  }
+}
+.burger-icon {
+  display: inline-block;
+  width: $spacingXLarge;
+  height: $spacingXLarge;
+  position: relative;
+  cursor: pointer;
+  z-index: 999;
+
+  &__slice {
+    display: block;
+    position: absolute;
+    top: $spacingXLarge/2 - $spacingSmall/2;
+    width: 100%;
+    height: $spacingSmall;
+    background-color: $blue;
+    border-radius: $spacingXSmall;
+    transition-property: opacity, transform;
+    transition-duration: 0.2s;
+    &::before,
+    &::after {
+      content: "";
+      display: block;
+      width: 100%;
+      height: $spacingSmall;
+      position: absolute;
+      background-color: $blue;
+      border-radius: $spacingXSmall;
+      transition-property: opacity, transform;
+      transition-duration: 0.2s;
+    }
+
+    &::before {
+      transform: translateY(-$spacingSmall - 2);
+    }
+    &::after {
+      transform: translateY($spacingSmall + 2);
+    }
+
+    &--open {
+      & {
+        visibility: hidden;
+      }
+      &::before {
+        transform: rotate(45deg) translateY(0px);
+        visibility: visible;
+      }
+      &::after {
+        transform: rotate(135deg) translateY(0px);
+        visibility: visible;
+      }
+    }
+  }
+}
+
+.burger-menu {
+  &__list-container {
+    display: flex;
+    justify-content: center;
+    position: fixed;
+    top: 0;
+    right: 0;
+    //transform: translateX(330px);
+    width: 300px;
+    height: 100vh;
+    background-color: $cream;
+    box-shadow: 0px 5px 20px rgba($blue, 0.5);
+    //transition: 0.3s transform ease-in;
+    z-index: 100;
+  }
+
+  &__list {
+    display: block;
+    position: relative;
+    top: 80px;
+    padding: 0px;
+
+    & li {
+      display: block;
+      //align-items: center;
+      margin-bottom: $spacingMedium;
+      margin-left: 0px;
+      .account-link {
+        display: flex;
+        align-items: center;
+      }
+      .burger-menu__sub-list {
+        padding-left: $spacingLarge;
+      }
+    }
+  }
+
+  &__link {
+    color: $blue;
+    text-decoration: none;
+    margin-bottom: 2px;
+    border-bottom: 2px solid $green;
+    &:hover {
+      margin-bottom: 0px;
+      color: $blue;
+      border-bottom: 4px solid $green;
+      text-decoration: none;
+    }
+  }
+}

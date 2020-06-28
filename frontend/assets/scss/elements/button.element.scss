@@ -25,6 +25,10 @@
 
   &--round {
     border-radius: $spacingXLarge;
+    &-small {
+      font-size: $fontSizeSmall;
+      height: $spacingXLarge;
+    }
   }
 
   &--orange {
@@ -90,6 +94,7 @@
       background-color: transparent;
       color: $blue;
       border-bottom: 1px solid $blue;
+      transform: scale(1);
     }
 
     &-red {
@@ -100,6 +105,7 @@
       }
     }
   }
+
   &--xsmall {
     height: 33px;
     width: max-content;
@@ -141,6 +147,7 @@
     &:hover {
       background-color: transparent;
       color: $orange;
+      transform: scale(1);
     }
 
     &-dark-bg {
@@ -151,5 +158,58 @@
         color: $green;
       }
     }
+  }
+
+  &--increment {
+    display: inline-block;
+    position: relative;
+    height: $spacingXLarge;
+    width: max-content;
+    border: none;
+    border-radius: $spacingLarge;
+    padding: 0px $spacingLarge 0px $spacingXLarge;
+    font-size: $fontSizeSmall;
+    color: $blue;
+    background-color: $green;
+    cursor: pointer;
+
+    &:hover {
+      background-color: $blue;
+      color: $green;
+    }
+    &::before {
+      content: "+";
+      font-weight: bold;
+      position: relative;
+      margin-left: -$spacingLargeMobile;
+      top: -1px;
+      margin-right: $spacingSmall;
+      @media screen and (min-width: $mobileWidth) {
+        left: 0px;
+      }
+    }
+  }
+
+  &--checked {
+    display: block;
+    position: relative;
+    color: $orange;
+    padding-left: $spacingLarge;
+    &::before {
+      content: " ";
+      display: block;
+      width: 7px;
+      height: 12px;
+      border-bottom: 2px solid $orange;
+      border-right: 2px solid $orange;
+      transform: rotate(40deg);
+      position: absolute;
+      left: $spacingXSmall;
+      bottom: $spacingSmall;
+    }
+  }
+  &--dynamic {
+    width: max-content;
+    padding: 0px;
   }
 }

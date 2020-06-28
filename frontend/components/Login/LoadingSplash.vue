@@ -22,6 +22,7 @@ export default {
     loginError() {
       let error = this.$store.state.loginSystemMessage;
       if (error.length) {
+        console.log("Login error:", error.message);
         this.$store.dispatch("SET_LOGIN_MESSAGE", "");
         return "We were not able to log you in. Please try again later or use a different provider.";
       }

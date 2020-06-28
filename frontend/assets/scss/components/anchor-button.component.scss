@@ -1,0 +1,22 @@
+.anchor-button {
+  width: 50px;
+  transition: 0.3s ease-out;
+  border: 0px;
+  background-color: transparent;
+  position: absolute;
+  bottom: $spacingLarge;
+  left: 50%;
+  transform: translateY(0px) translateX(-50%);
+  cursor: pointer;
+  padding: $spacingSmall;
+  path {
+    transition: 0.3s;
+  }
+
+  &:hover {
+    transform: translateY($spacingSmall) translateX(-50%);
+    path {
+      stroke: $green;
+    }
+  }
+}

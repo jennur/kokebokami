@@ -1,0 +1,92 @@
+.shopping-list {
+  background-color: rgba($orange, 0.05);
+  border-radius: $spacingMedium;
+  padding: $spacingLarge;
+  position: relative;
+
+  &__delete-collection-btn {
+    /* margin-top: -$spacingMedium;
+    margin-bottom: $spacingLarge; */
+    /* align-self: flex-end; */
+    @media screen and (min-width: $mobileWidth) {
+      margin-top: 0px;
+      position: absolute;
+      top: $spacingMedium;
+      right: $spacingLarge;
+    }
+  }
+  &__title {
+    input[type="text"] {
+      font-size: $fontSizeXLargeMobile;
+      @media screen and (min-width: $tabletWidth) {
+        font-size: $fontSizeXLarge;
+      }
+    }
+  }
+  .sub-list {
+    padding: 0px;
+    flex: 1 1 0;
+    width: 100%;
+    box-sizing: border-box;
+    @media screen and (min-width: $mobileWidth) {
+      margin-right: $spacingLarge;
+    }
+    &__title {
+      h3 {
+        font-family: $headingFont;
+      }
+      label {
+        color: $blue;
+      }
+      input {
+        width: 100%;
+        max-width: 250px;
+        color: $blue;
+        font-size: $fontSizeLargeMobile;
+        @media screen and (min-width: $tabletWidth) {
+          font-size: $fontSizeLarge;
+        }
+        &::placeholder {
+          color: rgba($blue, 0.7);
+          font-size: $fontSizeLargeMobile;
+          @media screen and (min-width: $tabletWidth) {
+            font-size: $fontSizeLarge;
+          }
+        }
+      }
+    }
+    &__items {
+      min-width: 250px;
+      list-style: none;
+      padding-left: 0px;
+      label {
+        position: relative;
+        display: flex;
+        align-items: flex-start;
+        width: max-content;
+        max-width: 100%;
+        input[type="checkbox"] {
+          margin-right: $spacingMedium;
+          margin-top: 4px;
+        }
+
+        &.complete {
+          color: $orange;
+          &::after {
+            content: "";
+            border-bottom: 1px solid $orange;
+            width: 100%;
+            position: absolute;
+            top: 50%;
+          }
+          input[type="checkbox"] {
+            border-color: $orange;
+            &::after {
+              border-color: $orange;
+            }
+          }
+        }
+      }
+    }
+  }
+}

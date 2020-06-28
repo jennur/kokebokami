@@ -16,6 +16,16 @@
       order: 0;
     }
   }
+  &--mobile-one {
+    @media screen and (min-width: $mobileWidth) {
+      order: 1;
+    }
+  }
+  &--mobile-two {
+    @media screen and (min-width: $mobileWidth) {
+      order: 2;
+    }
+  }
   &--tablet-one {
     @media screen and (min-width: $tabletWidth) {
       order: 1;

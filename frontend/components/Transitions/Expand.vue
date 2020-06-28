@@ -1,11 +1,6 @@
 <template>
-  <transition
-    name="expand"
-    @enter="enter"
-    @after-enter="afterEnter"
-    @leave="leave"
-  >
-    <div v-if="show">
+  <transition name="expand" @enter="enter" @after-enter="afterEnter" @leave="leave">
+    <div v-show="show">
       <slot />
     </div>
   </transition>

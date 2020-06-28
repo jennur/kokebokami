@@ -14,6 +14,7 @@
     <span class="select__selected">{{ selected }}</span>
     <div v-if="open" class="select__dropdown">
       <span
+        v-if="defaultValue !== 'none'"
         tabindex="0"
         role="option"
         :aria-label="defaultValue"
@@ -29,8 +30,7 @@
             event.keyCode === 13 && handleOption(defaultValue);
           }
         "
-        >{{ defaultValue }}</span
-      >
+      >{{ defaultValue }}</span>
       <span
         tabindex="0"
         role="option"
@@ -49,8 +49,7 @@
             event.keyCode === 13 && handleOption(option);
           }
         "
-        >{{ option }}</span
-      >
+      >{{ option }}</span>
     </div>
   </div>
 </template>
@@ -76,7 +75,7 @@ export default {
     },
     defaultValue: {
       type: String,
-      default: "Default"
+      default: "Choose option"
     },
     preSelected: {
       type: String,

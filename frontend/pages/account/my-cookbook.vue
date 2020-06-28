@@ -31,7 +31,8 @@
         @save="handleLinkSave"
       />
     </expand-transition>
-    <!-- Recipe list -->
+
+    <!-- Recipes list -->
     <Tabs
       :tabTitles="[
         'My personal recipes',
@@ -59,12 +60,13 @@
         :emptyListMessage="emptyListMessage"
         :addRecipeUrl="activeTabIndex === 0 ? '/account/add-recipe/' : ''"
       />
-
       <div v-if="activeTabIndex === 1">
-        <link-categories-filter
+        <user-categories-filter
           v-if="userRecipeLinks.length"
-          :links="userRecipeLinks"
-          @updateCategories="event => updateVisibleCategories(event)"
+          :categories="userCategories"
+          @updateCategories="
+            hiddenCategories => updateHiddenCategories(hiddenCategories)
+          "
         />
         <recipes-link-list
           class="margin-top--xxlarge"
@@ -92,8 +94,9 @@ import AddRecipeFromUrlForm from "~/components/AddRecipeForm/AddRecipeFromUrlFor
 import Tabs from "~/components/Tabs.vue";
 import RecipesList from "~/components/Recipes/RecipesList.vue";
 import RecipesLinkList from "~/components/Recipes/RecipesLinkList.vue";
-import RecipesFilter from "~/components/RecipesFilter/RecipesFilter.vue";
-import LinkCategoriesFilter from "~/components/RecipesFilter/LinkCategoriesFilter.vue";
+import RecipesFilter from "~/components/Filter/RecipesFilter.vue";
+import UserCategoriesFilter from "~/components/Filter/UserCategoriesFilter.vue";
+
 export default {
   name: "my-cookbook",
   head() {
@@ -114,13 +117,11 @@ export default {
     RecipesList,
     RecipesLinkList,
     RecipesFilter,
-    LinkCategoriesFilter
+    UserCategoriesFilter
   },
   data() {
     return {
       addingRecipe: false,
-      showMyRecipes: true,
-      showSharedRecipes: false,
       filteredRecipes: [],
       filtered: false,
       filteredKind: "",
@@ -134,7 +135,11 @@ export default {
   props: {
     breadcrumbs: {
       type: Array,
-      default: () => [{ name: "Home", link: "/" }, { name: "My cookbook" }]
+      default: () => [
+        { name: "Home", link: "/" },
+        { name: "My account", link: "/account/" },
+        { name: "My cookbook" }
+      ]
     }
   },
   computed: {
@@ -144,7 +149,7 @@ export default {
       else if (this.activeTabIndex === 1)
         return "You didnt add any recipes to this list yet. 🤷🏼‍♀️ The recipes you add from URL will appear in this list.";
       else if (this.activeTabIndex === 2)
-        return "Nobody shared any recipes with you yet 🤷🏾‍♂️ Tip: You can share public recipes with yourself if you want them easily accessible from your profile.";
+        return "Nobody shared any recipes with you yet 🤷🏾‍♂️";
     },
     firstName() {
       let firstName = null;
@@ -160,41 +165,39 @@ export default {
       else return "My kokebok";
     },
     visibleRecipes() {
-      if (this.activeTabIndex === 0) {
-        if (!this.filtered) return this.userRecipes;
-        if (this.filtered && this.filteredKind === "myRecipes")
-          return this.filteredRecipes;
-        else if (this.filtered && this.filteredKind === "sharedRecipes")
-          return this.userRecipes;
-      } else if (this.activeTabIndex === 2) {
-        if (!this.filtered) return this.sharedRecipes;
-        if (this.filtered && this.filteredKind === "sharedRecipes")
-          return this.filteredRecipes;
-        else if (this.filtered && this.filteredKind === "myRecipes")
-          return this.sharedRecipes;
+      if (!this.filtered) {
+        if (this.activeTabIndex === 0) return this.userRecipes;
+        if (this.activeTabIndex === 2) return this.sharedRecipes;
+      } else {
+        return this.filteredRecipes;
       }
     },
+    userCategories() {
+      let links = this.userRecipeLinks;
+      let categories = ["No category"];
+      links.forEach(link => {
+        if (link[1].category) {
+          if (categories.indexOf(link[1].category) === -1)
+            categories.push(link[1].category);
+        }
+      });
+      categories.push(categories.shift());
+      return categories;
+    },
     recipesToBeFiltered() {
-      if (this.showMyRecipes) {
+      if (this.activeTabIndex === 0) {
         return this.userRecipes;
-      } else if (this.showSharedRecipes) {
+      } else if (this.activeTabIndex === 2) {
         return this.sharedRecipes;
       }
     }
   },
   methods: {
+    updateHiddenCategories(hiddenCategories) {
+      this.hiddenCategories = hiddenCategories;
+    },
     updateLinkList() {
       this.getRecipeLinks();
-    },
-    updateVisibleCategories(event) {
-      let indexOfTargetValue = this.hiddenCategories.indexOf(
-        event.target.value
-      );
-      if (indexOfTargetValue > -1) {
-        this.hiddenCategories.splice(indexOfTargetValue, 1);
-      } else {
-        this.hiddenCategories.push(event.target.value);
-      }
     },
     handleLinkSave() {
       this.getRecipeLinks();
@@ -213,24 +216,11 @@ export default {
     },
     handleTabSwitch(index) {
       this.activeTabIndex = index;
-    },
-    toggleRecipes(event) {
-      if (event.target.id === "my-cookbook-tab" && !this.showMyRecipes) {
-        this.showMyRecipes = !this.showMyRecipes;
-        this.showSharedRecipes = !this.showSharedRecipes;
-      } else if (
-        event.target.id === "shared-recipes-tab" &&
-        !this.showSharedRecipes
-      ) {
-        this.showMyRecipes = !this.showMyRecipes;
-        this.showSharedRecipes = !this.showSharedRecipes;
-      }
+      this.filtered = false;
     },
     setVisibleRecipes(filteredRecipesObj) {
       this.filteredRecipes = filteredRecipesObj.recipes;
       this.filtered = filteredRecipesObj.filtered;
-      if (this.showMyRecipes) this.filteredKind = "myRecipes";
-      if (this.showSharedRecipes) this.filteredKind = "sharedRecipes";
     }
   },
   directives: {

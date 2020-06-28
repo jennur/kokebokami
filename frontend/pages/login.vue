@@ -1,13 +1,13 @@
 <template>
   <div class="container container--center">
+    <breadcrumbs :routes="breadcrumbs" />
+
     <div v-if="loading">
       <loading-splash />
     </div>
     <div v-else class="flex-center-container margin--auto">
       <login-container class="flex-order--tablet-two" />
-      <kokebokapen
-        class="illustration illustration--kokebokapen flex-order--tablet-one"
-      />
+      <kokebokapen class="illustration illustration--kokebokapen flex-order--tablet-one" />
     </div>
   </div>
 </template>
@@ -35,6 +35,12 @@ export default {
     LoadingSplash,
     LoginContainer,
     kokebokapen
+  },
+  props: {
+    breadcrumbs: {
+      type: Array,
+      default: () => [{ name: "Home", link: "/" }, { name: "Login" }]
+    }
   },
   computed: {
     loading() {

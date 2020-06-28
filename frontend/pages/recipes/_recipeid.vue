@@ -7,13 +7,11 @@
           :recipe="recipe"
           :recipeKey="recipeKey"
           :isRecipeOwner="isRecipeOwner"
+          :recipeOwnerID="recipeOwner && recipeOwner[0]"
           @update="handleUpdate"
         />
 
-        <comments
-          class="mobile-width margin--auto margin-top--xlarge"
-          :path="path"
-        />
+        <comments class="mobile-width margin--auto margin-top--xlarge" :path="path" />
       </expand-transition>
     </div>
   </div>
@@ -23,6 +21,7 @@
 import user from "~/mixins/user.js";
 import allUsers from "~/mixins/allUsers.js";
 import allRecipes from "~/mixins/allRecipes.js";
+import publicRecipes from "~/mixins/publicRecipes.js";
 
 import RecipeFullView from "~/components/Recipes/RecipeFullView/RecipeFullView.vue";
 import Comments from "~/components/Comments/Comments.vue";
@@ -49,7 +48,7 @@ export default {
       ]
     };
   },
-  mixins: [user, allUsers, allRecipes],
+  mixins: [user, allUsers, allRecipes, publicRecipes],
   computed: {
     path() {
       return this.$route.path;
@@ -58,14 +57,22 @@ export default {
       return this.$route.params.recipeid;
     },
     recipe() {
-      let allRecipes = this.allRecipes;
-      let currentRecipe = allRecipes.filter(recipe => {
-        return recipe[0] === this.recipeKey;
-      });
-      if (currentRecipe.length) {
-        this.isRecipeOwner = currentRecipe[0][1].ownerID === this.user.id;
-        this.recipeLoaded = true;
-        return currentRecipe[0][1];
+      if (this.user) {
+        let allRecipes = this.allRecipes;
+        let currentRecipe = allRecipes.filter(recipe => {
+          return recipe[0] === this.recipeKey;
+        });
+        if (currentRecipe.length) {
+          this.isRecipeOwner = currentRecipe[0][1].ownerID === this.user.id;
+          this.recipeLoaded = true;
+          return currentRecipe[0][1];
+        }
+      } else {
+        console.log("Public recipes:", this.publicRecipes);
+        let publicRecipes = this.publicRecipes;
+        let currentRecipe = publicRecipes.filter(recipe => {
+          return recipe[0] === this.recipeKey;
+        });
       }
       return {};
     },

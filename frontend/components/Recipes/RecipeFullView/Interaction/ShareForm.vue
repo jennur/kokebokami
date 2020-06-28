@@ -7,14 +7,17 @@
           The recipe will show up under your friend's "Recipes shared with me"
           tab in his/hers cookbook.
         </p>
-        <label class="margin-bottom--large">
-          User's email address:
-          <input
-            type="email"
-            placeholder="john.doe@example.com"
-            v-model="email"
-          />
-        </label>
+        <fieldset class="flex-row margin-bottom--medium">
+          <label class="share-form__followers">
+            Share with one of your followers
+            <select-component
+              class="share-form__select margin-top--medium margin-right--medium"
+              :options="followerNames"
+              defaultValue="Select a user"
+              @select="(option) => selected = option"
+            />
+          </label>
+        </fieldset>
         <button @click="shareRecipe" class="button button--small">Share</button>
       </form>
       <div class="system-message margin-top--large">{{ systemMessage }}</div>
@@ -22,14 +25,28 @@
   </div>
 </template>
 <script>
+import ClickOutside from "vue-click-outside";
+import user from "~/mixins/user.js";
+import allUsers from "~/mixins/allUsers.js";
+import connectedUsers from "~/mixins/connectedUsers.js";
 import ExpandTransition from "~/components/Transitions/Expand.vue";
+import SelectComponent from "~/components/Input/SelectComponent.vue";
+
 export default {
   name: "share-form",
   components: {
-    ExpandTransition
+    ExpandTransition,
+    SelectComponent
   },
+  mixins: [user, allUsers, connectedUsers],
   data() {
-    return { email: "", systemMessage: "" };
+    return {
+      searchTerm: "",
+      selected: "",
+      shareByEmail: false,
+      email: "",
+      systemMessage: ""
+    };
   },
   props: {
     open: {
@@ -39,21 +56,32 @@ export default {
     recipeKey: {
       type: String,
       default: null
+    },
+    recipeOwnerID: {
+      type: String,
+      default: null
+    }
+  },
+  computed: {
+    followerNames() {
+      return this.followers.map(follower => {
+        return follower[1].displayName;
+      });
     }
   },
   methods: {
     shareRecipe() {
-      const realThis = this;
-      const emailValue = this.email;
+      const componentThis = this;
+      const selectedDisplayName = this.selected;
       const recipeKey = this.recipeKey;
       const userRef = this.$fireDb.ref("users");
       userRef
         .once("value", snapshot => {
           let userID = null;
           let username = "";
-          let existingEmailCheck = 1;
+          let existingShare = 1;
           snapshot.forEach(user => {
-            if (user.val().email === emailValue) {
+            if (user.val().displayName === selectedDisplayName) {
               userID = user.key;
               username = user.val().displayName;
 
@@ -68,31 +96,34 @@ export default {
 
                     if (sharedWith.indexOf(userID) === -1) {
                       recipeRef.push(userID);
-                      realThis.systemMessage = `Successfully shared with ${username}`;
+                      componentThis.systemMessage = `Successfully shared with ${username}`;
                     } else
-                      realThis.systemMessage = `This recipe is already shared with ${username}`;
+                      componentThis.systemMessage = `This recipe is already shared with ${username}`;
                   } else {
                     recipeRef.push(userID);
-                    realThis.systemMessage = `Successfully shared with ${username}`;
+                    componentThis.systemMessage = `Successfully shared with ${username}`;
                   }
                 });
               } else {
                 console.log("Error: No recipeKey found in shareRecipe");
               }
-              existingEmailCheck *= 0;
+              existingShare *= 0;
             }
           });
-          if (existingEmailCheck === 1) {
-            realThis.systemMessage =
-              "This email address does not exist in the database";
+          if (existingShare === 1) {
+            componentThis.systemMessage =
+              "This user does not exist in the database";
           }
         })
 
         .catch(error => {
-          realThis.systemMessage = error.message;
-          console.log("ERROR SHARING RECIPE::: " + error);
+          componentThis.systemMessage = error.message;
+          console.log("Error sharing recipe:", error.message);
         });
     }
+  },
+  directives: {
+    ClickOutside
   }
 };
 </script>

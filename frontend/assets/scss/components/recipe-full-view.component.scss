@@ -52,6 +52,15 @@
       margin-bottom: $spacingMedium;
     }
   }
+  .add-to-shopping-list {
+    .select {
+      width: 180px;
+      &__dropdown {
+        width: 190px;
+        background-color: $cream;
+      }
+    }
+  }
 
   &__instructions {
     padding-left: $spacingSmall;
@@ -61,6 +70,8 @@
       padding-bottom: $spacingXLarge;
       padding-left: $spacingXXLarge;
       position: relative;
+      cursor: default;
+
       &::before {
         counter-increment: b;
         content: counter(b);
@@ -86,6 +97,11 @@
         top: $spacingLarge;
         left: 10px;
         z-index: 0;
+      }
+      &:focus {
+        font-weight: medium;
+        outline: none;
+        background-color: rgba($green, 0.1);
       }
     }
   }

@@ -4,7 +4,27 @@
   align-items: center;
   height: 500px;
 }
-
+.simple-loading-spinner {
+  display: block;
+  width: 30px;
+  height: 30px;
+  border-top: 2px dotted $blue;
+  border-left: 2px dotted $blue;
+  border-right: 2px dotted $blue;
+  border-bottom: 2px dotted $green;
+  box-sizing: border-box;
+  border-radius: 50%;
+  margin: $spacingLarge;
+  animation: spin 2s linear infinite;
+}
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
 svg g#loading-book_svg {
   &__burger,
   &__tomato,

@@ -18,6 +18,14 @@
       display: block;
     }
   }
+  &--sign-up-cookbook {
+    display: none;
+
+    @media screen and (min-width: $tabletWidth) {
+      max-width: 250px;
+      display: block;
+    }
+  }
 
   &--food-clouds {
     max-height: 130px;
@@ -37,5 +45,11 @@
 
   &--loading-book {
     max-width: 220px;
+  }
+  &--guy-in-market {
+    max-width: 350px;
+    @media screen and (min-width: $tabletWidth) {
+      max-width: 450px;
+    }
   }
 }

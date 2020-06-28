@@ -1,5 +1,7 @@
 <template>
   <div>
+    <breadcrumbs :routes="breadcrumbs" />
+
     <sign-up-section
       headline="Sign up to start adding your recipes"
       :bigHeadline="true"
@@ -10,7 +12,6 @@
 
 <script>
 import SignUpSection from "~/components/SignUp/SignUpSection.vue";
-import user from "~/mixins/user.js";
 
 export default {
   name: "sign-up",
@@ -28,6 +29,11 @@ export default {
   components: {
     SignUpSection
   },
-  mixins: [user]
+  props: {
+    breadcrumbs: {
+      type: Array,
+      default: () => [{ name: "Home", link: "/" }, { name: "Sign up" }]
+    }
+  }
 };
 </script>

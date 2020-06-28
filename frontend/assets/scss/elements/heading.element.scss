@@ -38,6 +38,7 @@ h2 {
 h3 {
   font-family: $subHeadingFont;
   font-size: $fontSizeLargeMobile;
+
   //margin-top: $spacingXLarge;
   @media screen and (min-width: $tabletWidth) {
     font-size: $fontSizeLarge;
@@ -46,6 +47,7 @@ h3 {
 
 h4 {
   font-size: $fontSizeMediumMobile;
+  font-weight: normal;
   //margin-top: $spacingLarge;
   @media screen and (min-width: $tabletWidth) {
     font-size: $fontSizeMedium;

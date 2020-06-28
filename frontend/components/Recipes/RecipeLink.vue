@@ -3,14 +3,15 @@
     class="recipe-display recipe-display--left-aligned"
     :class="{'recipe-display--no-link': editMode}"
   >
-    <recipe-link-edit-form
-      class="padding-horizontal--xlarge"
-      v-if="editMode"
-      :recipeLinkID="link && link[0]"
-      :recipeLink="link && link[1]"
-    />
+    <expand-transition :show="editMode">
+      <recipe-link-edit-form
+        class="padding-horizontal--xlarge"
+        :recipeLinkID="link && link[0]"
+        :recipeLink="link && link[1]"
+      />
+    </expand-transition>
     <a
-      v-else
+      v-if="!editMode"
       class="padding-horizontal--xlarge"
       :href="link && link[1].url"
       target="_blank"
@@ -35,12 +36,14 @@
 <script>
 import RecipeLinkEditForm from "./RecipeLinkEditForm.vue";
 import newTabIcon from "~/assets/graphics/new-tab-icon.svg";
+import ExpandTransition from "~/components/Transitions/Expand.vue";
 
 export default {
   name: "recipe-link",
   components: {
     RecipeLinkEditForm,
-    newTabIcon
+    newTabIcon,
+    ExpandTransition
   },
   props: {
     link: {

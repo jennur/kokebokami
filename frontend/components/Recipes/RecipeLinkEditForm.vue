@@ -172,7 +172,7 @@ export default {
           })
           .catch(error => {
             this.submitSystemMessage = error.message;
-            console.log("Error deleting recipe:", error);
+            console.log("Error deleting recipe:", error.message);
           });
       }
     },
@@ -209,10 +209,10 @@ export default {
             })
             .catch(error => {
               this.submitSystemMessage = error.message;
-              console.log("Error saving recipe", error);
+              console.log("Error saving recipe", error.message);
             });
         } catch (error) {
-          console.log("Error saving recipe link:", error);
+          console.log("Error saving recipe link:", error.message);
         }
       } else {
         console.log("Error in url:", url);

@@ -36,8 +36,8 @@
 </template>
 
 <script>
-import IncrementButton from "~/components/AddRecipeForm/Actions/IncrementButton.vue";
-import DecrementButton from "~/components/AddRecipeForm/Actions/DecrementButton.vue";
+import IncrementButton from "./IncrementButton.vue";
+import DecrementButton from "./DecrementButton.vue";
 
 export default {
   name: "instructions-input",

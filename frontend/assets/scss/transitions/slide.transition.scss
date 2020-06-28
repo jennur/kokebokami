@@ -1,0 +1,15 @@
+.burger-list-slide-enter-active,
+.burger-list-slide-leave-active {
+  transform: translateX(0px);
+  transition: 0.3s transform ease-in;
+}
+
+.burger-list-slide-enter,
+.burger-list-slide-leave-to {
+  transform: translateX(330px);
+}
+
+.burger-list-slide-enter-to,
+.burger-list-slide-leave {
+  transform: translateX(0px);
+}
