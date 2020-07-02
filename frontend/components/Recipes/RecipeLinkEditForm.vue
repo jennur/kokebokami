@@ -100,6 +100,10 @@
         </div>
         <expand-transition :show="!!submitSystemMessage">
           <div class="system-message margin-top--small">{{submitSystemMessage}}</div>
+          <button
+            class="button button--dynamic button--dynamic-small button--cancel"
+            @click.prevent="$emit('closeEditMode')"
+          >✕ Close</button>
         </expand-transition>
       </fieldset>
     </form>
@@ -124,6 +128,10 @@ export default {
     recipeLinkID: {
       type: String,
       default: ""
+    },
+    addingToCategory: {
+      type: String,
+      default: null
     }
   },
   data() {
@@ -137,7 +145,9 @@ export default {
       errorSystemMessage: "",
       submitSystemMessage: "",
       newCategory: false,
-      selectedCategory: (recipeLink && recipeLink.category) || ""
+      selectedCategory:
+        (recipeLink && recipeLink.category) || this.addingToCategory || "",
+      closeOption: false
     };
   },
   mixins: [user, userRecipeLinks],
@@ -155,6 +165,17 @@ export default {
     }
   },
   methods: {
+    getDefaultTitle() {
+      let url = this.url;
+      if (url) {
+        let urlItems = url.split("/");
+        urlItems = urlItems.filter(item => {
+          return item.length;
+        });
+        return urlItems.pop().replace(/-/g, " ");
+      }
+      return "No title";
+    },
     deleteLink() {
       if (
         confirm(
@@ -178,7 +199,7 @@ export default {
     },
     update() {
       let url = this.url || "";
-      let title = this.title || "";
+      let title = this.title || this.getDefaultTitle();
       let category = this.category || this.selectedCategory || "";
       let labels = this.labels || "";
       let comment = this.comment || "";
@@ -197,20 +218,38 @@ export default {
         };
 
         try {
-          const recipeLinkRef = this.$fireDb.ref(
-            `users/${this.user.id}/recipeLinks/${this.recipeLinkID}`
-          );
-          recipeLinkRef
-            .update(dataObject)
-            .then(() => {
-              console.log("Successfully updated recipe link");
-              this.submitSystemMessage =
-                "Your recipe link was successfully updated";
-            })
-            .catch(error => {
-              this.submitSystemMessage = error.message;
-              console.log("Error saving recipe", error.message);
-            });
+          if (this.recipeLinkID) {
+            const recipeLinkRef = this.$fireDb.ref(
+              `users/${this.user.id}/recipeLinks/${this.recipeLinkID}`
+            );
+            recipeLinkRef
+              .update(dataObject)
+              .then(() => {
+                console.log("Successfully updated recipe link");
+                this.submitSystemMessage =
+                  "Your recipe link was successfully updated";
+                this.closeOption = true;
+              })
+              .catch(error => {
+                this.submitSystemMessage = error.message;
+                console.log("Error saving recipe", error.message);
+              });
+          } else {
+            let userRef = this.$fireDb.ref(`users/${this.user.id}`);
+            userRef
+              .child("recipeLinks")
+              .push(dataObject)
+              .then(() => {
+                console.log("Successfully saved recipe link");
+                this.submitSystemMessage =
+                  "Your recipe link was successfully saved";
+                this.closeOption = true;
+              })
+              .catch(error => {
+                this.submitSystemMessage = error.message;
+                console.log("Error saving recipe", error.message);
+              });
+          }
         } catch (error) {
           console.log("Error saving recipe link:", error.message);
         }

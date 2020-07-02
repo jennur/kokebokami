@@ -59,7 +59,7 @@ import htmlToPdfMake from "html-to-pdfmake";
 import pdfMake from "pdfmake/build/pdfmake";
 import pdfFonts from "pdfmake/build/vfs_fonts";
 
-import AddRecipeForm from "~/components/AddRecipeForm/AddRecipeForm.vue";
+import AddRecipeForm from "~/components/Recipes/AddRecipeForm/AddRecipeForm.vue";
 import ActionBar from "./Interaction/ActionBar.vue";
 import CategoryDisplay from "./Displays/CategoryDisplay.vue";
 import FreeFromDisplay from "./Displays/FreeFromDisplay";

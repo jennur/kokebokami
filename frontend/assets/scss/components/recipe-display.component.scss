@@ -1,16 +1,28 @@
-.recipe-display {
+.recipe-display,
+.recipe-link-display-wrap {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  align-items: baseline;
+  flex-basis: 50%;
+  flex: 1 1 0;
+  margin: $spacingSmall;
+}
+
+.recipe-link-display {
+  display: block;
+  width: 100%;
+  flex: 1 1 0;
+}
+
+.recipe-display,
+.recipe-link-display {
   min-width: 280px;
   @media screen and (min-width: $mobileWidth) {
     min-width: 345px;
   }
-  flex-basis: 50%;
-  margin: $spacingSmall;
   border: 2px solid $green;
   border-radius: $spacingMedium;
-  flex: 1 1 0;
   position: relative;
   cursor: pointer;
   color: $blue;
@@ -19,8 +31,10 @@
   transition: all 0.2s;
 
   &:hover {
-    background-color: rgba($green, 0.2);
     text-decoration: none;
+    @media screen and (min-width: $tabletWidth) {
+      background-color: rgba($green, 0.1);
+    }
     a {
       text-decoration: none;
     }
@@ -59,7 +73,7 @@
     display: inline-block;
     background-color: $orange;
     color: $white;
-    padding: 0px $spacingMedium $spacingXSmall $spacingMedium;
+    padding: 1px $spacingMedium;
     border-radius: $spacingLarge;
     text-transform: capitalize;
     font-size: $fontSizeSmall;

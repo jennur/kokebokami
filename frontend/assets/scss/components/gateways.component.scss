@@ -16,7 +16,9 @@
 
   &:hover {
     text-decoration: none;
-    background-color: rgba($green, 0.1);
-    transform: scale(1.03);
+    @media screen and (min-width: $tabletWidth) {
+      background-color: rgba($green, 0.1);
+      transform: scale(1.03);
+    }
   }
 }

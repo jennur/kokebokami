@@ -185,6 +185,10 @@
         left: 0px;
       }
     }
+    &-small {
+      height: $spacingLarge;
+      padding: 0px $spacingMedium 0px $spacingLarge;
+    }
   }
 
   &--checked {
@@ -208,5 +212,8 @@
   &--dynamic {
     width: max-content;
     padding: 0px;
+    &-small {
+      font-size: $fontSizeSmall;
+    }
   }
 }

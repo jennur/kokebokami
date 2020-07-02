@@ -120,12 +120,7 @@ export default {
       selectedCategory: "",
       systemMessage: "",
       url: "",
-      title:
-        this.url &&
-        this.url
-          .split("/")
-          .pop()
-          .replace(regex, " "),
+      title: this.getDefaultTitle(),
       category: "",
       labels: "",
       comment: ""
@@ -146,6 +141,17 @@ export default {
     }
   },
   methods: {
+    getDefaultTitle() {
+      let url = this.url;
+      if (url) {
+        let urlItems = url.split("/");
+        urlItems = urlItems.filter(item => {
+          return item.length;
+        });
+        return urlItems.pop().replace(/-/g, " ");
+      }
+      return "";
+    },
     addNewCategory() {
       this.newCategory = true;
     },
@@ -154,13 +160,13 @@ export default {
     },
     handleFormSubmit() {
       let url = this.url || "";
-      let title = this.title || "";
+      let title = this.title || this.getDefaultTitle();
       let category = this.category || this.selectedCategory || "";
       let labels = this.labels || "";
       let comment = this.comment || "";
 
       let urlCheck = /(?:http(s)?:\/\/)[\w.-]+(?:\.[\w.-]+)+[\w\-._~:\?#[\]@!$&'()*+,;=.]+/;
-      console.log("Test::", urlCheck.test(url));
+      console.log("Valid url:", urlCheck.test(url));
       if (urlCheck.test(url)) {
         this.systemMessage = "";
         let dataObject = {
@@ -178,7 +184,7 @@ export default {
           console.log("Error saving recipe link:", error.message);
         }
       } else {
-        console.log("Error in url:", url);
+        console.log("Url wrong format:", url);
         this.systemMessage = "The URL is not the correct format.";
       }
     }
