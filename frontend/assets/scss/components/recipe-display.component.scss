@@ -3,12 +3,18 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  align-items: baseline;
   flex-basis: 50%;
   flex: 1 1 0;
   margin: $spacingSmall;
 }
 
+.recipe-link-display-wrap {
+  align-items: baseline;
+}
+
+.recipe-display {
+  align-items: center;
+}
 .recipe-link-display {
   display: block;
   width: 100%;
