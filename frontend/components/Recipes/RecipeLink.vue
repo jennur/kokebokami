@@ -35,7 +35,7 @@
 </template>
 <script>
 import RecipeLinkEditForm from "./RecipeLinkEditForm.vue";
-import newTabIcon from "~/assets/graphics/new-tab-icon.svg";
+import newTabIcon from "~/assets/graphics/icons/new-tab-icon.svg";
 import ExpandTransition from "~/components/Transitions/Expand.vue";
 
 export default {

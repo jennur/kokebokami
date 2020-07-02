@@ -37,7 +37,7 @@ export default {
     this.links.map(link => {
       if (link.icon) {
         link.icon = () =>
-          import(`../../../../assets/graphics/${link.icon}.svg`);
+          import(`../../../../assets/graphics/icons/${link.icon}.svg`);
         return link;
       }
       console.log("Links:", this.links);

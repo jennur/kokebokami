@@ -6,6 +6,7 @@
   height: 50px;
   box-sizing: border-box;
   transition: all 0.3s;
+  font-size: $fontSizeSmall;
 
   .logo {
     margin: 0px;
@@ -64,12 +65,25 @@
         text-decoration: none;
       }
     }
-    &__signup-btn {
+    .active-link {
+      text-decoration: none;
+      color: $gray;
+      border-bottom: none;
+      margin-bottom: 2px;
+      cursor: default;
+    }
+    .active-link:hover {
+      border-bottom: none;
+      margin-bottom: 2px;
+      color: $gray;
+    }
+    &__signup-btn,
+    &__signup-btn.active-link {
       display: inline-block;
       background-color: rgba($green, 1);
       color: $blue;
       border-radius: $spacingSmall;
-      padding: $spacingSmall $spacingMedium;
+      padding: $spacingSmall $spacingMedium $spacingSmall + 2 $spacingMedium;
       border-bottom: 0px;
       transition: 0.1s;
       margin-bottom: 0px;
@@ -81,9 +95,10 @@
 
       &:hover {
         text-decoration: none;
-        transform: scale(1.05);
+        background-color: rgba($green, 0.8);
         border-bottom: 0px;
         margin-bottom: 0px;
+        color: $blue;
       }
     }
   }

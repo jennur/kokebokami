@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import upArrow from "~/assets/graphics/up-arrow.svg";
+import upArrow from "~/assets/graphics/icons/up-arrow.svg";
 export default {
   name: "scroll-button",
   components: {

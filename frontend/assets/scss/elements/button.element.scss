@@ -4,20 +4,19 @@
   align-items: center;
   padding: 0px $spacingMedium;
   border-radius: $spacingSmall;
-  border: none;
+  border: 0px;
   box-sizing: border-box;
   background-color: $blue;
   color: $white;
   font-size: $fontSizeMedium;
   text-decoration: none;
   cursor: pointer;
-  transition: transform 0.1s;
+  transition: 0.2s;
 
   &:hover {
     background-color: $green;
     color: $blue;
     text-decoration: none;
-    transform: scale(1.03);
   }
   &--block {
     display: block;
@@ -34,8 +33,9 @@
   &--orange {
     background-color: $orange;
     color: $blue;
+
     &:hover {
-      font-weight: bold;
+      background-color: rgba($orange, 0.8);
     }
   }
 
@@ -44,7 +44,7 @@
     color: $blue;
 
     &:hover {
-      font-weight: bold;
+      background-color: rgba($green, 0.8);
     }
   }
 
@@ -94,7 +94,6 @@
       background-color: transparent;
       color: $blue;
       border-bottom: 1px solid $blue;
-      transform: scale(1);
     }
 
     &-red {
@@ -125,7 +124,6 @@
     height: 48px;
     width: max-content;
     padding: 0px $spacingLarge;
-    padding-bottom: $spacingXSmall;
   }
 
   &--mobile-expand {
@@ -147,7 +145,6 @@
     &:hover {
       background-color: transparent;
       color: $orange;
-      transform: scale(1);
     }
 
     &-dark-bg {

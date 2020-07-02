@@ -5,7 +5,7 @@
   </button>
 </template>
 <script>
-import googleLogo from "~/assets/graphics/btn_google_light_normal_ios.svg";
+import googleLogo from "~/assets/graphics/icons/btn_google_light_normal_ios.svg";
 import user from "~/mixins/user.js";
 
 export default {

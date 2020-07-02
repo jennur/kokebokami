@@ -3,10 +3,10 @@ import Header from "~/components/Header/Header.vue";
 import BreadCrumbs from "~/components/Header/Navigation/BreadCrumbs.vue";
 import Footer from "~/components/Footer.vue";
 import CookieConsent from "~/components/CookieConsent.vue";
-import RightArrow from "~/assets/graphics/rightarrow.svg";
-import ShareIcon from "~/assets/graphics/shareicon.svg";
-import DownloadIcon from "~/assets/graphics/downloadicon.svg";
-import SearchIcon from "~/assets/graphics/searchicon.svg";
+import RightArrow from "~/assets/graphics/icons/rightarrow.svg";
+import ShareIcon from "~/assets/graphics/icons/shareicon.svg";
+import DownloadIcon from "~/assets/graphics/icons/downloadicon.svg";
+import SearchIcon from "~/assets/graphics/icons/searchicon.svg";
 
 Vue.component("header-component", Header);
 Vue.component("breadcrumbs", BreadCrumbs);

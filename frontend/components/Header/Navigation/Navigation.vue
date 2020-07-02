@@ -14,6 +14,7 @@
         </li>
       </ul>
       <desktop-menu
+        v-if="user"
         class="navigation-menu__desktop-menu"
         :accountMenu="accountMenu"
         :loginMenu="loginMenu"
@@ -55,9 +56,9 @@
 import ClickOutside from "vue-click-outside";
 
 import Logo from "./Logo.vue";
-import ShoppingListIcon from "~/assets/graphics/shopping-list-icon.svg";
-import CooksIcon from "~/assets/graphics/cooks-icon.svg";
-import FavoritesIcon from "~/assets/graphics/favorites-icon.svg";
+import ShoppingListIcon from "~/assets/graphics/icons/shopping-list-icon.svg";
+import CooksIcon from "~/assets/graphics/icons/cooks-icon.svg";
+import FavoritesIcon from "~/assets/graphics/icons/favorites-icon.svg";
 
 import user from "~/mixins/user.js";
 
@@ -93,17 +94,18 @@ export default {
           {
             path: "/account/",
             title: "Dashboard",
-            icon: () => import(`~/assets/graphics/dashboard-icon.svg`)
+            icon: () => import(`~/assets/graphics/icons/dashboard-icon.svg`)
           },
           {
             path: "/account/my-cookbook/",
             title: "My cookbook",
-            icon: () => import(`~/assets/graphics/cookbook-icon.svg`)
+            icon: () => import(`~/assets/graphics/icons/cookbook-icon.svg`)
           },
           {
             path: "/account/account-details/",
             title: "Account details",
-            icon: () => import(`~/assets/graphics/account-details-icon.svg`)
+            icon: () =>
+              import(`~/assets/graphics/icons/account-details-icon.svg`)
           }
         ]
       };

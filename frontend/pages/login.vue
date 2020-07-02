@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import kokebokapen from "~/assets/graphics/kokebokapen.svg";
+import kokebokapen from "~/assets/graphics/illustrations/kokebokapen.svg";
 import LoadingSplash from "~/components/Login/LoadingSplash.vue";
 import LoginContainer from "~/components/Login/LoginContainer.vue";
 import user from "~/mixins/user.js";

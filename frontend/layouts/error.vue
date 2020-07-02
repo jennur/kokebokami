@@ -1,7 +1,5 @@
 <template>
-  <main
-    class="mobile-width padding-horizontal--large margin--auto margin-bottom--xxlarge"
-  >
+  <main class="mobile-width padding-horizontal--large margin--auto margin-bottom--xxlarge">
     <div v-if="error.statusCode === 404" class="container container--center">
       <h1 class="margin-top--xxlarge">404 Whoops!</h1>
       <cracked-eggs class="illustration--cracked-eggs" />
@@ -22,7 +20,7 @@
 </template>
 
 <script>
-import crackedEggs from "~/assets/graphics/cracked-eggs.svg";
+import crackedEggs from "~/assets/graphics/illustrations/cracked-eggs.svg";
 export default {
   name: "error-page",
   components: {

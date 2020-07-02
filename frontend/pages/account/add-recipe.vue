@@ -7,7 +7,7 @@
 
 <script>
 import userRecipes from "~/mixins/userRecipes.js";
-import AddRecipeForm from "~/components/AddRecipeForm/AddRecipeForm.vue";
+import AddRecipeForm from "~/components/Recipes/AddRecipeForm/AddRecipeForm.vue";
 
 export default {
   name: "addRecipe",

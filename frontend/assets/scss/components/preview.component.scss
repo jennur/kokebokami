@@ -2,6 +2,9 @@
   &-container {
   }
 
+  &__description {
+    max-width: 300px;
+  }
   &__iphone {
     width: 200px;
     border: 8px solid black;
@@ -26,6 +29,7 @@
       max-width: 100%;
       margin: 0px;
       border-radius: $spacingLarge;
+      margin-bottom: -5px;
     }
   }
 }

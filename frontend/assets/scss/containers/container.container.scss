@@ -14,7 +14,10 @@
     color: $white;
   }
   &--light-blue {
-    background-color: rgba($blue, 0.08);
+    background-color: rgba($lightBlue, 0.15);
+  }
+  &--lighter-blue {
+    background-color: rgba($lightBlue, 0.1);
   }
   &--orange {
     background-color: rgba($orange, 0.08);
@@ -22,5 +25,8 @@
 
   &--green {
     background-color: rgba($green, 0.1);
+  }
+  &--light-green {
+    background-color: rgba($green, 0.03);
   }
 }

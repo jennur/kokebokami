@@ -2,9 +2,39 @@
   <div>
     <div v-if="!user">
       <initial-info-section class="padding-vertical--xxlarge" nextSection="lookup" />
+      <preview
+        id="addRecipe"
+        headline="Collect your favorite recipes in one place"
+        description="Add your personal recipes, or save recipes from anywhere on the web to make sure you don't forget about their existence."
+        videoTitle="add-recipe"
+        class="padding--large container--yellow"
+      />
+      <preview
+        id="accessRecipes"
+        headline="Access your recipes wherever you are"
+        description="No more searching for your old cookbook or looking around the internet for that recipe you wanted to try. Store them all in one place to access them right away."
+        videoTitle="access-recipes"
+        graphicTitle="market"
+        class="padding--large container--light-blue"
+        :flip="true"
+      />
+      <preview
+        id="changeServings"
+        headline="Adjust servings to the amount you need"
+        description="Don't twist your brain to calculate the amount you need for x servings. Just give us the number."
+        videoTitle="change-servings"
+        class="padding--large container--yellow"
+      />
 
-      <!--       <preview id="lookup" class="padding--large" />
-      -->
+      <preview
+        id="addToShoppingList"
+        headline="Plan and organize your shopping"
+        description="With the shopping planner you can easily plan for big events or simply the rest of the week."
+        videoTitle="shopping-list"
+        class="padding--large container--green"
+        :flip="true"
+      />
+
       <sign-up-section
         class="container--blue"
         :darkBg="true"
