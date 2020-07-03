@@ -1,5 +1,5 @@
 <template>
-  <div class="recipe-link-display-wrap">
+  <div class="recipe-link-display-wrap margin-top--large">
     <button
       class="button button--dynamic button--dynamic-small margin-bottom--medium"
       :class="{
