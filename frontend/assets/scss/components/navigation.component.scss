@@ -49,7 +49,7 @@
       }
     }
     &__link {
-      color: $blue;
+      color: $richBlack;
       text-decoration: none;
       position: relative;
       border-bottom: 2px solid $green;
@@ -60,7 +60,7 @@
       }
       &:hover {
         margin-bottom: 0px;
-        color: $blue;
+        color: $richBlack;
         border-bottom: 4px solid $green;
         text-decoration: none;
       }
@@ -99,6 +99,7 @@
         border-bottom: 0px;
         margin-bottom: 0px;
         color: $blue;
+        cursor: pointer;
       }
     }
   }

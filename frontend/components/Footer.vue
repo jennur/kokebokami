@@ -3,15 +3,9 @@
     <div class="flex-row margin-top--large">
       <ul class="footer__nav margin-horizontal--large">
         <li>
-          <a
-            href="https://www.facebook.com/kokebokami"
-            class="flex-row flex-row--align-center"
-          >
-            <fa
-              :icon="['fab', 'facebook-square']"
-              style="font-size: 25px; margin-right: 10px;"
-            />
-            Follow us on Facebook
+          <a href="https://www.facebook.com/kokebokami" class="social-media">
+            <fa :icon="['fab', 'facebook-square']" style="font-size: 25px; margin-right: 10px;" />
+            <span class="social-media__text">Follow us on Facebook</span>
           </a>
         </li>
         <li>

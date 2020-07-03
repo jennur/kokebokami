@@ -1,6 +1,7 @@
 .footer {
-  border-top: 2px solid rgba($green, 0.5);
   font-size: $fontSizeSmall;
+  background-color: $lightOrange;
+
   &__nav {
     list-style: none;
     padding: 0px;
@@ -8,6 +9,27 @@
 
     & li {
       margin-bottom: $spacingMedium;
+
+      a {
+        color: $blue;
+        transition: color 0.5s;
+        border-bottom: 0px;
+        &:hover {
+          text-decoration: none;
+          border-bottom: 1px solid $orange;
+          color: $richBlack;
+        }
+        &.social-media {
+          display: inline-flex;
+          align-items: center;
+          &:hover {
+            border-bottom: 0px;
+            .social-media__text {
+              border-bottom: 1px solid $orange;
+            }
+          }
+        }
+      }
     }
   }
 }
