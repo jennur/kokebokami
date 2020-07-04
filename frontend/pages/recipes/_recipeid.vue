@@ -2,7 +2,7 @@
   <div>
     <breadcrumbs class="margin-bottom--large" :routes="breadcrumbs" />
     <div class="tablet-width margin-top--xxlarge margin--auto">
-      <expand-transition :show="recipeLoaded">
+      <expand-transition :show="recipeLoaded" slower>
         <recipe-full-view
           :recipe="recipe"
           :recipeKey="recipeKey"

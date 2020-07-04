@@ -1,6 +1,11 @@
 <template>
-  <transition name="expand" @enter="enter" @after-enter="afterEnter" @leave="leave">
-    <div v-show="show">
+  <transition
+    :name="slower ? 'expand-slower': 'expand'"
+    @enter="enter"
+    @after-enter="afterEnter"
+    @leave="leave"
+  >
+    <div v-if="show">
       <slot />
     </div>
   </transition>
@@ -11,6 +16,10 @@ export default {
   name: "expand-transition",
   props: {
     show: {
+      type: Boolean,
+      default: false
+    },
+    slower: {
       type: Boolean,
       default: false
     }
