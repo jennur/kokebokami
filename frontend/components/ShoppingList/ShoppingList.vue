@@ -1,19 +1,12 @@
 <template>
   <section class="shopping-list margin-bottom--large">
-    <button
-      v-if="!editMode"
+    <!-- <button
+      v-if="!editTitle"
       class="button button--small button--transparent margin-bottom--xxlarge"
-      @click="toggleEditMode"
-    >Edit list collection</button>
+      @click="toggleEditTitle"
+    >Edit list collection</button>-->
 
-    <div
-      v-else
-      class="flex-row flex-row--align-center flex-row--space-between margin-bottom--xxlarge"
-    >
-      <button
-        class="button button--xsmall button--dynamic button--cancel"
-        @click="toggleEditMode"
-      >✕ Cancel</button>
+    <div class="flex-row flex-row--justify-right margin-bottom--large">
       <div
         v-if="mainListKey"
         class="shopping-list__delete-collection-btn button button--small button--transparent button--transparent-red"
@@ -21,17 +14,26 @@
       >Delete collection</div>
     </div>
     <!-- Shopping list title -->
-    <div class="shopping-list__title margin-bottom--xlarge">
-      <div v-if="title && !editMode" class="flex-row flex-row--align-center">
-        <h2 class="margin-bottom--small margin-right--large">{{title}}</h2>
+    <div class="shopping-list__title margin-bottom--large margin-top--xxlarge">
+      <div v-if="title && !editTitle" class="flex-row flex-row--align-center margin-top--large">
+        <h2
+          class="margin-bottom--small margin-right--large"
+          @click="event => toggleEditTitle(event)"
+        >{{title}}</h2>
       </div>
 
       <!-- Edit mode for title -->
-      <div v-if="editMode" class="flex-row flex-row--align-center margin-bottom--xxlarge">
-        <input type="text" v-model="updatedTitle" class="margin-right--large margin-top--medium" />
-        <div class="flex-row flex-row--align-center flex-row--nowrap margin-top--medium">
-          <button class="button button--small button--round" @click="saveTitle">Save title</button>
-        </div>
+      <div v-if="editTitle" class="flex-row flex-row--align-center">
+        <input
+          type="text"
+          v-model="updatedTitle"
+          class="margin-right--large"
+          v-click-outside="saveTitle"
+          @keydown="event => {
+          event.keyCode === 13 && saveTitle();
+        }"
+        />
+        <div class="flex-row flex-row--align-center flex-row--nowrap margin-top--medium"></div>
       </div>
     </div>
     <!-- Sublists -->
@@ -70,6 +72,8 @@
 </template>
 
 <script>
+import ClickOutside from "vue-click-outside";
+
 import user from "~/mixins/user.js";
 
 import IncrementButton from "~/components/Input/IncrementButton.vue";
@@ -101,7 +105,7 @@ export default {
   data() {
     return {
       updatedTitle: this.title,
-      editMode: false,
+      editTitle: false,
       addingNewSubList: false
     };
   },
@@ -111,8 +115,10 @@ export default {
     }
   },
   methods: {
-    toggleEditMode() {
-      this.editMode = !this.editMode;
+    toggleEditTitle(event) {
+      console.log("Toggling");
+      this.editTitle = !this.editTitle;
+      event && event.stopPropagation();
     },
     addNewSubList() {
       this.addingNewSubList = true;
@@ -121,38 +127,44 @@ export default {
       this.addingNewSubList = false;
       let componentThis = this;
       let mainListKey = this.mainListKey;
-      let title = this.updatedTitle;
 
-      let shoppingListRef = this.$fireDb.ref(
-        `users/${this.user.id}/shoppingLists/`
-      );
-      let thisListRef = this.$fireDb.ref(
-        `users/${this.user.id}/shoppingLists/${mainListKey}`
-      );
-      if (mainListKey) {
-        thisListRef
-          .update({ title })
-          .then(() => {
-            console.log("Title updated");
-            componentThis.toggleEditMode();
-            componentThis.$emit("update");
-          })
-          .catch(error => {
-            console.log("Title update failed:", error.message);
-          });
-      } else {
-        shoppingListRef.once("value", snapshot => {
-          shoppingListRef
-            .push({ title })
-            .then(mainListObject => {
-              console.log("New main list added");
-              componentThis.toggleEditMode();
+      if (this.title !== this.updatedTitle) {
+        let title = this.updatedTitle;
+
+        let shoppingListRef = this.$fireDb.ref(
+          `users/${this.user.id}/shoppingLists/`
+        );
+        let thisListRef = this.$fireDb.ref(
+          `users/${this.user.id}/shoppingLists/${mainListKey}`
+        );
+        if (mainListKey) {
+          thisListRef
+            .update({ title })
+            .then(() => {
+              console.log("Title updated");
+              componentThis.toggleEditTitle();
               componentThis.$emit("update");
             })
             .catch(error => {
               console.log("Title update failed:", error.message);
             });
-        });
+        } else {
+          shoppingListRef.once("value", snapshot => {
+            shoppingListRef
+              .push({ title })
+              .then(mainListObject => {
+                console.log("New main list added");
+                componentThis.toggleEditTitle();
+                componentThis.$emit("update");
+              })
+              .catch(error => {
+                console.log("Title update failed:", error.message);
+              });
+          });
+        }
+      } else {
+        console.log("Closing edit mode");
+        this.toggleEditTitle();
       }
     },
     addNewSubList() {
@@ -177,7 +189,7 @@ export default {
           .remove()
           .then(() => {
             console.log("Successfully deleted shopping list");
-            componentThis.toggleEditMode();
+            componentThis.toggleEditTitle();
             componentThis.$emit("update");
           })
           .catch(error =>
@@ -185,6 +197,9 @@ export default {
           );
       }
     }
+  },
+  directives: {
+    ClickOutside
   }
 };
 </script>

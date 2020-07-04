@@ -170,6 +170,7 @@
     color: $blue;
     background-color: $green;
     cursor: pointer;
+    transition: 0.2s;
 
     &:hover {
       background-color: $blue;
@@ -180,7 +181,7 @@
       font-weight: bold;
       position: relative;
       margin-left: -$spacingLargeMobile;
-      top: -1px;
+      top: 0px;
       margin-right: $spacingSmall;
       @media screen and (min-width: $mobileWidth) {
         left: 0px;

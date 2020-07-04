@@ -1,11 +1,13 @@
 <template>
-  <section class="preview-container container--center padding-vertical--xxlarge">
+  <section class="preview-container container--center padding-vertical--xxxlarge">
     <h2 v-if="headline" class="color--blue margin-top--large">{{headline}}</h2>
-    <div
-      class="flex-row flex-row--nowrap flex-row--align-center flex-row--justify-center margin-top--xxlarge padding-vertical--xxlarge"
-    >
-      <div class="preview__iphone" :class="{
-        'flex-order--two': flip}">
+    <div class="flex-row flex-row--align-center flex-row--justify-center">
+      <div
+        class="preview__iphone"
+        :class="{
+        'flex-order--two': flip && !isMobile
+        }"
+      >
         <video
           v-if="videoTitle"
           class="preview__iphone-video"
@@ -18,27 +20,40 @@
       </div>
       <div
         :class="{
-        'flex-order--one margin-right--xxlarge': flip,
-        'margin-left--xxlarge' : !flip}"
+        'flex-order--one': flip && !isMobile,
+        'margin-left--xxlarge' : !flip && !isMobile,
+        'flex-column': flipGraphic && !isMobile,
+        }"
       >
-        <p class="preview__description margin-bottom--xxlarge">{{description}}</p>
+        <p
+          class="preview__description"
+          :class="{
+          'flex-order--two': flipGraphic && !isMobile
+          }"
+        >{{description}}</p>
         <client-only>
           <component
             v-if="!isMobile && illustration"
             :is="illustration"
             class="illustration illustration--preview-section"
+            :class="{
+        'flex-order--one': flipGraphic}"
           />
         </client-only>
       </div>
     </div>
+    <anchor-button :scrollTo="nextSection" />
   </section>
 </template>
 
 <script>
-import market from "~/assets/graphics/illustrations/market.svg";
+import AnchorButton from "~/components/AnchorButton.vue";
 
 export default {
   name: "preview",
+  components: {
+    AnchorButton
+  },
   props: {
     graphicTitle: {
       type: String,
@@ -59,6 +74,14 @@ export default {
     flip: {
       type: Boolean,
       default: false
+    },
+    flipGraphic: {
+      type: Boolean,
+      default: false
+    },
+    nextSection: {
+      type: String,
+      default: ""
     }
   },
   data() {

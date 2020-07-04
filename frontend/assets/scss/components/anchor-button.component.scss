@@ -1,5 +1,5 @@
 .anchor-button {
-  width: 50px;
+  width: 40px;
   transition: 0.3s ease-out;
   border: 0px;
   background-color: transparent;
@@ -15,8 +15,5 @@
 
   &:hover {
     transform: translateY($spacingSmall) translateX(-50%);
-    path {
-      stroke: $green;
-    }
   }
 }

@@ -16,6 +16,13 @@
     }
   }
   &__title {
+    h2 {
+      transition: 0.1s;
+      &:hover {
+        background-color: rgba($orange, 0.3);
+        border-radius: $spacingSmall;
+      }
+    }
     input[type="text"] {
       font-size: $fontSizeXLargeMobile;
       @media screen and (min-width: $tabletWidth) {

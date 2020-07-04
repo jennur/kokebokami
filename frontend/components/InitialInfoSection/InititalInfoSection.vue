@@ -1,5 +1,5 @@
 <template>
-  <section class="position-relative container--orange">
+  <section class="initial-info-section container--orange">
     <div
       class="flex-center-container flex-center-container--column tablet-width padding--none margin--auto"
     >

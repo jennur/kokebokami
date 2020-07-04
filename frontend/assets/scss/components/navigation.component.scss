@@ -36,16 +36,20 @@
 .navigation-menu {
   display: flex;
   align-items: center;
+  height: inherit;
 
   .login-menu {
     padding: 0px;
+    height: inherit;
+    margin: 0px;
+    height: 35px;
     li {
       display: inline-flex;
       align-items: center;
-      margin: $spacingMedium;
+      margin: 0px $spacingMedium;
       position: relative;
       @media screen and (min-width: $mobileWidth) {
-        margin: $spacingLarge;
+        margin: 0px $spacingLarge;
       }
     }
     &__link {

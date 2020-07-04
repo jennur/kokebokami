@@ -1,6 +1,6 @@
 <template>
   <footer class="footer flex-center-container flex-center-container--column">
-    <div class="flex-row margin-top--large">
+    <div class="flex-row flex-row--align-top margin-top--large">
       <ul class="footer__nav margin-horizontal--large">
         <li>
           <a href="https://www.facebook.com/kokebokami" class="social-media">

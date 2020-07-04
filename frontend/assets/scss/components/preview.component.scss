@@ -1,7 +1,10 @@
 .preview {
   &-container {
+    position: relative;
+    //padding-top: 50px;
+    //box-sizing: border-box;
+    min-height: 100vh;
   }
-
   &__description {
     max-width: 300px;
   }
