@@ -41,6 +41,11 @@
     &__title {
       h3 {
         font-family: $headingFont;
+        transition: 0.1s;
+        &:hover {
+          background-color: rgba($orange, 0.3);
+          border-radius: $spacingSmall;
+        }
       }
       label {
         color: $blue;

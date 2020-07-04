@@ -1,11 +1,5 @@
 <template>
   <section class="shopping-list margin-bottom--large">
-    <!-- <button
-      v-if="!editTitle"
-      class="button button--small button--transparent margin-bottom--xxlarge"
-      @click="toggleEditTitle"
-    >Edit list collection</button>-->
-
     <div class="flex-row flex-row--justify-right margin-bottom--large">
       <div
         v-if="mainListKey"
@@ -43,7 +37,7 @@
         :key="`shopping-list-${index}`"
         :subList="subList[1]"
         :subListKey="subList[0]"
-        :parentTitle="title"
+        :mainListTitle="title"
         :mainListKey="mainListKey"
         @update="updateSubLists"
       />
@@ -51,7 +45,7 @@
         v-if="addingNewSubList"
         :subList="{title: '', listItems: []}"
         :subListKey="''"
-        :parentTitle="title"
+        :mainListTitle="title"
         :mainListKey="mainListKey"
         @update="updateSubLists"
       />
@@ -116,7 +110,6 @@ export default {
   },
   methods: {
     toggleEditTitle(event) {
-      console.log("Toggling");
       this.editTitle = !this.editTitle;
       event && event.stopPropagation();
     },
@@ -163,7 +156,6 @@ export default {
           });
         }
       } else {
-        console.log("Closing edit mode");
         this.toggleEditTitle();
       }
     },
