@@ -13,9 +13,9 @@
 
   &--kokebokapen {
     display: none;
-    margin: $spacingXXLarge;
-    @media screen and (min-width: $tabletWidth) {
-      max-width: 300px;
+    margin: $spacingXXXLarge 0px;
+    @media screen and (min-width: $mobileWidth) {
+      max-width: 250px;
       display: block;
     }
   }
