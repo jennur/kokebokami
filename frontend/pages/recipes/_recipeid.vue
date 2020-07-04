@@ -10,8 +10,6 @@
           :recipeOwnerID="recipeOwner && recipeOwner[0]"
           @update="handleUpdate"
         />
-
-        <comments class="mobile-width margin--auto margin-top--xlarge" :path="path" />
       </expand-transition>
     </div>
   </div>
@@ -24,12 +22,11 @@ import allRecipes from "~/mixins/allRecipes.js";
 import publicRecipes from "~/mixins/publicRecipes.js";
 
 import RecipeFullView from "~/components/Recipes/RecipeFullView/RecipeFullView.vue";
-import Comments from "~/components/Comments/Comments.vue";
 import ExpandTransition from "~/components/Transitions/Expand.vue";
 
 export default {
   name: "recipe",
-  components: { RecipeFullView, Comments, ExpandTransition },
+  components: { RecipeFullView, ExpandTransition },
   data() {
     return {
       isRecipeOwner: false,

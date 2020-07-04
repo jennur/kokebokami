@@ -9,7 +9,6 @@
         videoTitle="add-recipe"
         graphicTitle="favorite-cloud"
         :flipGraphic="true"
-        :flip="true"
         nextSection="accessRecipes"
         class="container--light-blue padding-horizontal--medium"
       />
@@ -19,6 +18,7 @@
         description="No more searching for your old cookbook or looking around the internet for that recipe you wanted to try. Store them all in one place to access them right away."
         videoTitle="access-recipes"
         graphicTitle="market"
+        :flip="true"
         nextSection="changeServings"
         class="container--green padding-horizontal--medium"
       />
@@ -28,7 +28,6 @@
         description="Don't twist your brain to calculate the amount you need for x servings. Just give us the number."
         videoTitle="change-servings"
         nextSection="addToShoppingList"
-        :flip="true"
         class="container--light-blue padding-horizontal--medium"
       />
 
@@ -37,6 +36,7 @@
         headline="Plan and organize your shopping"
         description="With the shopping planner you can easily plan for big events or simply the rest of the week."
         videoTitle="shopping-list"
+        :flip="true"
         nextSection="signUp"
         class="container--green padding-horizontal--medium"
       />

@@ -90,7 +90,7 @@
             name="submit"
             class="button button--small margin-horizontal--xlarge margin-top--xxlarge"
             @click.prevent="update"
-          >Save updates</button>
+          >Save</button>
           <button
             type="submit"
             name="Delete"

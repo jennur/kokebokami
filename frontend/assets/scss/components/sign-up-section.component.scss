@@ -1,0 +1,40 @@
+.sign-up-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 300px;
+  margin: 0px auto;
+  @media screen and (min-width: $mobileWidth) {
+    flex-direction: row;
+    justify-content: center;
+    align-items: baseline;
+    max-width: $tabletWidth;
+  }
+  .sign-up-form {
+    display: block;
+    width: 100%;
+    max-width: 300px;
+    text-align: left;
+    &_terms {
+      max-width: 250px;
+    }
+    &--green {
+      padding: $spacingXLarge;
+      background-color: rgba($green, 0.08);
+      border-radius: $spacingMedium;
+    }
+  }
+
+  .sign-in-with-provider {
+    max-width: 300px;
+    text-align: center;
+    margin-bottom: $spacingLarge;
+    @media screen and (min-width: $mobileWidth) {
+      margin-right: $spacingXLarge;
+      text-align: left;
+    }
+    p {
+      margin-top: 0px;
+    }
+  }
+}

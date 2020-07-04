@@ -2,13 +2,14 @@ input,
 textarea {
   font-size: $fontSizeMedium;
   padding: $spacingSmall;
-  background-color: transparent;
+  background-color: rgba($green, 0.05);
   border: 2px solid transparent;
   border-bottom: 2px solid $green;
   box-sizing: border-box;
   max-width: 100%;
   box-sizing: border-box;
   font-family: $bodyFont;
+  border-radius: $spacingSmall $spacingSmall 0px 0px;
   &:focus {
     outline: none;
     border: 2px solid $green;

@@ -39,8 +39,10 @@
   &--loading-book {
     max-width: 220px;
   }
-  &--guy-in-market {
+  &--preview-section {
     max-width: 350px;
+    padding: 0px $spacingXLarge;
+    box-sizing: border-box;
     @media screen and (min-width: $tabletWidth) {
       max-width: 450px;
     }

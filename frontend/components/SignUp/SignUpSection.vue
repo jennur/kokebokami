@@ -4,10 +4,8 @@
       <h2 v-if="bigHeadline" class="margin-top--xlarge">{{ headline }}</h2>
       <h3 v-else>{{ headline }}</h3>
     </div>
-    <div class="flex-row flex-row--justify-center tablet-width margin--auto">
-      <sign-in-with-provider
-        class="flex-row__half sign-in-with-provider margin-top--xxlarge margin-right--xlarge"
-      />
+    <div class="sign-up-section">
+      <sign-in-with-provider class="flex-row__half sign-in-with-provider margin-top--xxlarge" />
       <sign-up-form
         class="flex-row__half margin-top--xxlarge"
         :class="{

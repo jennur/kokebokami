@@ -1,32 +1,20 @@
 <template>
   <section class="preview-container container--center padding-vertical--xxxlarge">
-    <h2 v-if="headline" class="color--blue margin-top--large">{{headline}}</h2>
+    <h2 v-if="headline && !isMobile" class="color--blue margin-vertical--xxlarge">{{headline}}</h2>
+
     <div class="flex-row flex-row--align-center flex-row--justify-center">
       <div
-        class="preview__iphone"
+        class="margin-horizontal--xlarge flex-column flex-column--align-center"
         :class="{
-        'flex-order--two': flip && !isMobile
-        }"
-      >
-        <video
-          v-if="videoTitle"
-          class="preview__iphone-video"
-          :src="require(`~/assets/videos/${videoTitle}.mp4`)"
-          autoplay
-          muted
-          loop
-          playsinline
-        />
-      </div>
-      <div
-        :class="{
-        'flex-order--one': flip && !isMobile,
-        'margin-left--xxlarge' : !flip && !isMobile,
+        'flex-order--two': flip && !isMobile,
         'flex-column': flipGraphic && !isMobile,
         }"
       >
+        <h2 v-if="headline && isMobile" class="color--blue margin--none">{{headline}}</h2>
+
         <p
-          class="preview__description"
+          v-if="description"
+          class="preview__description margin-vertical--xlarge"
           :class="{
           'flex-order--two': flipGraphic && !isMobile
           }"
@@ -40,6 +28,22 @@
         'flex-order--one': flipGraphic}"
           />
         </client-only>
+      </div>
+      <div
+        class="preview__iphone margin-vertical--xlarge"
+        :class="{
+        'flex-order--one': flip && !isMobile
+        }"
+      >
+        <video
+          v-if="videoTitle"
+          class="preview__iphone-video"
+          :src="require(`~/assets/videos/${videoTitle}.mp4`)"
+          autoplay
+          muted
+          loop
+          playsinline
+        />
       </div>
     </div>
     <anchor-button :scrollTo="nextSection" />
