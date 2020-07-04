@@ -6,6 +6,11 @@
         class="shopping-list__delete-collection-btn button button--small button--transparent button--transparent-red"
         @click="deleteShoppingList"
       >Delete collection</div>
+      <button
+        v-else
+        class="shopping-list__delete-collection-btn button button--small button--cancel"
+        @click="$emit('cancel')"
+      >✕ Cancel</button>
     </div>
     <!-- Shopping list title -->
     <div class="shopping-list__title margin-bottom--large margin-top--xxlarge">
@@ -55,12 +60,6 @@
         class="margin-vertical--large margin-right--xxlarge"
         @increment="addingNewSubList = true"
       >Add new sublist</increment-button>
-
-      <button
-        v-if="!mainListKey"
-        class="button button--small button--cancel"
-        @click="$emit('cancel')"
-      >✕ Cancel</button>
     </div>
   </section>
 </template>
