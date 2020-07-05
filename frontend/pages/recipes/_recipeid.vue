@@ -4,6 +4,7 @@
     <div class="tablet-width margin-top--xxlarge margin--auto">
       <expand-transition :show="recipeLoaded" slower>
         <recipe-full-view
+          class="margin-bottom--xxlarge"
           :recipe="recipe"
           :recipeKey="recipeKey"
           :isRecipeOwner="isRecipeOwner"
@@ -11,6 +12,11 @@
           @update="handleUpdate"
         />
       </expand-transition>
+      <comments-section
+        class="tablet-width margin--auto margin-top--xxlarge"
+        :recipeKey="recipeKey"
+        :recipeTitle="recipe.title"
+      />
     </div>
   </div>
 </template>
@@ -21,12 +27,13 @@ import allUsers from "~/mixins/allUsers.js";
 import allRecipes from "~/mixins/allRecipes.js";
 import publicRecipes from "~/mixins/publicRecipes.js";
 
-import RecipeFullView from "~/components/Recipes/RecipeFullView/RecipeFullView.vue";
 import ExpandTransition from "~/components/Transitions/Expand.vue";
+import RecipeFullView from "~/components/Recipes/RecipeFullView/RecipeFullView.vue";
+import CommentsSection from "~/components/CommentsSection/CommentsSection.vue";
 
 export default {
   name: "recipe",
-  components: { RecipeFullView, ExpandTransition },
+  components: { RecipeFullView, CommentsSection, ExpandTransition },
   data() {
     return {
       isRecipeOwner: false,

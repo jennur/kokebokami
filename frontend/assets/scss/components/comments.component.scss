@@ -1,0 +1,148 @@
+.comments-section {
+  width: 100%;
+
+  &__headline {
+    border-bottom: 1px solid $green;
+    color: $blue;
+  }
+}
+
+.comment-form {
+  background-color: $lightOrange;
+  padding: $spacingLarge;
+  border-radius: 0px 0px $spacingMedium $spacingMedium;
+  .simple-loading-spinner {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    margin: $spacingSmall;
+    z-index: 1;
+    width: $spacingLarge;
+    height: $spacingLarge;
+    @media screen and (min-width: $mobileWidth) {
+      width: $spacingXLarge;
+      height: $spacingXLarge;
+    }
+  }
+  .comment__user-img {
+    z-index: 5;
+    g circle {
+      fill: mix($lightOrange, $orange, 70%);
+      opacity: 1;
+    }
+  }
+  &__anonymous {
+    font-size: $fontSizeSmall;
+    @media screen and (min-width: $mobileWidth) {
+      font-size: $fontSizeMedium;
+    }
+  }
+  &__comment {
+    width: 100%;
+    max-width: 400px;
+    height: auto;
+    resize: none;
+    border: 2px solid $blue;
+    border-radius: $spacingSmall;
+    padding: $spacingMedium;
+  }
+  &__submit-wrap {
+    display: block;
+    width: 100%;
+    max-width: 400px;
+    text-align: right;
+  }
+  &__success {
+    background-color: rgba($green, 0.08);
+    border-radius: $spacingMedium;
+    color: $blue;
+  }
+  &__error {
+    background-color: rgba($pink, 0.08);
+    border-radius: $spacingMedium;
+    color: $richBlack;
+  }
+}
+
+.comment {
+  border-bottom: 1px solid $green;
+  position: relative;
+  &:first-child {
+    border-top: 1px solid $green;
+  }
+  &__delete-btn {
+    position: absolute;
+    top: $spacingSmall;
+    right: $spacingSmall;
+  }
+  &__user-img {
+    display: block;
+    width: $spacingXLarge;
+    height: $spacingXLarge;
+    border-radius: 50%;
+    background-position: 50% 50%;
+    background-size: cover;
+    background-repeat: no-repeat;
+    @media screen and (min-width: $mobileWidth) {
+      width: $spacingXXLarge;
+      height: $spacingXXLarge;
+    }
+  }
+  a {
+    border-bottom: 1px dotted $green;
+    &:hover {
+      text-decoration: none;
+      border-bottom: 1px solid $green;
+    }
+  }
+  span.no-link {
+    color: $richBlack;
+  }
+  &__comment,
+  &__reply-btn,
+  .sub-comments-form,
+  .sub-comments-form__success,
+  .sub-comments-form__error,
+  &__sub-comments {
+    margin-left: $spacingXLarge + $spacingMediumMobile;
+    @media screen and (min-width: $mobileWidth) {
+      margin-left: $spacingXXLarge + $spacingMediumMobile;
+    }
+    @media screen and (min-width: $tabletWidth) {
+      margin-left: $spacingXXLarge + $spacingMedium;
+    }
+  }
+  .sub-comments-form {
+    .comment-form {
+      border-radius: $spacingMedium $spacingMedium 0px 0px;
+      max-width: 500px;
+      box-sizing: border-box;
+    }
+
+    &,
+    &__success,
+    &__error {
+      max-width: 500px;
+      box-sizing: border-box;
+    }
+    &__success {
+      background-color: rgba($green, 0.08);
+      border-radius: $spacingMedium;
+      color: $blue;
+    }
+    &__error {
+      background-color: rgba($pink, 0.08);
+      border-radius: $spacingMedium;
+      color: $richBlack;
+    }
+  }
+
+  .sub-comment {
+    max-width: 500px;
+    &:first-child {
+      border-top: 1px dotted $green;
+      //margin-top: $spacingLarge;
+    }
+    border-bottom: 1px dotted $green;
+  }
+}

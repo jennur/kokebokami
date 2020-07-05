@@ -15,7 +15,7 @@
       />
       <input v-else type="text" placeholder="New list title" v-model="newListTitle" />
       <button
-        class="button button--small button--green button--round margin-left--medium"
+        class="button button--small button--dynamic button--green-border padding--medium margin-left--medium"
         @click="addToShoppingList"
       >Add</button>
     </div>

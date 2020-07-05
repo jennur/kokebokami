@@ -1,5 +1,9 @@
 .recipe {
   text-align: left;
+
+  h4 {
+    color: $blue;
+  }
   &__title {
     font-family: $headingFont;
     font-size: $fontSizeXXLargeMobile;
@@ -36,6 +40,32 @@
       top: 50%;
       transform: translateY(-50%);
       color: lightgray;
+    }
+  }
+  &__flex-no-wrap {
+    @media screen and (min-width: $mobileWidth) {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+    }
+  }
+  &__ingredients-wrap {
+    width: 100%;
+    @media screen and (min-width: $mobileWidth) {
+      min-width: 220px;
+      max-width: 280px;
+      margin-right: $spacingXLarge;
+    }
+  }
+  &__instructions-wrap {
+    width: 100%;
+    @media screen and (min-width: $mobileWidth) {
+      min-width: 320px;
+      max-width: 490px;
+      margin-top: 106px;
+    }
+    @media screen and (min-width: $tabletWidth) {
+      margin-top: 114px;
     }
   }
   &__ingredients {

@@ -1,6 +1,6 @@
 <template>
   <section>
-    <div ref="recipe" id="recipe" v-if="!editMode" class="recipe mobile-width margin--auto">
+    <div ref="recipe" id="recipe" v-if="!editMode" class="recipe margin--auto">
       <h2 class="recipe__title">{{ recipeTitle }}</h2>
       <div class="recipe__description">{{ description }}</div>
       <div id="ignorePDF">
@@ -28,15 +28,21 @@
           @download="pdfExport"
         />
       </div>
+      <div class="recipe__flex-no-wrap flex-row--align-top">
+        <ingredients-display
+          class="recipe__ingredients-wrap"
+          v-if="recipe.ingredients"
+          :ingredients="recipe.ingredients"
+          :servings="recipe.servings || ''"
+          :recipeTitle="recipeTitle"
+        />
 
-      <ingredients-display
-        v-if="recipe.ingredients"
-        :ingredients="recipe.ingredients"
-        :servings="recipe.servings || ''"
-        :recipeTitle="recipeTitle"
-      />
-
-      <instructions-display v-if="recipe.instructions" :instructions="recipe.instructions" />
+        <instructions-display
+          class="recipe__instructions-wrap"
+          v-if="recipe.instructions"
+          :instructions="recipe.instructions"
+        />
+      </div>
     </div>
 
     <!-- EDIT FORM -->
