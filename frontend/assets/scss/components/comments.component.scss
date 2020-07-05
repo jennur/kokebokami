@@ -24,6 +24,9 @@
       height: $spacingXLarge;
     }
   }
+  label {
+    max-width: 400px;
+  }
   .comment__user-img {
     z-index: 5;
     g circle {
@@ -75,6 +78,46 @@
     top: $spacingSmall;
     right: $spacingSmall;
   }
+  &__approval {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    background-color: rgba($green, 0.08);
+    width: 100%;
+    max-width: max-content;
+    padding: $spacingMedium $spacingLarge;
+    border-radius: $spacingMedium;
+    box-sizing: border-box;
+    @media screen and (min-width: $mobileWidth) {
+      width: max-content;
+    }
+    &-btn {
+      &-wrap {
+        display: block;
+        width: 160px;
+        min-width: 160px;
+        @media screen and (min-width: $mobileWidth) {
+          display: inline-block;
+        }
+      }
+      font-size: $fontSizeSmall;
+      padding: $spacingSmall $spacingMedium;
+
+      &--delete {
+        font-size: $fontSizeSmall;
+        padding: 3px $spacingMedium;
+        @media screen and (min-width: $mobileWidth) {
+          padding: 0px $spacingMedium;
+        }
+      }
+      @media screen and (min-width: $mobileWidth) {
+        padding: 2px $spacingMedium;
+      }
+    }
+  }
+
   &__user-img {
     display: block;
     width: $spacingXLarge;

@@ -1,10 +1,29 @@
 <template>
-  <div class="comment">
+  <div v-if="isRecipeOwner || commentObj.approved" class="comment">
     <button
       v-if="commentObj.isMyComment"
       class="comment__delete-btn button button--dynamic button--transparent button--transparent-red"
       @click="deleteComment"
     >✕</button>
+
+    <!-- Approval -->
+    <div
+      v-if="!commentObj.approved"
+      class="comment__approval margin-bottom--large"
+      @click="approveComment"
+    >
+      <span
+        class="comment__approval-text padding-vertical--medium margin-right--large"
+      >Awaiting your approval</span>
+      <span class="comment__approval-btn-wrap padding-vertical--medium">
+        <button
+          class="comment__approval-btn--delete button button--dynamic button--red-border button--round margin-right--medium"
+          @click="deleteComment"
+        >Delete</button>
+        <button class="comment__approval-btn button button--dynamic button--round">Approve</button>
+      </span>
+    </div>
+
     <!-- Comment info -->
     <div class="flex-row flex-row--align-center">
       <div
@@ -41,6 +60,7 @@
     <expand-transition :show="formOpen">
       <comment-form
         class="sub-comments-form margin-top--large"
+        :isRecipeOwner="isRecipeOwner"
         @addComment="subCommentObj => submitSubComment(subCommentObj)"
       />
     </expand-transition>
@@ -61,6 +81,7 @@
         v-for="subComment in commentObj.subComments"
         :key="subComment[0]"
         :subComment="subComment"
+        :mainCommentKey="comment[0]"
       />
     </div>
   </div>
@@ -88,13 +109,17 @@ export default {
       type: Boolean,
       default: false
     },
-    maincommentKey: {
+    mainCommentKey: {
       type: String,
       default: ""
     },
     recipeKey: {
       type: String,
       default: ""
+    },
+    isRecipeOwner: {
+      type: Boolean,
+      deafult: false
     }
   },
   data() {
@@ -147,16 +172,49 @@ export default {
           console.log("Error submitting subcomment:", error.message);
         });
     },
-    deleteComment() {
+    approveComment() {
       let recipeKey = this.recipeKey;
+      let mainCommentKey = this.mainCommentKey;
       let commentKey = this.comment[0];
 
       if (this.isSubComment) {
-        let subCommentsRef = this.$fireDb.ref(
-          `recipes/${recipeKey}/comments/${this.maincommentKey}/subComments/${this.comment[0]}`
+        let subCommentRef = this.$fireDb.ref(
+          `recipes/${recipeKey}/comments/${mainCommentKey}/subComments/${commentKey}`
+        );
+        subCommentRef
+          .update({ approved: true })
+          .then(() => {
+            console.log("Subcomment was updated successfully ");
+            this.$emit("update");
+          })
+          .catch(error => {
+            console.log("Error updating subcomment:", error.message);
+          });
+      } else {
+        let commentRef = this.$fireDb.ref(
+          `recipes/${recipeKey}/comments/${commentKey}`
+        );
+        commentRef
+          .update({ approved: true })
+          .then(() => {
+            console.log("Comment was updated successfully ");
+          })
+          .catch(error => {
+            console.log("Error updating comment:", error.message);
+          });
+      }
+    },
+    deleteComment() {
+      let recipeKey = this.recipeKey;
+      let mainCommentKey = this.mainCommentKey;
+      let commentKey = this.comment[0];
+
+      if (this.isSubComment) {
+        let subCommentRef = this.$fireDb.ref(
+          `recipes/${recipeKey}/comments/${mainCommentKey}/subComments/${commentKey}`
         );
       } else {
-        let subCommentsRef = this.$fireDb.ref(
+        let commentRef = this.$fireDb.ref(
           `recipes/${recipeKey}/comments/${commentKey}`
         );
       }

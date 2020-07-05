@@ -7,16 +7,20 @@
     <comment-form
       class="margin-bottom--xlarge"
       @addComment="commentObj => submitComment(commentObj)"
+      :isRecipeOwner="recipeOwnerID === user.id"
       :submitted="submitted"
       :error="error"
     />
-    <comments :recipeKey="recipeKey" />
+    <comments :recipeKey="recipeKey" :isRecipeOwner="recipeOwnerID === user.id" />
   </div>
 </template>
 
 <script>
+import user from "~/mixins/user.js";
+
 import CommentForm from "./CommentForm.vue";
 import Comments from "./Comments.vue";
+
 export default {
   name: "comments-section",
   components: {
@@ -27,6 +31,10 @@ export default {
     recipeKey: {
       type: String,
       default: ""
+    },
+    recipeOwnerID: {
+      type: String,
+      default: ""
     }
   },
   data() {
@@ -35,6 +43,7 @@ export default {
       error: false
     };
   },
+  mixins: [user],
   methods: {
     submitComment(commentObj) {
       let recipeKey = this.recipeKey;

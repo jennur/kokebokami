@@ -2,7 +2,7 @@
   <comment
     :comment="subComment"
     :recipeKey="recipeKey"
-    :maincommentKey="maincommentKey"
+    :mainCommentKey="mainCommentKey"
     :isSubComment="true"
     class="sub-comment padding-vertical--large"
   />
@@ -23,7 +23,7 @@ export default {
       type: Array,
       default: () => []
     },
-    maincommentKey: {
+    mainCommentKey: {
       type: String,
       default: ""
     }

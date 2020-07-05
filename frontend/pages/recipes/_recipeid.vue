@@ -15,7 +15,7 @@
       <comments-section
         class="tablet-width margin--auto margin-top--xxlarge"
         :recipeKey="recipeKey"
-        :recipeTitle="recipe.title"
+        :recipeOwnerID="recipe.ownerID"
       />
     </div>
   </div>

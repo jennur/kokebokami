@@ -16,7 +16,9 @@
         :recipeKey="recipeKey"
         :comment="comment"
         :isSubComments="false"
+        :isRecipeOwner="isRecipeOwner"
         class="padding-vertical--large"
+        @update="getComments"
       />
     </div>
   </div>
@@ -35,6 +37,10 @@ export default {
     recipeKey: {
       type: String,
       default: ""
+    },
+    isRecipeOwner: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -51,11 +57,6 @@ export default {
           if (comments.exists()) {
             comments = Object.entries(comments.val());
             componentThis.comments = comments.map(comment => {
-              console.log(
-                "IDs match:",
-                comment[1].userId,
-                componentThis.user.id
-              );
               if (comment[1].userId === componentThis.user.id) {
                 comment[1].isMyComment = true;
               }

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="comment-form-wrap">
     <form class="comment-form">
       <div class="flex-row flex-row--align-center position-relative">
         <span class="simple-loading-spinner"></span>
@@ -59,6 +59,10 @@ export default {
     error: {
       type: Boolean,
       default: false
+    },
+    isRecipeOwner: {
+      type: Boolean,
+      deafult: false
     }
   },
   data() {
@@ -82,7 +86,7 @@ export default {
         isAnonymous: this.anonymous,
         comment: this.comment,
         submitDate,
-        approved: false
+        approved: this.isRecipeOwner
       };
       this.$emit("addComment", commentObj);
     }
