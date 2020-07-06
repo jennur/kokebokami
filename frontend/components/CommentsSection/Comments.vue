@@ -41,10 +41,22 @@ export default {
     isRecipeOwner: {
       type: Boolean,
       default: false
+    },
+    update: {
+      type: Number,
+      default: 0
     }
   },
   data() {
-    return { loading: false, comments: [] };
+    return { loading: false, comments: [], updated: 0 };
+  },
+  watch: {
+    update: function(val) {
+      if (val !== this.updated) {
+        this.getComments();
+        this.updated = val;
+      }
+    }
   },
   mixins: [user],
   methods: {
@@ -79,11 +91,12 @@ export default {
               }
               return comment;
             });
+          } else {
+            componentThis.comments = [];
           }
         })
         .then(() => {
           componentThis.loading = false;
-          console.log("Comments:", componentThis.comments);
         })
         .catch(error => {
           componentThis.loading = false;

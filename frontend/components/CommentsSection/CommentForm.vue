@@ -29,9 +29,10 @@
         <button type="submit" class="button button--small" @click.prevent="handleSubmit">Submit</button>
       </label>
     </form>
+
     <transition name="fade">
       <div
-        v-if="submitted"
+        v-if="submitted && !isRecipeOwner"
         class="comment-form__success padding-vertical--medium padding-horizontal--large margin-vertical--large"
       >🎉Your comment was successfully added and is awaiting approval</div>
     </transition>

@@ -11,7 +11,11 @@
       :submitted="submitted"
       :error="error"
     />
-    <comments :recipeKey="recipeKey" :isRecipeOwner="recipeOwnerID === user.id" />
+    <comments
+      :recipeKey="recipeKey"
+      :isRecipeOwner="recipeOwnerID === user.id"
+      :update="updateComments"
+    />
   </div>
 </template>
 
@@ -40,7 +44,8 @@ export default {
   data() {
     return {
       submitted: false,
-      error: false
+      error: false,
+      updateComments: 0
     };
   },
   mixins: [user],
@@ -53,6 +58,7 @@ export default {
         .then(() => {
           this.submitted = true;
           this.error = false;
+          this.updateComments++;
         })
         .catch(error => {
           this.error = true;

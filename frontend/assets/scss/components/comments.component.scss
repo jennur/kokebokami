@@ -105,13 +105,6 @@
       font-size: $fontSizeSmall;
       padding: $spacingSmall $spacingMedium;
 
-      &--delete {
-        font-size: $fontSizeSmall;
-        padding: 3px $spacingMedium;
-        @media screen and (min-width: $mobileWidth) {
-          padding: 0px $spacingMedium;
-        }
-      }
       @media screen and (min-width: $mobileWidth) {
         padding: 2px $spacingMedium;
       }

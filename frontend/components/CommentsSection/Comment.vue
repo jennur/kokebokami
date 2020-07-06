@@ -1,11 +1,16 @@
 <template>
   <div v-if="isRecipeOwner || commentObj.approved" class="comment">
     <button
-      v-if="commentObj.isMyComment"
+      v-if="isRecipeOwner || commentObj.isMyComment"
       class="comment__delete-btn button button--dynamic button--transparent button--transparent-red"
-      @click="deleteComment"
+      @click="confirmDelete"
     >✕</button>
-
+    <Alert
+      :alertMessage="alertMessage"
+      :showAlert="showAlert"
+      @confirmed="deleteComment"
+      @cancel="closeAlert"
+    />
     <!-- Approval -->
     <div
       v-if="!commentObj.approved"
@@ -16,10 +21,6 @@
         class="comment__approval-text padding-vertical--medium margin-right--large"
       >Awaiting your approval</span>
       <span class="comment__approval-btn-wrap padding-vertical--medium">
-        <button
-          class="comment__approval-btn--delete button button--dynamic button--red-border button--round margin-right--medium"
-          @click="deleteComment"
-        >Delete</button>
         <button class="comment__approval-btn button button--dynamic button--round">Approve</button>
       </span>
     </div>
@@ -66,7 +67,7 @@
     </expand-transition>
     <transition name="fade">
       <div
-        v-if="submitted"
+        v-if="submitted && !isRecipeOwner"
         class="sub-comments-form__success padding-vertical--medium padding-horizontal--large margin-vertical--large"
       >🎉Your comment was successfully added and is awaiting approval</div>
     </transition>
@@ -91,6 +92,7 @@
 import CookSilhouette from "~/assets/graphics/icons/cook-silhouette-circle.svg";
 import SubComment from "./SubComment.vue";
 import ExpandTransition from "~/components/Transitions/Expand.vue";
+import Alert from "~/components/Alert.vue";
 
 export default {
   name: "comment",
@@ -98,7 +100,8 @@ export default {
     CommentForm: () => import("./CommentForm.vue"),
     CookSilhouette,
     SubComment,
-    ExpandTransition
+    ExpandTransition,
+    Alert
   },
   props: {
     comment: {
@@ -126,7 +129,9 @@ export default {
     return {
       formOpen: false,
       submitted: false,
-      error: false
+      error: false,
+      alertMessage: "",
+      showAlert: false
     };
   },
   computed: {
@@ -146,10 +151,20 @@ export default {
       return this.comment[1].username;
     },
     submitDate() {
-      return this.comment[1].submitDate;
+      let date = this.comment[1].submitDate;
+      //Do something
+      return date;
     }
   },
   methods: {
+    confirmDelete() {
+      this.alertMessage = `Are you sure you want to delete this comment '${this.commentObj.comment}'?`;
+      this.showAlert = true;
+    },
+    closeAlert() {
+      this.alertMessage = "";
+      this.showAlert = false;
+    },
     openCommentForm() {
       this.formOpen = true;
     },
@@ -198,6 +213,7 @@ export default {
           .update({ approved: true })
           .then(() => {
             console.log("Comment was updated successfully ");
+            this.$emit("update");
           })
           .catch(error => {
             console.log("Error updating comment:", error.message);
@@ -213,10 +229,28 @@ export default {
         let subCommentRef = this.$fireDb.ref(
           `recipes/${recipeKey}/comments/${mainCommentKey}/subComments/${commentKey}`
         );
+        subCommentRef
+          .remove()
+          .then(() => {
+            console.log("Successfully deleted subComment");
+            this.$emit("update");
+          })
+          .catch(error => {
+            console.log("Error deleting comment:", error.message);
+          });
       } else {
         let commentRef = this.$fireDb.ref(
           `recipes/${recipeKey}/comments/${commentKey}`
         );
+        commentRef
+          .remove()
+          .then(() => {
+            console.log("Successfully deleted comment");
+            this.$emit("update");
+          })
+          .catch(error => {
+            console.log("Error deleting comment:", error.message);
+          });
       }
     }
   }
