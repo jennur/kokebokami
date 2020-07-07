@@ -1,6 +1,15 @@
 <template>
-  <nuxt-link :to="`/recipes/${recipeUrl}/`" class="recipe-display padding--xlarge">
-    <div>
+  <nuxt-link :to="`/recipes/${recipeUrl}/`" class="recipe-display">
+    <!-- Image -->
+    <div
+      v-if="recipe.photoURL"
+      :style="`background-image: url(${recipe.photoURL})`"
+      class="recipe-display__image"
+    ></div>
+
+    <div class="full-width padding--xlarge">
+      <!-- Details -->
+
       <div class="recipe-display__category-note">
         <p v-if="typeOfMeal">
           <b>Meal type:</b>
@@ -11,6 +20,8 @@
           {{ freeFrom }}
         </p>
       </div>
+
+      <!-- Description -->
       <h3
         class="recipe-display__title margin--none margin-bottom--medium"
       >{{ recipe.title ? recipe.title : "Recipe has no title" }}</h3>
@@ -20,10 +31,11 @@
         }}
       </div>
     </div>
+    <!-- Categories -->
     <div>
       <div class="recipe-display__categories">
         <span
-          class="recipe-display__category margin-bottom--large margin-horizontal--small"
+          class="recipe-display__category margin-bottom--xxlarge margin-horizontal--small"
           v-for="category in categories"
           :key="category"
         >{{ category }}</span>
