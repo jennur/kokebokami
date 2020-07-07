@@ -77,13 +77,18 @@
         class="sub-comments-form__error padding-vertical--medium padding-horizontal--large margin-vertical--large"
       >🌧An error occured while posting your comment. Please try again later.</div>
     </transition>
-    <div v-if="commentObj.subComments" class="comment__sub-comments">
+    <div v-if="subComments.length" class="comment__sub-comments">
       <sub-comment
-        v-for="subComment in commentObj.subComments"
+        v-for="subComment in subComments"
         :key="subComment[0]"
         :subComment="subComment"
         :mainCommentKey="comment[0]"
       />
+      <button
+        v-if="cutOffSubComments.length"
+        class="button button--transparent margin-top--large"
+        @click="loadMoreSubComments"
+      >Load more</button>
     </div>
   </div>
 </template>
@@ -131,7 +136,9 @@ export default {
       submitted: false,
       error: false,
       alertMessage: "",
-      showAlert: false
+      showAlert: false,
+      subComments: [],
+      cutOffSubComments: []
     };
   },
   computed: {
@@ -144,6 +151,7 @@ export default {
     commentText() {
       return this.comment[1].comment;
     },
+
     isAnonymous() {
       return this.comment[1].isAnonymous;
     },
@@ -157,6 +165,24 @@ export default {
     }
   },
   methods: {
+    loadMoreSubComments() {
+      let subComments = this.subComments;
+      let cutOffSubComments = this.cutOffSubComments;
+      this.subComments = subComments.concat(cutOffSubComments.splice(0, 5));
+      this.cutOffSubComments = cutOffSubComments;
+    },
+    getSubComments() {
+      if (!this.isSubComment) {
+        let subComments = this.commentObj.subComments || [];
+        if (subComments.length > 2) {
+          this.cutOffSubComments = subComments.splice(
+            2,
+            subComments.length - 1
+          );
+        }
+        this.subComments = subComments;
+      }
+    },
     confirmDelete() {
       this.alertMessage = `Are you sure you want to delete this comment '${this.commentObj.comment}'?`;
       this.showAlert = true;
@@ -181,6 +207,7 @@ export default {
           this.submitted = true;
           this.formOpen = false;
           this.error = false;
+          this.$emit("update");
         })
         .catch(error => {
           this.error = true;
@@ -253,6 +280,9 @@ export default {
           });
       }
     }
+  },
+  mounted() {
+    this.getSubComments();
   }
 };
 </script>

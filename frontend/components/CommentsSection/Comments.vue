@@ -21,17 +21,25 @@
         @update="getComments"
       />
     </div>
+
+    <button
+      v-if="cutOffComments.length"
+      class="comments__load-more-btn button button--transparent margin-top--large"
+      @click="loadMoreComments"
+    >Load more</button>
   </div>
 </template>
 
 <script>
 import user from "~/mixins/user.js";
 import Comment from "./Comment.vue";
+import ExpandTransition from "~/components/Transitions/Expand.vue";
 
 export default {
   name: "comments",
   components: {
-    Comment
+    Comment,
+    ExpandTransition
   },
   props: {
     recipeKey: {
@@ -48,7 +56,7 @@ export default {
     }
   },
   data() {
-    return { loading: false, comments: [], updated: 0 };
+    return { loading: false, comments: [], cutOffComments: [], updated: 0 };
   },
   watch: {
     update: function(val) {
@@ -60,6 +68,12 @@ export default {
   },
   mixins: [user],
   methods: {
+    loadMoreComments() {
+      let comments = this.comments;
+      let cutOffComments = this.cutOffComments;
+      this.comments = comments.concat(cutOffComments.splice(0, 3));
+      this.cutOffComments = cutOffComments;
+    },
     getComments() {
       let componentThis = this;
       this.loading = true;
@@ -68,7 +82,8 @@ export default {
         .once("value", comments => {
           if (comments.exists()) {
             comments = Object.entries(comments.val());
-            componentThis.comments = comments.map(comment => {
+            comments = comments.map(comment => {
+              //Handle comment
               if (comment[1].userId === componentThis.user.id) {
                 comment[1].isMyComment = true;
               }
@@ -76,6 +91,8 @@ export default {
                 comment[1].username = "Anonymous";
                 comment[1].photoURL = "";
               }
+
+              //Handle subcomments
               if (comment[1].subComments) {
                 let subComments = Object.entries(comment[1].subComments);
                 comment[1].subComments = subComments.map(subComment => {
@@ -91,6 +108,13 @@ export default {
               }
               return comment;
             });
+            if (comments.length > 2) {
+              componentThis.cutOffComments = comments.splice(
+                2,
+                comments.length - 1
+              );
+            }
+            componentThis.comments = comments;
           } else {
             componentThis.comments = [];
           }

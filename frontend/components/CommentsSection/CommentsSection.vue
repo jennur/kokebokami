@@ -3,7 +3,6 @@
     <div class="comments-section__headline">
       <h3 class="margin-top--xxlarge margin-bottom--medium">Leave a comment</h3>
     </div>
-
     <comment-form
       class="margin-bottom--xlarge"
       @addComment="commentObj => submitComment(commentObj)"
