@@ -1,6 +1,26 @@
 <template>
   <section class="margin--auto margin-top--xlarge">
     <form v-on:submit.prevent class="add-recipe-form">
+      <div>
+        <div v-if="!imageLoaded" class="simple-loading-spinner margin--auto"></div>
+        <div
+          v-if="photoURL"
+          :style="`background-image: url(${photoURL})`"
+          class="add-recipe-form__image"
+        ></div>
+        <image-input id="dropImage" ref="dropImage" @uploaded="updateRecipeImg" />
+        <div class="text-align--right">
+          <button
+            v-if="photoURL"
+            class="button button--transparent button--transparent-red"
+            @click="removePhotoURL"
+          >✕ Remove image</button>
+        </div>
+        <span
+          v-if="imageSystemMessage"
+          class="system-message margin-vertical--large"
+        >{{imageSystemMessage}}</span>
+      </div>
       <div class="recipes-filter__form">
         <category-filter
           :transparent="true"
@@ -63,7 +83,10 @@
 </template>
 
 <script>
+const uuid = require("uuid");
 import user from "~/mixins/user.js";
+
+import ImageInput from "~/components/Input/ImageInput.vue";
 import CategoryFilter from "~/components/Filter/CategoryFilter.vue";
 import DescriptionInput from "~/components/Input/DescriptionInput.vue";
 
@@ -75,6 +98,7 @@ import TitleInput from "~/components/Input/TitleInput.vue";
 export default {
   name: "add-recipe-form",
   components: {
+    ImageInput,
     CategoryFilter,
     DescriptionInput,
     IngredientsInput,
@@ -91,6 +115,7 @@ export default {
     let existingRecipe = this.existingRecipe;
     return {
       recipeKey: this.$route.params.recipeid || "",
+      photoURL: (existingRecipe && existingRecipe.photoURL) || "",
       title: (existingRecipe && existingRecipe.title) || "",
       description: (existingRecipe && existingRecipe.description) || "",
       language: (existingRecipe && existingRecipe.language) || "",
@@ -99,8 +124,10 @@ export default {
       typeOfMeal: (existingRecipe && existingRecipe.typeOfMeal) || [],
       publicCheck: (existingRecipe && existingRecipe.public) || false,
       systemMessage: "",
+      imageSystemMessage: "",
       saved: false,
-      deleted: false
+      deleted: false,
+      imageLoaded: true
     };
   },
   methods: {
@@ -116,7 +143,6 @@ export default {
     updateTypeOfMeal(typeOfMeal) {
       this.typeOfMeal = typeOfMeal;
     },
-
     cancel() {
       let confirmText = this.editMode
         ? "Are you sure you want to discard the changes?"
@@ -148,6 +174,10 @@ export default {
       }
     },
     saveRecipe() {
+      let photoURL = this.photoURL;
+      if (photoURL === "") {
+        this.removeRecipeImg();
+      }
       const recipeTitle = document.querySelector("#recipeTitle input");
       const recipeDescription = document.querySelector(
         "#recipeDescription textarea"
@@ -173,8 +203,8 @@ export default {
       instructions.forEach(instruction => {
         instructionList.push(instruction.value);
       });
-
       let recipeObject = {
+        photoURL,
         title: recipeTitle.value,
         description: recipeDescription.value,
         servings: servings.value,
@@ -211,6 +241,56 @@ export default {
           this.systemMessage =
             "Unable to save recipe. Please try again later or contact us if the issue continues.";
       }
+    },
+    removePhotoURL() {
+      this.photoURL = "";
+    },
+    async updateRecipeImg(upload) {
+      this.removeRecipeImg();
+      let componentThis = this;
+      var imageName = uuid.v1();
+      let recipeKey = this.recipeKey;
+      this.imageLoaded = false;
+      try {
+        //save image
+        let file = upload;
+        var metadata = {
+          contentType: "image/png"
+        };
+        var storageRef = this.$fireStorage.ref();
+        var imageRef = storageRef.child(
+          `images/recipes/${recipeKey}/${imageName}.png`
+        );
+        await imageRef.put(file, metadata);
+        await imageRef.getDownloadURL().then(result => {
+          componentThis.imageLoaded = true;
+          componentThis.photoURL = result;
+        });
+      } catch (error) {
+        console.log("Error updating recipe image:", error.message);
+        this.imageSystemMessage = error.message;
+      }
+    },
+    removeRecipeImg() {
+      let componentThis = this;
+      let recipeKey = this.recipeKey;
+      let fileName = this.photoURL;
+
+      var storageRef = this.$fireStorage.ref();
+      var imageRef = storageRef.child(`images/recipes/${recipeKey}`);
+      imageRef
+        .listAll()
+        .then(function(res) {
+          res.items.forEach(function(itemRef) {
+            itemRef.delete();
+            componentThis.photoURL = "";
+          });
+        })
+        .catch(function(error) {
+          console.log("Error deleting files:", error.message);
+          componentThis.removeProfileImgSystemMessage =
+            "We're having trouble deleting your image. Please try again later or contact us.";
+        });
     }
   }
 };

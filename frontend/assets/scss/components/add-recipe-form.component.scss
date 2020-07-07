@@ -57,6 +57,23 @@
   width: 100%;
   text-align: left;
 
+  #dropImage {
+    margin: $spacingMedium auto;
+  }
+  &__image {
+    display: block;
+    width: 100%;
+    height: 260px;
+    @media screen and (min-width: $mobileWidth) {
+      height: 350px;
+    }
+    @media screen and (min-width: $tabletWidth) {
+      height: 450px;
+    }
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: 50%;
+  }
   fieldset {
     max-width: 100%;
   }

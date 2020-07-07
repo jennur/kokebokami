@@ -1,34 +1,55 @@
 <template>
   <section>
     <div ref="recipe" id="recipe" v-if="!editMode" class="recipe margin--auto">
-      <h2 class="recipe__title">{{ recipeTitle }}</h2>
-      <div class="recipe__description">{{ description }}</div>
-      <div id="ignorePDF">
-        <category-display
-          v-if="recipe.categories"
-          :categories="recipe.categories"
-          class="margin-bottom--xxlarge"
-        />
-        <type-of-meal-display
-          v-if="recipe.typeOfMeal"
-          :typeOfMeal="recipe.typeOfMeal"
-          :class="`${recipe.freeFrom ? '' : 'margin-bottom--xlarge'}`"
-        />
-        <free-from-display
-          v-if="recipe.freeFrom"
-          :freeFrom="recipe.freeFrom"
-          class="margin-bottom--xlarge"
-        />
-        <action-bar
-          :isRecipeOwner="isRecipeOwner"
-          :recipeOwnerID="recipeOwnerID"
-          :recipeKey="recipeKey"
-          :editMode="editMode"
-          @edit="toggleEditMode"
-          @download="pdfExport"
-        />
+      <div class="recipe__details-wrap">
+        <div
+          v-if="recipe.photoURL"
+          :style="`background-image: url(${recipe.photoURL})`"
+          class="recipe__image"
+        ></div>
+        <div
+          :class="{
+        'recipe__details': recipe.photoURL,
+        'recipe__details--no-img': !recipe.photoURL
+        }"
+        >
+          <div v-if="isRecipeOwner">
+            <div class="text-align--right">
+              <button
+                @click="toggleEditMode"
+                class="button button--small button--transparent"
+              >Edit mode</button>
+            </div>
+          </div>
+          <h2 class="recipe__title">{{ recipeTitle }}</h2>
+          <div class="recipe__description">{{ description }}</div>
+          <div id="ignorePDF">
+            <category-display
+              v-if="recipe.categories"
+              :categories="recipe.categories"
+              class="margin-bottom--xxlarge"
+            />
+            <type-of-meal-display
+              v-if="recipe.typeOfMeal"
+              :typeOfMeal="recipe.typeOfMeal"
+              :class="`${recipe.freeFrom ? '' : 'margin-bottom--xlarge'}`"
+            />
+            <free-from-display
+              v-if="recipe.freeFrom"
+              :freeFrom="recipe.freeFrom"
+              class="margin-bottom--xlarge"
+            />
+            <action-bar
+              :isRecipeOwner="isRecipeOwner"
+              :recipeOwnerID="recipeOwnerID"
+              :recipeKey="recipeKey"
+              @download="pdfExport"
+            />
+          </div>
+        </div>
       </div>
-      <div class="recipe__flex-no-wrap flex-row--align-top">
+
+      <div class="recipe__flex-no-wrap flex-row--align-top margin-vertical--xlarge">
         <ingredients-display
           class="recipe__ingredients-wrap"
           v-if="recipe.ingredients"

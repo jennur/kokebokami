@@ -4,6 +4,51 @@
   h4 {
     color: $blue;
   }
+  &__details-wrap {
+    display: block;
+    @media screen and (min-width: 800px) {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      flex-wrap: nowrap;
+    }
+    position: relative;
+  }
+  &__image {
+    display: block;
+    width: 100%;
+    height: 300px;
+    @media screen and (min-width: $mobileWidth) {
+      height: 350px;
+    }
+    @media screen and (min-width: 800px) {
+      height: 350px;
+      width: 50%;
+      order: 1;
+    }
+
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: 50%;
+  }
+  &__details {
+    width: 100%;
+    box-sizing: border-box;
+    background-color: $lightOrange;
+    padding: $spacingLarge;
+    border-radius: 0px 0px $spacingMedium $spacingMedium;
+    //border: 2px solid $green;
+    margin: 0px auto;
+    @media screen and (min-width: 800px) {
+      width: 50%;
+      order: 0;
+      border-radius: $spacingMedium;
+    }
+
+    &--no-img {
+      width: 100%;
+    }
+  }
   &__title {
     font-family: $headingFont;
     font-size: $fontSizeXXLargeMobile;
@@ -47,6 +92,8 @@
       display: flex;
       flex-direction: row;
       flex-wrap: nowrap;
+      margin-left: $spacingLarge;
+      margin-right: $spacingLarge;
     }
   }
   &__ingredients-wrap {
@@ -143,7 +190,9 @@
     padding: $spacingXSmall $spacingLarge $spacingSmall $spacingLarge;
     border-radius: $spacingLarge;
     text-transform: capitalize;
-
+    &:not(:last-child) {
+      margin-bottom: $spacingMedium;
+    }
     &-note {
       color: $blue;
       font-size: $fontSizeSmall;
