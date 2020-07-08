@@ -1,6 +1,14 @@
 <template>
   <section>
     <div ref="recipe" id="recipe" v-if="!editMode" class="recipe margin--auto">
+      <div v-if="isRecipeOwner" class="text-align--right">
+        <button
+          @click="toggleEditMode"
+          class="recipe__edit-btn button button--small button--transparent"
+        >
+          Edit mode
+        </button>
+      </div>
       <div class="recipe__details-wrap">
         <div
           v-if="recipe.photoURL"
@@ -9,18 +17,15 @@
         ></div>
         <div
           :class="{
-        'recipe__details': recipe.photoURL,
-        'recipe__details--no-img': !recipe.photoURL
-        }"
+            recipe__details: recipe.photoURL,
+            'recipe__details--no-img': !recipe.photoURL
+          }"
         >
-          <div v-if="isRecipeOwner">
-            <div class="text-align--right">
-              <button
-                @click="toggleEditMode"
-                class="button button--small button--transparent"
-              >Edit mode</button>
-            </div>
-          </div>
+          <type-of-meal-display
+            v-if="recipe.typeOfMeal"
+            :typeOfMeal="recipe.typeOfMeal"
+            :class="`${recipe.freeFrom ? '' : 'margin-bottom--xlarge'}`"
+          />
           <h2 class="recipe__title">{{ recipeTitle }}</h2>
           <div class="recipe__description">{{ description }}</div>
           <div id="ignorePDF">
@@ -29,11 +34,7 @@
               :categories="recipe.categories"
               class="margin-bottom--xxlarge"
             />
-            <type-of-meal-display
-              v-if="recipe.typeOfMeal"
-              :typeOfMeal="recipe.typeOfMeal"
-              :class="`${recipe.freeFrom ? '' : 'margin-bottom--xlarge'}`"
-            />
+
             <free-from-display
               v-if="recipe.freeFrom"
               :freeFrom="recipe.freeFrom"
@@ -49,7 +50,9 @@
         </div>
       </div>
 
-      <div class="recipe__flex-no-wrap flex-row--align-top margin-vertical--xlarge">
+      <div
+        class="recipe__flex-no-wrap flex-row--align-top margin-vertical--xlarge"
+      >
         <ingredients-display
           class="recipe__ingredients-wrap"
           v-if="recipe.ingredients"
