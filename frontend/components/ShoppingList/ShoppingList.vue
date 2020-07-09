@@ -150,7 +150,7 @@ export default {
   computed: {
     shared() {
       let createdByID = this.list.createdBy && this.list.createdBy.id;
-      return createdByID !== this.user.id;
+      return createdByID && createdByID !== this.user.id;
     },
     subLists() {
       let subLists = this.list.subLists;
