@@ -68,6 +68,7 @@ export default {
         this.isNew = false;
         let componentThis = this;
         let userID = this.user.id;
+        let username = this.user.displayName;
 
         let mainListKey = this.mainListKey;
         let mainListTitle = this.mainListTitle || "New shopping list";
@@ -109,8 +110,8 @@ export default {
           let newMainListKey = shoppingListsRef
             .push({
               title: mainListTitle,
-              createdBy: userID,
-              owners: [userID]
+              createdBy: { id: userID, displayName: username },
+              owners: [{ id: userID, displayName: username }]
             })
             .then(result => {
               shoppingListsRef

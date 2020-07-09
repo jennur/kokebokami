@@ -168,8 +168,8 @@ export default {
         shoppingListsRef
           .push({
             title: mainListTitle,
-            createdBy: userID,
-            owners: [userID]
+            createdBy: { id: userID, displayName: username },
+                owners: [{ id: userID, displayName: username }]
           })
           .then(result => {
             shoppingListsRef
