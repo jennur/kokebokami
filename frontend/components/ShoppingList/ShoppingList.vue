@@ -56,6 +56,12 @@
         >
           {{ list.title }}
         </h2>
+        <span v-if="shared" class="shopping-list__created-by">
+          Shared from:
+          <nuxt-link :to="`/cooks/${list.createdBy.id}/`">
+            {{ list.createdBy.displayName }}</nuxt-link
+          ></span
+        >
       </div>
 
       <!-- Edit mode for title -->
@@ -103,10 +109,6 @@
         class="margin-vertical--large margin-right--xxlarge"
         @increment="addNewSubList"
         >Add new sublist</increment-button
-      >
-
-      <span v-if="shared" class="shopping-list__created-by">
-        Shared from: {{ list.createdBy.displayName }}</span
       >
     </div>
   </section>
