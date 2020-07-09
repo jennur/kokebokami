@@ -7,9 +7,11 @@
         :data-list-item="`list-item-${index}`"
         class="margin-vertical--medium"
       >
-        <label :class="{
-            'complete': listItems[index].complete
-            }">
+        <label
+          :class="{
+            complete: listItems[index].complete
+          }"
+        >
           <input
             tabindex="0"
             type="checkbox"
@@ -34,24 +36,32 @@
       <button
         class="button button--small button--transparent margin-right--medium margin-vertical--large"
         @click="toggleEditMode"
-      >Edit sublist</button>
+      >
+        Edit sublist
+      </button>
     </div>
     <div v-if="editMode" class="flex-row flex-row--align-center">
       <increment-button
         class="margin-right--medium margin-vertical--large"
         @increment="addNewListItem"
-      >Add item</increment-button>
+        >Add item</increment-button
+      >
       <button
+        v-if="listItems.length"
         class="button button--xsmall button--dynamic button--cancel margin-left--medium margin-vertical--large"
         @click="saveListItems"
-      >✕ Close</button>
+      >
+        ✕ Close
+      </button>
     </div>
     <div v-if="editMode" class="flex-row flex-row--align-center">
       <button
         v-if="subListKey"
         class="button button--small button--transparent button--transparent-red padding-horizontal--large margin-right--large margin-vertical--large"
         @click="handleDelete"
-      >Delete sublist</button>
+      >
+        Delete sublist
+      </button>
     </div>
   </div>
 </template>
@@ -118,6 +128,7 @@ export default {
     },
     saveListItems() {
       let componentThis = this;
+      let userID = this.user.id;
 
       let mainListKey = this.mainListKey;
       let mainListTitle = this.mainListTitle || "New shopping list";
@@ -125,13 +136,9 @@ export default {
       let listItems = this.updatedListItems;
       let subListKey = this.subListKey;
 
-      let shoppingListsRef = this.$fireDb.ref(
-        `users/${this.user.id}/shoppingLists`
-      );
+      let shoppingListsRef = this.$fireDb.ref(`shoppingLists`);
+      let mainListRef = this.$fireDb.ref(`shoppingLists/${mainListKey}`);
 
-      let mainListRef = this.$fireDb.ref(
-        `users/${this.user.id}/shoppingLists/${mainListKey}`
-      );
       if (mainListKey && subListKey !== "") {
         mainListRef
           .child("subLists")
@@ -156,11 +163,13 @@ export default {
             componentThis.$emit("update");
           })
           .catch(error => console.log("Error setting subList:", error.message));
-      } else if (!mainListKey) {
+      } /* else if (!mainListKey) {
         console.log("Adding new main list");
-        let newMainListKey = shoppingListsRef
+        shoppingListsRef
           .push({
-            title: mainListTitle
+            title: mainListTitle,
+            createdBy: userID,
+            owners: [userID]
           })
           .then(result => {
             shoppingListsRef
@@ -173,7 +182,7 @@ export default {
                 componentThis.$emit("update");
               });
           });
-      } else {
+      } */ else {
         console.log("Something went wrong while trying to add/update sublist");
       }
     }

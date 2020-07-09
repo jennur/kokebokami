@@ -2,7 +2,7 @@
 .recipe-link-display-wrap {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  //justify-content: stretch;
   flex-basis: 50%;
   flex: 1 1 0;
   margin: $spacingSmall;
@@ -21,6 +21,9 @@
     background-size: cover;
     border-radius: ($spacingMedium - 2px) ($spacingMedium - 2px) 0px 0px;
     background-position: 50%;
+  }
+  svg.recipe-display__image {
+    height: auto;
   }
 }
 .recipe-link-display {

@@ -3,18 +3,14 @@
     <breadcrumbs :routes="breadcrumbs" />
     <div class="margin-vertical--xxlarge">
       <shopping-list
-        v-for="(shoppingList,index) in shoppingLists"
+        v-for="(shoppingList, index) in shoppingLists"
         :key="`shopping-list-${index}`"
-        :title="shoppingList[1].title"
-        :subLists="objectToEntries(shoppingList[1].subLists)"
-        :mainListKey="shoppingList[0]"
+        :list="{ ...shoppingList[1], key: shoppingList[0] }"
         @update="updateShoppingLists"
       />
       <shopping-list
         v-if="addingNewShoppingList"
-        :title="'New shopping list'"
-        :subLists="[]"
-        :mainListKey="''"
+        :list="{ key: '', title: 'New shopping list', subLists: [] }"
         @update="updateShoppingLists"
         @cancel="addingNewShoppingList = false"
       />
@@ -23,13 +19,15 @@
       <increment-button
         class="margin-bottom--xxlarge"
         @increment="addNewShoppingList"
-      >Add new shopping list</increment-button>
+        >Add new shopping list</increment-button
+      >
     </div>
   </div>
 </template>
 
 <script>
 import user from "~/mixins/user.js";
+
 import shoppingLists from "~/mixins/shoppingLists.js";
 
 import ShoppingList from "~/components/ShoppingList/ShoppingList.vue";

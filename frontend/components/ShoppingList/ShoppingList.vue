@@ -1,24 +1,61 @@
 <template>
   <section class="shopping-list margin-bottom--large">
-    <div class="flex-row flex-row--justify-right margin-bottom--large">
+    <div class="flex-row flex-row--align-center margin-bottom--large">
+      <!-- Share action -->
+      <div v-if="list && list.key">
+        <button
+          v-if="!sharing"
+          @click="toggleShareBox"
+          class="button button--small button--green-border"
+        >
+          <share-icon class="icon icon--in-button margin-right--medium" />Share
+          shopping list
+        </button>
+        <button
+          v-else
+          class="button button--small button--transparent button--transparent-red"
+          @click="toggleShareBox"
+        >
+          ✕ Close
+        </button>
+        <shareBox
+          :open="sharing"
+          @share="follower => shareShoppingList(follower)"
+          class="margin-top--medium"
+        />
+        <div v-if="systemMessage" class="system-message margin-top--large">
+          {{ systemMessage }}
+        </div>
+      </div>
+
+      <!-- Delete / Cancel action -->
       <div
-        v-if="mainListKey"
+        v-if="list.key"
         class="shopping-list__delete-collection-btn button button--small button--transparent button--transparent-red"
         @click="deleteShoppingList"
-      >Delete collection</div>
+      >
+        Delete collection
+      </div>
       <button
         v-else
         class="shopping-list__delete-collection-btn button button--small button--cancel"
         @click="$emit('cancel')"
-      >✕ Cancel</button>
+      >
+        ✕ Cancel
+      </button>
     </div>
     <!-- Shopping list title -->
     <div class="shopping-list__title margin-bottom--large margin-top--xxlarge">
-      <div v-if="title && !editTitle" class="flex-row flex-row--align-center margin-top--large">
+      <div
+        v-if="list.title && !editTitle"
+        class="flex-row flex-row--align-center margin-top--large"
+      >
         <h2
           class="margin-bottom--small margin-right--large"
           @click="event => toggleEditTitle(event)"
-        >{{title}}</h2>
+        >
+          {{ list.title }}
+        </h2>
       </div>
 
       <!-- Edit mode for title -->
@@ -28,11 +65,15 @@
           v-model="updatedTitle"
           class="margin-right--large"
           v-click-outside="saveTitle"
-          @keydown="event => {
-          event.keyCode === 13 && saveTitle();
-        }"
+          @keydown="
+            event => {
+              event.keyCode === 13 && saveTitle();
+            }
+          "
         />
-        <div class="flex-row flex-row--align-center flex-row--nowrap margin-top--medium"></div>
+        <div
+          class="flex-row flex-row--align-center flex-row--nowrap margin-top--medium"
+        ></div>
       </div>
     </div>
     <!-- Sublists -->
@@ -42,33 +83,41 @@
         :key="`shopping-list-${index}`"
         :subList="subList[1]"
         :subListKey="subList[0]"
-        :mainListTitle="title"
-        :mainListKey="mainListKey"
+        :mainListTitle="list.title"
+        :mainListKey="list.key"
         @update="updateSubLists"
       />
       <sub-list
         v-if="addingNewSubList"
-        :subList="{title: '', listItems: []}"
+        :subList="{ title: '', listItems: [] }"
         :subListKey="''"
-        :mainListTitle="title"
-        :mainListKey="mainListKey"
+        :mainListTitle="list.title"
+        :mainListKey="list.key"
         @update="updateSubLists"
       />
     </div>
-    <div class="flex-row flex-row--align-center flex-row--space-between full-width">
+    <div
+      class="flex-row flex-row--align-center flex-row--space-between full-width"
+    >
       <increment-button
         class="margin-vertical--large margin-right--xxlarge"
-        @increment="addingNewSubList = true"
-      >Add new sublist</increment-button>
+        @increment="addNewSubList"
+        >Add new sublist</increment-button
+      >
+
+      <span v-if="shared" class="shopping-list__created-by">
+        Shared from: {{ list.createdBy.displayName }}</span
+      >
     </div>
   </section>
 </template>
 
 <script>
 import ClickOutside from "vue-click-outside";
-
+import shareIcon from "~/assets/graphics/icons/shareicon.svg";
 import user from "~/mixins/user.js";
 
+import ShareBox from "./ShareBox.vue";
 import IncrementButton from "~/components/Input/IncrementButton.vue";
 import DecrementButton from "~/components/Input/DecrementButton.vue";
 import SubList from "./SubList.vue";
@@ -76,60 +125,59 @@ import SubList from "./SubList.vue";
 export default {
   name: "shopping-list",
   components: {
+    shareIcon,
+    ShareBox,
     IncrementButton,
     DecrementButton,
     SubList
   },
   props: {
-    title: {
-      type: String,
-      default: ""
-    },
-    mainListKey: {
-      type: String,
-      default: ""
-    },
-    subLists: {
-      type: Array,
-      default: () => []
+    list: {
+      type: Object,
+      default: () => {}
     }
   },
   mixins: [user],
   data() {
     return {
-      updatedTitle: this.title,
+      updatedTitle: this.list && this.list.title,
       editTitle: false,
-      addingNewSubList: false
+      addingNewSubList: false,
+      sharing: false,
+      systemMessage: ""
     };
   },
-  watch: {
-    title: function(val) {
-      this.updatedTitle = val;
+  computed: {
+    shared() {
+      let createdByID = this.list.createdBy && this.list.createdBy.id;
+      return createdByID !== this.user.id;
+    },
+    subLists() {
+      let subLists = this.list.subLists;
+      return (subLists && Object.entries(subLists)) || [];
     }
   },
   methods: {
+    toggleShareBox() {
+      this.sharing = !this.sharing;
+      this.systemMessage = "";
+    },
     toggleEditTitle(event) {
       this.editTitle = !this.editTitle;
       event && event.stopPropagation();
     },
-    addNewSubList() {
-      this.addingNewSubList = true;
-    },
     saveTitle() {
       this.addingNewSubList = false;
       let componentThis = this;
-      let mainListKey = this.mainListKey;
+      let mainListKey = this.list.key;
+      let userID = this.user.id;
+      let username = this.user.displayName;
 
-      if (this.title !== this.updatedTitle) {
+      if (this.list.title !== this.updatedTitle) {
         let title = this.updatedTitle;
 
-        let shoppingListRef = this.$fireDb.ref(
-          `users/${this.user.id}/shoppingLists/`
-        );
-        let thisListRef = this.$fireDb.ref(
-          `users/${this.user.id}/shoppingLists/${mainListKey}`
-        );
         if (mainListKey) {
+          let thisListRef = this.$fireDb.ref(`shoppingLists/${mainListKey}`);
           thisListRef
             .update({ title })
             .then(() => {
@@ -141,9 +189,14 @@ export default {
               console.log("Title update failed:", error.message);
             });
         } else {
+          let shoppingListRef = this.$fireDb.ref(`shoppingLists`);
           shoppingListRef.once("value", snapshot => {
             shoppingListRef
-              .push({ title })
+              .push({
+                title,
+                createdBy: { id: userID, displayName: username },
+                owners: [{ id: userID, displayName: username }]
+              })
               .then(mainListObject => {
                 console.log("New main list added");
                 componentThis.toggleEditTitle();
@@ -165,27 +218,93 @@ export default {
       this.addingNewSubList = false;
       this.$emit("update");
     },
+    shareShoppingList(follower) {
+      if (follower.length && follower[0] !== "") {
+        let componentThis = this;
+        let userID = this.user.id;
+        let username = this.user.displayName;
+        let mainListKey = this.list.key;
+        let followerUsername = follower[1].displayName;
+        let followerID = follower[0];
+
+        let ownersRef = this.$fireDb.ref(`shoppingLists/${mainListKey}/owners`);
+
+        try {
+          ownersRef.once("value", snapshot => {
+            if (snapshot.exists()) {
+              console.log("Snapshot exists");
+
+              let owners = Object.values(snapshot.val());
+              let shared = false;
+              owners.forEach(user => {
+                if (user.id === followerID) {
+                  componentThis.systemMessage = `This shopping list is already shared with ${followerUsername} `;
+                  shared = true;
+                }
+              });
+
+              if (!shared) {
+                ownersRef
+                  .push({
+                    id: followerID,
+                    displayName: followerUsername,
+                    sharedFrom: { id: userID, displayName: username }
+                  })
+                  .then(() => {
+                    componentThis.systemMessage = `Successfully shared with ${followerUsername}`;
+                    componentThis.$emit("update");
+                  });
+              }
+            }
+          });
+        } catch (error) {
+          console.log("Error while sharing:", error.message);
+          this.systemMessage = "An error occured while sharing";
+        }
+      } else {
+        this.systemMessage = "We were unable to find this user in the database";
+      }
+    },
     deleteShoppingList() {
       let componentThis = this;
-      let mainListKey = this.mainListKey;
-      let mainListRef = this.$fireDb.ref(
-        `users/${this.user.id}/shoppingLists/${mainListKey}`
-      );
+      let userID = this.user.id;
+      let mainListRef = this.$fireDb.ref(`shoppingLists/${this.list.key}`);
+      let ownersRef = this.$fireDb.ref(`shoppingLists/${this.list.key}/owners`);
+
       if (
         confirm(
-          `Are you sure you want to delete shopping list collection "${this.title}"?`
+          `Are you sure you want to delete shopping list collection "${this.list.title}"?`
         )
       ) {
-        mainListRef
-          .remove()
-          .then(() => {
-            console.log("Successfully deleted shopping list");
-            componentThis.toggleEditTitle();
-            componentThis.$emit("update");
-          })
-          .catch(error =>
-            console.log("Error deleting shopping list:", error.message)
-          );
+        let owners = this.list.owners && Object.values(this.list.owners);
+
+        if (owners.length <= 1) {
+          // Remove completely from database
+          mainListRef
+            .remove()
+            .then(() => {
+              console.log("Successfully deleted shopping list");
+              componentThis.$emit("update");
+            })
+            .catch(error =>
+              console.log("Error deleting shopping list:", error.message)
+            );
+        } else {
+          //Delete only for current user
+          ownersRef.once("value", snapshot => {
+            if (snapshot.exists()) {
+              let owners = Object.entries(snapshot.val());
+              owners = owners.filter(user => {
+                return user[1].id !== userID;
+              });
+
+              owners = Object.fromEntries(owners);
+              mainListRef.update({ owners }).then(() => {
+                componentThis.$emit("update");
+              });
+            }
+          });
+        }
       }
     }
   },

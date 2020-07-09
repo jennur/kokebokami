@@ -9,39 +9,57 @@ export default {
     getShoppingLists() {
       let componentThis = this;
       if (this.userAuth) {
-        let shoppingListsRef = this.$fireDb.ref(
-          `users/${this.userAuth.uid}/shoppingLists`
-        );
+        console.log("Getting shopping lists");
+
+        let userID = this.userAuth.uid;
+        let username = this.$store.state.user.displayName;
+
+        let shoppingListsRef = this.$fireDb.ref(`shoppingLists`);
         shoppingListsRef
           .once("value", shoppingLists => {
+            let updatedShoppingLists = [];
+
             if (shoppingLists.exists()) {
-              shoppingLists = Object.entries(shoppingLists.val());
-              componentThis.shoppingLists = shoppingLists;
+              shoppingLists = Object.entries(shoppingLists.val()) || [];
               let shoppingListCount = 0;
+
               shoppingLists.forEach(list => {
-                if (list && list[1] && list[1].subLists) {
-                  let subLists = Object.entries(list[1].subLists) || [];
-                  subLists.forEach(subList => {
-                    if (subList && subList[1] && subList[1].listItems) {
-                      shoppingListCount += subList[1].listItems.length;
+                let owners = Object.values(list[1].owners);
+                owners.forEach(user => {
+                  if (user.id === userID) {
+                    updatedShoppingLists.push(list);
+
+                    if (list[1].subLists) {
+                      let subLists = Object.values(list[1].subLists) || [];
+                      subLists.forEach(subList => {
+                        if (subList && subList.listItems) {
+                          shoppingListCount += subList.listItems.length;
+                        }
+                      });
                     }
-                  });
-                }
+                  }
+                });
               });
+
               componentThis.$store.dispatch(
                 "SET_SHOPPING_LIST_COUNT",
                 shoppingListCount
               );
             } else {
-              shoppingListsRef.push({ title: "My shopping list" }).then(() => {
-                shoppingListsRef.once("value", shoppingLists => {
-                  componentThis.shoppingLists = Object.entries(
-                    shoppingLists.val()
-                  );
-                  componentThis.$store.dispatch("SET_SHOPPING_LIST_COUNT", 0);
+              shoppingListsRef
+                .push({
+                  title: "My shopping list",
+                  createdBy: { id: userID, displayName: username },
+                  owners: [{ id: userID, displayName: username }],
+                  subLists: []
+                })
+                .then(() => {
+                  shoppingListsRef.once("value", shoppingLists => {
+                    updatedShoppingLists = Object.entries(shoppingLists.val());
+                  });
                 });
-              });
             }
+            componentThis.shoppingLists = updatedShoppingLists;
           })
           .catch(error => {
             console.log("Error: Failed getting shopping list:", error.message);

@@ -13,7 +13,7 @@
               class="share-form__select margin-top--medium margin-right--medium"
               :options="followerNames"
               defaultValue="Select a user"
-              @select="(option) => selected = option"
+              @select="option => (selected = option)"
             />
           </label>
         </fieldset>

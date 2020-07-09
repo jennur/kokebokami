@@ -111,7 +111,7 @@ export default {
         )
       ) {
         let subListRef = this.$fireDb.ref(
-          `users/${this.user.id}/shoppingLists/${mainListKey}/subLists/${subListKey}`
+          `shoppingLists/${mainListKey}/subLists/${subListKey}`
         );
         subListRef
           .remove()

@@ -4,6 +4,10 @@
   padding: $spacingLarge;
   position: relative;
 
+  &__created-by {
+    font-size: $fontSizeSmall;
+    color: $blue;
+  }
   &__delete-collection-btn {
     /* margin-top: -$spacingMedium;
     margin-bottom: $spacingLarge; */
@@ -28,6 +32,23 @@
       @media screen and (min-width: $tabletWidth) {
         font-size: $fontSizeXLarge;
       }
+    }
+  }
+
+  &__share-icon {
+    width: 10px;
+    padding: $spacingMedium;
+    border-radius: $spacingMedium;
+    border: 1px solid $green;
+    transition: 0.5s;
+    cursor: pointer;
+    &:hover {
+      background-color: rgba($green, 0.15);
+    }
+    circle,
+    path {
+      fill: $richBlack;
+      stroke: $richBlack;
     }
   }
   .sub-list {

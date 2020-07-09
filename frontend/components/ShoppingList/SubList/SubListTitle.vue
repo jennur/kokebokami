@@ -5,15 +5,20 @@
         v-if="!editMode && title"
         class="heading--blue margin--none"
         @click="event => toggleEditMode(event)"
-      >{{updatedTitle}}</h3>
+      >
+        {{ updatedTitle }}
+      </h3>
       <label v-if="editMode" class="flex-column">
         <input
           type="text"
           v-model="updatedTitle"
           placeholder="Sublist title"
           v-click-outside="saveTitle"
-          @keydown="event => {
-          event.keyCode === 13 && saveTitle()}"
+          @keydown="
+            event => {
+              event.keyCode === 13 && saveTitle();
+            }
+          "
         />
       </label>
     </div>
@@ -62,6 +67,7 @@ export default {
       if (this.isNew || this.title !== this.updatedTitle) {
         this.isNew = false;
         let componentThis = this;
+        let userID = this.user.id;
 
         let mainListKey = this.mainListKey;
         let mainListTitle = this.mainListTitle || "New shopping list";
@@ -69,13 +75,9 @@ export default {
         let title = this.updatedTitle;
         let subListKey = this.subListKey;
 
-        let shoppingListsRef = this.$fireDb.ref(
-          `users/${this.user.id}/shoppingLists`
-        );
+        let shoppingListsRef = this.$fireDb.ref(`shoppingLists`);
+        let mainListRef = this.$fireDb.ref(`shoppingLists/${mainListKey}`);
 
-        let mainListRef = this.$fireDb.ref(
-          `users/${this.user.id}/shoppingLists/${mainListKey}`
-        );
         if (mainListKey && subListKey !== "") {
           mainListRef
             .child("subLists")
@@ -106,7 +108,9 @@ export default {
           console.log("Adding new main list");
           let newMainListKey = shoppingListsRef
             .push({
-              title: mainListTitle
+              title: mainListTitle,
+              createdBy: userID,
+              owners: [userID]
             })
             .then(result => {
               shoppingListsRef
