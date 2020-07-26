@@ -267,8 +267,8 @@ export default {
           .remove()
           .then(() => {
             console.log("Successfully deleted shopping list");
-            componentThis.$emit("update");
             componentThis.toggleAlert();
+            componentThis.$emit("update");
           })
           .catch(error =>
             console.log("Error deleting shopping list:", error.message)
@@ -284,6 +284,7 @@ export default {
 
             owners = Object.fromEntries(owners);
             mainListRef.update({ owners }).then(() => {
+              componentThis.toggleAlert();
               componentThis.$emit("update");
             });
           }
