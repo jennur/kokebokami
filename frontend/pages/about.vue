@@ -28,8 +28,8 @@
   </section>
 </template>
 <script>
-import foodclouds from "../assets/graphics/cookbook-clouds.svg";
-import clouds from "../assets/graphics/clouds.svg";
+import foodclouds from "../assets/graphics/illustrations/cookbook-clouds.svg";
+import clouds from "../assets/graphics/illustrations/clouds.svg";
 export default {
   name: "about",
   head() {

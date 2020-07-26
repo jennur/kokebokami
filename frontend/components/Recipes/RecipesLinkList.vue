@@ -9,23 +9,26 @@
       >
         <div class="flex-row flex-row--align-center">
           <h4
-            class="recipe-link-list__headline margin-left--small margin-bottom--medium"
+            class="recipe-link-list__headline margin-left--small margin-bottom--small margin-top--large"
           >{{ category && category.title }}</h4>
           <button
-            class="button button--small margin-bottom--medium"
-            :class="{
-              'button--cancel': editMode,
-            'button--transparent margin-left--large': !editMode
-            }"
-            @click="toggleEditMode"
-          >{{editMode ? "✕ Close" : "Edit mode"}}</button>
+            class="button--increment button--increment-small margin-bottom--small margin-top--large margin-left--medium"
+            @click="addNewLink(category.title)"
+          >Add link</button>
         </div>
         <div class="recipe-link-list">
           <recipe-link
             v-for="(link, index) in category.links"
             :key="`recipe-link-${index}`"
             :link="link"
-            :editMode="editMode"
+            @update="$emit('update')"
+          />
+          <recipe-link
+            v-if="addingNew && addingToCategory === category.title"
+            :key="`recipe-link-new`"
+            :link="['', {}]"
+            :addingToCategory="addingToCategory"
+            @update="saveNewLink"
           />
         </div>
       </div>
@@ -62,7 +65,8 @@ export default {
   },
   data() {
     return {
-      editMode: false
+      addingNew: false,
+      addingToCategory: null
     };
   },
   computed: {
@@ -94,8 +98,13 @@ export default {
     }
   },
   methods: {
-    toggleEditMode() {
-      this.editMode = !this.editMode;
+    addNewLink(categoryTitle) {
+      console.log("Add new");
+      this.addingNew = true;
+      this.addingToCategory = categoryTitle;
+    },
+    saveNewLink() {
+      this.addingNew = false;
       this.$emit("update");
     }
   }

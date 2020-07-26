@@ -17,7 +17,7 @@
   </div>
 </template>
 <script>
-import backupImg from "~/assets/graphics/cook-silhouette-circle.svg";
+import backupImg from "~/assets/graphics/icons/cook-silhouette-circle.svg";
 
 export default {
   name: "profile-view",

@@ -9,18 +9,34 @@
     text-align: center;
   }
 
+  &--full-height {
+    min-height: 100vh;
+  }
+
   &--blue {
     background-color: $blue;
     color: $white;
   }
   &--light-blue {
-    background-color: rgba($blue, 0.08);
+    background-color: $lightBlue;
   }
   &--orange {
-    background-color: rgba($orange, 0.08);
+    background-color: $lightOrange;
   }
 
   &--green {
-    background-color: rgba($green, 0.1);
+    background-color: $lightGreen;
+  }
+}
+
+.initial-info-section {
+  position: relative;
+  margin-top: -50px;
+  padding-top: 80px;
+  height: 100vh;
+  box-sizing: border-box;
+  @media screen and (min-width: $tabletWidth) {
+    margin-top: -60px;
+    padding-top: 100px;
   }
 }

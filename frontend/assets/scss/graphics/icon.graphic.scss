@@ -1,13 +1,19 @@
 .icon {
   width: 1em;
+  min-width: 1em;
+  max-height: 1em;
+  cursor: pointer;
 
   &--in-button {
     margin-left: -$spacingSmall;
   }
 
   &--blue {
-    & g {
+    & g,
+    & circle,
+    & path {
       fill: $blue;
+      stroke: $blue;
     }
   }
 

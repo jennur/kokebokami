@@ -15,7 +15,7 @@
       />
       <input v-else type="text" placeholder="New list title" v-model="newListTitle" />
       <button
-        class="button button--small button--green button--round margin-left--medium"
+        class="button button--small button--dynamic button--green-border padding--medium margin-left--medium"
         @click="addToShoppingList"
       >Add</button>
     </div>
@@ -87,6 +87,8 @@ export default {
     },
     addToShoppingList() {
       let componentThis = this;
+      let username = this.user.displayName;
+      let userID = this.user.id;
       let recipeTitle = this.recipeTitle;
       let ingredients = this.ingredients;
       let shoppingListIngredients = ingredients.map(ingredient => {
@@ -102,7 +104,7 @@ export default {
       ) {
         let shoppingListKey = chosenShoppingList[0];
         let shoppingListRef = this.$fireDb.ref(
-          `users/${this.user.id}/shoppingLists/${shoppingListKey}`
+          `shoppingLists/${shoppingListKey}`
         );
 
         shoppingListRef
@@ -131,36 +133,39 @@ export default {
           );
       } else if (this.newListTitle !== "") {
         let title = this.newListTitle;
-        let newShoppingListRef = this.$fireDb.ref(
-          `users/${this.user.id}/shoppingLists`
-        );
+        let newShoppingListRef = this.$fireDb.ref(`shoppingLists`);
 
-        newShoppingListRef.push({ title }).then(shoppingList => {
-          console.log("Key:", shoppingList.key);
-          newShoppingListRef
-            .child(shoppingList.key)
-            .child("subLists")
-            .push({
-              title: recipeTitle,
-              listItems: shoppingListIngredients
-            })
-            .then(() => {
-              console.log("Successfully added to shoppingList:", title);
-              let shoppingListCount =
-                componentThis.$store.state.shoppingListCount;
-              shoppingListCount += shoppingListIngredients.length;
-              componentThis.$store.dispatch(
-                "SET_SHOPPING_LIST_COUNT",
-                shoppingListCount
+        newShoppingListRef
+          .push({
+            title,
+            createdBy: { id: userID, displayName: username },
+            owners: [{ id: userID, displayName: username }]
+          })
+          .then(shoppingList => {
+            newShoppingListRef
+              .child(shoppingList.key)
+              .child("subLists")
+              .push({
+                title: recipeTitle,
+                listItems: shoppingListIngredients
+              })
+              .then(() => {
+                console.log("Successfully added to shoppingList:", title);
+                let shoppingListCount =
+                  componentThis.$store.state.shoppingListCount;
+                shoppingListCount += shoppingListIngredients.length;
+                componentThis.$store.dispatch(
+                  "SET_SHOPPING_LIST_COUNT",
+                  shoppingListCount
+                );
+                componentThis.addedToShoppingList = true;
+                componentThis.addingToShoppingList = false;
+                componentThis.addNewShoppingList = false;
+              })
+              .catch(error =>
+                console.log("Failed to add to shopping list:", error.message)
               );
-              componentThis.addedToShoppingList = true;
-              componentThis.addingToShoppingList = false;
-              componentThis.addNewShoppingList = false;
-            })
-            .catch(error =>
-              console.log("Failed to add to shopping list:", error.message)
-            );
-        });
+          });
       }
     }
   }

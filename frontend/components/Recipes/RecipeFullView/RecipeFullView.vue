@@ -1,42 +1,66 @@
 <template>
   <section>
-    <div ref="recipe" id="recipe" v-if="!editMode" class="recipe mobile-width margin--auto">
-      <h2 class="recipe__title">{{ recipeTitle }}</h2>
-      <div class="recipe__description">{{ description }}</div>
-      <div id="ignorePDF">
-        <category-display
-          v-if="recipe.categories"
-          :categories="recipe.categories"
-          class="margin-bottom--xxlarge"
-        />
-        <type-of-meal-display
-          v-if="recipe.typeOfMeal"
-          :typeOfMeal="recipe.typeOfMeal"
-          :class="`${recipe.freeFrom ? '' : 'margin-bottom--xlarge'}`"
-        />
-        <free-from-display
-          v-if="recipe.freeFrom"
-          :freeFrom="recipe.freeFrom"
-          class="margin-bottom--xlarge"
-        />
-        <action-bar
-          :isRecipeOwner="isRecipeOwner"
-          :recipeOwnerID="recipeOwnerID"
-          :recipeKey="recipeKey"
-          :editMode="editMode"
-          @edit="toggleEditMode"
-          @download="pdfExport"
-        />
+    <div ref="recipe" id="recipe" v-if="!editMode" class="recipe margin--auto">
+      <div v-if="isRecipeOwner" class="text-align--right">
+        <editIcon @click="toggleEditMode" class="recipe__edit-btn icon" />
+      </div>
+      <div class="recipe__details-wrap">
+        <div
+          v-if="recipe.photoURL"
+          :style="`background-image: url(${recipe.photoURL})`"
+          class="recipe__image"
+        ></div>
+        <div
+          id="recipeDetails"
+          :class="{
+            recipe__details: recipe.photoURL,
+            'recipe__details--no-img': !recipe.photoURL
+          }"
+        >
+          <type-of-meal-display
+            v-if="recipe.typeOfMeal"
+            :typeOfMeal="recipe.typeOfMeal"
+            :class="`${recipe.freeFrom ? '' : 'margin-bottom--xlarge'}`"
+          />
+          <h2 class="recipe__title">{{ recipeTitle }}</h2>
+          <div class="recipe__description">{{ description }}</div>
+          <div id="ignorePDF">
+            <category-display
+              v-if="recipe.categories"
+              :categories="recipe.categories"
+              class="margin-bottom--xxlarge"
+            />
+
+            <free-from-display
+              v-if="recipe.freeFrom"
+              :freeFrom="recipe.freeFrom"
+              class="margin-bottom--xlarge"
+            />
+            <action-bar
+              :isRecipeOwner="isRecipeOwner"
+              :recipeOwnerID="recipeOwnerID"
+              :recipeKey="recipeKey"
+              @download="pdfExport"
+            />
+          </div>
+        </div>
       </div>
 
-      <ingredients-display
-        v-if="recipe.ingredients"
-        :ingredients="recipe.ingredients"
-        :servings="recipe.servings || ''"
-        :recipeTitle="recipeTitle"
-      />
+      <div class="recipe__flex-no-wrap flex-row--align-top margin-vertical--xlarge">
+        <ingredients-display
+          class="recipe__ingredients-wrap"
+          v-if="recipe.ingredients"
+          :ingredients="recipe.ingredients"
+          :servings="recipe.servings || ''"
+          :recipeTitle="recipeTitle"
+        />
 
-      <instructions-display v-if="recipe.instructions" :instructions="recipe.instructions" />
+        <instructions-display
+          class="recipe__instructions-wrap"
+          v-if="recipe.instructions"
+          :instructions="recipe.instructions"
+        />
+      </div>
     </div>
 
     <!-- EDIT FORM -->
@@ -59,7 +83,9 @@ import htmlToPdfMake from "html-to-pdfmake";
 import pdfMake from "pdfmake/build/pdfmake";
 import pdfFonts from "pdfmake/build/vfs_fonts";
 
-import AddRecipeForm from "~/components/AddRecipeForm/AddRecipeForm.vue";
+import editIcon from "~/assets/graphics/icons/edit-icon.svg";
+
+import AddRecipeForm from "~/components/Recipes/AddRecipeForm/AddRecipeForm.vue";
 import ActionBar from "./Interaction/ActionBar.vue";
 import CategoryDisplay from "./Displays/CategoryDisplay.vue";
 import FreeFromDisplay from "./Displays/FreeFromDisplay";
@@ -71,6 +97,7 @@ import ExpandTransform from "~/components/Transitions/Expand.vue";
 export default {
   name: "recipe-full-view",
   components: {
+    editIcon,
     AddRecipeForm,
     ActionBar,
     CategoryDisplay,
@@ -117,20 +144,12 @@ export default {
         document.body.scrollTop = 0;
       }
     },
-    toggleWarning() {
-      if (this.editMode) {
-        if (confirm("Are you sure you want to discard the changes?")) {
-          this.editMode = false;
-        }
-      } else {
-        this.editMode = true;
-      }
-    },
     pdfExport() {
       pdfMake.vfs = pdfFonts.pdfMake.vfs;
       let recipe = document.getElementById("recipe");
+      let recipeDetails = document.getElementById("recipeDetails");
       let ignoreElement = document.getElementById("ignorePDF");
-      recipe.removeChild(ignoreElement);
+      recipeDetails.removeChild(ignoreElement);
       let pdfContent = htmlToPdfMake(recipe.outerHTML);
 
       let documentTitle = this.recipe.title;
@@ -139,8 +158,11 @@ export default {
       pdfMake
         .createPdf(docDefinition)
         .download(`${documentTitle}_kokebokami.pdf`);
-
-      recipe.insertBefore(ignoreElement, recipe.childNodes[3]);
+      let childNodesLength = recipeDetails.childNodes.length;
+      recipeDetails.insertBefore(
+        ignoreElement,
+        recipeDetails.childNodes[childNodesLength - 1]
+      );
     }
   }
 };

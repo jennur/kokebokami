@@ -1,9 +1,7 @@
 <template>
   <div>
     <breadcrumbs :routes="breadcrumbs" />
-    <div
-      class="cooks container container--center mobile-width margin-top--xlarge margin--auto"
-    >
+    <div class="cooks container container--center mobile-width margin-top--xlarge margin--auto">
       <h2>Discover other users of Kokebokami</h2>
       <cooks-search />
     </div>
@@ -16,12 +14,12 @@
         <cooks-list
           v-if="activeTabIndex == 0"
           :cooks="followed"
-          emptyListMessage="You don't have any followers yet 🤷🏻‍♀️"
+          emptyListMessage="You are not following anyone right now 🤷🏽. Follow cooks to get easier access to their profile and see their recipes."
         />
         <cooks-list
           v-if="activeTabIndex == 1"
           :cooks="followers"
-          emptyListMessage="You are not following anyone right now 🤷🏽. Follow cooks to get easier access to their profile and see their recipes."
+          emptyListMessage="You don't have any followers yet 🤷🏻‍♀️"
         />
       </Tabs>
     </div>

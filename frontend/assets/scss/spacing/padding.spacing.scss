@@ -76,6 +76,58 @@
         padding-top: $spacingXXLarge;
       }
     }
+    &--xxxlarge {
+      padding-top: $spacingXXXLargeMobile;
+      box-sizing: border-box;
+      @media screen and (min-width: $tabletWidth) {
+        padding-top: $spacingXXXLarge;
+      }
+    }
+  }
+  &-bottom {
+    &--small {
+      padding-bottom: $spacingSmallMobile;
+      box-sizing: border-box;
+      @media screen and (min-width: $tabletWidth) {
+        padding-bottom: $spacingSmall;
+      }
+    }
+    &--medium {
+      padding-bottom: $spacingMediumMobile;
+      box-sizing: border-box;
+      @media screen and (min-width: $tabletWidth) {
+        padding-bottom: $spacingMedium;
+      }
+    }
+    &--large {
+      padding-bottom: $spacingLargeMobile;
+      box-sizing: border-box;
+      @media screen and (min-width: $tabletWidth) {
+        padding-bottom: $spacingLarge;
+      }
+    }
+    &--xlarge {
+      padding-bottom: $spacingXLargeMobile;
+      box-sizing: border-box;
+      @media screen and (min-width: $tabletWidth) {
+        padding-bottom: $spacingXLarge;
+      }
+    }
+
+    &--xxlarge {
+      padding-bottom: $spacingXXLargeMobile;
+      box-sizing: border-box;
+      @media screen and (min-width: $tabletWidth) {
+        padding-bottom: $spacingXXLarge;
+      }
+    }
+    &--xxxlarge {
+      padding-bottom: $spacingXXXLargeMobile;
+      box-sizing: border-box;
+      @media screen and (min-width: $tabletWidth) {
+        padding-bottom: $spacingXXXLarge;
+      }
+    }
   }
 
   &-horizontal {
@@ -161,6 +213,16 @@
       @media screen and (min-width: $tabletWidth) {
         padding-top: $spacingXXLarge;
         padding-bottom: $spacingXXLarge;
+      }
+    }
+
+    &--xxxlarge {
+      padding-top: $spacingXXXLargeMobile;
+      padding-bottom: $spacingXXXLargeMobile;
+      box-sizing: border-box;
+      @media screen and (min-width: $tabletWidth) {
+        padding-top: $spacingXXXLarge;
+        padding-bottom: $spacingXXXLarge;
       }
     }
   }

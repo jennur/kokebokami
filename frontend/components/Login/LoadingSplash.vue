@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import loadingBook from "~/assets/graphics/loading-book.svg";
+import loadingBook from "~/assets/graphics/illustrations/loading-book.svg";
 export default {
   name: "loading-splash",
   components: {

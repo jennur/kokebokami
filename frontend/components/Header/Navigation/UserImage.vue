@@ -12,7 +12,7 @@
   </div>
 </template>
 <script>
-import BackupImg from "~/assets/graphics/cook-silhouette-circle.svg";
+import BackupImg from "~/assets/graphics/icons/cook-silhouette-circle.svg";
 
 export default {
   name: "user-image",

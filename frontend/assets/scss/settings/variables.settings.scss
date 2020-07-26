@@ -1,13 +1,20 @@
 $orange: #ff7300;
-$green: #00e78f;
-$blue: #09466e;
+$lightOrange: #fff8ee;
+$green: #31fc9a;
+$lightGreen: #f6fff8;
+$blue: #063c60;
+$lightBlue: #ecf5ff;
+$richBlack: #01161e;
 $pink: #c10f65;
+$lightPink: #ffe2f0;
+
 $gray: #595959;
 $black: #000;
 $white: #fff;
 $cream: #fffdf8;
+$charcoal: #464f51;
 
-$bodyFont: "Be Vietnam Regular", sans-serif;
+$bodyFont: "Open Sans Regular", sans-serif;
 $headingFont: "Be Vietnam Thin", serif;
 $subHeadingFont: "Be Vietnam Light", sans-serif;
 $displayFont: "Delius Swash Caps", serif;
@@ -17,7 +24,7 @@ $fontSizeSmall: 14px;
 $fontSizeMedium: 16px;
 $fontSizeLarge: 22px;
 $fontSizeXLarge: 28px;
-$fontSizeXXLarge: 35px;
+$fontSizeXXLarge: 40px;
 
 $fontSizeSmallMobile: 14px;
 $fontSizeMediumMobile: 16px;
@@ -31,12 +38,14 @@ $spacingMedium: 10px;
 $spacingLarge: 20px;
 $spacingXLarge: 30px;
 $spacingXXLarge: 40px;
+$spacingXXXLarge: 50px;
 
 $spacingSmallMobile: 3px;
 $spacingMediumMobile: 7px;
 $spacingLargeMobile: 16px;
 $spacingXLargeMobile: 24px;
 $spacingXXLargeMobile: 36px;
+$spacingXXXLargeMobile: 46px;
 
 $mobileWidth: 600px;
 $tabletWidth: 900px;

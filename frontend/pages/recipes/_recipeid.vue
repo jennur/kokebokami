@@ -2,17 +2,21 @@
   <div>
     <breadcrumbs class="margin-bottom--large" :routes="breadcrumbs" />
     <div class="tablet-width margin-top--xxlarge margin--auto">
-      <expand-transition :show="recipeLoaded">
+      <expand-transition :show="recipeLoaded" slower>
         <recipe-full-view
+          class="margin-bottom--xxlarge"
           :recipe="recipe"
           :recipeKey="recipeKey"
           :isRecipeOwner="isRecipeOwner"
           :recipeOwnerID="recipeOwner && recipeOwner[0]"
           @update="handleUpdate"
         />
-
-        <comments class="mobile-width margin--auto margin-top--xlarge" :path="path" />
       </expand-transition>
+      <comments-section
+        class="tablet-width margin--auto margin-top--xxlarge"
+        :recipeKey="recipeKey"
+        :recipeOwnerID="recipe.ownerID"
+      />
     </div>
   </div>
 </template>
@@ -23,13 +27,13 @@ import allUsers from "~/mixins/allUsers.js";
 import allRecipes from "~/mixins/allRecipes.js";
 import publicRecipes from "~/mixins/publicRecipes.js";
 
-import RecipeFullView from "~/components/Recipes/RecipeFullView/RecipeFullView.vue";
-import Comments from "~/components/Comments/Comments.vue";
 import ExpandTransition from "~/components/Transitions/Expand.vue";
+import RecipeFullView from "~/components/Recipes/RecipeFullView/RecipeFullView.vue";
+import CommentsSection from "~/components/CommentsSection/CommentsSection.vue";
 
 export default {
   name: "recipe",
-  components: { RecipeFullView, Comments, ExpandTransition },
+  components: { RecipeFullView, CommentsSection, ExpandTransition },
   data() {
     return {
       isRecipeOwner: false,

@@ -1,46 +1,27 @@
 <template>
   <div>
     <div id="actionBar" class="flex-row">
-      <span
-        role="button"
-        tabindex="0"
-        class="button button--small button--green-border button--mobile-expand margin-bottom--large margin-right--large"
+      <button
+        class="button button--small button--green-border margin-bottom--large margin-right--large"
         @click="handlePdfExport"
-        @keydown="
-          event => {
-            if (event.keyCode === 13) handlePdfExport();
-          }
-        "
       >
-        <download-icon
-          class="icon icon--in-button margin-right--medium"
-        />Download as PDF
-      </span>
-      <span
-        role="button"
-        tabindex="0"
+        <download-icon class="icon icon--in-button margin-right--medium" />Download as PDF
+      </button>
+      <button
+        v-if="!sharing"
         @click="toggleShareBox"
-        @keydown="
-          event => {
-            if (event.keyCode === 13) toggleShareBox();
-          }
-        "
-        class="button button--small button--green-border button--mobile-expand margin-right--large"
+        class="button button--small button--green-border"
       >
-        <share-icon class="icon icon--in-button margin-right--medium" />
-        {{ shareButtonText }}
-      </span>
-
-      <div v-if="isRecipeOwner">
-        <button
-          @click="handleEditMode"
-          class="button button--small button--transparent"
-        >
-          Edit mode
-        </button>
-      </div>
+        <share-icon class="icon icon--in-button margin-right--medium" />Share recipe
+      </button>
+      <button
+        v-else
+        class="button button--small button--transparent button--transparent-red"
+        @click="toggleShareBox"
+      >✕ Close</button>
     </div>
     <share-form
+      class="margin-top--xlarge"
       :open="sharing"
       :recipeKey="recipeKey"
       :recipeOwnerID="recipeOwnerID"
@@ -57,8 +38,7 @@ export default {
   },
   data() {
     return {
-      sharing: false,
-      shareButtonText: "Share recipe"
+      sharing: false
     };
   },
   props: {
@@ -80,12 +60,8 @@ export default {
     }
   },
   methods: {
-    handleEditMode() {
-      this.$emit("edit");
-    },
     toggleShareBox() {
       this.sharing = !this.sharing;
-      this.shareButtonText = this.sharing ? "Close share box" : "Share recipe";
     },
     handlePdfExport() {
       this.$emit("download");

@@ -1,12 +1,49 @@
 <template>
   <div>
     <div v-if="!user">
-      <initial-info-section class="padding-vertical--xxlarge" nextSection="lookup" />
+      <initial-info-section nextSection="signUp" />
+      <!-- <preview
+        id="addRecipe"
+        headline="Collect your favorite recipes in one place"
+        description="Add your personal recipes, or save recipes from anywhere on the web to make sure you don't forget about their existence."
+        videoTitle="add-recipe"
+        graphicTitle="favorite-cloud"
+        :flipGraphic="true"
+        nextSection="accessRecipes"
+        class="container--light-blue padding-horizontal--medium"
+      />
+      <preview
+        id="accessRecipes"
+        headline="Access your recipes wherever you are"
+        description="No more searching for your old cookbook or looking around the internet for that recipe you wanted to try. Store them all in one place to access them right away."
+        videoTitle="access-recipes"
+        graphicTitle="market"
+        :flip="true"
+        nextSection="changeServings"
+        class="container--green padding-horizontal--medium"
+      />
+      <preview
+        id="changeServings"
+        headline="Adjust servings to the amount you need"
+        description="Don't worry about calculating the amount you need for x servings. Just give us the number."
+        videoTitle="change-servings"
+        nextSection="addToShoppingList"
+        class="container--light-blue padding-horizontal--medium"
+      />
 
-      <!--       <preview id="lookup" class="padding--large" />
-      -->
+      <preview
+        id="addToShoppingList"
+        headline="Plan and organize your shopping"
+        description="With the shopping planner you can easily plan for big events or simply the rest of the week."
+        imageTitle="shopping-list"
+        :flip="true"
+        nextSection="signUp"
+        class="container--green padding-horizontal--medium"
+      />-->
+
       <sign-up-section
-        class="container--blue"
+        id="signUp"
+        class="container--full-height container--blue padding-top--xxxlarge"
         :darkBg="true"
         headline="Sign up to start building your own cookbook"
         :bigHeadline="true"

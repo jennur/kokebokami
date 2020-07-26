@@ -2,13 +2,13 @@ input,
 textarea {
   font-size: $fontSizeMedium;
   padding: $spacingSmall;
-  background-color: transparent;
   border: 2px solid transparent;
   border-bottom: 2px solid $green;
   box-sizing: border-box;
   max-width: 100%;
   box-sizing: border-box;
   font-family: $bodyFont;
+  background-color: transparent;
   &:focus {
     outline: none;
     border: 2px solid $green;
@@ -26,6 +26,7 @@ input[type="checkbox"] {
   width: $spacingLarge;
   height: $spacingLarge;
   position: relative;
+  background-color: transparent;
   &:focus {
     border: 2px solid $green;
   }

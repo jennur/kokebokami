@@ -2,9 +2,7 @@
   <div>
     <breadcrumbs :routes="breadcrumbs" />
     <div class="account container tablet-width padding-horizontal--large">
-      <h1 class="margin-top--xxlarge margin-bottom--large">
-        My account details
-      </h1>
+      <h1 class="margin-top--xxlarge margin-bottom--large">My account details</h1>
       <nuxt-link to="/account/public-profile-view/">
         See your public profile
         <right-arrow class="icon icon--blue" />
@@ -61,42 +59,24 @@
 
         <h3>Recipes connected to your account</h3>
         <dl class="flex-row">
-          <account-link-list
-            title="My recipes:"
-            :links="userRecipes"
-            basePath="/recipes/"
-          />
+          <account-link-list title="My recipes:" :links="userRecipes" basePath="/recipes/" />
           <account-link-list
             title="Recipes shared with me:"
             :links="sharedRecipes"
             basePath="/recipes/"
           />
-          <account-link-list
-            title="My recipe links:"
-            :links="recipeLinks"
-            :externalURL="true"
-          />
+          <account-link-list title="My recipe links:" :links="recipeLinks" :externalURL="true" />
         </dl>
 
         <h3>Cooks connected to your account</h3>
         <dl class="flex-row">
-          <account-link-list
-            title="Following:"
-            :links="cooksFollowed"
-            basePath="/cooks/"
-          />
-          <account-link-list
-            title="Followers:"
-            :links="cookFollowers"
-            basePath="/cooks/"
-          />
+          <account-link-list title="Following:" :links="cooksFollowed" basePath="/cooks/" />
+          <account-link-list title="Followers:" :links="cookFollowers" basePath="/cooks/" />
         </dl>
         <button
           class="button button--small button--transparent button--transparent-red margin-top--large"
           @click="deleteAccount"
-        >
-          Delete my account
-        </button>
+        >Delete my account</button>
         <p class="system-message">{{ systemMessage }}</p>
       </div>
     </div>
@@ -233,7 +213,7 @@ export default {
         };
         var storageRef = this.$fireStorage.ref();
         var imageRef = storageRef.child(
-          `images/${componentThis.user.id}/profileImg/${imageName}.png`
+          `images/users/${componentThis.user.id}/profileImg/${imageName}.png`
         );
         await imageRef.put(file, metadata);
         this.photoURL = await imageRef.getDownloadURL();
@@ -265,7 +245,7 @@ export default {
       let fileName = this.photoURL;
 
       var storageRef = this.$fireStorage.ref();
-      var profileImgRef = storageRef.child(`images/${userID}/profileImg`);
+      var profileImgRef = storageRef.child(`images/users/${userID}/profileImg`);
 
       profileImgRef
         .listAll()

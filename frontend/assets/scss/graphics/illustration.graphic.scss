@@ -6,23 +6,15 @@
 
   &--kokeboka {
     width: 100%;
-    max-width: $desktopWidth;
+    max-width: 1000px;
     margin: 0 auto;
     padding-bottom: $spacingXXLarge;
   }
 
   &--kokebokapen {
     display: none;
-    margin: $spacingXXLarge;
-    @media screen and (min-width: $tabletWidth) {
-      max-width: 300px;
-      display: block;
-    }
-  }
-  &--sign-up-cookbook {
-    display: none;
-
-    @media screen and (min-width: $tabletWidth) {
+    margin: $spacingXXXLarge 0px;
+    @media screen and (min-width: $mobileWidth) {
       max-width: 250px;
       display: block;
     }
@@ -47,8 +39,10 @@
   &--loading-book {
     max-width: 220px;
   }
-  &--guy-in-market {
+  &--preview-section {
     max-width: 350px;
+    padding: 0px $spacingXLarge;
+    box-sizing: border-box;
     @media screen and (min-width: $tabletWidth) {
       max-width: 450px;
     }

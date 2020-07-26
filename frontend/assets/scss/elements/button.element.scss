@@ -4,20 +4,19 @@
   align-items: center;
   padding: 0px $spacingMedium;
   border-radius: $spacingSmall;
-  border: none;
+  border: 0px;
   box-sizing: border-box;
   background-color: $blue;
   color: $white;
   font-size: $fontSizeMedium;
   text-decoration: none;
   cursor: pointer;
-  transition: transform 0.1s;
+  transition: 0.2s;
 
   &:hover {
     background-color: $green;
-    color: $blue;
+    color: $richBlack;
     text-decoration: none;
-    transform: scale(1.03);
   }
   &--block {
     display: block;
@@ -34,8 +33,9 @@
   &--orange {
     background-color: $orange;
     color: $blue;
+
     &:hover {
-      font-weight: bold;
+      background-color: rgba($orange, 0.8);
     }
   }
 
@@ -44,18 +44,19 @@
     color: $blue;
 
     &:hover {
-      font-weight: bold;
+      background-color: $blue;
+      color: $cream;
     }
   }
 
   &--green-border {
     background-color: transparent;
     border: 2px solid $green;
-    color: $black;
+    color: $richBlack;
 
     &:hover {
       background-color: rgba($green, 0.1);
-      color: $blue;
+      color: $richBlack;
     }
 
     &-dark-bg {
@@ -94,7 +95,6 @@
       background-color: transparent;
       color: $blue;
       border-bottom: 1px solid $blue;
-      transform: scale(1);
     }
 
     &-red {
@@ -125,7 +125,6 @@
     height: 48px;
     width: max-content;
     padding: 0px $spacingLarge;
-    padding-bottom: $spacingXSmall;
   }
 
   &--mobile-expand {
@@ -147,7 +146,6 @@
     &:hover {
       background-color: transparent;
       color: $orange;
-      transform: scale(1);
     }
 
     &-dark-bg {
@@ -172,6 +170,7 @@
     color: $blue;
     background-color: $green;
     cursor: pointer;
+    transition: 0.2s;
 
     &:hover {
       background-color: $blue;
@@ -182,11 +181,15 @@
       font-weight: bold;
       position: relative;
       margin-left: -$spacingLargeMobile;
-      top: -1px;
+      top: 0px;
       margin-right: $spacingSmall;
       @media screen and (min-width: $mobileWidth) {
         left: 0px;
       }
+    }
+    &-small {
+      height: $spacingLarge;
+      padding: 0px $spacingMedium 0px $spacingLarge;
     }
   }
 
@@ -211,5 +214,8 @@
   &--dynamic {
     width: max-content;
     padding: 0px;
+    &-small {
+      font-size: $fontSizeSmall;
+    }
   }
 }

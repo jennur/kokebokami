@@ -2,19 +2,18 @@
   <div class="share-form-container">
     <expand-transition :show="open">
       <form class="share-form" v-on:submit.prevent>
-        <h4>Share this recipe with another user</h4>
+        <h4>Share with one of your followers</h4>
         <p class="margin-top--none margin-bottom--large">
           The recipe will show up under your friend's "Recipes shared with me"
           tab in his/hers cookbook.
         </p>
         <fieldset class="flex-row margin-bottom--medium">
           <label class="share-form__followers">
-            Share with one of your followers
             <select-component
               class="share-form__select margin-top--medium margin-right--medium"
               :options="followerNames"
               defaultValue="Select a user"
-              @select="(option) => selected = option"
+              @select="option => (selected = option)"
             />
           </label>
         </fieldset>

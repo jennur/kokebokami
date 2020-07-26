@@ -76,29 +76,11 @@
         margin-top: 0px;
       }
     }
-    &__submit {
-      display: inline-block;
-      height: 40px;
-      width: 70px;
-      background-color: $green;
-      color: $blue;
-      border-radius: $spacingSmall;
-      z-index: 2;
-      &:hover {
-        background-color: $blue;
-        padding: 0px;
-        border: 2px solid $green;
-        border-radius: $spacingSmall;
-        color: $green;
-        cursor: pointer;
-      }
-    }
   }
 }
 
 .recipe-link-edit-form {
   position: relative;
-  min-width: 280px;
   border-radius: $spacingMedium;
 
   form {

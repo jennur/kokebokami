@@ -1,8 +1,5 @@
 <template>
-  <nuxt-link
-    :to="`/cooks/${cookID}`"
-    class="following-cooks__cook margin--small"
-  >
+  <nuxt-link :to="`/cooks/${cookID}`" class="following-cooks__cook margin--small">
     <div
       role="img"
       v-if="photoURL"
@@ -17,21 +14,19 @@
       <BackupImg />
     </div>
     <div class="flex-column">
-      <h2 class="margin-bottom--small margin--none">
-        {{ displayName ? displayName : "" }}
-      </h2>
+      <h2 class="margin-bottom--small margin--none">{{ displayName ? displayName : "" }}</h2>
       <p class="following-cooks__biography margin--none">
         {{
-          biography
-            ? biography.substring(0, 70) + "..."
-            : "This user did not write a biography yet."
+        biography
+        ? biography.substring(0, 70) + "..."
+        : "This user did not write a biography yet."
         }}
       </p>
     </div>
   </nuxt-link>
 </template>
 <script>
-import BackupImg from "~/assets/graphics/cook-silhouette.svg";
+import BackupImg from "~/assets/graphics/icons/cook-silhouette.svg";
 export default {
   name: "cook-display",
   components: {

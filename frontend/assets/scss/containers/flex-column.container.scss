@@ -1,4 +1,25 @@
 .flex-column {
   display: flex;
   flex-direction: column;
+  &--justify-left {
+    justify-content: flex-start;
+  }
+  &--align-top {
+    align-items: flex-start;
+  }
+  &--justify-center {
+    justify-content: center;
+  }
+  &--align-center {
+    align-items: center;
+  }
+  &--justify-right {
+    justify-content: flex-end;
+  }
+  &--align-bottom {
+    align-items: flex-end;
+  }
+  &--space-between {
+    justify-content: space-between;
+  }
 }
