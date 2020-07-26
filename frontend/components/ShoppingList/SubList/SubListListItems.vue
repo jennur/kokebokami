@@ -123,7 +123,7 @@ export default {
           .child(subListKey)
           .update({ listItems })
           .then(() => {
-            console.log("Sublist successfully updated");
+            //console.log("Sublist successfully updated");
             componentThis.editMode = false;
             componentThis.$emit("update");
           })
