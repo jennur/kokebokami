@@ -8,7 +8,7 @@
         <li>
           <a href="https://www.facebook.com/kokebokami" class="social-media">
             <fa :icon="['fab', 'facebook-square']" style="font-size: 25px; margin-right: 10px;" />
-            <span class="social-media__text">Follow us on Facebook</span>
+            <span class="social-media__text">Like us on Facebook</span>
           </a>
         </li>
         <li>
