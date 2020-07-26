@@ -268,6 +268,7 @@ export default {
           .then(() => {
             console.log("Successfully deleted shopping list");
             componentThis.$emit("update");
+            componentThis.toggleAlert();
           })
           .catch(error =>
             console.log("Error deleting shopping list:", error.message)
