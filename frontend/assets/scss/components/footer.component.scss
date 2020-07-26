@@ -36,9 +36,14 @@
         &.social-media {
           display: inline-flex;
           align-items: center;
+          .social-media__text {
+            margin-bottom: 1px;
+          }
           &:hover {
             border-bottom: 0px;
+
             .social-media__text {
+              margin-bottom: 0px;
               border-bottom: 1px solid $orange;
             }
           }
