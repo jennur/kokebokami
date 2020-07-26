@@ -9,7 +9,7 @@ export default {
     getShoppingLists() {
       let componentThis = this;
       if (this.userAuth) {
-        console.log("Getting shopping lists");
+        //console.log("Getting shopping lists");
 
         let userID = this.userAuth.uid;
         let username = this.$store.state.user.displayName;
