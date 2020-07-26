@@ -1,10 +1,12 @@
 <template>
   <comment
-    :comment="subComment"
     :recipeKey="recipeKey"
     :mainCommentKey="mainCommentKey"
+    :comment="subComment"
     :isSubComment="true"
+    :isRecipeOwner="isRecipeOwner"
     class="sub-comment padding-vertical--large"
+    @update="$emit('update')"
   />
 </template>
 
@@ -26,6 +28,10 @@ export default {
     mainCommentKey: {
       type: String,
       default: ""
+    },
+    isRecipeOwner: {
+      type: Boolean,
+      deafult: false
     }
   }
 };

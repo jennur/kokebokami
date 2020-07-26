@@ -73,10 +73,11 @@
   &:first-child {
     border-top: 1px solid $green;
   }
+
   &__delete-btn {
     position: absolute;
-    top: $spacingSmall;
-    right: $spacingSmall;
+    top: $spacingMedium;
+    right: $spacingMedium;
   }
   &__approval {
     display: flex;

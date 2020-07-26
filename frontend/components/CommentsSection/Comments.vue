@@ -15,7 +15,7 @@
         :key="comment[0]"
         :recipeKey="recipeKey"
         :comment="comment"
-        :isSubComments="false"
+        :isSubComment="false"
         :isRecipeOwner="isRecipeOwner"
         class="padding-vertical--large"
         @update="getComments"

@@ -1,10 +1,10 @@
 <template>
   <div v-if="isRecipeOwner || commentObj.approved" class="comment">
-    <button
+    <deleteIcon
       v-if="isRecipeOwner || commentObj.isMyComment"
-      class="comment__delete-btn button button--dynamic button--transparent button--transparent-red"
+      class="comment__delete-btn icon"
       @click="confirmDelete"
-    >✕</button>
+    />
     <Alert
       :alertMessage="alertMessage"
       :showAlert="showAlert"
@@ -44,7 +44,7 @@
               'no-link': isAnonymous
             }"
       >{{username}}</component>
-      <span class="comment__date">{{submitDate}}</span>
+      <span class="color--orange margin-left--medium">{{submitDate}}</span>
     </div>
 
     <!-- Comment -->
@@ -83,6 +83,9 @@
         :key="subComment[0]"
         :subComment="subComment"
         :mainCommentKey="comment[0]"
+        :recipeKey="recipeKey"
+        :isRecipeOwner="isRecipeOwner"
+        @update="$emit('update')"
       />
       <button
         v-if="cutOffSubComments.length"
@@ -95,6 +98,7 @@
 
 <script>
 import CookSilhouette from "~/assets/graphics/icons/cook-silhouette-circle.svg";
+import deleteIcon from "~/assets/graphics/icons/delete-icon.svg";
 import SubComment from "./SubComment.vue";
 import ExpandTransition from "~/components/Transitions/Expand.vue";
 import Alert from "~/components/Alert.vue";
@@ -104,6 +108,7 @@ export default {
   components: {
     CommentForm: () => import("./CommentForm.vue"),
     CookSilhouette,
+    deleteIcon,
     SubComment,
     ExpandTransition,
     Alert
@@ -160,11 +165,59 @@ export default {
     },
     submitDate() {
       let date = this.comment[1].submitDate;
-      //Do something
-      return date;
+      let dateString = date.replace(/[A-Z\"]/g, " ");
+      let formattedDate = dateString.substring(0, dateString.length - 9);
+      let year = formattedDate.slice(0, 5);
+      let month = formattedDate.slice(6, 8);
+      let day = formattedDate.slice(9, 11);
+      let time = formattedDate.slice(12, 17);
+      month = this.getMonthString(month);
+      return `${day} ${month} ${year} ${time}`;
     }
   },
   methods: {
+    getMonthString(num) {
+      let month = "";
+      switch (num) {
+        case "01":
+          month = "Jan";
+          break;
+        case "02":
+          month = "Feb";
+          break;
+        case "03":
+          month = "Mar";
+          break;
+        case "04":
+          month = "Apr";
+          break;
+        case "05":
+          month = "May";
+          break;
+        case "06":
+          month = "Jun";
+          break;
+        case "07":
+          month = "Jul";
+          break;
+        case "08":
+          month = "Aug";
+          break;
+        case "09":
+          month = "Sep";
+          break;
+        case "10":
+          month = "Oct";
+          break;
+        case "11":
+          month = "Nov";
+          break;
+        case "12":
+          month = "Dec";
+          break;
+      }
+      return month;
+    },
     loadMoreSubComments() {
       let subComments = this.subComments;
       let cutOffSubComments = this.cutOffSubComments;
@@ -207,7 +260,9 @@ export default {
           this.submitted = true;
           this.formOpen = false;
           this.error = false;
-          this.$emit("update");
+          if (this.isRecipeOwner) {
+            this.$emit("update");
+          }
         })
         .catch(error => {
           this.error = true;
@@ -248,6 +303,7 @@ export default {
       }
     },
     deleteComment() {
+      let componentThis = this;
       let recipeKey = this.recipeKey;
       let mainCommentKey = this.mainCommentKey;
       let commentKey = this.comment[0];
@@ -260,7 +316,7 @@ export default {
           .remove()
           .then(() => {
             console.log("Successfully deleted subComment");
-            this.$emit("update");
+            componentThis.$emit("update");
           })
           .catch(error => {
             console.log("Error deleting comment:", error.message);
@@ -273,7 +329,7 @@ export default {
           .remove()
           .then(() => {
             console.log("Successfully deleted comment");
-            this.$emit("update");
+            componentThis.$emit("update");
           })
           .catch(error => {
             console.log("Error deleting comment:", error.message);
