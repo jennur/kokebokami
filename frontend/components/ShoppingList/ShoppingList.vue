@@ -2,15 +2,15 @@
   <section class="shopping-list margin-bottom--large">
     <!-- Delete / Cancel action -->
     <div class="shopping-list__cancel-action">
-      <deleteIcon
-        v-if="list.key"
-        class="icon"
-        @click="deleteShoppingList"
-        title="Delete collection"
-      />
+      <deleteIcon v-if="list.key" class="icon" @click="toggleAlert" title="Delete collection" />
       <button v-else class="button button--dynamic button--cancel" @click="$emit('cancel')">✕</button>
     </div>
-
+    <Alert
+      :alertMessage="`Are you sure you want to delete this shopping list: '${list.title}'?`"
+      :showAlert="showAlert"
+      @confirmed="deleteShoppingList"
+      @cancel="toggleAlert"
+    />
     <div class="flex-row flex-row--align-center margin-bottom--large">
       <!-- Share action -->
       <div v-if="list && list.key">
@@ -98,6 +98,7 @@ import deleteIcon from "~/assets/graphics/icons/delete-icon.svg";
 
 import user from "~/mixins/user.js";
 
+import Alert from "~/components/Alert.vue";
 import ShareBox from "./ShareBox.vue";
 import IncrementButton from "~/components/Input/IncrementButton.vue";
 import DecrementButton from "~/components/Input/DecrementButton.vue";
@@ -108,6 +109,7 @@ export default {
   components: {
     shareIcon,
     deleteIcon,
+    Alert,
     ShareBox,
     IncrementButton,
     DecrementButton,
@@ -126,7 +128,8 @@ export default {
       editTitle: false,
       addingNewSubList: false,
       sharing: false,
-      systemMessage: ""
+      systemMessage: "",
+      showAlert: false
     };
   },
   computed: {
@@ -140,6 +143,9 @@ export default {
     }
   },
   methods: {
+    toggleAlert() {
+      this.showAlert = !this.showAlert;
+    },
     toggleShareBox() {
       this.sharing = !this.sharing;
       this.systemMessage = "";
@@ -253,40 +259,34 @@ export default {
       let mainListRef = this.$fireDb.ref(`shoppingLists/${this.list.key}`);
       let ownersRef = this.$fireDb.ref(`shoppingLists/${this.list.key}/owners`);
 
-      if (
-        confirm(
-          `Are you sure you want to delete shopping list collection "${this.list.title}"?`
-        )
-      ) {
-        let owners = this.list.owners && Object.values(this.list.owners);
+      let owners = this.list.owners && Object.values(this.list.owners);
 
-        if (owners.length <= 1) {
-          // Remove completely from database
-          mainListRef
-            .remove()
-            .then(() => {
-              console.log("Successfully deleted shopping list");
+      if (owners.length <= 1) {
+        // Remove completely from database
+        mainListRef
+          .remove()
+          .then(() => {
+            console.log("Successfully deleted shopping list");
+            componentThis.$emit("update");
+          })
+          .catch(error =>
+            console.log("Error deleting shopping list:", error.message)
+          );
+      } else {
+        //Delete only for current user
+        ownersRef.once("value", snapshot => {
+          if (snapshot.exists()) {
+            let owners = Object.entries(snapshot.val());
+            owners = owners.filter(user => {
+              return user[1].id !== userID;
+            });
+
+            owners = Object.fromEntries(owners);
+            mainListRef.update({ owners }).then(() => {
               componentThis.$emit("update");
-            })
-            .catch(error =>
-              console.log("Error deleting shopping list:", error.message)
-            );
-        } else {
-          //Delete only for current user
-          ownersRef.once("value", snapshot => {
-            if (snapshot.exists()) {
-              let owners = Object.entries(snapshot.val());
-              owners = owners.filter(user => {
-                return user[1].id !== userID;
-              });
-
-              owners = Object.fromEntries(owners);
-              mainListRef.update({ owners }).then(() => {
-                componentThis.$emit("update");
-              });
-            }
-          });
-        }
+            });
+          }
+        });
       }
     }
   },

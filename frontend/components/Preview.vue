@@ -44,6 +44,12 @@
           loop
           playsinline
         />
+        <img
+          v-if="imageTitle"
+          class="preview__iphone-video"
+          :src="require(`~/assets/images/${imageTitle}.png`)"
+          :alt="`${imageTitle}`"
+        />
       </div>
     </div>
     <anchor-button :scrollTo="nextSection" />
@@ -64,6 +70,10 @@ export default {
       default: ""
     },
     videoTitle: {
+      type: String,
+      default: ""
+    },
+    imageTitle: {
       type: String,
       default: ""
     },

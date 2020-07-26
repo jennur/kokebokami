@@ -4,7 +4,7 @@
       <deleteIcon
         v-if="subListKey"
         class="icon margin-top--medium margin-right--medium"
-        @click="deleteSubList"
+        @click="toggleAlert"
       />
       <div class="sub-list-container">
         <sub-list-title
@@ -22,6 +22,12 @@
         />
       </div>
     </div>
+    <Alert
+      :alertMessage="`Are you sure you want to delete this sublist: '${subList.title}'?`"
+      :showAlert="showAlert"
+      @confirmed="deleteSubList"
+      @cancel="toggleAlert"
+    />
   </section>
 </template>
 
@@ -34,13 +40,15 @@ import deleteIcon from "~/assets/graphics/icons/delete-icon.svg";
 
 import SubListTitle from "./SubList/SubListTitle.vue";
 import SubListListItems from "./SubList/SubListListItems.vue";
+import Alert from "~/components/Alert.vue";
 
 export default {
   name: "sub-list",
   components: {
     deleteIcon,
     SubListTitle,
-    SubListListItems
+    SubListListItems,
+    Alert
   },
   props: {
     mainListTitle: {
@@ -60,8 +68,16 @@ export default {
       default: ""
     }
   },
+  data() {
+    return {
+      showAlert: false
+    };
+  },
   mixins: [user],
   methods: {
+    toggleAlert() {
+      this.showAlert = !this.showAlert;
+    },
     toggleEditTitle() {
       this.editTitle = !this.editTitle;
     },
@@ -115,27 +131,18 @@ export default {
       let mainListKey = this.mainListKey;
       let subListKey = this.subListKey;
 
-      if (
-        mainListKey &&
-        subListKey &&
-        confirm(
-          `Are you sure you want to delete sublist "${this.subList.title}"?`
-        )
-      ) {
-        let subListRef = this.$fireDb.ref(
-          `shoppingLists/${mainListKey}/subLists/${subListKey}`
-        );
-        subListRef
-          .remove()
-          .then(() => {
-            console.log("Succesfully deleted sublist");
-            componentThis.editListItems = false;
-            componentThis.$emit("update");
-          })
-          .catch(error =>
-            console.log("Error deleting sublist:", error.message)
-          );
-      }
+      let subListRef = this.$fireDb.ref(
+        `shoppingLists/${mainListKey}/subLists/${subListKey}`
+      );
+      subListRef
+        .remove()
+        .then(() => {
+          console.log("Succesfully deleted sublist");
+          componentThis.editListItems = false;
+          componentThis.toggleAlert();
+          componentThis.$emit("update");
+        })
+        .catch(error => console.log("Error deleting sublist:", error.message));
     }
   }
 };

@@ -1,14 +1,13 @@
 <template>
   <footer class="footer flex-center-container flex-center-container--column">
-    <div class="flex-row flex-row--align-top margin-top--large">
-      <ul class="footer__nav margin-horizontal--large">
-        <li><h4 class="color--blue">Contact</h4></li>
+    <div class="flex-row flex-row--align-top">
+      <ul class="footer__nav margin--large">
+        <li>
+          <h4 class="color--blue">Contact</h4>
+        </li>
         <li>
           <a href="https://www.facebook.com/kokebokami" class="social-media">
-            <fa
-              :icon="['fab', 'facebook-square']"
-              style="font-size: 25px; margin-right: 10px;"
-            />
+            <fa :icon="['fab', 'facebook-square']" style="font-size: 25px; margin-right: 10px;" />
             <span class="social-media__text">Follow us on Facebook</span>
           </a>
         </li>
@@ -17,8 +16,10 @@
         </li>
       </ul>
 
-      <ul class="footer__nav margin-horizontal--large">
-        <li><h4 class="color--blue">About</h4></li>
+      <ul class="footer__nav margin--large">
+        <li>
+          <h4 class="color--blue">About</h4>
+        </li>
         <li>
           <nuxt-link to="/about/">What is Kokebokami</nuxt-link>
         </li>
@@ -30,8 +31,10 @@
         </li>
       </ul>
 
-      <ul v-if="!user" class="footer__nav margin-horizontal--large">
-        <li><h4 class="color--blue">Shortcuts</h4></li>
+      <ul v-if="!user" class="footer__nav margin--large">
+        <li>
+          <h4 class="color--blue">Shortcuts</h4>
+        </li>
         <li>
           <nuxt-link to="/login/">Login</nuxt-link>
         </li>

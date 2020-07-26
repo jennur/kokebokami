@@ -1,12 +1,8 @@
 <template>
   <nuxt-link :to="`/recipes/${recipeUrl}/`" class="recipe-display">
     <!-- Image -->
-    <div
-      :style="`background-image: url(${recipeImage})`"
-      class="recipe-display__image"
-    ></div>
-    <!--     <recipe-backup-img v-else class="recipe-display__image"></recipe-backup-img>
- -->
+    <div :style="`background-image: url(${recipeImage})`" class="recipe-display__image"></div>
+
     <div class="full-width padding--xlarge">
       <!-- Details -->
 
@@ -22,12 +18,12 @@
       </div>
 
       <!-- Description -->
-      <h3 class="recipe-display__title margin--none margin-bottom--medium">
-        {{ recipe.title ? recipe.title : "Recipe has no title" }}
-      </h3>
+      <h3
+        class="recipe-display__title margin--none margin-bottom--medium"
+      >{{ recipe.title ? recipe.title : "Recipe has no title" }}</h3>
       <div class="recipe-display__description margin-bottom--large">
         {{
-          recipe.description ? recipe.description : "Recipe has no description"
+        recipe.description ? recipe.description : "Recipe has no description"
         }}
       </div>
     </div>
@@ -38,13 +34,13 @@
           class="recipe-display__category margin-bottom--xxlarge margin-horizontal--small"
           v-for="category in categories"
           :key="category"
-          >{{ category }}</span
-        >
+        >{{ category }}</span>
       </div>
 
-      <span class="recipe-display__published-by" v-if="publicRecipe"
-        >Published by: {{ recipeOwner ? recipeOwner : "Unknown" }}</span
-      >
+      <span
+        class="recipe-display__published-by"
+        v-if="publicRecipe"
+      >Published by: {{ recipeOwner ? recipeOwner : "Unknown" }}</span>
     </div>
   </nuxt-link>
 </template>

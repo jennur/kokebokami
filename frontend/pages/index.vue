@@ -25,7 +25,7 @@
       <preview
         id="changeServings"
         headline="Adjust servings to the amount you need"
-        description="Don't twist your brain to calculate the amount you need for x servings. Just give us the number."
+        description="Don't worry about calculating the amount you need for x servings. Just give us the number."
         videoTitle="change-servings"
         nextSection="addToShoppingList"
         class="container--light-blue padding-horizontal--medium"
@@ -35,7 +35,7 @@
         id="addToShoppingList"
         headline="Plan and organize your shopping"
         description="With the shopping planner you can easily plan for big events or simply the rest of the week."
-        videoTitle="shopping-list"
+        imageTitle="shopping-list"
         :flip="true"
         nextSection="signUp"
         class="container--green padding-horizontal--medium"
