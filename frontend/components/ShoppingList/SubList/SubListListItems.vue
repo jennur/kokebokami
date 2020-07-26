@@ -7,11 +7,9 @@
         :data-list-item="`list-item-${index}`"
         class="margin-vertical--medium"
       >
-        <label
-          :class="{
+        <label :class="{
             complete: listItems[index].complete
-          }"
-        >
+          }">
           <input
             tabindex="0"
             type="checkbox"
@@ -32,42 +30,25 @@
         <decrement-button @decrement="removeListItem(index)" />
       </li>
     </ul>
-    <div v-if="!editMode">
-      <button
-        class="button button--small button--transparent margin-right--medium margin-vertical--large"
-        @click="toggleEditMode"
-      >
-        Edit sublist
-      </button>
-    </div>
+    <editIcon v-if="!editMode" class="icon margin--small" @click="toggleEditMode" />
     <div v-if="editMode" class="flex-row flex-row--align-center">
       <increment-button
         class="margin-right--medium margin-vertical--large"
         @increment="addNewListItem"
-        >Add item</increment-button
-      >
+      >Add item</increment-button>
       <button
         v-if="listItems.length"
         class="button button--xsmall button--dynamic button--cancel margin-left--medium margin-vertical--large"
         @click="saveListItems"
-      >
-        ✕ Close
-      </button>
-    </div>
-    <div v-if="editMode" class="flex-row flex-row--align-center">
-      <button
-        v-if="subListKey"
-        class="button button--small button--transparent button--transparent-red padding-horizontal--large margin-right--large margin-vertical--large"
-        @click="handleDelete"
-      >
-        Delete sublist
-      </button>
+      >✕ Close</button>
     </div>
   </div>
 </template>
 
 <script>
 import ClickOutside from "vue-click-outside";
+
+import editIcon from "~/assets/graphics/icons/edit-icon.svg";
 
 import user from "~/mixins/user.js";
 
@@ -77,6 +58,7 @@ import DecrementButton from "~/components/Input/DecrementButton.vue";
 export default {
   name: "sublist-list-items",
   components: {
+    editIcon,
     IncrementButton,
     DecrementButton
   },
@@ -121,10 +103,6 @@ export default {
       let complete = this.updatedListItems[index].complete;
       this.updatedListItems[index].complete = !complete;
       this.saveListItems();
-    },
-    handleDelete() {
-      this.editMode = false;
-      this.$emit("deleteSubList");
     },
     saveListItems() {
       let componentThis = this;

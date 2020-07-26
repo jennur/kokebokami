@@ -8,16 +8,10 @@
     font-size: $fontSizeSmall;
     color: $blue;
   }
-  &__delete-collection-btn {
-    /* margin-top: -$spacingMedium;
-    margin-bottom: $spacingLarge; */
-    /* align-self: flex-end; */
-    @media screen and (min-width: $mobileWidth) {
-      margin-top: 0px;
-      position: absolute;
-      top: $spacingMedium;
-      right: $spacingLarge;
-    }
+  &__cancel-action {
+    position: absolute;
+    top: $spacingLarge;
+    right: $spacingLarge;
   }
   &__title {
     h2 {
@@ -55,11 +49,19 @@
     padding: 0px;
     flex: 1 1 0;
     width: 100%;
+    max-width: 350px;
     box-sizing: border-box;
     @media screen and (min-width: $mobileWidth) {
       margin-right: $spacingLarge;
     }
+    &-container {
+      width: 90%;
+    }
+
     &__title {
+      display: inline-block;
+      width: 100%;
+
       h3 {
         font-family: $headingFont;
         transition: 0.1s;

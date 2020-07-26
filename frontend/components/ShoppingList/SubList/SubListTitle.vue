@@ -1,27 +1,23 @@
 <template>
-  <div class="flex-row flex-row--align-center margin-bottom--xlarge">
-    <div class="sub-list__title">
-      <h3
-        v-if="!editMode && title"
-        class="heading--blue margin--none"
-        @click="event => toggleEditMode(event)"
-      >
-        {{ updatedTitle }}
-      </h3>
-      <label v-if="editMode" class="flex-column">
-        <input
-          type="text"
-          v-model="updatedTitle"
-          placeholder="Sublist title"
-          v-click-outside="saveTitle"
-          @keydown="
+  <div class="sub-list__title">
+    <h3
+      v-if="!editMode && title"
+      class="heading--blue margin--none"
+      @click="event => toggleEditMode(event)"
+    >{{ updatedTitle }}</h3>
+    <label v-if="editMode" class="flex-column">
+      <input
+        type="text"
+        v-model="updatedTitle"
+        placeholder="Sublist title"
+        v-click-outside="saveTitle"
+        @keydown="
             event => {
               event.keyCode === 13 && saveTitle();
             }
           "
-        />
-      </label>
-    </div>
+      />
+    </label>
   </div>
 </template>
 

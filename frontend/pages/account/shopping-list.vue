@@ -19,8 +19,7 @@
       <increment-button
         class="margin-bottom--xxlarge"
         @increment="addNewShoppingList"
-        >Add new shopping list</increment-button
-      >
+      >New shopping list</increment-button>
     </div>
   </div>
 </template>

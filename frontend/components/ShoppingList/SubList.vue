@@ -1,18 +1,27 @@
 <template>
   <section class="sub-list margin-vertical--large">
-    <sub-list-title
-      :mainListKey="mainListKey"
-      :subListKey="subListKey"
-      :title="subList.title || this.createBackupTitle()"
-      @update="$emit('update')"
-    />
-    <sub-list-list-items
-      :mainListKey="mainListKey"
-      :subListKey="subListKey"
-      :listItems="subList.listItems"
-      @update="$emit('update')"
-      @deleteSubList="deleteSubList"
-    />
+    <div class="flex-row flex-row--align-top flex-row--nowrap">
+      <deleteIcon
+        v-if="subListKey"
+        class="icon margin-top--medium margin-right--medium"
+        @click="deleteSubList"
+      />
+      <div class="sub-list-container">
+        <sub-list-title
+          :mainListKey="mainListKey"
+          :subListKey="subListKey"
+          :title="subList.title || this.createBackupTitle()"
+          @update="$emit('update')"
+          @deleteSubList="deleteSubList"
+        />
+        <sub-list-list-items
+          :mainListKey="mainListKey"
+          :subListKey="subListKey"
+          :listItems="subList.listItems"
+          @update="$emit('update')"
+        />
+      </div>
+    </div>
   </section>
 </template>
 
@@ -21,12 +30,15 @@ import ClickOutside from "vue-click-outside";
 
 import user from "~/mixins/user.js";
 
+import deleteIcon from "~/assets/graphics/icons/delete-icon.svg";
+
 import SubListTitle from "./SubList/SubListTitle.vue";
 import SubListListItems from "./SubList/SubListListItems.vue";
 
 export default {
   name: "sub-list",
   components: {
+    deleteIcon,
     SubListTitle,
     SubListListItems
   },

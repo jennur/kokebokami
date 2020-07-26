@@ -1,48 +1,34 @@
 <template>
   <section class="shopping-list margin-bottom--large">
+    <!-- Delete / Cancel action -->
+    <div class="shopping-list__cancel-action">
+      <deleteIcon
+        v-if="list.key"
+        class="icon"
+        @click="deleteShoppingList"
+        title="Delete collection"
+      />
+      <button v-else class="button button--dynamic button--cancel" @click="$emit('cancel')">✕</button>
+    </div>
+
     <div class="flex-row flex-row--align-center margin-bottom--large">
       <!-- Share action -->
       <div v-if="list && list.key">
-        <button
-          v-if="!sharing"
-          @click="toggleShareBox"
-          class="button button--small button--green-border"
-        >
-          <share-icon class="icon icon--in-button margin-right--medium" />Share
-          shopping list
-        </button>
+        <div v-if="!sharing">
+          <share-icon class="icon icon--blue" @click="toggleShareBox" />
+        </div>
         <button
           v-else
           class="button button--small button--transparent button--transparent-red"
           @click="toggleShareBox"
-        >
-          ✕ Close
-        </button>
+        >✕ Close</button>
         <shareBox
           :open="sharing"
           @share="follower => shareShoppingList(follower)"
           class="margin-top--medium"
         />
-        <div v-if="systemMessage" class="system-message margin-top--large">
-          {{ systemMessage }}
-        </div>
+        <div v-if="systemMessage" class="system-message margin-top--large">{{ systemMessage }}</div>
       </div>
-
-      <!-- Delete / Cancel action -->
-      <div
-        v-if="list.key"
-        class="shopping-list__delete-collection-btn button button--small button--transparent button--transparent-red"
-        @click="deleteShoppingList"
-      >
-        Delete collection
-      </div>
-      <button
-        v-else
-        class="shopping-list__delete-collection-btn button button--small button--cancel"
-        @click="$emit('cancel')"
-      >
-        ✕ Cancel
-      </button>
     </div>
     <!-- Shopping list title -->
     <div class="shopping-list__title margin-bottom--large margin-top--xxlarge">
@@ -53,15 +39,11 @@
         <h2
           class="margin-bottom--small margin-right--large"
           @click="event => toggleEditTitle(event)"
-        >
-          {{ list.title }}
-        </h2>
+        >{{ list.title }}</h2>
         <span v-if="shared" class="shopping-list__created-by">
           Shared from:
-          <nuxt-link :to="`/cooks/${list.createdBy.id}/`">
-            {{ list.createdBy.displayName }}</nuxt-link
-          ></span
-        >
+          <nuxt-link :to="`/cooks/${list.createdBy.id}/`">{{ list.createdBy.displayName }}</nuxt-link>
+        </span>
       </div>
 
       <!-- Edit mode for title -->
@@ -77,9 +59,7 @@
             }
           "
         />
-        <div
-          class="flex-row flex-row--align-center flex-row--nowrap margin-top--medium"
-        ></div>
+        <div class="flex-row flex-row--align-center flex-row--nowrap margin-top--medium"></div>
       </div>
     </div>
     <!-- Sublists -->
@@ -102,14 +82,11 @@
         @update="updateSubLists"
       />
     </div>
-    <div
-      class="flex-row flex-row--align-center flex-row--space-between full-width"
-    >
+    <div class="flex-row flex-row--align-center flex-row--space-between full-width">
       <increment-button
         class="margin-vertical--large margin-right--xxlarge"
         @increment="addNewSubList"
-        >Add new sublist</increment-button
-      >
+      >New sublist</increment-button>
     </div>
   </section>
 </template>
@@ -117,6 +94,8 @@
 <script>
 import ClickOutside from "vue-click-outside";
 import shareIcon from "~/assets/graphics/icons/shareicon.svg";
+import deleteIcon from "~/assets/graphics/icons/delete-icon.svg";
+
 import user from "~/mixins/user.js";
 
 import ShareBox from "./ShareBox.vue";
@@ -128,6 +107,7 @@ export default {
   name: "shopping-list",
   components: {
     shareIcon,
+    deleteIcon,
     ShareBox,
     IncrementButton,
     DecrementButton,
