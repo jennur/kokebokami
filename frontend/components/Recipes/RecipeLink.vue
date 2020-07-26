@@ -1,24 +1,22 @@
 <template>
   <div class="recipe-link-display-wrap margin-top--large">
     <button
-      class="button button--dynamic button--dynamic-small margin-bottom--medium"
-      :class="{
-              'button--cancel': editMode,
-            'button--transparent margin-left--medium': !editMode
-            }"
+      v-if="editMode"
+      class="button button--dynamic button--dynamic-small button--cancel margin-bottom--medium"
       @click="toggleEditMode"
-    >{{editMode ? "✕ Close" : "Edit"}}</button>
+    >✕ Cancel</button>
+    <editIcon v-else class="icon margin--medium" @click="toggleEditMode" />
     <div
       class="recipe-link-display recipe-display--left-aligned padding-horizontal--xlarge"
       :class="{'recipe-display--no-link': editMode}"
     >
-      <expand-transition :show="editMode">
+      <expand-transition :show="editMode" class="recipe-link-display__edit-form-wrap">
         <recipe-link-edit-form
-          class="padding-horizontal--xlarge"
+          class="padding--large"
           :recipeLinkID="link && link[0]"
           :recipeLink="link && link[1]"
           :addingToCategory="addingToCategory"
-          @closeEditMode="toggleEditMode"
+          @update="update"
         />
       </expand-transition>
       <a
@@ -47,6 +45,7 @@
 <script>
 import RecipeLinkEditForm from "./RecipeLinkEditForm.vue";
 import newTabIcon from "~/assets/graphics/icons/new-tab-icon.svg";
+import editIcon from "~/assets/graphics/icons/edit-icon.svg";
 import ExpandTransition from "~/components/Transitions/Expand.vue";
 
 export default {
@@ -54,6 +53,7 @@ export default {
   components: {
     RecipeLinkEditForm,
     newTabIcon,
+    editIcon,
     ExpandTransition
   },
   props: {
@@ -79,8 +79,11 @@ export default {
   },
   methods: {
     toggleEditMode() {
-      this.$emit("update");
       this.editMode = !this.editMode;
+    },
+    update() {
+      this.$emit("update");
+      this.toggleEditMode();
     }
   },
   mounted() {

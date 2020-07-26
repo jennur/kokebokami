@@ -1,47 +1,21 @@
 <template>
   <div>
-    <fieldset class="margin-top--xxlarge" v-if="!saved">
-      <div
-        v-if="!deleted"
-        class="flex-row flex-row--align-center flex-row--justify-center"
-      >
+    <fieldset v-if="!saved">
+      <div class="flex-row flex-row--align-center flex-row--justify-center">
         <button
-          v-if="editMode"
-          @click="
-            () => {
-              this.$emit('deleteRecipe');
-            }
-          "
-          class="delete-button button button--small button--red-border"
-        >
-          Delete recipe
-        </button>
-
-        <button
-          @click="
-            () => {
-              this.$emit('save');
-            }
-          "
-          class="save-button button button--small"
-        >
-          Save recipe
-        </button>
-        <button
-          @click="
-            () => {
-              this.$emit('cancel');
-            }
-          "
-          class="cancel-button button button--small button--cancel"
-        >
-          ✕ Cancel
-        </button>
+          @click="toggleAlert"
+          class="button button--small button--cancel margin-top--xxlarge"
+        >✕ Cancel</button>
+        <Alert
+          :alertMessage="editMode ?  'Are you sure you want to discard the changes?' : 'Are you sure you want to discard your new recipe?'"
+          :showAlert="showAlert"
+          @confirmed="$emit('cancel')"
+          @cancel="toggleAlert"
+        />
+        <button @click="$emit('save')" class="button button--small margin-top--xxlarge">Save</button>
       </div>
       <div class="system-message">{{ systemMessage }}</div>
-      <nuxt-link v-if="deleted" to="/account/my-cookbook/"
-        >Go back to your cookbook</nuxt-link
-      >
+      <nuxt-link v-if="deleted" to="/account/my-cookbook/">Go back to your cookbook</nuxt-link>
     </fieldset>
 
     <div
@@ -49,21 +23,33 @@
       v-else-if="saved && recipeKey"
     >
       <div class="system-message">{{ systemMessage }}</div>
-      <nuxt-link v-if="recipeKey !== ''" :to="'/recipes/' + recipeKey"
-        >Look at your new recipe ➔</nuxt-link
-      >
+      <nuxt-link v-if="recipeKey !== ''" :to="'/recipes/' + recipeKey">Look at your new recipe ➔</nuxt-link>
     </div>
   </div>
 </template>
 <script>
+import Alert from "~/components/Alert.vue";
 export default {
   name: "save-actions",
+  components: {
+    Alert
+  },
   props: {
     recipeKey: { type: String, default: "" },
     editMode: { type: Boolean, default: false },
     saved: { type: Boolean, default: false },
     deleted: { type: Boolean, default: false },
     systemMessage: { type: String, default: "" }
+  },
+  data() {
+    return {
+      showAlert: false
+    };
+  },
+  methods: {
+    toggleAlert() {
+      this.showAlert = !this.showAlert;
+    }
   }
 };
 </script>

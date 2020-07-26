@@ -1,5 +1,6 @@
 .recipe-display,
 .recipe-link-display-wrap {
+  max-width: 100%;
   display: flex;
   flex-direction: column;
   //justify-content: stretch;
@@ -9,7 +10,7 @@
 }
 
 .recipe-link-display-wrap {
-  align-items: baseline;
+  align-items: flex-end;
 }
 
 .recipe-display {
@@ -30,6 +31,11 @@
   display: block;
   width: 100%;
   flex: 1 1 0;
+
+  &__edit-form-wrap {
+    display: block;
+    max-width: 100%;
+  }
 }
 
 .recipe-display,

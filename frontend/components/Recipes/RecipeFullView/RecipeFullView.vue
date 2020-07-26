@@ -2,12 +2,7 @@
   <section>
     <div ref="recipe" id="recipe" v-if="!editMode" class="recipe margin--auto">
       <div v-if="isRecipeOwner" class="text-align--right">
-        <button
-          @click="toggleEditMode"
-          class="recipe__edit-btn button button--small button--transparent"
-        >
-          Edit mode
-        </button>
+        <editIcon @click="toggleEditMode" class="recipe__edit-btn icon" />
       </div>
       <div class="recipe__details-wrap">
         <div
@@ -50,9 +45,7 @@
         </div>
       </div>
 
-      <div
-        class="recipe__flex-no-wrap flex-row--align-top margin-vertical--xlarge"
-      >
+      <div class="recipe__flex-no-wrap flex-row--align-top margin-vertical--xlarge">
         <ingredients-display
           class="recipe__ingredients-wrap"
           v-if="recipe.ingredients"
@@ -89,6 +82,8 @@ import htmlToPdfMake from "html-to-pdfmake";
 import pdfMake from "pdfmake/build/pdfmake";
 import pdfFonts from "pdfmake/build/vfs_fonts";
 
+import editIcon from "~/assets/graphics/icons/edit-icon.svg";
+
 import AddRecipeForm from "~/components/Recipes/AddRecipeForm/AddRecipeForm.vue";
 import ActionBar from "./Interaction/ActionBar.vue";
 import CategoryDisplay from "./Displays/CategoryDisplay.vue";
@@ -101,6 +96,7 @@ import ExpandTransform from "~/components/Transitions/Expand.vue";
 export default {
   name: "recipe-full-view",
   components: {
+    editIcon,
     AddRecipeForm,
     ActionBar,
     CategoryDisplay,
@@ -145,15 +141,6 @@ export default {
       if (process.browser) {
         document.documentElement.scrollTop = 0;
         document.body.scrollTop = 0;
-      }
-    },
-    toggleWarning() {
-      if (this.editMode) {
-        if (confirm("Are you sure you want to discard the changes?")) {
-          this.editMode = false;
-        }
-      } else {
-        this.editMode = true;
       }
     },
     pdfExport() {

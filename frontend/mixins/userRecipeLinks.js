@@ -16,6 +16,8 @@ export default {
           userRecipeLinksRef.once("value", links => {
             if (links.exists()) {
               componentThis.userRecipeLinks = Object.entries(links.val());
+            } else {
+              componentThis.userRecipeLinks = [];
             }
           });
         } catch (error) {

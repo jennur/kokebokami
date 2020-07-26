@@ -1,5 +1,14 @@
 <template>
   <section class="margin--auto margin-top--xlarge">
+    <div v-if="editMode" class="text-align--right margin-bottom--medium">
+      <deleteIcon @click="toggleAlert" class="icon" />
+    </div>
+    <Alert
+      :alertMessage="`Are you sure you want to delete this recipe: ${title}? This operation cannot be undone.`"
+      :showAlert="showAlert"
+      @confirmed="deleteRecipe"
+      @cancel="toggleAlert"
+    />
     <form v-on:submit.prevent class="add-recipe-form">
       <div>
         <div v-if="!imageLoaded" class="simple-loading-spinner margin--auto"></div>
@@ -69,7 +78,6 @@
         <!-- SAVE / UPDATE -->
         <save-actions
           :recipeKey="recipeKey"
-          :deleted="deleted"
           :saved="saved"
           :editMode="editMode"
           :systemMessage="systemMessage"
@@ -86,6 +94,8 @@
 const uuid = require("uuid");
 import user from "~/mixins/user.js";
 
+import deleteIcon from "~/assets/graphics/icons/delete-icon.svg";
+import Alert from "~/components/Alert.vue";
 import ImageInput from "~/components/Input/ImageInput.vue";
 import CategoryFilter from "~/components/Filter/CategoryFilter.vue";
 import DescriptionInput from "~/components/Input/DescriptionInput.vue";
@@ -98,6 +108,8 @@ import TitleInput from "~/components/Input/TitleInput.vue";
 export default {
   name: "add-recipe-form",
   components: {
+    deleteIcon,
+    Alert,
     ImageInput,
     CategoryFilter,
     DescriptionInput,
@@ -126,11 +138,14 @@ export default {
       systemMessage: "",
       imageSystemMessage: "",
       saved: false,
-      deleted: false,
-      imageLoaded: true
+      imageLoaded: true,
+      showAlert: false
     };
   },
   methods: {
+    toggleAlert() {
+      this.showAlert = !this.showAlert;
+    },
     updateLanguage(language) {
       this.language = language;
     },
@@ -144,34 +159,23 @@ export default {
       this.typeOfMeal = typeOfMeal;
     },
     cancel() {
-      let confirmText = this.editMode
-        ? "Are you sure you want to discard the changes?"
-        : "Are you sure you want to discard your new recipe?";
-      if (!this.editMode && confirm(confirmText)) {
+      if (!this.editMode) {
         this.$router.push("/account/my-cookbook/");
-      } else if (this.editMode && confirm(confirmText)) {
+      } else {
         this.$emit("exitEditMode");
       }
     },
     deleteRecipe() {
-      if (
-        confirm(
-          "Are you sure you want to delete this recipe? This operation cannot be undone."
-        )
-      ) {
-        const recipeRef = this.$fireDb.ref("recipes/" + this.recipeKey);
-        recipeRef
-          .remove()
-          .then(() => {
-            //this.$store.dispatch("SET_USER_RECIPES", this.user);
-            this.systemMessage = "Your recipe was deleted successfully";
-            this.deleted = true;
-          })
-          .catch(error => {
-            this.systemMessage = error.message;
-            console.log("Error deleting recipe:", error.message);
-          });
-      }
+      const recipeRef = this.$fireDb.ref("recipes/" + this.recipeKey);
+      recipeRef
+        .remove()
+        .then(() => {
+          this.$router.push("/account/my-cookbook/");
+        })
+        .catch(error => {
+          this.systemMessage = error.message;
+          console.log("Error deleting recipe:", error.message);
+        });
     },
     saveRecipe() {
       let photoURL = this.photoURL;
