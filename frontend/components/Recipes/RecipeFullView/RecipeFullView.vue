@@ -11,6 +11,7 @@
           class="recipe__image"
         ></div>
         <div
+          id="recipeDetails"
           :class="{
             recipe__details: recipe.photoURL,
             'recipe__details--no-img': !recipe.photoURL
@@ -146,8 +147,9 @@ export default {
     pdfExport() {
       pdfMake.vfs = pdfFonts.pdfMake.vfs;
       let recipe = document.getElementById("recipe");
+      let recipeDetails = document.getElementById("recipeDetails");
       let ignoreElement = document.getElementById("ignorePDF");
-      recipe.removeChild(ignoreElement);
+      recipeDetails.removeChild(ignoreElement);
       let pdfContent = htmlToPdfMake(recipe.outerHTML);
 
       let documentTitle = this.recipe.title;
@@ -156,8 +158,11 @@ export default {
       pdfMake
         .createPdf(docDefinition)
         .download(`${documentTitle}_kokebokami.pdf`);
-
-      recipe.insertBefore(ignoreElement, recipe.childNodes[3]);
+      let childNodesLength = recipeDetails.childNodes.length;
+      recipeDetails.insertBefore(
+        ignoreElement,
+        recipeDetails.childNodes[childNodesLength - 1]
+      );
     }
   }
 };
