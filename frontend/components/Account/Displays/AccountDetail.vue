@@ -3,20 +3,12 @@
     <div>
       <h4 class="account__detail-title">
         {{ title }}
-        <span v-if="visibleToPublic" class="system-message"
-          >(visible to other users)</span
-        >
+        <span v-if="visibleToPublic" class="system-message">(visible to other users)</span>
       </h4>
 
       <div class="account__detail-value" v-if="!editMode">
-        <span v-if="!isImage">
-          {{ currentValue ? currentValue : null }}
-        </span>
-        <img
-          class="account__detail-picture"
-          v-if="isImage && !isLoading"
-          :src="currentValue"
-        />
+        <span v-if="!isImage">{{ currentValue ? currentValue : null }}</span>
+        <img class="account__detail-picture" v-if="isImage && !isLoading" :src="currentValue" />
         <span v-if="isLoading" class="simple-loading-spinner"></span>
       </div>
 
@@ -32,39 +24,21 @@
           <button
             class="button button--small button--cancel account__detail-warning-btn margin-top--medium"
             @click="toggleEditMode"
-          >
-            ✕ Cancel
-          </button>
+          >✕ Cancel</button>
         </div>
       </div>
     </div>
-    <form
-      v-if="editMode && !isImage"
-      v-on:submit.prevent
-      class="account__detail-edit"
-    >
+    <form v-if="editMode && !isImage" v-on:submit.prevent class="account__detail-edit">
       <fieldset>
         <label>
           <textarea v-if="inputType === 'textarea'" v-model="inputValue" />
-          <input
-            v-else
-            :type="inputType"
-            :autocomplete="autocompleteType"
-            v-model="inputValue"
-          />
+          <input v-else :type="inputType" :autocomplete="autocompleteType" v-model="inputValue" />
         </label>
       </fieldset>
       <fieldset>
         <div class="flex-row flex-row--nowrap margin-top--large">
-          <button @click="handleSave" class="button button--small">
-            Save
-          </button>
-          <button
-            class="button button--small button--cancel"
-            @click="toggleEditMode"
-          >
-            ✕ Cancel
-          </button>
+          <button @click="handleSave" class="button button--small">Save</button>
+          <button class="button button--small button--cancel" @click="toggleEditMode">✕ Cancel</button>
         </div>
       </fieldset>
     </form>
@@ -73,20 +47,12 @@
       <div class="system-message">{{ systemMessage }}</div>
     </expand-transition>
     <div v-if="!editMode" class="flex-row">
-      <button
+      <deleteIcon
         v-if="removeOption"
         @click="handleRemoval"
-        class="button button--small button--cancel account__detail-warning-btn margin-right--medium"
-      >
-        Remove
-      </button>
-      <button
-        v-if="editOption"
-        @click="toggleEditMode"
-        class="button button--small button--transparent "
-      >
-        Edit
-      </button>
+        class="icon margin-top--large margin-right--xlarge"
+      />
+      <editIcon v-if="editOption" @click="toggleEditMode" class="icon margin-top--large" />
     </div>
   </dt>
 </template>
@@ -95,13 +61,18 @@ import Dropzone from "nuxt-dropzone";
 import "nuxt-dropzone/dropzone.css";
 import Compressor from "compressorjs";
 
+import deleteIcon from "~/assets/graphics/icons/delete-icon.svg";
+import editIcon from "~/assets/graphics/icons/edit-icon.svg";
+
 import ExpandTransition from "~/components/Transitions/Expand.vue";
 
 export default {
   name: "account-detail",
   components: {
     ExpandTransition,
-    Dropzone
+    Dropzone,
+    deleteIcon,
+    editIcon
   },
   props: {
     title: {

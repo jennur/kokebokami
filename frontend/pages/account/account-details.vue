@@ -24,7 +24,15 @@
             :isImage="true"
             :isLoading="isLoading"
           />
-
+          <account-detail
+            title="Biography"
+            :systemMessage="biographySystemMessage"
+            :visibleToPublic="true"
+            :editOption="true"
+            inputType="textarea"
+            @update="value => updateBiography(value)"
+            :currentValue="biography"
+          />
           <account-detail
             title="Username"
             :systemMessage="usernameSystemMessage"
@@ -44,16 +52,6 @@
             autocompleteType="email"
             @update="value => updateEmail(value)"
             :currentValue="email"
-          />
-
-          <account-detail
-            title="Biography"
-            :systemMessage="biographySystemMessage"
-            :visibleToPublic="true"
-            :editOption="true"
-            inputType="textarea"
-            @update="value => updateBiography(value)"
-            :currentValue="biography"
           />
         </dl>
 
@@ -75,11 +73,17 @@
         </dl>
         <button
           class="button button--small button--transparent button--transparent-red margin-top--large"
-          @click="deleteAccount"
+          @click="toggleAlert"
         >Delete my account</button>
         <p class="system-message">{{ systemMessage }}</p>
       </div>
     </div>
+    <Alert
+      alertMessage="Are you sure you want to delete your account and all your recipes? This operation cannot be undone."
+      :showAlert="showAlert"
+      @confirmed="deleteAccount"
+      @cancel="toggleAlert"
+    />
   </div>
 </template>
 
@@ -96,12 +100,14 @@ import userRecipeLinks from "~/mixins/userRecipeLinks.js";
 
 import AccountDetail from "~/components/Account/Displays/AccountDetail.vue";
 import AccountLinkList from "~/components/Account/Displays/AccountLinkList.vue";
+import Alert from "~/components/Alert.vue";
 
 export default {
   name: "account-details",
   components: {
     AccountDetail,
-    AccountLinkList
+    AccountLinkList,
+    Alert
   },
   props: {
     breadcrumbs: {
@@ -125,7 +131,8 @@ export default {
       username: "",
       email: "",
       biography: "",
-      isLoading: false
+      isLoading: false,
+      showAlert: false
     };
   },
   mixins: [
@@ -161,6 +168,9 @@ export default {
     }
   },
   methods: {
+    toggleAlert() {
+      this.showAlert = !this.showAlert;
+    },
     setProfileImgSystemMessage(message) {
       this.updateProfileImgSystemMessage = message;
     },
@@ -337,62 +347,56 @@ export default {
     deleteAccount() {
       let user = this.$fireAuth.currentUser;
       const componentThis = this;
-      if (
-        confirm(
-          `Are you sure you want to delete your account and all your recipes?
-          \nThis operation cannot be undone.`
-        )
-      ) {
-        let recipesRef = this.$fireDb.ref("recipes").orderByChild("ownerID");
 
-        //Remove user's recipes
-        recipesRef
-          .once("value", recipes => {
-            recipes.forEach(recipe => {
-              if (recipe.val().ownerID === user.uid) {
-                this.$fireDb
-                  .ref("recipes/" + recipe.key)
-                  .remove()
-                  .then(() => {
-                    console.log("Success: Deleted recipe:", recipe.key);
-                  })
-                  .catch(error => {
-                    console.log("Error: Recipe removal failed:", error.message);
-                  });
-              }
-            });
-          })
-          .then(() => {
-            this.$fireDb
-              .ref("users/" + user.uid)
-              .remove()
-              .then(function() {
-                console.log("Success: User was removed from database");
-              })
-              .catch(function(error) {
-                console.log("Error: User remove failed:", error.message);
-                componentThis.systemMessage = error.message;
-              });
-          })
-          .then(() => {
-            user
-              .delete()
-              .then(() => {
-                componentThis.systemMessage =
-                  "Your account was deleted successfully.";
-                componentThis.$store.dispatch("REMOVE_USER");
-                componentThis.$router.push("/goodbye/");
-              })
-              .catch(function(error) {
-                componentThis.systemMessage = error.message;
-                console.log("Error: User delete failed:", error.message);
-              });
-          })
-          .catch(function(error) {
-            componentThis.systemMessage = error.message;
-            console.log("Error: Recipes reference failed:", error.message);
+      let recipesRef = this.$fireDb.ref("recipes").orderByChild("ownerID");
+
+      //Remove user's recipes
+      recipesRef
+        .once("value", recipes => {
+          recipes.forEach(recipe => {
+            if (recipe.val().ownerID === user.uid) {
+              this.$fireDb
+                .ref("recipes/" + recipe.key)
+                .remove()
+                .then(() => {
+                  console.log("Success: Deleted recipe:", recipe.key);
+                })
+                .catch(error => {
+                  console.log("Error: Recipe removal failed:", error.message);
+                });
+            }
           });
-      }
+        })
+        .then(() => {
+          this.$fireDb
+            .ref("users/" + user.uid)
+            .remove()
+            .then(function() {
+              console.log("Success: User was removed from database");
+            })
+            .catch(function(error) {
+              console.log("Error: User remove failed:", error.message);
+              componentThis.systemMessage = error.message;
+            });
+        })
+        .then(() => {
+          user
+            .delete()
+            .then(() => {
+              componentThis.systemMessage =
+                "Your account was deleted successfully.";
+              componentThis.$store.dispatch("REMOVE_USER");
+              componentThis.$router.push("/goodbye/");
+            })
+            .catch(function(error) {
+              componentThis.systemMessage = error.message;
+              console.log("Error: User delete failed:", error.message);
+            });
+        })
+        .catch(function(error) {
+          componentThis.systemMessage = error.message;
+          console.log("Error: Recipes reference failed:", error.message);
+        });
     }
   },
   created() {
