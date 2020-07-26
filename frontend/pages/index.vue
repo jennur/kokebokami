@@ -1,8 +1,8 @@
 <template>
   <div>
     <div v-if="!user">
-      <initial-info-section nextSection="addRecipe" />
-      <preview
+      <initial-info-section nextSection="signUp" />
+      <!-- <preview
         id="addRecipe"
         headline="Collect your favorite recipes in one place"
         description="Add your personal recipes, or save recipes from anywhere on the web to make sure you don't forget about their existence."
@@ -39,7 +39,7 @@
         :flip="true"
         nextSection="signUp"
         class="container--green padding-horizontal--medium"
-      />
+      />-->
 
       <sign-up-section
         id="signUp"
