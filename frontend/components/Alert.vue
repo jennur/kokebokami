@@ -6,10 +6,10 @@
           <p>{{alertMessage}}</p>
           <div class="alert-box__buttons flex-row flex-row--align-center">
             <button
-              class="button button--small margin-right--large"
-              @click="$emit('confirmed')"
-            >Confirm</button>
-            <button class="button button--small button--red-border" @click="$emit('cancel')">Cancel</button>
+              class="button button--small button--red-border margin-right--large"
+              @click="$emit('cancel')"
+            >Cancel</button>
+            <button class="button button--small" @click="$emit('confirmed')">Confirm</button>
           </div>
         </div>
       </transition>
