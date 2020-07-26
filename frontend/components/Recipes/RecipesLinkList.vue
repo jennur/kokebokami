@@ -9,10 +9,10 @@
       >
         <div class="flex-row flex-row--align-center">
           <h4
-            class="recipe-link-list__headline margin-left--small margin-bottom--medium"
+            class="recipe-link-list__headline margin-left--small margin-bottom--small margin-top--large"
           >{{ category && category.title }}</h4>
           <button
-            class="button--increment button--increment-small margin-bottom--medium margin-left--medium"
+            class="button--increment button--increment-small margin-bottom--small margin-top--large margin-left--medium"
             @click="addNewLink(category.title)"
           >Add link</button>
         </div>

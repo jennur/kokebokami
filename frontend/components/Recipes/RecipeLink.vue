@@ -1,5 +1,5 @@
 <template>
-  <div class="recipe-link-display-wrap margin-top--large">
+  <div class="recipe-link-display-wrap">
     <button
       v-if="editMode"
       class="button button--dynamic button--dynamic-small button--cancel margin-bottom--medium"
