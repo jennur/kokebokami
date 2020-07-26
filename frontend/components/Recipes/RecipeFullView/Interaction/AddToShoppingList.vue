@@ -142,7 +142,6 @@ export default {
             owners: [{ id: userID, displayName: username }]
           })
           .then(shoppingList => {
-            console.log("Key:", shoppingList.key);
             newShoppingListRef
               .child(shoppingList.key)
               .child("subLists")
