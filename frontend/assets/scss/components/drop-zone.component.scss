@@ -1,0 +1,47 @@
+.ingredients {
+  .drop-zone {
+    //background-color: rgba($green, 0.3);
+    //border-radius: $spacingMedium;
+    //padding: $spacingMedium;
+    position: relative;
+    &--ingredients {
+      max-width: 270px;
+      min-width: 250px;
+    }
+  }
+
+  .drag-el {
+    background-color: $cream;
+    //padding: $spacingSmall $spacingMedium;
+    position: relative;
+    border-radius: $spacingSmall;
+    &:not(:last-child) {
+      margin-bottom: $spacingMedium;
+    }
+
+    &__button {
+      position: relative;
+      height: $spacingMedium;
+      margin-right: $spacingLarge;
+      &::before,
+      &::after {
+        content: " ";
+        width: $spacingMedium;
+        height: $spacingMedium;
+        border-bottom: 2px solid rgba($blue, 0.5);
+        position: absolute;
+        left: 0;
+        cursor: pointer;
+      }
+      &::before {
+        top: 50%;
+        transform: translateY(-50%);
+        border-top: 2px solid rgba($blue, 0.5);
+      }
+      &::after {
+        top: 50%;
+        transform: translateY(-92%);
+      }
+    }
+  }
+}

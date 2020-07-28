@@ -1,0 +1,14 @@
+.ingredient {
+  &__amount,
+  &__item {
+    padding: $spacingXSmall;
+  }
+  &__amount {
+    display: inline-block;
+    max-width: 55px;
+  }
+  &__item {
+    display: inline-block;
+    max-width: 130px;
+  }
+}
