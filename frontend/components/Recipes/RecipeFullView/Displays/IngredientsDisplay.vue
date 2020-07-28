@@ -133,7 +133,6 @@ export default {
       ingredients = ingredients.map(ingredient => {
         return `${ingredient.amount} ${ingredient.item}`;
       });
-      console.log("Ingredients:", ingredients);
       let ingredientsRef = this.$fireDb.ref(
         `recipes/${this.recipeKey}/ingredients`
       );
