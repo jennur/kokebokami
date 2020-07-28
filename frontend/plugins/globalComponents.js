@@ -7,6 +7,8 @@ import RightArrow from "~/assets/graphics/icons/rightarrow.svg";
 import ShareIcon from "~/assets/graphics/icons/shareicon.svg";
 import DownloadIcon from "~/assets/graphics/icons/downloadicon.svg";
 import SearchIcon from "~/assets/graphics/icons/searchicon.svg";
+import EditIcon from "~/assets/graphics/icons/edit-icon.svg";
+import DeleteIcon from "~/assets/graphics/icons/delete-icon.svg";
 
 Vue.component("header-component", Header);
 Vue.component("breadcrumbs", BreadCrumbs);
@@ -19,3 +21,5 @@ Vue.component("right-arrow", RightArrow);
 Vue.component("share-icon", ShareIcon);
 Vue.component("download-icon", DownloadIcon);
 Vue.component("search-icon", SearchIcon);
+Vue.component("edit-icon", EditIcon);
+Vue.component("delete-icon", DeleteIcon);

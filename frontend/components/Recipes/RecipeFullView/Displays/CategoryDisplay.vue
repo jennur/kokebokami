@@ -2,7 +2,7 @@
   <div class="recipe__categories margin-top--large">
     <span
       class="recipe__category margin-right--large"
-      v-for="(category, index) in mealCategories"
+      v-for="(category, index) in categories"
       :key="`category-${index}`"
       >{{ category }}</span
     >
@@ -15,31 +15,6 @@ export default {
     categories: {
       type: Array,
       default: () => []
-    }
-  },
-  computed: {
-    allCategoryObjects() {
-      return this.$store.state.allCategories;
-    },
-    allTypesOfMeal() {
-      // Needed due to duplicate in previous categories
-      return Object.values(
-        this.allCategoryObjects.filter(object => {
-          return object.typeOfMeal;
-        })[0]
-      )[0];
-    },
-    mealCategories() {
-      let categories = [];
-      if (this.categories) {
-        this.categories.forEach(category => {
-          if (this.allTypesOfMeal.indexOf(category) === -1) {
-            // ^ Needed due to duplicate of typeOfMeal in previous categories
-            categories.push(category);
-          }
-        });
-      }
-      return categories;
     }
   }
 };

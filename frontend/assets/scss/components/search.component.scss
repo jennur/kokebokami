@@ -1,0 +1,33 @@
+.search {
+  display: block;
+  width: 300px;
+
+  &__form {
+    label {
+      text-transform: capitalize;
+      &:hover {
+        background-color: $lightOrange;
+      }
+    }
+
+    & .search-field {
+      position: relative;
+
+      & input {
+        padding: $spacingSmall;
+        padding-left: $spacingXLarge;
+        width: 90%;
+        max-width: 350px;
+        background-color: transparent;
+      }
+    }
+
+    & .search-icon {
+      width: 17px;
+      height: 17px;
+      position: absolute;
+      top: 3px;
+      left: $spacingSmall;
+    }
+  }
+}

@@ -115,9 +115,12 @@
   &__published-by {
     display: block;
     position: absolute;
-    bottom: $spacingMedium;
-    right: $spacingXLarge;
+    top: 180px;
+    right: $spacingMedium;
     font-size: $fontSizeSmall;
     color: $blue;
+    background-color: rgba($cream, 0.9);
+    padding: $spacingSmall;
+    border-radius: $spacingMedium;
   }
 }

@@ -14,6 +14,7 @@ export default {
           let publicRecipesRef = this.$fireDb
             .ref("recipes")
             .orderByChild("public");
+
           publicRecipesRef.once("value", recipes => {
             if (recipes.exists()) {
               recipes = Object.entries(recipes.val());
@@ -33,7 +34,7 @@ export default {
       }
     }
   },
-  mounted() {
+  created() {
     this.getPublicRecipes();
   }
 };
