@@ -1,6 +1,44 @@
 .search {
   display: block;
-  width: 300px;
+  position: fixed;
+  top: 0px;
+  left: -300px;
+  width: 200px;
+  background-color: $cream;
+  z-index: 999;
+  padding: $spacingMedium;
+  box-shadow: 3px 0px 10px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s;
+  transform: translateX(-300px);
+
+  @media screen and (min-width: $mobileWidth) {
+    display: block;
+    position: relative;
+    padding: 0px;
+    width: 300px;
+    transform: translateX(0px);
+    box-shadow: none;
+    left: 0px;
+  }
+
+  &__button {
+    @media screen and (min-width: $mobileWidth) {
+      display: none;
+    }
+  }
+
+  &--open {
+    display: block;
+    overflow-y: scroll;
+    top: 0px;
+    left: -300px;
+    transform: translateX(300px);
+    @media screen and (min-width: $mobileWidth) {
+      top: 0px;
+      left: 0px;
+      transform: translateX(0px);
+    }
+  }
 
   &__form {
     label {
