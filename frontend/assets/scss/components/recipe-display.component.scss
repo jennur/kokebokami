@@ -112,7 +112,8 @@
     }
   }
 
-  &__published-by {
+  &__published-by,
+  &__public-note {
     display: block;
     position: absolute;
     top: 180px;
@@ -122,5 +123,8 @@
     background-color: rgba($cream, 0.9);
     padding: $spacingSmall;
     border-radius: $spacingMedium;
+  }
+  &__public-note {
+    color: $pink;
   }
 }

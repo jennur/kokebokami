@@ -1,6 +1,13 @@
 <template>
   <section>
     <div ref="recipe" id="recipe" class="recipe margin--auto">
+      <public-note
+        :isRecipeOwner="isRecipeOwner"
+        :recipeKey="recipeKey"
+        :isPublic="recipe.public"
+        @update="$emit('update')"
+      />
+
       <div class="recipe__details-wrap">
         <photo-display
           v-if="recipe.photoURL"
@@ -97,6 +104,7 @@ import htmlToPdfMake from "html-to-pdfmake";
 import pdfMake from "pdfmake/build/pdfmake";
 import pdfFonts from "pdfmake/build/vfs_fonts";
 
+import PublicNote from "./Displays/PublicNote.vue";
 import PhotoDisplay from "./Displays/PhotoDisplay.vue";
 import TitleDisplay from "./Displays/TitleDisplay.vue";
 import DescriptionDisplay from "./Displays/DescriptionDisplay.vue";
@@ -113,6 +121,7 @@ import ExpandTransform from "~/components/Transitions/Expand.vue";
 export default {
   name: "recipe-full-view",
   components: {
+    PublicNote,
     PhotoDisplay,
     TitleDisplay,
     DescriptionDisplay,

@@ -9,7 +9,9 @@
     <span class="recipe-display__published-by" v-if="publicRecipe"
       >Published by {{ recipeOwner ? recipeOwner : "Unknown" }}</span
     >
-
+    <span class="recipe-display__public-note" v-if="showPublicNote">
+      Public
+    </span>
     <div class="full-width padding--xlarge">
       <!-- Details -->
 
@@ -50,6 +52,8 @@
 
 <script>
 import recipeBackupImg from "~/assets/graphics/icons/recipe-backup-img.svg";
+import user from "~/mixins/user.js";
+
 export default {
   name: "recipe-display",
   components: {
@@ -73,8 +77,15 @@ export default {
       default: () => []
     }
   },
-
+  mixins: [user],
   computed: {
+    showPublicNote() {
+      return (
+        !this.publicRecipe &&
+        this.recipe.ownerID === this.user.id &&
+        this.recipe.public
+      );
+    },
     recipeImage() {
       let photoURL = this.recipe.photoURL;
       return photoURL
