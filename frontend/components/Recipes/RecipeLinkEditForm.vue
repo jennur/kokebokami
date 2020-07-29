@@ -87,9 +87,13 @@
       </fieldset>
       <fieldset>
         <div
-          class="flex-row flex-row--align-center flex-row--space-between margin-vertical--large"
+          class="flex-row flex-row--align-center margin-vertical--large"
+          :class="{
+            'flex-row--space-between': recipeLinkID,
+            'flex-row--justify-right': !recipeLinkID
+          }"
         >
-          <deleteIcon class="icon" @click="toggleAlert" />
+          <deleteIcon v-if="recipeLinkID" class="icon" @click="toggleAlert" />
           <button
             type="submit"
             name="submit"
@@ -204,6 +208,8 @@ export default {
             this.submitSystemMessage = error.message;
             console.log("Error deleting recipe:", error.message);
           });
+      } else {
+        this.showAlert = false;
       }
     },
     saveLink() {

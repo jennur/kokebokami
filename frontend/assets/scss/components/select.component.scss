@@ -27,7 +27,7 @@ select {
     margin: -2px 0 0 -2px;
     position: absolute;
     width: 150px + 2 * $spacingSmall;
-    height: 305px;
+    max-height: 305px;
     overflow-y: scroll;
 
     top: 0;
