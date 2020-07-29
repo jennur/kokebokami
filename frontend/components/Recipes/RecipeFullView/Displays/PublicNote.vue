@@ -1,8 +1,5 @@
 <template>
-  <div
-    v-if="isRecipeOwner"
-    class="recipe__public-note full-width flex-column flex-column--align-right margin-bottom--large"
-  >
+  <div class="recipe__public-note margin-bottom--large">
     <button
       v-if="!loading"
       class="button button--xsmall button--green-border button--round"
@@ -19,10 +16,6 @@ export default {
   name: "public-note",
   props: {
     isPublic: {
-      type: Boolean,
-      default: false
-    },
-    isRecipeOwner: {
       type: Boolean,
       default: false
     },

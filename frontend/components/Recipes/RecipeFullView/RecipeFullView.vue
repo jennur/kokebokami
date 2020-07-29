@@ -1,12 +1,26 @@
 <template>
   <section>
     <div ref="recipe" id="recipe" class="recipe margin--auto">
-      <public-note
-        :isRecipeOwner="isRecipeOwner"
-        :recipeKey="recipeKey"
-        :isPublic="recipe.public"
-        @update="payload => $emit('update', payload)"
+      <Alert
+        :alertMessage="
+          `Are you sure you want to delete this recipe: ${recipe.title}? This operation cannot be undone.`
+        "
+        :showAlert="showAlert"
+        @confirmed="deleteRecipe"
+        @cancel="toggleAlert"
       />
+      <div
+        v-if="isRecipeOwner"
+        class="flex-row flex-row--align-center flex-row--space-between margin-bottom--medium"
+      >
+        <delete-icon class="icon margin-left--small" @click="toggleAlert" />
+        <public-note
+          :isRecipeOwner="isRecipeOwner"
+          :recipeKey="recipeKey"
+          :isPublic="recipe.public"
+          @update="payload => $emit('update', payload)"
+        />
+      </div>
 
       <div class="recipe__details-wrap">
         <photo-display
@@ -102,14 +116,15 @@ import PublicNote from "./Displays/PublicNote.vue";
 import PhotoDisplay from "./Displays/PhotoDisplay.vue";
 import TitleDisplay from "./Displays/TitleDisplay.vue";
 import DescriptionDisplay from "./Displays/DescriptionDisplay.vue";
-
-import AddRecipeForm from "~/components/Recipes/AddRecipeForm/AddRecipeForm.vue";
-import ActionBar from "./Interaction/ActionBar.vue";
 import CategoryDisplay from "./Displays/CategoryDisplay.vue";
 import FreeFromDisplay from "./Displays/FreeFromDisplay";
 import TypeOfMealDisplay from "./Displays/TypeOfMealDisplay";
 import IngredientsDisplay from "./Displays/IngredientsDisplay.vue";
 import InstructionsDisplay from "./Displays/InstructionsDisplay.vue";
+
+//import AddRecipeForm from "~/components/Recipes/AddRecipeForm/AddRecipeForm.vue";
+import ActionBar from "./Interaction/ActionBar.vue";
+import Alert from "~/components/Alert.vue";
 import ExpandTransform from "~/components/Transitions/Expand.vue";
 
 export default {
@@ -119,14 +134,15 @@ export default {
     PhotoDisplay,
     TitleDisplay,
     DescriptionDisplay,
-    AddRecipeForm,
+    //AddRecipeForm,
     ActionBar,
     CategoryDisplay,
     FreeFromDisplay,
     TypeOfMealDisplay,
     IngredientsDisplay,
     InstructionsDisplay,
-    ExpandTransform
+    ExpandTransform,
+    Alert
   },
   props: {
     isRecipeOwner: { type: Boolean, default: false },
@@ -137,10 +153,14 @@ export default {
   data() {
     return {
       editMode: false,
-      hide: false
+      hide: false,
+      showAlert: false
     };
   },
   methods: {
+    toggleAlert() {
+      this.showAlert = !this.showAlert;
+    },
     pdfExport() {
       pdfMake.vfs = pdfFonts.pdfMake.vfs;
       let recipe = document.getElementById("recipe");
@@ -160,6 +180,18 @@ export default {
         ignoreElement,
         recipeDetails.childNodes[childNodesLength - 1]
       );
+    },
+    deleteRecipe() {
+      const recipeRef = this.$fireDb.ref("recipes/" + this.recipeKey);
+      recipeRef
+        .remove()
+        .then(() => {
+          this.$router.push("/account/my-cookbook/");
+        })
+        .catch(error => {
+          this.systemMessage = error.message;
+          console.log("Error deleting recipe:", error.message);
+        });
     }
   }
 };

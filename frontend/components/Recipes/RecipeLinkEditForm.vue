@@ -15,7 +15,7 @@
         <span class="recipe-link-edit-form--required">*</span>
       </fieldset>
       <expand-transition :show="!!errorSystemMessage">
-        <div class="system-message">{{errorSystemMessage}}</div>
+        <div class="system-message">{{ errorSystemMessage }}</div>
       </expand-transition>
       <fieldset class="flex-column">
         <label for="title">Title</label>
@@ -40,13 +40,15 @@
             :options="categories"
             defaultValue="No category"
             :preSelected="selectedCategory"
-            @select="(option) => handleSelect(option)"
+            @select="option => handleSelect(option)"
           />
           <button
             v-if="!newCategory"
             class="recipe-link-edit-form__category-btn button button--xsmall button--green button--round margin-top--medium"
             @click.prevent="addNewCategory"
-          >New category</button>
+          >
+            New category
+          </button>
           <input
             v-if="newCategory"
             v-model="category"
@@ -84,17 +86,23 @@
         />
       </fieldset>
       <fieldset>
-        <div class="flex-row flex-row--align-center flex-row--space-between margin-vertical--large">
+        <div
+          class="flex-row flex-row--align-center flex-row--space-between margin-vertical--large"
+        >
           <deleteIcon class="icon" @click="toggleAlert" />
           <button
             type="submit"
             name="submit"
             class="button button--small"
             @click.prevent="saveLink"
-          >Save</button>
+          >
+            Save
+          </button>
         </div>
         <expand-transition :show="!!submitSystemMessage">
-          <div class="system-message margin-top--small">{{submitSystemMessage}}</div>
+          <div class="system-message margin-top--small">
+            {{ submitSystemMessage }}
+          </div>
         </expand-transition>
       </fieldset>
     </form>
@@ -182,19 +190,21 @@ export default {
       return "No title";
     },
     deleteLink() {
-      const recipeLinkRef = this.$fireDb.ref(
-        `users/${this.user.id}/recipeLinks/${this.recipeLinkID}`
-      );
-      recipeLinkRef
-        .remove()
-        .then(res => {
-          this.showAlert = false;
-          this.$emit("update");
-        })
-        .catch(error => {
-          this.submitSystemMessage = error.message;
-          console.log("Error deleting recipe:", error.message);
-        });
+      if (this.recipeLinkID) {
+        const recipeLinkRef = this.$fireDb.ref(
+          `users/${this.user.id}/recipeLinks/${this.recipeLinkID}`
+        );
+        recipeLinkRef
+          .remove()
+          .then(res => {
+            this.showAlert = false;
+            this.$emit("update");
+          })
+          .catch(error => {
+            this.submitSystemMessage = error.message;
+            console.log("Error deleting recipe:", error.message);
+          });
+      }
     },
     saveLink() {
       let url = this.url || "";
