@@ -4,19 +4,17 @@
     <div v-if="user" class="account-menu margin-bottom--small">
       <user-image :username="user.displayName" :photoURL="user.photoURL" />
       <!-- Link -->
-      <span class="account-menu__button" @click="toggleDropdown">
-        {{
-        accountMenu.title
-        }}
-      </span>
-      <transition name="pop-dropdown">
+      <nuxt-link class="account-menu__button" to="/account">
+        {{ accountMenu.title }}
+      </nuxt-link>
+      <!-- <transition name="pop-dropdown">
         <dropdown-menu
           v-if="open"
           :links="accountMenu.subLinks"
           @logout="$emit('logout')"
           @close="closeDropdown"
         />
-      </transition>
+      </transition> -->
     </div>
   </div>
 </template>

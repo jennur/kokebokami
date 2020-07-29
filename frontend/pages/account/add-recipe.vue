@@ -59,9 +59,7 @@ export default {
   },
   methods: {
     saveRecipe(payload) {
-      console.log("Saving new:", payload);
       let recipeKey = this.recipeKey;
-      console.log("RecipeKey:", recipeKey);
 
       if (!recipeKey) {
         let newRecipeRef = this.$fireDb.ref("recipes");
@@ -72,7 +70,6 @@ export default {
         newRecipeRef
           .push(recipeObj)
           .then(result => {
-            console.log("Result:", result, result.key);
             this.recipeKey = result.key;
           })
           .then(() => {
