@@ -4,7 +4,9 @@
       v-if="!addingToShoppingList && !addedToShoppingList"
       class="button--increment"
       @click="openSelect"
-    >Add to shopping list</button>
+    >
+      Add to shopping list
+    </button>
     <div v-if="addingToShoppingList" class="flex-row flex-row--align-center">
       <select-component
         v-if="!addNewShoppingList"
@@ -13,16 +15,24 @@
         :preSelected="options[0]"
         defaultValue="none"
       />
-      <input v-else type="text" placeholder="New list title" v-model="newListTitle" />
+      <input
+        v-else
+        type="text"
+        placeholder="New list title"
+        v-model="newListTitle"
+      />
       <button
         class="button button--small button--dynamic button--green-border padding--medium margin-left--medium"
         @click="addToShoppingList"
-      >Add</button>
+      >
+        Add
+      </button>
     </div>
     <span
       v-if="!addingToShoppingList && addedToShoppingList"
       class="button--checked"
-    >Added to shopping list</span>
+      >Added to shopping list</span
+    >
   </div>
 </template>
 
@@ -92,7 +102,7 @@ export default {
       let recipeTitle = this.recipeTitle;
       let ingredients = this.ingredients;
       let shoppingListIngredients = ingredients.map(ingredient => {
-        let text = ingredient.join(" ");
+        let text = `${ingredient.amount}  ${ingredient.item}`;
         let complete = false;
         return { text, complete };
       });
