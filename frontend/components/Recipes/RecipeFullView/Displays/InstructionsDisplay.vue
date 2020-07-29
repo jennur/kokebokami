@@ -8,7 +8,10 @@
         @click="toggleEditMode"
       />
     </div>
-    <ol v-if="!editMode && !loading" class="recipe__instructions">
+    <ol
+      v-if="instructions.length && !editMode && !loading"
+      class="recipe__instructions"
+    >
       <li
         tabindex="-1"
         class="recipe__instructions-step"
@@ -60,22 +63,28 @@ export default {
     },
     saveInstructions(instructions) {
       this.editMode = false;
-      this.loading = true;
-      let instructionsRef = this.$fireDb.ref(
-        `recipes/${this.recipeKey}/instructions`
-      );
-      instructionsRef
-        .set(instructions)
-        .then(() => {
-          console.log("Successfully updated instructions");
-          this.$emit("update");
-        })
-        .then(() => {
-          this.loading = false;
-        })
-        .catch(error =>
-          console.log("Error setting instructions:", error.message)
+      let recipeKey = this.recipeKey;
+
+      if (recipeKey) {
+        this.loading = true;
+        let instructionsRef = this.$fireDb.ref(
+          `recipes/${recipeKey}/instructions`
         );
+        instructionsRef
+          .set(instructions)
+          .then(() => {
+            console.log("Successfully updated instructions");
+            this.$emit("update");
+          })
+          .then(() => {
+            this.loading = false;
+          })
+          .catch(error =>
+            console.log("Error setting instructions:", error.message)
+          );
+      } else {
+        this.$emit("update", { instructions });
+      }
     }
   }
 };

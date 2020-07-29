@@ -4,21 +4,12 @@
   h4 {
     color: $blue;
   }
-  &__details-wrap {
-    display: block;
-    @media screen and (min-width: 800px) {
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      flex-wrap: nowrap;
-    }
-    position: relative;
-  }
   &__image {
     &-wrap {
       display: block;
       width: 100%;
       height: 300px;
+      margin-top: $spacingXLarge;
       @media screen and (min-width: $mobileWidth) {
         height: 350px;
       }
@@ -45,6 +36,16 @@
     }
   }
   &__details {
+    &-wrap {
+      display: block;
+      @media screen and (min-width: 800px) {
+        display: flex;
+        flex-direction: row;
+        align-items: flex-start;
+        flex-wrap: nowrap;
+      }
+      position: relative;
+    }
     position: relative;
     width: 100%;
     box-sizing: border-box;
@@ -56,6 +57,7 @@
       width: 50%;
       order: 0;
       border-radius: $spacingMedium;
+      min-height: 350px + 2 * $spacingXLarge;
     }
 
     &--no-img {
@@ -66,6 +68,7 @@
     font-family: $headingFont;
     font-size: $fontSizeXXLargeMobile;
     width: max-content;
+    max-width: 100%;
     @media screen and (min-width: $tabletWidth) {
       font-size: $fontSizeXXLarge;
     }
@@ -248,7 +251,7 @@
     padding: $spacingXSmall $spacingLarge $spacingSmall $spacingLarge;
     border-radius: $spacingLarge;
     text-transform: capitalize;
-    margin: 2px;
+    border: 2px solid transparent;
     //transition: background-color 0.2s;
     box-sizing: border-box;
     &:not(:last-child) {
@@ -257,6 +260,10 @@
     &-note {
       color: $blue;
       font-size: $fontSizeSmall;
+      margin-bottom: $spacingMedium;
+      @media screen and (min-width: $tabletWidth) {
+        margin-bottom: $spacingSmall;
+      }
     }
     .recipe__category-edit-icon {
       display: none;
@@ -267,7 +274,6 @@
         background-color: $lightOrange;
         color: $orange;
         border: 2px solid $orange;
-        margin: 0px;
         padding-right: $spacingMedium;
         .recipe__category-edit-icon {
           display: inline-block;

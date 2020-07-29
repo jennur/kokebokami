@@ -1,13 +1,20 @@
 <template>
   <div>
     <breadcrumbs :routes="breadcrumbs" />
-    <add-recipe-form :recipe="recipe" />
+    <!--     <add-recipe-form :recipe="recipe" /> -->
+    <recipe-full-view
+      v-if="recipe"
+      :recipe="recipe"
+      :isRecipeOwner="true"
+      @update="saveRecipe"
+    />
   </div>
 </template>
 
 <script>
 import userRecipes from "~/mixins/userRecipes.js";
-import AddRecipeForm from "~/components/Recipes/AddRecipeForm/AddRecipeForm.vue";
+import RecipeFullView from "~/components/Recipes/RecipeFullView/RecipeFullView.vue";
+import user from "~/mixins/user.js";
 
 export default {
   name: "addRecipe",
@@ -22,7 +29,7 @@ export default {
       ]
     };
   },
-  components: { AddRecipeForm },
+  components: { RecipeFullView },
   props: {
     breadcrumbs: {
       type: Array,
@@ -33,15 +40,69 @@ export default {
       ]
     }
   },
-  computed: {
-    recipe() {
-      let recipes = this.userRecipes;
-      return (
-        recipes &&
-        recipes.find(recipe => {
-          return recipe.id === this.$route.params.recipeid;
-        })
-      );
+  mixins: [user],
+
+  data() {
+    return {
+      recipeKey: null,
+      recipe: {
+        public: false,
+        title: "My new recipe",
+        description: "Describe it",
+        ingredients: [],
+        instructions: [],
+        categories: [],
+        typeOfMeal: [],
+        freeFrom: []
+      }
+    };
+  },
+  methods: {
+    saveRecipe(payload) {
+      console.log("Saving new:", payload);
+      let recipeKey = this.recipeKey;
+      console.log("RecipeKey:", recipeKey);
+
+      if (!recipeKey) {
+        let newRecipeRef = this.$fireDb.ref("recipes");
+        let recipeObj = {
+          ...payload,
+          ownerID: this.user.id
+        };
+        newRecipeRef
+          .push(recipeObj)
+          .then(result => {
+            console.log("Result:", result, result.key);
+            this.recipeKey = result.key;
+          })
+          .then(() => {
+            this.getRecipe();
+          });
+      } else {
+        let recipeRef = this.$fireDb.ref(`recipes/${recipeKey}`);
+        recipeRef
+          .update(payload)
+          .then(() => {
+            console.log("Successfully set payload:", payload);
+          })
+          .then(() => {
+            this.getRecipe();
+          });
+      }
+    },
+    getRecipe() {
+      if (this.user) {
+        let recipeRef = this.$fireDb.ref(`recipes/${this.recipeKey}`);
+        recipeRef
+          .once("value", recipe => {
+            if (recipe.exists()) {
+              this.recipe = recipe.val();
+            }
+          })
+          .catch(error =>
+            console.log("Error: Failed getting recipe:", error.message)
+          );
+      }
     }
   }
 };

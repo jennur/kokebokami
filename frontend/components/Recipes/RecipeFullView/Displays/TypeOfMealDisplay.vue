@@ -9,6 +9,11 @@
         @click="event => toggleEditMode(event)"
         >{{ typeOfMealList }}</span
       >
+      <edit-icon
+        v-if="isRecipeOwner && !typeOfMealList && !editMode"
+        class="icon"
+        @click="event => toggleEditMode(event)"
+      />
       <category-edit
         v-if="editMode"
         :existingTypes="typeOfMeal"
@@ -68,20 +73,24 @@ export default {
     },
     saveTypesOfMeal(types) {
       this.editMode = false;
-      this.loading = true;
-      let typeOfMealRef = this.$fireDb.ref(
-        `recipes/${this.recipeKey}/typeOfMeal`
-      );
-      typeOfMealRef
-        .set(types)
-        .then(() => {
-          console.log("Successfully updated type of meal");
-          this.loading = false;
-          this.$emit("update");
-        })
-        .catch(error =>
-          console.log("Error setting type of meal:", error.message)
-        );
+      let recipeKey = this.recipeKey;
+
+      if (recipeKey) {
+        this.loading = true;
+        let typeOfMealRef = this.$fireDb.ref(`recipes/${recipeKey}/typeOfMeal`);
+        typeOfMealRef
+          .set(types)
+          .then(() => {
+            console.log("Successfully updated type of meal");
+            this.loading = false;
+            this.$emit("update");
+          })
+          .catch(error =>
+            console.log("Error setting type of meal:", error.message)
+          );
+      } else {
+        this.$emit("update", { typeOfMeal: types });
+      }
     }
   }
 };

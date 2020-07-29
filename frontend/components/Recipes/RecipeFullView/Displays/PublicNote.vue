@@ -39,20 +39,26 @@ export default {
   },
   methods: {
     togglePublic() {
-      this.loading = true;
       let isPublic = !this.isPublic;
-      let publicRef = this.$fireDb.ref(`recipes/${this.recipeKey}/public`);
-      publicRef
-        .set(isPublic)
-        .then(() => {
-          console.log("Successfully updated public status");
-          this.$emit("update");
-          this.loading = false;
-          this.updated++;
-        })
-        .catch(error =>
-          console.log("Error updating public status:", error.message)
-        );
+      let recipeKey = this.recipeKey;
+
+      if (recipeKey) {
+        this.loading = true;
+        let publicRef = this.$fireDb.ref(`recipes/${recipeKey}/public`);
+        publicRef
+          .set(isPublic)
+          .then(() => {
+            console.log("Successfully updated public status");
+            this.$emit("update");
+            this.loading = false;
+            this.updated++;
+          })
+          .catch(error =>
+            console.log("Error updating public status:", error.message)
+          );
+      } else {
+        this.$emit("update", { public: isPublic });
+      }
     }
   }
 };

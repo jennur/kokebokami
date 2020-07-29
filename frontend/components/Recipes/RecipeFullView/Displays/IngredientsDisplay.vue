@@ -6,7 +6,8 @@
       @updateServings="setServings"
       :isRecipeOwner="isRecipeOwner"
       :recipeKey="recipeKey"
-      @update="$emit('update')"
+      @update="payload => $emit('update', payload)"
+      :key="updated"
     />
     <div>
       <div class="flex-row flex-row--align-center flex-row--nowrap">
@@ -37,7 +38,7 @@
     </div>
 
     <add-to-shopping-list
-      v-if="!editMode"
+      v-if="!editMode && ingredients.length"
       class="margin-bottom--xxlarge"
       :recipeTitle="recipeTitle"
       :ingredients="calculatedIngredients"
@@ -81,14 +82,19 @@ export default {
     }
   },
   mixins: [user],
-
   data() {
     return {
       updatedServings: this.servings,
       amounts: [],
       editMode: false,
-      loading: false
+      loading: false,
+      updated: 0
     };
+  },
+  watch: {
+    servings(value) {
+      this.updatedServings = value;
+    }
   },
   computed: {
     convertedIngredients() {
@@ -119,25 +125,31 @@ export default {
     },
     saveIngredients(ingredients) {
       this.editMode = false;
-      this.loading = true;
+      let recipeKey = this.recipeKey;
       ingredients = ingredients.map(ingredient => {
         return `${ingredient.amount} ${ingredient.item}`;
       });
-      let ingredientsRef = this.$fireDb.ref(
-        `recipes/${this.recipeKey}/ingredients`
-      );
-      ingredientsRef
-        .set(ingredients)
-        .then(() => {
-          console.log("Successfully updated ingredients");
-          this.$emit("update");
-        })
-        .then(() => {
-          this.loading = false;
-        })
-        .catch(error =>
-          console.log("Error setting ingredients:", error.message)
+
+      if (recipeKey) {
+        this.loading = true;
+        let ingredientsRef = this.$fireDb.ref(
+          `recipes/${recipeKey}/ingredients`
         );
+        ingredientsRef
+          .set(ingredients)
+          .then(() => {
+            console.log("Successfully updated ingredients");
+            this.$emit("update");
+          })
+          .then(() => {
+            this.loading = false;
+          })
+          .catch(error =>
+            console.log("Error setting ingredients:", error.message)
+          );
+      } else {
+        this.$emit("update", { ingredients });
+      }
     },
     convertIngredients(ingredients) {
       let numberRegex = /[\d.,\/\s]+/;

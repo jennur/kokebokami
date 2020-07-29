@@ -60,9 +60,11 @@ export default {
     },
     saveTitle(updatedTitle) {
       this.editTitle = false;
-      if (updatedTitle !== this.title) {
+      let recipeKey = this.recipeKey;
+
+      if (recipeKey && updatedTitle !== this.title) {
         this.loading = true;
-        let titleRef = this.$fireDb.ref(`recipes/${this.recipeKey}/title`);
+        let titleRef = this.$fireDb.ref(`recipes/${recipeKey}/title`);
         titleRef
           .set(updatedTitle)
           .then(() => {
@@ -73,6 +75,9 @@ export default {
             this.loading = false;
           })
           .catch(error => console.log("Error setting title:", error.message));
+      } else if (!recipeKey) {
+        console.log("Saving new title", updatedTitle);
+        this.$emit("update", { title: updatedTitle });
       }
     }
   }

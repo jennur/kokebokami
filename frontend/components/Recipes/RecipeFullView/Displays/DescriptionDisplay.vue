@@ -58,10 +58,12 @@ export default {
     },
     saveDescription(updatedDescription) {
       this.editDescription = false;
-      if (updatedDescription !== this.description) {
+      let recipeKey = this.recipeKey;
+
+      if (recipeKey && updatedDescription !== this.description) {
         this.loading = true;
         let descriptionRef = this.$fireDb.ref(
-          `recipes/${this.recipeKey}/description`
+          `recipes/${recipeKey}/description`
         );
         descriptionRef
           .set(updatedDescription)
@@ -75,6 +77,8 @@ export default {
           .catch(error =>
             console.log("Error setting Description:", error.message)
           );
+      } else if (!recipeKey) {
+        this.$emit("update", { description: updatedDescription });
       }
     }
   }

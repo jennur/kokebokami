@@ -78,11 +78,11 @@ export default {
     },
     saveServings(servings) {
       this.editMode = false;
-      if (servings !== this.servings) {
+      let recipeKey = this.recipeKey;
+
+      if (recipeKey && servings !== this.servings) {
         this.loading = true;
-        let servingsRef = this.$fireDb.ref(
-          `recipes/${this.recipeKey}/servings`
-        );
+        let servingsRef = this.$fireDb.ref(`recipes/${recipeKey}/servings`);
         servingsRef
           .set(servings)
           .then(() => {
@@ -95,6 +95,8 @@ export default {
           .catch(error =>
             console.log("Error setting servings:", error.message)
           );
+      } else if (!recipeKey) {
+        this.$emit("update", { servings });
       }
     }
   }

@@ -3,7 +3,7 @@
     <div
       v-if="!editMode && !loading"
       class="recipe__image"
-      :style="`background-image: url(${photoURL})`"
+      :style="`background-image: url(${photoURL || backupImage})`"
     >
       <edit-icon
         v-if="isRecipeOwner"
@@ -52,6 +52,11 @@ export default {
       loading: false
     };
   },
+  computed: {
+    backupImage() {
+      return require("~/assets/images/recipe-backup-img.png");
+    }
+  },
   methods: {
     toggleEditMode() {
       this.editMode = !this.editMode;
@@ -60,19 +65,25 @@ export default {
       this.loading = true;
     },
     saveImage(photoURL) {
-      //Save
       this.editMode = false;
-      let imageRef = this.$fireDb.ref(`recipes/${this.recipeKey}/photoURL`);
-      imageRef
-        .set(photoURL)
-        .then(() => {
-          console.log("Successfully updated recipe photo");
-          this.$emit("update");
-        })
-        .then(() => (this.loading = false))
-        .catch(error =>
-          console.log("Error updating recipe photo:", error.message)
-        );
+      let recipeKey = this.recipeKey;
+
+      if (recipeKey) {
+        let imageRef = this.$fireDb.ref(`recipes/${recipeKey}/photoURL`);
+        imageRef
+          .set(photoURL)
+          .then(() => {
+            console.log("Successfully updated recipe photo");
+            this.$emit("update");
+          })
+          .then(() => (this.loading = false))
+          .catch(error =>
+            console.log("Error updating recipe photo:", error.message)
+          );
+      } else {
+        this.$emit("update", { photoURL });
+        this.loading = false;
+      }
     }
   }
 };

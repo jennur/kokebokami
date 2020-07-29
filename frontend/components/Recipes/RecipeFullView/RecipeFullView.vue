@@ -5,63 +5,57 @@
         :isRecipeOwner="isRecipeOwner"
         :recipeKey="recipeKey"
         :isPublic="recipe.public"
-        @update="$emit('update')"
+        @update="payload => $emit('update', payload)"
       />
 
       <div class="recipe__details-wrap">
         <photo-display
-          v-if="recipe.photoURL"
           :photoURL="recipe.photoURL"
           :isRecipeOwner="isRecipeOwner"
           :recipeKey="recipeKey"
-          @update="$emit('update')"
+          @update="payload => $emit('update', payload)"
         />
 
-        <div
-          id="recipeDetails"
-          :class="{
-            recipe__details: recipe.photoURL,
-            'recipe__details--no-img': !recipe.photoURL
-          }"
-        >
+        <div id="recipeDetails" class="recipe__details">
           <type-of-meal-display
-            v-if="recipe.typeOfMeal"
-            :typeOfMeal="recipe.typeOfMeal"
+            v-if="recipe.typeOfMeal || isRecipeOwner"
+            :typeOfMeal="recipe && recipe.typeOfMeal"
             :isRecipeOwner="isRecipeOwner"
             :recipeKey="recipeKey"
-            :class="`${recipe.freeFrom ? '' : 'margin-bottom--xlarge'}`"
-            @update="$emit('update')"
+            @update="payload => $emit('update', payload)"
           />
           <free-from-display
-            v-if="recipe.freeFrom"
-            :freeFrom="recipe.freeFrom"
+            v-if="recipe.freeFrom || isRecipeOwner"
+            :freeFrom="recipe && recipe.freeFrom"
             :isRecipeOwner="isRecipeOwner"
             :recipeKey="recipeKey"
             class="margin-bottom--xlarge"
-            @update="$emit('update')"
+            @update="payload => $emit('update', payload)"
           />
 
           <title-display
             :title="recipe.title"
             :isRecipeOwner="isRecipeOwner"
             :recipeKey="recipeKey"
-            @update="$emit('update')"
+            @update="payload => $emit('update', payload)"
           />
           <description-display
             :description="recipe.description"
             :isRecipeOwner="isRecipeOwner"
             :recipeKey="recipeKey"
-            @update="$emit('update')"
+            @update="payload => $emit('update', payload)"
           />
 
           <div id="ignorePDF">
             <category-display
-              v-if="recipe.categories"
-              :categories="Object.values(recipe.categories)"
+              v-if="recipe.categories || isRecipeOwner"
+              :categories="
+                recipe.categories && Object.values(recipe.categories)
+              "
               :isRecipeOwner="isRecipeOwner"
               :recipeKey="recipeKey"
               class="margin-bottom--xxlarge"
-              @update="$emit('update')"
+              @update="payload => $emit('update', payload)"
             />
             <action-bar
               :isRecipeOwner="isRecipeOwner"
@@ -83,7 +77,7 @@
           :recipeTitle="recipe.title"
           :isRecipeOwner="isRecipeOwner"
           :recipeKey="recipeKey"
-          @update="$emit('update')"
+          @update="payload => $emit('update', payload)"
         />
 
         <instructions-display
@@ -91,7 +85,7 @@
           :instructions="recipe.instructions"
           :isRecipeOwner="isRecipeOwner"
           :recipeKey="recipeKey"
-          @update="$emit('update')"
+          @update="payload => $emit('update', payload)"
         />
       </div>
     </div>

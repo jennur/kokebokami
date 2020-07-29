@@ -9,6 +9,11 @@
         @click="event => toggleEditMode(event)"
         >{{ freeFromList }}</span
       >
+      <edit-icon
+        v-if="isRecipeOwner && !freeFromList && !editMode"
+        class="icon"
+        @click="event => toggleEditMode(event)"
+      />
       <category-edit
         v-if="editMode"
         :existingTypes="freeFrom"
@@ -68,16 +73,24 @@ export default {
     },
     saveFreeFrom(allergens) {
       this.editMode = false;
-      this.loading = true;
-      let freeFromRef = this.$fireDb.ref(`recipes/${this.recipeKey}/freeFrom`);
-      freeFromRef
-        .set(allergens)
-        .then(() => {
-          console.log("Successfully updated free from");
-          this.loading = false;
-          this.$emit("update");
-        })
-        .catch(error => console.log("Error setting free from:", error.message));
+      let recipeKey = this.recipeKey;
+
+      if (recipeKey) {
+        this.loading = true;
+        let freeFromRef = this.$fireDb.ref(`recipes/${recipeKey}/freeFrom`);
+        freeFromRef
+          .set(allergens)
+          .then(() => {
+            console.log("Successfully updated free from");
+            this.loading = false;
+            this.$emit("update");
+          })
+          .catch(error =>
+            console.log("Error setting free from:", error.message)
+          );
+      } else {
+        this.$emit("update", { freeFrom: allergens });
+      }
     }
   }
 };

@@ -14,6 +14,13 @@
           class="icon recipe__category-edit-icon"
           @click="event => toggleEditMode(event)"
       /></span>
+      <button
+        v-if="!categories.length"
+        class="button button--xsmall button--round"
+        @click="event => toggleEditMode(event)"
+      >
+        Add category
+      </button>
     </div>
     <category-edit
       v-if="editMode"
@@ -64,20 +71,24 @@ export default {
     },
     saveCategories(categories) {
       this.editMode = false;
-      this.loading = true;
-      let categoriesRef = this.$fireDb.ref(
-        `recipes/${this.recipeKey}/categories`
-      );
-      categoriesRef
-        .set(categories)
-        .then(() => {
-          console.log("Successfully updated categories");
-          this.loading = false;
-          this.$emit("update");
-        })
-        .catch(error =>
-          console.log("Error setting categories:", error.message)
-        );
+      let recipeKey = this.recipeKey;
+
+      if (recipeKey) {
+        this.loading = true;
+        let categoriesRef = this.$fireDb.ref(`recipes/${recipeKey}/categories`);
+        categoriesRef
+          .set(categories)
+          .then(() => {
+            console.log("Successfully updated categories");
+            this.loading = false;
+            this.$emit("update");
+          })
+          .catch(error =>
+            console.log("Error setting categories:", error.message)
+          );
+      } else {
+        this.$emit("update", { categories });
+      }
     }
   }
 };

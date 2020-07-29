@@ -88,7 +88,6 @@ export default {
     },
     addInstruction() {
       let id = Math.random() * 10;
-      console.log("ID:", id);
       this.instructionsToBeUpdated.push({ content: " ", id });
     },
     handleSave() {
