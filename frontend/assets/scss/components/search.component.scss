@@ -3,6 +3,8 @@
   position: fixed;
   top: 0px;
   left: -300px;
+  bottom: 0px;
+
   width: 200px;
   background-color: $cream;
   z-index: 999;
@@ -41,6 +43,7 @@
   }
 
   &__form {
+    overflow-y: scroll;
     label {
       text-transform: capitalize;
       &:hover {
