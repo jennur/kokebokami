@@ -16,6 +16,8 @@
           <input
             class="ingredient__amount"
             type="number"
+            min="0"
+            step=".05"
             v-model="ingredientsToBeUpdated[index].amount"
           />
           <input
@@ -92,7 +94,7 @@ export default {
       this.ingredientsToBeUpdated.splice(index, 1);
     },
     addIngredient() {
-      let id = this.ingredientsToBeUpdated.length;
+      let id = Math.random() * 10;
       this.ingredientsToBeUpdated.push({ amount: 0, item: " ", id });
     }
   },

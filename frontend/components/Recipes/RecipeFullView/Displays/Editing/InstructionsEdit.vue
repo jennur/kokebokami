@@ -87,7 +87,8 @@ export default {
       this.instructionsToBeUpdated.splice(index, 1);
     },
     addInstruction() {
-      let id = this.instructionsToBeUpdated.length;
+      let id = Math.random() * 10;
+      console.log("ID:", id);
       this.instructionsToBeUpdated.push({ content: " ", id });
     },
     handleSave() {

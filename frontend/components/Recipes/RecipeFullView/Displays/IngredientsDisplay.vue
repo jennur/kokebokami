@@ -159,10 +159,10 @@ export default {
           });
           let decimal = this.fractionToDecimal(fraction[0]);
           amount = parseInt(amount[0]) + decimal;
-        } else amount = parseInt(amount);
+        } else amount = parseFloat(amount);
         return {
           amount,
-          item,
+          item: item && item.replace("NaN", ""),
           id: index
         };
       });

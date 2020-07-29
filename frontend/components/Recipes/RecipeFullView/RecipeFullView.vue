@@ -23,6 +23,13 @@
             :class="`${recipe.freeFrom ? '' : 'margin-bottom--xlarge'}`"
             @update="$emit('update')"
           />
+          <free-from-display
+            v-if="recipe.freeFrom"
+            :freeFrom="recipe.freeFrom"
+            class="margin-bottom--xlarge"
+            @update="$emit('update')"
+          />
+
           <title-display
             :title="recipe.title"
             :isRecipeOwner="isRecipeOwner"
@@ -41,13 +48,6 @@
               v-if="recipe.categories"
               :categories="Object.values(recipe.categories)"
               class="margin-bottom--xxlarge"
-              @update="$emit('update')"
-            />
-
-            <free-from-display
-              v-if="recipe.freeFrom"
-              :freeFrom="recipe.freeFrom"
-              class="margin-bottom--xlarge"
               @update="$emit('update')"
             />
             <action-bar
