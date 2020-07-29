@@ -1,6 +1,8 @@
 <template>
   <section class="recipes-list-container">
-    <h3 class="recipes-list-container__headline" v-if="headline">{{ headline }}</h3>
+    <h3 class="recipes-list-container__headline" v-if="headline">
+      {{ headline }}
+    </h3>
     <recipe-display
       v-for="recipe in recipes"
       :key="recipe[0]"
@@ -10,8 +12,12 @@
       :allUsers="allUsers"
     />
     <div v-if="!recipesLength" class="container container--center">
-      <p class="margin--auto margin-bottom--medium mobile-width">{{emptyListMessage}}</p>
-      <nuxt-link v-if="addRecipeUrl" :to="addRecipeUrl">➔ Add a recipe to this list</nuxt-link>
+      <p class="margin--auto margin-bottom--medium mobile-width">
+        {{ emptyListMessage }}
+      </p>
+      <nuxt-link v-if="addRecipeUrl" :to="addRecipeUrl"
+        >➔ Add a recipe 👨‍🍳</nuxt-link
+      >
     </div>
   </section>
 </template>

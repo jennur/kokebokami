@@ -240,18 +240,40 @@
     }
   }
   &__category {
-    display: inline-block;
+    display: inline-flex;
+    flex-direction: row;
+    align-items: center;
     background-color: $orange;
     color: $white;
     padding: $spacingXSmall $spacingLarge $spacingSmall $spacingLarge;
     border-radius: $spacingLarge;
     text-transform: capitalize;
+    margin: 2px;
+    //transition: background-color 0.2s;
+    box-sizing: border-box;
     &:not(:last-child) {
       margin-bottom: $spacingMedium;
     }
     &-note {
       color: $blue;
       font-size: $fontSizeSmall;
+    }
+    .recipe__category-edit-icon {
+      display: none;
+    }
+    &.editable {
+      cursor: default;
+      &:hover {
+        background-color: $lightOrange;
+        color: $orange;
+        border: 2px solid $orange;
+        margin: 0px;
+        padding-right: $spacingMedium;
+        .recipe__category-edit-icon {
+          display: inline-block;
+          margin-left: $spacingSmall;
+        }
+      }
     }
   }
 }

@@ -56,7 +56,7 @@
   }
 }
 
-.type-of-meal {
+.category-edit {
   display: inline-block;
   border: 2px solid $blue;
   border-radius: $spacingLarge;
@@ -64,7 +64,15 @@
   margin: $spacingSmall $spacingSmall 0px 0px;
   text-transform: capitalize;
   cursor: default;
+  &.orange {
+    padding: $spacingXSmall $spacingLarge;
+    border: 2px solid $orange;
+    color: $orange;
 
+    &.selected {
+      background-color: $orange;
+    }
+  }
   &.selected {
     background-color: $blue;
     color: $cream;

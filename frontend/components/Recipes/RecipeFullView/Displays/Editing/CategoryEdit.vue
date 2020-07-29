@@ -1,10 +1,10 @@
 <template>
   <div class="flex-row flex-align--center" v-click-outside="saveTypes">
     <span
-      class="type-of-meal"
+      class="category-edit"
       v-for="type in convertedTypes"
       :key="type.text"
-      :class="{ selected: type.checked }"
+      :class="{ selected: type.checked, orange }"
       @click="selectType(type.text)"
     >
       {{ type.text }}
@@ -25,6 +25,10 @@ export default {
     allTypes: {
       type: Array,
       default: () => []
+    },
+    orange: {
+      type: Boolean,
+      default: false
     }
   },
   data() {

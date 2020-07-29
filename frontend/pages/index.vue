@@ -61,7 +61,11 @@
 
       <div class="flex-row flex-row--nowrap">
         <recipe-search :recipes="publicRecipes" @search="setVisibleRecipes" />
-        <recipes-list :recipes="visibleRecipes" :publicRecipe="true" />
+        <recipes-list
+          :recipes="visibleRecipes"
+          :publicRecipe="true"
+          addRecipeUrl="/account/add-recipe"
+        />
       </div>
     </div>
   </div>
