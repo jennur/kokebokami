@@ -1,44 +1,23 @@
 <template>
   <section>
-    <div
-      id="servings"
-      class="recipe__servings-wrap flex-row flex-row--align-center margin-vertical--xxlarge"
-    >
-      <span v-if="!servings" class="recipe__servings-disabled-dash">-</span>
-      <input
-        class="recipe__servings margin-right--medium"
-        type="Number"
-        min="1"
-        step="1"
-        v-model="updatedServings"
-        :disabled="!servings"
-      />
-
-      <h4
-        class="margin--none margin-bottom--small"
-        :class="{ disabled: !servings }"
-      >
-        Servings {{ !servings ? "🤷" : "" }}
-      </h4>
-      <edit-icon
-        v-if="isRecipeOwner"
-        @click="event => toggleEditMode(event.target)"
-        class="icon margin-left--medium"
-      />
-    </div>
+    <servings-display
+      :servings="updatedServings"
+      :defaultServings="servings"
+      @updateServings="setServings"
+      :isRecipeOwner="isRecipeOwner"
+      :recipeKey="recipeKey"
+      @update="$emit('update')"
+    />
     <div>
-      <div
-        id="ingredients"
-        class="flex-row flex-row--align-center flex-row--nowrap"
-      >
+      <div class="flex-row flex-row--align-center flex-row--nowrap">
         <h4 class="margin-vertical--medium">Ingredients</h4>
         <edit-icon
-          v-if="isRecipeOwner && !editIngredients"
-          @click="event => toggleEditMode(event.target)"
+          v-if="isRecipeOwner && !editMode"
+          @click="toggleEditMode"
           class="icon margin--medium"
         />
       </div>
-      <ul v-if="!editIngredients && !loading" class="recipe__ingredients">
+      <ul v-if="!editMode && !loading" class="recipe__ingredients">
         <li
           v-for="(ingredient, index) in calculatedIngredients"
           :key="`ingredient-${index}`"
@@ -51,14 +30,14 @@
       </ul>
       <span v-if="loading" class="simple-loading-spinner"></span>
       <ingredients-edit
-        v-if="editIngredients"
+        v-if="editMode"
         :ingredients="convertedIngredients"
         @save="saveIngredients"
       />
     </div>
 
     <add-to-shopping-list
-      v-if="!editIngredients"
+      v-if="!editMode"
       class="margin-bottom--xxlarge"
       :recipeTitle="recipeTitle"
       :ingredients="calculatedIngredients"
@@ -68,12 +47,14 @@
 
 <script>
 import user from "~/mixins/user.js";
+import ServingsDisplay from "./ServingsDisplay.vue";
 import IngredientsEdit from "./Editing/IngredientsEdit.vue";
 import AddToShoppingList from "../Interaction/AddToShoppingList.vue";
 
 export default {
   name: "ingredients-display",
   components: {
+    ServingsDisplay,
     AddToShoppingList,
     IngredientsEdit
   },
@@ -105,8 +86,7 @@ export default {
     return {
       updatedServings: this.servings,
       amounts: [],
-      editServings: false,
-      editIngredients: false,
+      editMode: false,
       loading: false
     };
   },
@@ -131,17 +111,14 @@ export default {
     }
   },
   methods: {
-    toggleEditMode(target) {
-      let id = target.parentElement.id;
-      if (id === "ingredients") {
-        this.editIngredients = !this.editIngredients;
-      }
-      if (id === "servings") {
-        this.editServings = !this.editServings;
-      }
+    setServings(number) {
+      this.updatedServings = number;
+    },
+    toggleEditMode() {
+      this.editMode = !this.editMode;
     },
     saveIngredients(ingredients) {
-      this.editIngredients = false;
+      this.editMode = false;
       this.loading = true;
       ingredients = ingredients.map(ingredient => {
         return `${ingredient.amount} ${ingredient.item}`;
