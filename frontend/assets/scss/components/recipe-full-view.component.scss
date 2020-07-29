@@ -52,8 +52,20 @@
   &__title {
     font-family: $headingFont;
     font-size: $fontSizeXXLargeMobile;
+    width: max-content;
     @media screen and (min-width: $tabletWidth) {
       font-size: $fontSizeXXLarge;
+    }
+    &.editable {
+      &:hover {
+        background-color: rgba($orange, 0.3);
+        border-radius: $spacingSmall;
+      }
+    }
+    &--edit {
+      &:hover {
+        background-color: transparent;
+      }
     }
   }
   &__description {
@@ -63,6 +75,23 @@
       font-size: $fontSizeLarge;
     }
     color: $blue;
+    width: max-content;
+    max-width: 100%;
+
+    &.editable {
+      &:hover {
+        background-color: rgba($orange, 0.3);
+        border-radius: $spacingSmall;
+      }
+    }
+
+    &--edit {
+      resize: none;
+      width: 100%;
+      &:hover {
+        background-color: transparent;
+      }
+    }
   }
   &__servings {
     width: 50px;

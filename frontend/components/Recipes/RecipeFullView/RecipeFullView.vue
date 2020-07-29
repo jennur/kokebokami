@@ -7,6 +7,7 @@
           :style="`background-image: url(${recipe.photoURL})`"
           class="recipe__image"
         ></div>
+
         <div
           id="recipeDetails"
           :class="{
@@ -19,19 +20,32 @@
             :typeOfMeal="recipe.typeOfMeal"
             :class="`${recipe.freeFrom ? '' : 'margin-bottom--xlarge'}`"
           />
-          <h2 class="recipe__title">{{ recipeTitle }}</h2>
-          <div class="recipe__description">{{ description }}</div>
+          <title-display
+            :title="recipe.title"
+            :isRecipeOwner="isRecipeOwner"
+            :recipeKey="recipeKey"
+            @update="$emit('update')"
+          />
+          <description-display
+            :description="recipe.description"
+            :isRecipeOwner="isRecipeOwner"
+            :recipeKey="recipeKey"
+            @update="$emit('update')"
+          />
+
           <div id="ignorePDF">
             <category-display
               v-if="recipe.categories"
               :categories="Object.values(recipe.categories)"
               class="margin-bottom--xxlarge"
+              @update="$emit('update')"
             />
 
             <free-from-display
               v-if="recipe.freeFrom"
               :freeFrom="recipe.freeFrom"
               class="margin-bottom--xlarge"
+              @update="$emit('update')"
             />
             <action-bar
               :isRecipeOwner="isRecipeOwner"
@@ -51,7 +65,7 @@
           v-if="recipe.ingredients"
           :ingredients="recipe.ingredients"
           :servings="recipe.servings || ''"
-          :recipeTitle="recipeTitle"
+          :recipeTitle="recipe.title"
           :isRecipeOwner="isRecipeOwner"
           :recipeKey="recipeKey"
           @update="$emit('update')"
@@ -61,6 +75,7 @@
           class="recipe__instructions-wrap"
           v-if="recipe.instructions"
           :instructions="recipe.instructions"
+          @update="$emit('update')"
         />
       </div>
     </div>
@@ -72,6 +87,9 @@ import logo from "~/static/kokebokamilogo.png";
 import htmlToPdfMake from "html-to-pdfmake";
 import pdfMake from "pdfmake/build/pdfmake";
 import pdfFonts from "pdfmake/build/vfs_fonts";
+
+import TitleDisplay from "./Displays/TitleDisplay.vue";
+import DescriptionDisplay from "./Displays/DescriptionDisplay.vue";
 
 import AddRecipeForm from "~/components/Recipes/AddRecipeForm/AddRecipeForm.vue";
 import ActionBar from "./Interaction/ActionBar.vue";
@@ -85,6 +103,8 @@ import ExpandTransform from "~/components/Transitions/Expand.vue";
 export default {
   name: "recipe-full-view",
   components: {
+    TitleDisplay,
+    DescriptionDisplay,
     AddRecipeForm,
     ActionBar,
     CategoryDisplay,
@@ -106,31 +126,7 @@ export default {
       hide: false
     };
   },
-  computed: {
-    recipeTitle() {
-      return this.recipe.title ? this.recipe.title : "Recipe has no title";
-    },
-    description() {
-      return this.recipe.description
-        ? this.recipe.description
-        : "Recipe has no description";
-    },
-    editModeButtonText() {
-      return this.editMode ? "Exit edit mode" : "Edit mode";
-    }
-  },
   methods: {
-    handleUpdate() {
-      this.$emit("update");
-      this.toggleEditMode();
-    },
-    toggleEditMode() {
-      this.editMode = !this.editMode;
-      if (process.browser) {
-        document.documentElement.scrollTop = 0;
-        document.body.scrollTop = 0;
-      }
-    },
     pdfExport() {
       pdfMake.vfs = pdfFonts.pdfMake.vfs;
       let recipe = document.getElementById("recipe");
