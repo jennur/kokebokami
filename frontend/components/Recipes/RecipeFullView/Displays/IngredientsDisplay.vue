@@ -38,12 +38,7 @@
           class="icon margin--medium"
         />
       </div>
-      <ingredients-edit
-        v-if="editIngredients"
-        :ingredients="convertedIngredients"
-        @save="saveIngredients"
-      />
-      <ul v-else class="recipe__ingredients">
+      <ul v-if="!editIngredients && !loading" class="recipe__ingredients">
         <li
           v-for="(ingredient, index) in calculatedIngredients"
           :key="`ingredient-${index}`"
@@ -54,7 +49,14 @@
           {{ ingredient.item }}
         </li>
       </ul>
+      <span v-if="loading" class="simple-loading-spinner"></span>
+      <ingredients-edit
+        v-if="editIngredients"
+        :ingredients="convertedIngredients"
+        @save="saveIngredients"
+      />
     </div>
+
     <add-to-shopping-list
       v-if="!editIngredients"
       class="margin-bottom--xxlarge"
@@ -104,7 +106,8 @@ export default {
       updatedServings: this.servings,
       amounts: [],
       editServings: false,
-      editIngredients: false
+      editIngredients: false,
+      loading: false
     };
   },
   computed: {
@@ -128,8 +131,18 @@ export default {
     }
   },
   methods: {
+    toggleEditMode(target) {
+      let id = target.parentElement.id;
+      if (id === "ingredients") {
+        this.editIngredients = !this.editIngredients;
+      }
+      if (id === "servings") {
+        this.editServings = !this.editServings;
+      }
+    },
     saveIngredients(ingredients) {
       this.editIngredients = false;
+      this.loading = true;
       ingredients = ingredients.map(ingredient => {
         return `${ingredient.amount} ${ingredient.item}`;
       });
@@ -141,6 +154,9 @@ export default {
         .then(() => {
           console.log("Successfully updated ingredients");
           this.$emit("update");
+        })
+        .then(() => {
+          this.loading = false;
         })
         .catch(error =>
           console.log("Error setting ingredients:", error.message)
@@ -173,15 +189,6 @@ export default {
           id: index
         };
       });
-    },
-    toggleEditMode(target) {
-      let id = target.parentElement.id;
-      if (id === "ingredients") {
-        this.editIngredients = !this.editIngredients;
-      }
-      if (id === "servings") {
-        this.editServings = !this.editServings;
-      }
     },
     fractionToDecimal(number) {
       let fraction = number.split("/");

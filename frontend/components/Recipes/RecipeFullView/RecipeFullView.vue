@@ -19,6 +19,7 @@
             v-if="recipe.typeOfMeal"
             :typeOfMeal="recipe.typeOfMeal"
             :class="`${recipe.freeFrom ? '' : 'margin-bottom--xlarge'}`"
+            @update="$emit('update')"
           />
           <title-display
             :title="recipe.title"
@@ -62,7 +63,6 @@
       >
         <ingredients-display
           class="recipe__ingredients-wrap"
-          v-if="recipe.ingredients"
           :ingredients="recipe.ingredients"
           :servings="recipe.servings || ''"
           :recipeTitle="recipe.title"
@@ -73,8 +73,9 @@
 
         <instructions-display
           class="recipe__instructions-wrap"
-          v-if="recipe.instructions"
           :instructions="recipe.instructions"
+          :isRecipeOwner="isRecipeOwner"
+          :recipeKey="recipeKey"
           @update="$emit('update')"
         />
       </div>

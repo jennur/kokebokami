@@ -1,10 +1,10 @@
 <template>
   <div class="instructions">
-    <div class="drop-zone drop-zone--instructions">
-      <div
+    <ol class="drop-zone recipe__instructions">
+      <li
         v-for="(instruction, index) in instructionsToBeUpdated"
         :key="instruction.id"
-        class="drag-el flex-row flex-row--align-center flex-row--nowrap"
+        class="drag-el recipe__instructions-step padding-bottom--small flex-row flex-row--align-center flex-row--nowrap"
         draggable
         @dragstart="startDrag($event, instruction, index)"
         @drop="onDrop($event, index)"
@@ -12,7 +12,7 @@
         @dragenter.prevent
       >
         <span class="drag-el__button"></span>
-        <div class="drag-el__content">
+        <div class="drag-el__content ">
           <textarea
             class="instruction"
             type="text"
@@ -27,8 +27,8 @@
             }
           "
         ></decrement-button>
-      </div>
-    </div>
+      </li>
+    </ol>
     <div class="flex-row flex-row--align-center">
       <increment-button
         class="margin-top--large margin-right--large"
@@ -37,7 +37,7 @@
       >
       <button
         class="button button--dynamic-small button--round padding-vertical--small margin-top--large"
-        @click="$emit('save', instructionsToBeUpdated)"
+        @click="handleSave"
       >
         Save
       </button>
@@ -88,11 +88,25 @@ export default {
     },
     addInstruction() {
       let id = this.instructionsToBeUpdated.length;
-      this.instructionsToBeUpdated.push({ amount: 0, item: " ", id });
+      this.instructionsToBeUpdated.push({ content: " ", id });
+    },
+    handleSave() {
+      let instructions = this.instructionsToBeUpdated;
+      instructions = instructions.map(instruction => {
+        return instruction.content;
+      });
+      this.$emit("save", instructions);
     }
   },
   created() {
-    this.instructionsToBeUpdated = this.instructions;
+    this.instructionsToBeUpdated = this.instructions.map(
+      (instruction, index) => {
+        return {
+          content: instruction,
+          id: index
+        };
+      }
+    );
   }
 };
 </script>

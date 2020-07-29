@@ -2,6 +2,14 @@
   &__amount,
   &__item {
     padding: $spacingXSmall;
+    border-bottom: 1px solid $green;
+    margin-bottom: 1px;
+    &:focus {
+      border: none;
+      border-radius: 0px;
+      border-bottom: 2px solid $green;
+      margin-bottom: 0px;
+    }
   }
   &__amount {
     display: inline-block;
@@ -10,5 +18,21 @@
   &__item {
     display: inline-block;
     max-width: 130px;
+  }
+}
+
+.instructions {
+  textarea {
+    width: 100%;
+    height: 100px;
+    resize: none;
+    border: 1px solid $green;
+    margin: 1px;
+    border-radius: $spacingSmall;
+    padding: $spacingMedium;
+
+    &:focus {
+      border: 2px solid $green;
+    }
   }
 }

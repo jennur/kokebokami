@@ -1,4 +1,5 @@
-.ingredients {
+.ingredients,
+.instructions {
   .drop-zone {
     //background-color: rgba($green, 0.3);
     //border-radius: $spacingMedium;
@@ -44,4 +45,8 @@
       }
     }
   }
+}
+
+.instructions .drop-zone .drag-el__content {
+  width: 100%;
 }
