@@ -20,12 +20,16 @@
           <type-of-meal-display
             v-if="recipe.typeOfMeal"
             :typeOfMeal="recipe.typeOfMeal"
+            :isRecipeOwner="isRecipeOwner"
+            :recipeKey="recipeKey"
             :class="`${recipe.freeFrom ? '' : 'margin-bottom--xlarge'}`"
             @update="$emit('update')"
           />
           <free-from-display
             v-if="recipe.freeFrom"
             :freeFrom="recipe.freeFrom"
+            :isRecipeOwner="isRecipeOwner"
+            :recipeKey="recipeKey"
             class="margin-bottom--xlarge"
             @update="$emit('update')"
           />
@@ -47,6 +51,8 @@
             <category-display
               v-if="recipe.categories"
               :categories="Object.values(recipe.categories)"
+              :isRecipeOwner="isRecipeOwner"
+              :recipeKey="recipeKey"
               class="margin-bottom--xxlarge"
               @update="$emit('update')"
             />

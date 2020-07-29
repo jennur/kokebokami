@@ -55,3 +55,18 @@
     width: 55px;
   }
 }
+
+.type-of-meal {
+  display: inline-block;
+  border: 2px solid $blue;
+  border-radius: $spacingLarge;
+  padding: 0px $spacingSmall;
+  margin: $spacingSmall $spacingSmall 0px 0px;
+  text-transform: capitalize;
+  cursor: default;
+
+  &.selected {
+    background-color: $blue;
+    color: $cream;
+  }
+}

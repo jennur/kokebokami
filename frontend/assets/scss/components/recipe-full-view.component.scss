@@ -70,6 +70,7 @@
       font-size: $fontSizeXXLarge;
     }
     &.editable {
+      cursor: default;
       &:hover {
         background-color: rgba($orange, 0.3);
         border-radius: $spacingSmall;
@@ -92,6 +93,7 @@
     max-width: 100%;
 
     &.editable {
+      cursor: default;
       &:hover {
         background-color: rgba($orange, 0.3);
         border-radius: $spacingSmall;
@@ -228,7 +230,15 @@
       }
     }
   }
-
+  &__type-of-meal {
+    &.editable {
+      cursor: default;
+      &:hover {
+        background-color: rgba($orange, 0.3);
+        border-radius: $spacingSmall;
+      }
+    }
+  }
   &__category {
     display: inline-block;
     background-color: $orange;
