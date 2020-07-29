@@ -2,11 +2,13 @@
   <section>
     <div ref="recipe" id="recipe" class="recipe margin--auto">
       <div class="recipe__details-wrap">
-        <div
+        <photo-display
           v-if="recipe.photoURL"
-          :style="`background-image: url(${recipe.photoURL})`"
-          class="recipe__image"
-        ></div>
+          :photoURL="recipe.photoURL"
+          :isRecipeOwner="isRecipeOwner"
+          :recipeKey="recipeKey"
+          @update="$emit('update')"
+        />
 
         <div
           id="recipeDetails"
@@ -89,6 +91,7 @@ import htmlToPdfMake from "html-to-pdfmake";
 import pdfMake from "pdfmake/build/pdfmake";
 import pdfFonts from "pdfmake/build/vfs_fonts";
 
+import PhotoDisplay from "./Displays/PhotoDisplay.vue";
 import TitleDisplay from "./Displays/TitleDisplay.vue";
 import DescriptionDisplay from "./Displays/DescriptionDisplay.vue";
 
@@ -104,6 +107,7 @@ import ExpandTransform from "~/components/Transitions/Expand.vue";
 export default {
   name: "recipe-full-view",
   components: {
+    PhotoDisplay,
     TitleDisplay,
     DescriptionDisplay,
     AddRecipeForm,

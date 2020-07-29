@@ -61,7 +61,6 @@ export default {
     saveInstructions(instructions) {
       this.editMode = false;
       this.loading = true;
-      console.log("Instructions:", instructions);
       let instructionsRef = this.$fireDb.ref(
         `recipes/${this.recipeKey}/instructions`
       );

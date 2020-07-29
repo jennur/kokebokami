@@ -69,7 +69,7 @@ export default {
         ? this.recipeOwner[1].displayName
         : "Unknown";
 
-      if (this.recipe && !this.isRecipeOwner) {
+      if (this.recipe && this.user.id !== this.recipe.ownerID) {
         return [
           { name: "Home", link: "/" },
           { name: "Cooks", link: "/cooks/" },
