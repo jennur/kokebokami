@@ -5,11 +5,8 @@
     <div class="shopping-list__cancel-action">
       <settings-dropdown v-if="list.key" :right="true">
         <span class="system-message" @click="toggleAlert"
-          ><delete-icon
-            tabindex="0"
-            v-if="list.key"
-            class="icon margin-right--medium"
-          />Delete collection</span
+          ><delete-icon tabindex="0" class="icon margin-right--medium" />Delete
+          collection</span
         >
       </settings-dropdown>
       <button
