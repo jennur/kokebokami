@@ -1,6 +1,9 @@
 <template>
-  <div class="settings-dropdown">
-    <settings-icon class="icon" @click="event => toggleDropdown(event)" />
+  <div class="settings-dropdown" :class="{ 'settings-dropdown--right': right }">
+    <settings-icon
+      class="icon margin-horizontal--medium"
+      @click="event => toggleDropdown(event)"
+    />
     <transition name="pop-settings-dropdown">
       <div
         v-if="open"
@@ -18,6 +21,12 @@
 import ClickOutside from "vue-click-outside";
 export default {
   name: "settings-dropdown",
+  props: {
+    right: {
+      type: Boolean,
+      default: false
+    }
+  },
   data() {
     return {
       open: false

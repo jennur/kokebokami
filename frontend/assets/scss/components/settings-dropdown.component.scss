@@ -1,6 +1,7 @@
 .settings-dropdown {
   position: relative;
   min-height: 35px;
+
   &__dropdown {
     display: flex;
     flex-direction: column;
@@ -35,6 +36,16 @@
       &:hover {
         background-color: $lightOrange;
       }
+    }
+  }
+  &--right {
+    .settings-dropdown__dropdown {
+      left: auto;
+      right: 0px;
+    }
+    .pointer {
+      left: auto;
+      right: $spacingSmall;
     }
   }
 }

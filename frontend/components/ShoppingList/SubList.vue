@@ -1,12 +1,12 @@
 <template>
   <section class="sub-list margin-vertical--large">
     <div class="flex-row flex-row--align-top flex-row--nowrap">
-      <delete-icon
-        tabindex="0"
-        v-if="subListKey"
-        class="icon margin-top--medium margin-right--medium"
-        @click="toggleAlert"
-      />
+      <settings-dropdown class="margin-top--medium" v-if="subListKey">
+        <span class="system-message" @click="toggleAlert"
+          ><delete-icon tabindex="0" class="icon margin-right--medium" />Delete
+          collection</span
+        >
+      </settings-dropdown>
       <div class="sub-list-container">
         <sub-list-title
           :mainListKey="mainListKey"
@@ -39,6 +39,7 @@ import ClickOutside from "vue-click-outside";
 
 import user from "~/mixins/user.js";
 
+import SettingsDropdown from "~/components/SettingsDropdown.vue";
 import SubListTitle from "./SubList/SubListTitle.vue";
 import SubListListItems from "./SubList/SubListListItems.vue";
 import Alert from "~/components/Alert.vue";
@@ -46,6 +47,7 @@ import Alert from "~/components/Alert.vue";
 export default {
   name: "sub-list",
   components: {
+    SettingsDropdown,
     SubListTitle,
     SubListListItems,
     Alert
