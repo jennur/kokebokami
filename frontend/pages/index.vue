@@ -69,7 +69,7 @@
           :class="{ 'search--open': searchOpen }"
           :recipes="publicRecipes"
           @search="setVisibleRecipes"
-          v-click-outside="event => toggleSearch(event)"
+          v-click-outside="event => closeSearch(event)"
         />
         <recipes-list
           :recipes="visibleRecipes"
@@ -118,6 +118,10 @@ export default {
     }
   },
   methods: {
+    closeSearch(event) {
+      event && event.stopPropagation();
+      this.searchOpen = false;
+    },
     toggleSearch(event) {
       event && event.stopPropagation();
       this.searchOpen = !this.searchOpen;

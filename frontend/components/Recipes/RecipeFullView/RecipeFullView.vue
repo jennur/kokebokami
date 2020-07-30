@@ -1,6 +1,18 @@
 <template>
   <section>
     <div ref="recipe" id="recipe" class="recipe margin--auto">
+      <settings-dropdown v-if="isRecipeOwner">
+        <public-note
+          :isRecipeOwner="isRecipeOwner"
+          :recipeKey="recipeKey"
+          :isPublic="recipe.public"
+          @update="payload => $emit('update', payload)"
+        />
+        <span @click="toggleAlert">
+          <delete-icon class="icon margin-left--small" />
+          Delete recipe
+        </span>
+      </settings-dropdown>
       <Alert
         :alertMessage="
           `Are you sure you want to delete this recipe: ${recipe.title}? This operation cannot be undone.`
@@ -9,18 +21,6 @@
         @confirmed="deleteRecipe"
         @cancel="toggleAlert"
       />
-      <div
-        v-if="isRecipeOwner"
-        class="flex-row flex-row--align-center flex-row--space-between margin-bottom--medium"
-      >
-        <delete-icon class="icon margin-left--small" @click="toggleAlert" />
-        <public-note
-          :isRecipeOwner="isRecipeOwner"
-          :recipeKey="recipeKey"
-          :isPublic="recipe.public"
-          @update="payload => $emit('update', payload)"
-        />
-      </div>
 
       <div class="recipe__details-wrap">
         <photo-display
@@ -112,6 +112,7 @@ import htmlToPdfMake from "html-to-pdfmake";
 import pdfMake from "pdfmake/build/pdfmake";
 import pdfFonts from "pdfmake/build/vfs_fonts";
 
+import SettingsDropdown from "~/components/SettingsDropdown.vue";
 import PublicNote from "./Displays/PublicNote.vue";
 import PhotoDisplay from "./Displays/PhotoDisplay.vue";
 import TitleDisplay from "./Displays/TitleDisplay.vue";
@@ -122,7 +123,6 @@ import TypeOfMealDisplay from "./Displays/TypeOfMealDisplay";
 import IngredientsDisplay from "./Displays/IngredientsDisplay.vue";
 import InstructionsDisplay from "./Displays/InstructionsDisplay.vue";
 
-//import AddRecipeForm from "~/components/Recipes/AddRecipeForm/AddRecipeForm.vue";
 import ActionBar from "./Interaction/ActionBar.vue";
 import Alert from "~/components/Alert.vue";
 import ExpandTransform from "~/components/Transitions/Expand.vue";
@@ -130,11 +130,11 @@ import ExpandTransform from "~/components/Transitions/Expand.vue";
 export default {
   name: "recipe-full-view",
   components: {
+    SettingsDropdown,
     PublicNote,
     PhotoDisplay,
     TitleDisplay,
     DescriptionDisplay,
-    //AddRecipeForm,
     ActionBar,
     CategoryDisplay,
     FreeFromDisplay,

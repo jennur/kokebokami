@@ -3,12 +3,18 @@
     <div>
       <h4 class="account__detail-title">
         {{ title }}
-        <span v-if="visibleToPublic" class="system-message">(visible to other users)</span>
+        <span v-if="visibleToPublic" class="system-message"
+          >(visible to other users)</span
+        >
       </h4>
 
       <div class="account__detail-value" v-if="!editMode">
         <span v-if="!isImage">{{ currentValue ? currentValue : null }}</span>
-        <img class="account__detail-picture" v-if="isImage && !isLoading" :src="currentValue" />
+        <img
+          class="account__detail-picture"
+          v-if="isImage && !isLoading"
+          :src="currentValue"
+        />
         <span v-if="isLoading" class="simple-loading-spinner"></span>
       </div>
 
@@ -22,23 +28,55 @@
         />
         <div class="flex-row">
           <button
+            class="button button--small button--cancel account__detail-warning-btn margin-top--medium margin-left--small"
+          >
+            <deleteIcon
+              v-if="removeOption && currentValue"
+              @click="toggleAlert"
+              class="icon icon--in-button margin-right--small"
+            />
+            Delete
+          </button>
+          <Alert
+            alertMessage="You're about to delete your profile picture"
+            :showAlert="showAlert"
+            @confirmed="handleRemoval"
+            @cancel="toggleAlert"
+          />
+          <button
             class="button button--small button--cancel account__detail-warning-btn margin-top--medium"
             @click="toggleEditMode"
-          >✕ Cancel</button>
+          >
+            ✕ Cancel
+          </button>
         </div>
       </div>
     </div>
-    <form v-if="editMode && !isImage" v-on:submit.prevent class="account__detail-edit">
+    <form
+      v-if="editMode && !isImage"
+      v-on:submit.prevent
+      class="account__detail-edit"
+    >
       <fieldset>
         <label>
           <textarea v-if="inputType === 'textarea'" v-model="inputValue" />
-          <input v-else :type="inputType" :autocomplete="autocompleteType" v-model="inputValue" />
+          <input
+            v-else
+            :type="inputType"
+            :autocomplete="autocompleteType"
+            v-model="inputValue"
+          />
         </label>
       </fieldset>
       <fieldset>
         <div class="flex-row flex-row--nowrap margin-top--large">
           <button @click="handleSave" class="button button--small">Save</button>
-          <button class="button button--small button--cancel" @click="toggleEditMode">✕ Cancel</button>
+          <button
+            class="button button--small button--cancel"
+            @click="toggleEditMode"
+          >
+            ✕ Cancel
+          </button>
         </div>
       </fieldset>
     </form>
@@ -47,12 +85,11 @@
       <div class="system-message">{{ systemMessage }}</div>
     </expand-transition>
     <div v-if="!editMode" class="flex-row">
-      <deleteIcon
-        v-if="removeOption"
-        @click="handleRemoval"
-        class="icon margin-top--large margin-right--xlarge"
+      <editIcon
+        v-if="editOption"
+        @click="toggleEditMode"
+        class="icon margin-top--large"
       />
-      <editIcon v-if="editOption" @click="toggleEditMode" class="icon margin-top--large" />
     </div>
   </dt>
 </template>
@@ -64,6 +101,7 @@ import Compressor from "compressorjs";
 import deleteIcon from "~/assets/graphics/icons/delete-icon.svg";
 import editIcon from "~/assets/graphics/icons/edit-icon.svg";
 
+import Alert from "~/components/Alert.vue";
 import ExpandTransition from "~/components/Transitions/Expand.vue";
 
 export default {
@@ -71,6 +109,7 @@ export default {
   components: {
     ExpandTransition,
     Dropzone,
+    Alert,
     deleteIcon,
     editIcon
   },
@@ -127,10 +166,14 @@ export default {
           <p class="form-text">Allowed Files: .jpg, .jpeg, .png</p>
           `,
         maxFiles: 1
-      }
+      },
+      showAlert: false
     };
   },
   methods: {
+    toggleAlert() {
+      this.showAlert = !this.showAlert;
+    },
     toggleEditMode() {
       this.editMode = !this.editMode;
     },
@@ -139,7 +182,11 @@ export default {
       this.$emit("update", this.inputValue);
     },
     handleRemoval() {
+      this.showAlert = false;
       this.$emit("remove");
+      setTimeout(() => {
+        this.editMode = false;
+      }, 300);
     },
     handlePictureUpload(upload) {
       this.toggleEditMode();

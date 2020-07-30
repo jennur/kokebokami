@@ -1,15 +1,7 @@
 <template>
-  <div class="recipe__public-note margin-bottom--large">
-    <button
-      v-if="!loading"
-      class="button button--xsmall button--green-border button--round"
-      @click="togglePublic"
-      :key="updated"
-    >
-      Make recipe {{ isPublic ? "private" : "public" }}
-    </button>
-    <span v-if="loading" class="simple-loading-spinner"></span>
-  </div>
+  <span @click="togglePublic" :key="updated">
+    Make recipe {{ isPublic ? "private" : "public" }}
+  </span>
 </template>
 <script>
 export default {
@@ -26,7 +18,6 @@ export default {
   },
   data() {
     return {
-      loading: false,
       updated: 1
     };
   },
@@ -36,14 +27,12 @@ export default {
       let recipeKey = this.recipeKey;
 
       if (recipeKey) {
-        this.loading = true;
         let publicRef = this.$fireDb.ref(`recipes/${recipeKey}/public`);
         publicRef
           .set(isPublic)
           .then(() => {
             console.log("Successfully updated public status");
             this.$emit("update");
-            this.loading = false;
             this.updated++;
           })
           .catch(error =>
@@ -51,6 +40,7 @@ export default {
           );
       } else {
         this.$emit("update", { public: isPublic });
+        this.updated++;
       }
     }
   }

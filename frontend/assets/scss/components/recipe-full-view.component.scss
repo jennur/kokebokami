@@ -9,11 +9,13 @@
       display: block;
       width: 100%;
       height: 300px;
-      margin-top: $spacingXLarge;
+
       @media screen and (min-width: $mobileWidth) {
         height: 350px;
       }
       @media screen and (min-width: 800px) {
+        margin-top: $spacingXLarge;
+
         height: 350px;
         width: 50%;
         order: 1;

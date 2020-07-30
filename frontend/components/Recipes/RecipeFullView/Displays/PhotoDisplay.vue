@@ -22,6 +22,13 @@
       @save="photoURL => saveImage(photoURL)"
       @loading="setLoading"
     />
+    <button
+      v-if="editMode && !loading"
+      class="button button--dynamic-small button--cancel margin-top--large"
+      @click="toggleEditMode"
+    >
+      ✕ Cancel
+    </button>
   </div>
 </template>
 <script>

@@ -1,0 +1,35 @@
+.settings-dropdown {
+  position: relative;
+  max-width: 250px;
+  &__dropdown {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 40px;
+    left: 0px;
+    background-color: $cream;
+    border: 2px solid $blue;
+    box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.3);
+    z-index: 999;
+    .pointer {
+      display: block;
+      width: 15px;
+      height: 15px;
+      padding: 0px;
+      background-color: $cream;
+      border-left: 2px solid $blue;
+      border-top: 2px solid $blue;
+      position: absolute;
+      top: -10px;
+      left: $spacingSmall;
+      transform: rotate(45deg);
+    }
+    span {
+      padding: $spacingMedium $spacingXLarge;
+      cursor: pointer;
+      &:hover {
+        background-color: $lightOrange;
+      }
+    }
+  }
+}
