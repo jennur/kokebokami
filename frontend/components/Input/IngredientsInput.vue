@@ -1,6 +1,6 @@
 <template>
   <div>
-    <label
+    <!-- <label
       class="flex-row flex-row--align-center flex-row--nowrap margin-top--xxlarge"
     >
       <h4 class="margin--none">Number of servings:</h4>
@@ -13,12 +13,13 @@
         step="1"
         v-model="servings"
       />
-    </label>
+    </label> -->
     <fieldset
       id="ingredientList"
       class="add-recipe-form__ingredients flex-column margin-top--xxlarge"
     >
       <h4>Ingredients</h4>
+
       <div
         v-if="ingredientNumbers.length"
         class="add-recipe-form__ingredient-heading flex-row flex-row--space-between flex-row--nowrap margin-bottom--medium"
@@ -26,7 +27,7 @@
         <span>Amount</span>
         <span>Ingredient</span>
       </div>
-      <span
+      <div
         class="flex-row flex-row--align-center flex-row--nowrap margin-bottom--small"
         v-for="number in ingredientNumbers"
         :key="number"
@@ -66,12 +67,19 @@
             }
           "
         ></decrement-button>
-      </span>
-      <increment-button
-        class="margin-top--large"
-        @increment="incrementIngredientNumber"
-        >Add ingredient</increment-button
-      >
+      </div>
+      <div class="flex-row flex-row--align-center">
+        <increment-button
+          class="margin-top--large margin-right--large"
+          @increment="incrementIngredientNumber"
+          >Add ingredient</increment-button
+        ><button
+          class="button button--dynamic-small button--round padding-vertical--small margin-top--large"
+          @click="$emit('save', [ingredientAmounts, ingredients])"
+        >
+          Save
+        </button>
+      </div>
     </fieldset>
   </div>
 </template>

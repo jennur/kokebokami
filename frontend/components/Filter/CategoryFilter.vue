@@ -57,11 +57,12 @@ export default {
     },
     allCategories() {
       let allCategories = [];
-      this.allCategoryObjects.forEach(categoryObj => {
+      console.log("Object vals:", Object.values(this.allCategoryObjects));
+      Object.values(this.allCategoryObjects).forEach(categoryObj => {
         allCategories = allCategories.concat(Object.values(categoryObj)[0]);
       });
 
-      return allCategories;
+      //return allCategories;
     }
   },
   methods: {

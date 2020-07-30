@@ -2,11 +2,25 @@
   <section class="shopping-list margin-bottom--large">
     <!-- Delete / Cancel action -->
     <div class="shopping-list__cancel-action">
-      <deleteIcon v-if="list.key" class="icon" @click="toggleAlert" title="Delete collection" />
-      <button v-else class="button button--dynamic button--cancel" @click="$emit('cancel')">✕</button>
+      <delete-icon
+        tabindex="0"
+        v-if="list.key"
+        class="icon"
+        @click="toggleAlert"
+        title="Delete collection"
+      />
+      <button
+        v-else
+        class="button button--dynamic button--cancel"
+        @click="$emit('cancel')"
+      >
+        ✕
+      </button>
     </div>
     <Alert
-      :alertMessage="`Are you sure you want to delete this shopping list: '${list.title}'?`"
+      :alertMessage="
+        `Are you sure you want to delete this shopping list: '${list.title}'?`
+      "
       :showAlert="showAlert"
       @confirmed="deleteShoppingList"
       @cancel="toggleAlert"
@@ -21,13 +35,17 @@
           v-else
           class="button button--small button--transparent button--transparent-red"
           @click="toggleShareBox"
-        >✕ Close</button>
+        >
+          ✕ Close
+        </button>
         <shareBox
           :open="sharing"
           @share="follower => shareShoppingList(follower)"
           class="margin-top--medium"
         />
-        <div v-if="systemMessage" class="system-message margin-top--large">{{ systemMessage }}</div>
+        <div v-if="systemMessage" class="system-message margin-top--large">
+          {{ systemMessage }}
+        </div>
       </div>
     </div>
     <!-- Shopping list title -->
@@ -39,10 +57,14 @@
         <h2
           class="margin-bottom--small margin-right--large"
           @click="event => toggleEditTitle(event)"
-        >{{ list.title }}</h2>
+        >
+          {{ list.title }}
+        </h2>
         <span v-if="shared" class="shopping-list__created-by">
           Shared from:
-          <nuxt-link :to="`/cooks/${list.createdBy.id}/`">{{ list.createdBy.displayName }}</nuxt-link>
+          <nuxt-link :to="`/cooks/${list.createdBy.id}/`">{{
+            list.createdBy.displayName
+          }}</nuxt-link>
         </span>
       </div>
 
@@ -59,7 +81,9 @@
             }
           "
         />
-        <div class="flex-row flex-row--align-center flex-row--nowrap margin-top--medium"></div>
+        <div
+          class="flex-row flex-row--align-center flex-row--nowrap margin-top--medium"
+        ></div>
       </div>
     </div>
     <!-- Sublists -->
@@ -82,11 +106,14 @@
         @update="updateSubLists"
       />
     </div>
-    <div class="flex-row flex-row--align-center flex-row--space-between full-width">
+    <div
+      class="flex-row flex-row--align-center flex-row--space-between full-width"
+    >
       <increment-button
         class="margin-vertical--large margin-right--xxlarge"
         @increment="addNewSubList"
-      >New sublist</increment-button>
+        >New sublist</increment-button
+      >
     </div>
   </section>
 </template>
@@ -94,7 +121,6 @@
 <script>
 import ClickOutside from "vue-click-outside";
 import shareIcon from "~/assets/graphics/icons/shareicon.svg";
-import deleteIcon from "~/assets/graphics/icons/delete-icon.svg";
 
 import user from "~/mixins/user.js";
 
@@ -108,7 +134,6 @@ export default {
   name: "shopping-list",
   components: {
     shareIcon,
-    deleteIcon,
     Alert,
     ShareBox,
     IncrementButton,

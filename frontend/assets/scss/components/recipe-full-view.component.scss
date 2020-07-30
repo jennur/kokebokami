@@ -4,34 +4,50 @@
   h4 {
     color: $blue;
   }
-  &__details-wrap {
-    display: block;
-    @media screen and (min-width: 800px) {
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      flex-wrap: nowrap;
+  &__image {
+    &-wrap {
+      display: block;
+      width: 100%;
+      height: 300px;
+
+      @media screen and (min-width: $mobileWidth) {
+        height: 350px;
+      }
+      @media screen and (min-width: 800px) {
+        margin-top: $spacingXLarge;
+
+        height: 350px;
+        width: 50%;
+        order: 1;
+      }
     }
     position: relative;
-  }
-  &__image {
     display: block;
     width: 100%;
-    height: 300px;
-    @media screen and (min-width: $mobileWidth) {
-      height: 350px;
-    }
-    @media screen and (min-width: 800px) {
-      height: 350px;
-      width: 50%;
-      order: 1;
-    }
-
+    height: 100%;
     background-size: cover;
     background-repeat: no-repeat;
     background-position: 50%;
+    &-edit-btn {
+      position: absolute;
+      top: $spacingMedium;
+      right: $spacingMedium;
+      padding: $spacingSmall;
+      background-color: $lightGreen;
+      border-radius: $spacingSmall;
+    }
   }
   &__details {
+    &-wrap {
+      display: block;
+      @media screen and (min-width: 800px) {
+        display: flex;
+        flex-direction: row;
+        align-items: flex-start;
+        flex-wrap: nowrap;
+      }
+      position: relative;
+    }
     position: relative;
     width: 100%;
     box-sizing: border-box;
@@ -43,6 +59,7 @@
       width: 50%;
       order: 0;
       border-radius: $spacingMedium;
+      min-height: 350px + 2 * $spacingXLarge;
     }
 
     &--no-img {
@@ -52,8 +69,22 @@
   &__title {
     font-family: $headingFont;
     font-size: $fontSizeXXLargeMobile;
+    width: max-content;
+    max-width: 100%;
     @media screen and (min-width: $tabletWidth) {
       font-size: $fontSizeXXLarge;
+    }
+    &.editable {
+      cursor: default;
+      &:hover {
+        background-color: rgba($orange, 0.3);
+        border-radius: $spacingSmall;
+      }
+    }
+    &--edit {
+      &:hover {
+        background-color: transparent;
+      }
     }
   }
   &__description {
@@ -63,18 +94,41 @@
       font-size: $fontSizeLarge;
     }
     color: $blue;
+    width: max-content;
+    max-width: 100%;
+
+    &.editable {
+      cursor: default;
+      &:hover {
+        background-color: rgba($orange, 0.3);
+        border-radius: $spacingSmall;
+      }
+    }
+
+    &--edit {
+      resize: none;
+      width: 100%;
+      &:hover {
+        background-color: transparent;
+      }
+    }
   }
   &__servings {
     width: 50px;
-    border: 1px solid $green;
-    border-radius: $spacingSmall;
+    //border: 1px solid $green;
+    //border-radius: $spacingSmall;
+    border: none;
     position: relative;
+    &:focus {
+      border: 1px solid $green;
+    }
     &:disabled {
       border-color: lightgray;
       position: relative;
     }
     &-wrap {
       position: relative;
+      max-width: 235px;
       h4.disabled {
         color: lightgray;
       }
@@ -182,20 +236,66 @@
       }
     }
   }
-
+  &__type-of-meal {
+    &.editable {
+      cursor: default;
+      &:hover {
+        background-color: rgba($orange, 0.3);
+        border-radius: $spacingSmall;
+      }
+    }
+  }
   &__category {
-    display: inline-block;
+    display: inline-flex;
+    flex-direction: row;
+    align-items: center;
     background-color: $orange;
     color: $white;
     padding: $spacingXSmall $spacingLarge $spacingSmall $spacingLarge;
     border-radius: $spacingLarge;
     text-transform: capitalize;
+    border: 2px solid transparent;
+    //transition: background-color 0.2s;
+    box-sizing: border-box;
+    font-size: $fontSizeSmall;
+    position: relative;
+
     &:not(:last-child) {
       margin-bottom: $spacingMedium;
     }
     &-note {
       color: $blue;
       font-size: $fontSizeSmall;
+      margin-bottom: $spacingMedium;
+      @media screen and (min-width: $tabletWidth) {
+        margin-bottom: $spacingSmall;
+      }
+    }
+    .recipe__category-edit-icon {
+      display: none;
+    }
+    &.editable {
+      cursor: default;
+      &:hover,
+      &.edit {
+        background-color: $lightOrange;
+        color: $orange;
+        border: 2px solid $orange;
+        //padding-right: $spacingMedium;
+        .recipe__category-edit-icon {
+          display: inline-block;
+          position: absolute;
+          top: 50%;
+          transform: translateY(-50%);
+          right: $spacingSmall;
+        }
+      }
+    }
+  }
+
+  &__public-note {
+    .simple-loading-spinner {
+      margin: 0px;
     }
   }
 }

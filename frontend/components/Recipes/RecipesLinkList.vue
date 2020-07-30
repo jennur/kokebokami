@@ -10,11 +10,15 @@
         <div class="flex-row flex-row--align-center">
           <h4
             class="recipe-link-list__headline margin-left--small margin-bottom--small margin-top--large"
-          >{{ category && category.title }}</h4>
+          >
+            {{ category && category.title }}
+          </h4>
           <button
             class="button--increment button--increment-small margin-bottom--small margin-top--large margin-left--medium"
             @click="addNewLink(category.title)"
-          >Add link</button>
+          >
+            Add link
+          </button>
         </div>
         <div class="recipe-link-list">
           <recipe-link
@@ -29,16 +33,22 @@
             :link="['', {}]"
             :addingToCategory="addingToCategory"
             @update="saveNewLink"
+            @cancel="cancelNewLink"
           />
         </div>
       </div>
     </div>
-    <div v-if="!links.length" class="container container--center margin-bottom--xxlarge">
+    <div
+      v-if="!links.length"
+      class="container container--center margin-bottom--xxlarge"
+    >
       {{ emptyListMessage }}
       <button
         class="button button--transparent margin-top--xxlarge"
         @click="$emit('openForm')"
-      >Add recipe to this list</button>
+      >
+        Add recipe to this list
+      </button>
     </div>
   </section>
 </template>
@@ -99,9 +109,11 @@ export default {
   },
   methods: {
     addNewLink(categoryTitle) {
-      console.log("Add new");
       this.addingNew = true;
       this.addingToCategory = categoryTitle;
+    },
+    cancelNewLink() {
+      this.addingNew = false;
     },
     saveNewLink() {
       this.addingNew = false;

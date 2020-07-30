@@ -5,7 +5,13 @@
   cursor: pointer;
 
   &--in-button {
-    margin-left: -$spacingSmall;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    //margin-left: -$spacingSmall;
+    &-left {
+      left: $spacingLarge;
+    }
   }
 
   &--blue {

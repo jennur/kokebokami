@@ -7,11 +7,12 @@
           class="margin-bottom--xxlarge"
           :recipe="recipe"
           :recipeKey="recipeKey"
-          :isRecipeOwner="isRecipeOwner"
-          :recipeOwnerID="recipeOwner && recipeOwner[0]"
+          :isRecipeOwner="user.id === recipe.ownerID"
+          :recipeOwnerID="recipe.ownerID"
           @update="handleUpdate"
         />
       </expand-transition>
+
       <comments-section
         class="tablet-width margin--auto margin-top--xxlarge"
         :recipeKey="recipeKey"
@@ -24,7 +25,7 @@
 <script>
 import user from "~/mixins/user.js";
 import allUsers from "~/mixins/allUsers.js";
-import allRecipes from "~/mixins/allRecipes.js";
+import getRecipe from "~/mixins/getRecipe.js";
 import publicRecipes from "~/mixins/publicRecipes.js";
 
 import ExpandTransition from "~/components/Transitions/Expand.vue";
@@ -33,13 +34,10 @@ import CommentsSection from "~/components/CommentsSection/CommentsSection.vue";
 
 export default {
   name: "recipe",
-  components: { RecipeFullView, CommentsSection, ExpandTransition },
-  data() {
-    return {
-      isRecipeOwner: false,
-      recipeOwnerUsername: null,
-      recipeLoaded: false
-    };
+  components: {
+    RecipeFullView,
+    CommentsSection,
+    ExpandTransition
   },
   head() {
     return {
@@ -52,33 +50,10 @@ export default {
       ]
     };
   },
-  mixins: [user, allUsers, allRecipes, publicRecipes],
+  mixins: [user, allUsers, getRecipe],
   computed: {
     path() {
       return this.$route.path;
-    },
-    recipeKey() {
-      return this.$route.params.recipeid;
-    },
-    recipe() {
-      if (this.user) {
-        let allRecipes = this.allRecipes;
-        let currentRecipe = allRecipes.filter(recipe => {
-          return recipe[0] === this.recipeKey;
-        });
-        if (currentRecipe.length) {
-          this.isRecipeOwner = currentRecipe[0][1].ownerID === this.user.id;
-          this.recipeLoaded = true;
-          return currentRecipe[0][1];
-        }
-      } else {
-        console.log("Public recipes:", this.publicRecipes);
-        let publicRecipes = this.publicRecipes;
-        let currentRecipe = publicRecipes.filter(recipe => {
-          return recipe[0] === this.recipeKey;
-        });
-      }
-      return {};
     },
     recipeOwner() {
       let users = this.allUsers;
@@ -94,7 +69,7 @@ export default {
         ? this.recipeOwner[1].displayName
         : "Unknown";
 
-      if (this.recipe && !this.isRecipeOwner) {
+      if (this.recipe && this.user.id !== this.recipe.ownerID) {
         return [
           { name: "Home", link: "/" },
           { name: "Cooks", link: "/cooks/" },
@@ -118,7 +93,7 @@ export default {
   },
   methods: {
     handleUpdate() {
-      this.getAllRecipes();
+      this.getRecipe();
     }
   }
 };

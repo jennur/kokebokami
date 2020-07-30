@@ -51,13 +51,25 @@ export default {
   // Global CSS
   css: ["~/assets/scss/main.scss"],
   plugins: ["~/plugins/globalComponents.js", "~/plugins/router-auth.client.js"],
-
+  vendor: ["axios", "babel-polyfill"],
   router: {
     middleware: "router-auth",
     linkExactActiveClass: "active-link"
   },
   pageTransition: "fade",
   // Nuxt.js dev-modules
+  babel: {
+    presets: ["es2015", "stage-0"],
+    plugins: [
+      [
+        "transform-runtime",
+        {
+          polyfill: true,
+          regenerator: true
+        }
+      ]
+    ]
+  },
   buildModules: [
     [
       "@nuxtjs/google-gtag",

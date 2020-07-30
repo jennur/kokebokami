@@ -20,13 +20,15 @@ select {
   }
 
   &__dropdown {
-    background-color: #fef3e9;
+    background-color: $cream;
     border: 2px solid $blue;
     border-radius: $spacingSmall;
     box-shadow: 0px $spacingSmall $spacingMedium rgba(0, 0, 0, 0.3);
     margin: -2px 0 0 -2px;
     position: absolute;
     width: 150px + 2 * $spacingSmall;
+    max-height: 305px;
+    overflow-y: scroll;
 
     top: 0;
     left: 0;

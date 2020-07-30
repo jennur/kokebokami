@@ -1,8 +1,17 @@
 <template>
   <nuxt-link :to="`/recipes/${recipeUrl}/`" class="recipe-display">
     <!-- Image -->
-    <div :style="`background-image: url(${recipeImage})`" class="recipe-display__image"></div>
+    <div
+      :style="`background-image: url(${recipeImage})`"
+      class="recipe-display__image"
+    ></div>
 
+    <span class="recipe-display__published-by" v-if="publicRecipe"
+      >Published by {{ recipeOwner ? recipeOwner : "Unknown" }}</span
+    >
+    <span class="recipe-display__public-note" v-if="showPublicNote">
+      Public
+    </span>
     <div class="full-width padding--xlarge">
       <!-- Details -->
 
@@ -18,12 +27,12 @@
       </div>
 
       <!-- Description -->
-      <h3
-        class="recipe-display__title margin--none margin-bottom--medium"
-      >{{ recipe.title ? recipe.title : "Recipe has no title" }}</h3>
+      <h3 class="recipe-display__title margin--none margin-bottom--medium">
+        {{ recipe.title ? recipe.title : "Recipe has no title" }}
+      </h3>
       <div class="recipe-display__description margin-bottom--large">
         {{
-        recipe.description ? recipe.description : "Recipe has no description"
+          recipe.description ? recipe.description : "Recipe has no description"
         }}
       </div>
     </div>
@@ -34,19 +43,17 @@
           class="recipe-display__category margin-bottom--xxlarge margin-horizontal--small"
           v-for="category in categories"
           :key="category"
-        >{{ category }}</span>
+          >{{ category }}</span
+        >
       </div>
-
-      <span
-        class="recipe-display__published-by"
-        v-if="publicRecipe"
-      >Published by: {{ recipeOwner ? recipeOwner : "Unknown" }}</span>
     </div>
   </nuxt-link>
 </template>
 
 <script>
 import recipeBackupImg from "~/assets/graphics/icons/recipe-backup-img.svg";
+import user from "~/mixins/user.js";
+
 export default {
   name: "recipe-display",
   components: {
@@ -70,8 +77,15 @@ export default {
       default: () => []
     }
   },
-
+  mixins: [user],
   computed: {
+    showPublicNote() {
+      return (
+        !this.publicRecipe &&
+        this.recipe.ownerID === this.user.id &&
+        this.recipe.public
+      );
+    },
     recipeImage() {
       let photoURL = this.recipe.photoURL;
       return photoURL
@@ -91,28 +105,9 @@ export default {
       });
       return recipeOwner;
     },
-    allCategoryObjects() {
-      return this.$store.state.allCategories;
-    },
-    allTypesOfMeal() {
-      // Needed due to duplicate in previous categories
-      return Object.values(
-        this.allCategoryObjects.filter(object => {
-          return object.typeOfMeal;
-        })[0]
-      )[0];
-    },
     categories() {
-      let categories = [];
-      if (this.recipe && this.recipe.categories) {
-        this.recipe.categories.forEach(category => {
-          if (this.allTypesOfMeal.indexOf(category) === -1) {
-            // ^ Needed due to duplicate of typeOfMeal in previous categories
-            categories.push(category);
-          }
-        });
-      }
-      return categories;
+      let categories = this.recipe.categories;
+      return categories && Object.values(categories);
     },
     typeOfMeal() {
       let typeOfMeal = [];

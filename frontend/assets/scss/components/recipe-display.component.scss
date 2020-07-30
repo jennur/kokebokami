@@ -26,6 +26,21 @@
   svg.recipe-display__image {
     height: auto;
   }
+  &__published-by,
+  &__public-note {
+    display: block;
+    position: absolute;
+    top: 180px;
+    right: $spacingMedium;
+    font-size: $fontSizeSmall;
+    color: $blue;
+    background-color: rgba($cream, 0.9);
+    padding: $spacingSmall;
+    border-radius: $spacingMedium;
+  }
+  &__public-note {
+    color: $pink;
+  }
 }
 .recipe-link-display {
   display: block;
@@ -35,6 +50,13 @@
   &__edit-form-wrap {
     display: block;
     max-width: 100%;
+  }
+  &__published-by {
+    display: block;
+    position: absolute;
+    bottom: $spacingSmall;
+    right: $spacingMedium;
+    font-size: $fontSizeSmall;
   }
 }
 
@@ -110,14 +132,5 @@
         color: $blue;
       }
     }
-  }
-
-  &__published-by {
-    display: block;
-    position: absolute;
-    bottom: $spacingMedium;
-    right: $spacingXLarge;
-    font-size: $fontSizeSmall;
-    color: $blue;
   }
 }

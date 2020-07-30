@@ -50,30 +50,48 @@
       />
     </div>
 
-    <div class="tablet-width padding-horizontal--medium margin-top--xxlarge margin--auto" v-else>
-      <div class="flex-center-container flex-column">
+    <div
+      class="desktop-width padding-horizontal--large margin-top--xxlarge margin--auto"
+      v-else
+    >
+      <!-- <div class="margin-bottom--xxlarge">
         <h2>Discover public recipes</h2>
-        <nuxt-link to="/account/my-cookbook/">My cookbook ➔</nuxt-link>
+        <nuxt-link to="/account/my-cookbook/">Or go to my cookbook ➔</nuxt-link>
+      </div> -->
+      <button
+        class="search__button button button--small button--green-border margin--medium"
+        @click="event => toggleSearch(event)"
+      >
+        Search
+      </button>
+      <div class="flex-row flex-row--nowrap">
+        <recipe-search
+          :class="{ 'search--open': searchOpen }"
+          :recipes="publicRecipes"
+          @search="setVisibleRecipes"
+          v-click-outside="event => closeSearch(event)"
+        />
+        <recipes-list
+          :recipes="visibleRecipes"
+          :publicRecipe="true"
+          addRecipeUrl="/account/add-recipe"
+        />
       </div>
-      <recipes-filter
-        class="margin-bottom--xlarge margin-top--large margin-left--xsmall margin--auto"
-        :recipes="publicRecipes"
-        @filter="setVisibleRecipes"
-      />
-      <recipes-list :recipes="visibleRecipes" :publicRecipe="true" />
     </div>
   </div>
 </template>
 
 <script>
+import ClickOutside from "vue-click-outside";
+
 import user from "~/mixins/user.js";
 import publicRecipes from "~/mixins/publicRecipes.js";
 
 import InitialInfoSection from "~/components/InitialInfoSection/InititalInfoSection.vue";
 import Preview from "~/components/Preview.vue";
 import SignUpSection from "~/components/SignUp/SignUpSection.vue";
-import RecipesFilter from "~/components/Filter/RecipesFilter.vue";
 import RecipesList from "~/components/Recipes/RecipesList.vue";
+import RecipeSearch from "~/components/Search/RecipeSearch.vue";
 
 export default {
   name: "Home",
@@ -82,13 +100,14 @@ export default {
     InitialInfoSection,
     Preview,
     SignUpSection,
-    RecipesFilter,
+    RecipeSearch,
     RecipesList
   },
   data() {
     return {
       filteredRecipes: [],
-      filtered: false
+      filtered: false,
+      searchOpen: false
     };
   },
   mixins: [user, publicRecipes],
@@ -99,10 +118,21 @@ export default {
     }
   },
   methods: {
+    closeSearch(event) {
+      event && event.stopPropagation();
+      this.searchOpen = false;
+    },
+    toggleSearch(event) {
+      event && event.stopPropagation();
+      this.searchOpen = !this.searchOpen;
+    },
     setVisibleRecipes(filteredRecipesObj) {
       this.filteredRecipes = filteredRecipesObj.recipes;
       this.filtered = filteredRecipesObj.filtered;
     }
+  },
+  directives: {
+    ClickOutside
   }
 };
 </script>

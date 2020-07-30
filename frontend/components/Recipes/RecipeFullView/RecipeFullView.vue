@@ -1,40 +1,75 @@
 <template>
   <section>
-    <div ref="recipe" id="recipe" v-if="!editMode" class="recipe margin--auto">
-      <div v-if="isRecipeOwner" class="text-align--right">
-        <editIcon @click="toggleEditMode" class="recipe__edit-btn icon" />
-      </div>
+    <div ref="recipe" id="recipe" class="recipe margin--auto">
+      <settings-dropdown v-if="isRecipeOwner">
+        <public-note
+          :isRecipeOwner="isRecipeOwner"
+          :recipeKey="recipeKey"
+          :isPublic="recipe.public"
+          @update="payload => $emit('update', payload)"
+        />
+        <span v-if="recipeKey" @click="toggleAlert">
+          <delete-icon tabindex="0" class="icon margin-left--small" />
+          Delete recipe
+        </span>
+      </settings-dropdown>
+      <Alert
+        :alertMessage="
+          `Are you sure you want to delete this recipe: ${recipe.title}? This operation cannot be undone.`
+        "
+        :showAlert="showAlert"
+        @confirmed="deleteRecipe"
+        @cancel="toggleAlert"
+      />
+
       <div class="recipe__details-wrap">
-        <div
-          v-if="recipe.photoURL"
-          :style="`background-image: url(${recipe.photoURL})`"
-          class="recipe__image"
-        ></div>
-        <div
-          id="recipeDetails"
-          :class="{
-            recipe__details: recipe.photoURL,
-            'recipe__details--no-img': !recipe.photoURL
-          }"
-        >
+        <photo-display
+          :photoURL="recipe.photoURL"
+          :isRecipeOwner="isRecipeOwner"
+          :recipeKey="recipeKey"
+          @update="payload => $emit('update', payload)"
+        />
+
+        <div id="recipeDetails" class="recipe__details">
           <type-of-meal-display
-            v-if="recipe.typeOfMeal"
-            :typeOfMeal="recipe.typeOfMeal"
-            :class="`${recipe.freeFrom ? '' : 'margin-bottom--xlarge'}`"
+            v-if="recipe.typeOfMeal || isRecipeOwner"
+            :typeOfMeal="recipe && recipe.typeOfMeal"
+            :isRecipeOwner="isRecipeOwner"
+            :recipeKey="recipeKey"
+            @update="payload => $emit('update', payload)"
           />
-          <h2 class="recipe__title">{{ recipeTitle }}</h2>
-          <div class="recipe__description">{{ description }}</div>
+          <free-from-display
+            v-if="recipe.freeFrom || isRecipeOwner"
+            :freeFrom="recipe && recipe.freeFrom"
+            :isRecipeOwner="isRecipeOwner"
+            :recipeKey="recipeKey"
+            class="margin-bottom--xlarge"
+            @update="payload => $emit('update', payload)"
+          />
+
+          <title-display
+            :title="recipe.title"
+            :isRecipeOwner="isRecipeOwner"
+            :recipeKey="recipeKey"
+            @update="payload => $emit('update', payload)"
+          />
+          <description-display
+            :description="recipe.description"
+            :isRecipeOwner="isRecipeOwner"
+            :recipeKey="recipeKey"
+            @update="payload => $emit('update', payload)"
+          />
+
           <div id="ignorePDF">
             <category-display
-              v-if="recipe.categories"
-              :categories="recipe.categories"
+              v-if="recipe.categories || isRecipeOwner"
+              :categories="
+                recipe.categories && Object.values(recipe.categories)
+              "
+              :isRecipeOwner="isRecipeOwner"
+              :recipeKey="recipeKey"
               class="margin-bottom--xxlarge"
-            />
-
-            <free-from-display
-              v-if="recipe.freeFrom"
-              :freeFrom="recipe.freeFrom"
-              class="margin-bottom--xlarge"
+              @update="payload => $emit('update', payload)"
             />
             <action-bar
               :isRecipeOwner="isRecipeOwner"
@@ -46,34 +81,28 @@
         </div>
       </div>
 
-      <div class="recipe__flex-no-wrap flex-row--align-top margin-vertical--xlarge">
+      <div
+        class="recipe__flex-no-wrap flex-row--align-top margin-vertical--xlarge"
+      >
         <ingredients-display
           class="recipe__ingredients-wrap"
-          v-if="recipe.ingredients"
           :ingredients="recipe.ingredients"
           :servings="recipe.servings || ''"
-          :recipeTitle="recipeTitle"
+          :recipeTitle="recipe.title"
+          :isRecipeOwner="isRecipeOwner"
+          :recipeKey="recipeKey"
+          @update="payload => $emit('update', payload)"
         />
 
         <instructions-display
           class="recipe__instructions-wrap"
-          v-if="recipe.instructions"
           :instructions="recipe.instructions"
+          :isRecipeOwner="isRecipeOwner"
+          :recipeKey="recipeKey"
+          @update="payload => $emit('update', payload)"
         />
       </div>
     </div>
-
-    <!-- EDIT FORM -->
-    <transition name="fade">
-      <div v-if="editMode">
-        <add-recipe-form
-          :existingRecipe="recipe"
-          @exitEditMode="toggleEditMode"
-          @update="handleUpdate"
-          :editMode="editMode"
-        />
-      </div>
-    </transition>
   </section>
 </template>
 
@@ -83,35 +112,37 @@ import htmlToPdfMake from "html-to-pdfmake";
 import pdfMake from "pdfmake/build/pdfmake";
 import pdfFonts from "pdfmake/build/vfs_fonts";
 
-import editIcon from "~/assets/graphics/icons/edit-icon.svg";
-
-import AddRecipeForm from "~/components/Recipes/AddRecipeForm/AddRecipeForm.vue";
-import ActionBar from "./Interaction/ActionBar.vue";
+import SettingsDropdown from "~/components/SettingsDropdown.vue";
+import PublicNote from "./Displays/PublicNote.vue";
+import PhotoDisplay from "./Displays/PhotoDisplay.vue";
+import TitleDisplay from "./Displays/TitleDisplay.vue";
+import DescriptionDisplay from "./Displays/DescriptionDisplay.vue";
 import CategoryDisplay from "./Displays/CategoryDisplay.vue";
 import FreeFromDisplay from "./Displays/FreeFromDisplay";
 import TypeOfMealDisplay from "./Displays/TypeOfMealDisplay";
 import IngredientsDisplay from "./Displays/IngredientsDisplay.vue";
 import InstructionsDisplay from "./Displays/InstructionsDisplay.vue";
+
+import ActionBar from "./Interaction/ActionBar.vue";
+import Alert from "~/components/Alert.vue";
 import ExpandTransform from "~/components/Transitions/Expand.vue";
 
 export default {
   name: "recipe-full-view",
   components: {
-    editIcon,
-    AddRecipeForm,
+    SettingsDropdown,
+    PublicNote,
+    PhotoDisplay,
+    TitleDisplay,
+    DescriptionDisplay,
     ActionBar,
     CategoryDisplay,
     FreeFromDisplay,
     TypeOfMealDisplay,
     IngredientsDisplay,
     InstructionsDisplay,
-    ExpandTransform
-  },
-  data() {
-    return {
-      editMode: false,
-      hide: false
-    };
+    ExpandTransform,
+    Alert
   },
   props: {
     isRecipeOwner: { type: Boolean, default: false },
@@ -119,30 +150,16 @@ export default {
     recipe: { type: Object, default: () => {} },
     recipeKey: { type: String, default: "" }
   },
-  computed: {
-    recipeTitle() {
-      return this.recipe.title ? this.recipe.title : "Recipe has no title";
-    },
-    description() {
-      return this.recipe.description
-        ? this.recipe.description
-        : "Recipe has no description";
-    },
-    editModeButtonText() {
-      return this.editMode ? "Exit edit mode" : "Edit mode";
-    }
+  data() {
+    return {
+      editMode: false,
+      hide: false,
+      showAlert: false
+    };
   },
   methods: {
-    handleUpdate() {
-      this.$emit("update");
-      this.toggleEditMode();
-    },
-    toggleEditMode() {
-      this.editMode = !this.editMode;
-      if (process.browser) {
-        document.documentElement.scrollTop = 0;
-        document.body.scrollTop = 0;
-      }
+    toggleAlert() {
+      this.showAlert = !this.showAlert;
     },
     pdfExport() {
       pdfMake.vfs = pdfFonts.pdfMake.vfs;
@@ -163,6 +180,18 @@ export default {
         ignoreElement,
         recipeDetails.childNodes[childNodesLength - 1]
       );
+    },
+    deleteRecipe() {
+      const recipeRef = this.$fireDb.ref("recipes/" + this.recipeKey);
+      recipeRef
+        .remove()
+        .then(() => {
+          this.$router.push("/account/my-cookbook/");
+        })
+        .catch(error => {
+          this.systemMessage = error.message;
+          console.log("Error deleting recipe:", error.message);
+        });
     }
   }
 };

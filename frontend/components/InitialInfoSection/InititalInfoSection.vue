@@ -3,20 +3,15 @@
     <div
       class="flex-center-container flex-center-container--column tablet-width padding--none margin--auto"
     >
-      <h1 class="container--center padding-horizontal--large">
-        Build your personal cookbook online
-      </h1>
-      <p
-        class="padding-horizontal--large color--blue mobile-width text-align--center"
-      >
+      <h1 class="container--center padding-horizontal--large">Build your personal cookbook online</h1>
+      <p class="padding-horizontal--large color--blue mobile-width text-align--center">
         Store and manage your recipes, create and organize shopping lists, share
-        everything with your friends - or keep everything to yourself.
+        everything with your friends - or keep it all to yourself.
       </p>
       <nuxt-link
         to="/sign-up/"
         class="button button--large padding-horizontal--xlarge margin-top--large"
-        >Get started ➔</nuxt-link
-      >
+      >Get started ➔</nuxt-link>
     </div>
     <client-only>
       <component

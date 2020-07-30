@@ -1,6 +1,7 @@
 <template>
   <div v-if="isRecipeOwner || commentObj.approved" class="comment">
-    <deleteIcon
+    <delete-icon
+      tabindex="0"
       v-if="isRecipeOwner || commentObj.isMyComment"
       class="comment__delete-btn icon"
       @click="confirmDelete"
@@ -19,9 +20,14 @@
     >
       <span
         class="comment__approval-text padding-vertical--medium margin-right--large"
-      >Awaiting your approval</span>
+        >Awaiting your approval</span
+      >
       <span class="comment__approval-btn-wrap padding-vertical--medium">
-        <button class="comment__approval-btn button button--dynamic button--round">Approve</button>
+        <button
+          class="comment__approval-btn button button--dynamic button--round"
+        >
+          Approve
+        </button>
       </span>
     </div>
 
@@ -37,25 +43,29 @@
 
       <CookSilhouette v-else class="comment__user-img" />
       <component
-        :is="isAnonymous ? 'span': 'nuxt-link'"
+        :is="isAnonymous ? 'span' : 'nuxt-link'"
         :to="isAnonymous ? null : `/cooks/${commentObj.userId}/`"
         class="margin-left--medium"
         :class="{
-              'no-link': isAnonymous
-            }"
-      >{{username}}</component>
-      <span class="color--orange margin-left--medium">{{submitDate}}</span>
+          'no-link': isAnonymous
+        }"
+        >{{ username }}</component
+      >
+      <span class="comment__date margin-left--medium">{{ submitDate }}</span>
     </div>
 
     <!-- Comment -->
-    <div class="comment__comment margin-top--small">{{commentText}}</div>
+    <div class="comment__comment margin-top--small">{{ commentText }}</div>
     <button
       v-if="!isSubComment && !formOpen"
       class="comment__reply-btn button button--small button--dynamic button--transparent margin-top--large"
       :class="{
-    'margin-bottom--large': commentObj.subComments}"
+        'margin-bottom--large': commentObj.subComments
+      }"
       @click="openCommentForm"
-    >Reply</button>
+    >
+      Reply
+    </button>
 
     <!-- Subcomments -->
     <expand-transition :show="formOpen">
@@ -69,13 +79,17 @@
       <div
         v-if="submitted && !isRecipeOwner"
         class="sub-comments-form__success padding-vertical--medium padding-horizontal--large margin-vertical--large"
-      >🎉Your comment was successfully added and is awaiting approval</div>
+      >
+        🎉Your comment was successfully added and is awaiting approval
+      </div>
     </transition>
     <transition name="fade">
       <div
         v-if="error"
         class="sub-comments-form__error padding-vertical--medium padding-horizontal--large margin-vertical--large"
-      >🌧An error occured while posting your comment. Please try again later.</div>
+      >
+        🌧An error occured while posting your comment. Please try again later.
+      </div>
     </transition>
     <div v-if="subComments.length" class="comment__sub-comments">
       <sub-comment
@@ -91,14 +105,15 @@
         v-if="cutOffSubComments.length"
         class="button button--transparent margin-top--large"
         @click="loadMoreSubComments"
-      >Load more</button>
+      >
+        Load more
+      </button>
     </div>
   </div>
 </template>
 
 <script>
 import CookSilhouette from "~/assets/graphics/icons/cook-silhouette-circle.svg";
-import deleteIcon from "~/assets/graphics/icons/delete-icon.svg";
 import SubComment from "./SubComment.vue";
 import ExpandTransition from "~/components/Transitions/Expand.vue";
 import Alert from "~/components/Alert.vue";
@@ -108,7 +123,6 @@ export default {
   components: {
     CommentForm: () => import("./CommentForm.vue"),
     CookSilhouette,
-    deleteIcon,
     SubComment,
     ExpandTransition,
     Alert

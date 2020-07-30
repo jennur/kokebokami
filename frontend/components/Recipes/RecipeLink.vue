@@ -2,15 +2,20 @@
   <div class="recipe-link-display-wrap">
     <button
       v-if="editMode"
-      class="button button--dynamic button--dynamic-small button--cancel margin-bottom--medium"
-      @click="toggleEditMode"
-    >✕ Cancel</button>
+      class="button button--dynamic button--dynamic-small button--cancel margin-vertical--medium"
+      @click="cancelEdit"
+    >
+      ✕ Cancel
+    </button>
     <editIcon v-else class="icon margin--medium" @click="toggleEditMode" />
     <div
       class="recipe-link-display recipe-display--left-aligned padding-horizontal--xlarge"
-      :class="{'recipe-display--no-link': editMode}"
+      :class="{ 'recipe-display--no-link': editMode }"
     >
-      <expand-transition :show="editMode" class="recipe-link-display__edit-form-wrap">
+      <expand-transition
+        :show="editMode"
+        class="recipe-link-display__edit-form-wrap"
+      >
         <recipe-link-edit-form
           class="padding--large"
           :recipeLinkID="link && link[0]"
@@ -27,16 +32,23 @@
         title="Opens in new tab"
       >
         <new-tab-icon class="recipe-display__new-tab-icon" />
-        <h3 class="recipe-display__title margin-bottom--medium">{{link && link[1].title}}</h3>
-        <div class="recipe-display__description margin-bottom--large">{{link && link[1].comment}}</div>
+        <h3 class="recipe-display__title margin-bottom--medium">
+          {{ link && link[1].title }}
+        </h3>
+        <div class="recipe-display__description margin-bottom--large">
+          {{ link && link[1].comment }}
+        </div>
         <div v-if="labels">
           <span
             class="recipe-display__category margin-right--small margin-bottom--xlarge"
             v-for="label in labels"
             :key="`label-${label}`"
-          >{{label}}</span>
+            >{{ label }}</span
+          >
         </div>
-        <div class="recipe-display__published-by">{{link && link[1].hostName}}</div>
+        <div class="recipe-link-display__published-by">
+          {{ link && link[1].hostName }}
+        </div>
       </a>
     </div>
   </div>
@@ -78,6 +90,10 @@ export default {
     }
   },
   methods: {
+    cancelEdit() {
+      this.editMode = false;
+      this.$emit("cancel");
+    },
     toggleEditMode() {
       this.editMode = !this.editMode;
     },
