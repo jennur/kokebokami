@@ -258,6 +258,8 @@
     //transition: background-color 0.2s;
     box-sizing: border-box;
     font-size: $fontSizeSmall;
+    position: relative;
+
     &:not(:last-child) {
       margin-bottom: $spacingMedium;
     }
@@ -279,10 +281,13 @@
         background-color: $lightOrange;
         color: $orange;
         border: 2px solid $orange;
-        padding-right: $spacingMedium;
+        //padding-right: $spacingMedium;
         .recipe__category-edit-icon {
           display: inline-block;
-          margin-left: $spacingSmall;
+          position: absolute;
+          top: 50%;
+          transform: translateY(-50%);
+          right: $spacingSmall;
         }
       }
     }

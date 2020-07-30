@@ -12,11 +12,21 @@
   text-decoration: none;
   cursor: pointer;
   transition: 0.2s;
+  position: relative;
 
   &:hover {
     background-color: $green;
     color: $richBlack;
     text-decoration: none;
+  }
+
+  &--with-icon {
+    &-left {
+      padding-left: $spacingXXLarge !important;
+    }
+    &-right {
+      padding-right: $spacingXXLarge !important;
+    }
   }
   &--block {
     display: block;

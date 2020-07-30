@@ -2,23 +2,29 @@
   <div>
     <div id="actionBar" class="flex-row">
       <button
-        class="button button--small button--green-border margin-bottom--large margin-right--large"
+        class="button button--with-icon-left button--small button--green-border margin-bottom--large margin-right--large"
         @click="handlePdfExport"
       >
-        <download-icon class="icon icon--in-button margin-right--medium" />Download as PDF
+        <download-icon
+          class="icon icon--in-button icon--in-button-left margin-right--medium"
+        />Download as PDF
       </button>
       <button
         v-if="!sharing"
         @click="toggleShareBox"
-        class="button button--small button--green-border"
+        class="button button--with-icon-left button--small button--green-border"
       >
-        <share-icon class="icon icon--in-button margin-right--medium" />Share recipe
+        <share-icon
+          class="icon icon--in-button icon--in-button-left margin-right--medium"
+        />Share recipe
       </button>
       <button
         v-else
         class="button button--small button--transparent button--transparent-red"
         @click="toggleShareBox"
-      >✕ Close</button>
+      >
+        ✕ Close
+      </button>
     </div>
     <share-form
       class="margin-top--xlarge"

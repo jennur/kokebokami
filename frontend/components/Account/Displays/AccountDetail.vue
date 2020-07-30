@@ -28,13 +28,13 @@
         />
         <div class="flex-row">
           <button
-            class="button button--small button--cancel account__detail-warning-btn margin-top--medium margin-left--small"
+            class="button button--with-icon-left button--small button--cancel account__detail-warning-btn margin-top--medium margin-left--small"
           >
             <delete-icon
               tabindex="0"
               v-if="removeOption && currentValue"
               @click="toggleAlert"
-              class="icon icon--in-button margin-right--small"
+              class="icon icon--in-button icon--in-button-left margin-right--small"
             />
             Delete
           </button>

@@ -11,7 +11,10 @@
       "
       class="button button--small button--green-border margin-bottom--large"
     >
-      <search-icon class="icon icon--in-button margin-right--medium" v-if="!search" />
+      <search-icon
+        class="icon icon--in-button icon-in-button-left margin-right--medium"
+        v-if="!search"
+      />
       {{ search ? "Exit search" : "Search" }}
     </span>
     <expand-transition :show="search">
