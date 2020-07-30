@@ -20,7 +20,7 @@
     />
     <span v-if="loading" class="simple-loading-spinner"></span>
     <h4
-      class="margin--none margin-bottom--small"
+      class="margin--none margin-top--small margin-bottom--small"
       :class="{ disabled: !servings && !editMode }"
     >
       {{ servingsTitle }}

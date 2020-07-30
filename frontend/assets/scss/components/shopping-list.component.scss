@@ -23,6 +23,7 @@
     }
     input[type="text"] {
       font-size: $fontSizeXLargeMobile;
+      font-family: $headingFont;
       @media screen and (min-width: $tabletWidth) {
         font-size: $fontSizeXLarge;
       }
@@ -78,6 +79,8 @@
         max-width: 250px;
         color: $blue;
         font-size: $fontSizeLargeMobile;
+        font-family: $headingFont;
+
         @media screen and (min-width: $tabletWidth) {
           font-size: $fontSizeLarge;
         }
