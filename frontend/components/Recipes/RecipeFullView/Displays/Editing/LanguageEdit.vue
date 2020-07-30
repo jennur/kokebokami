@@ -4,7 +4,7 @@
       id="language"
       :options="languages"
       :preSelected="language"
-      defaultValue="All languages"
+      defaultValue="Not set"
       @select="handleLanguage"
     />
   </div>

@@ -4,7 +4,7 @@
       <settings-dropdown class="margin-top--medium" v-if="subListKey">
         <span class="system-message" @click="toggleAlert"
           ><delete-icon tabindex="0" class="icon margin-right--medium" />Delete
-          collection</span
+          sublist</span
         >
       </settings-dropdown>
       <div class="sub-list-container">

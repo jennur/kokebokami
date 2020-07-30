@@ -15,7 +15,7 @@
             :isPublic="recipe.public"
             @update="payload => $emit('update', payload)"
           />
-          <span v-if="recipeKey" @click="toggleAlert">
+          <span v-if="recipeKey" class="system-message" @click="toggleAlert">
             <delete-icon tabindex="0" class="icon margin-left--small" />
             Delete recipe
           </span>
