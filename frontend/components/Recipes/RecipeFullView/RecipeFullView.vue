@@ -8,8 +8,8 @@
           :isPublic="recipe.public"
           @update="payload => $emit('update', payload)"
         />
-        <span @click="toggleAlert">
-          <delete-icon class="icon margin-left--small" />
+        <span v-if="recipeKey" @click="toggleAlert">
+          <delete-icon tabindex="0" class="icon margin-left--small" />
           Delete recipe
         </span>
       </settings-dropdown>

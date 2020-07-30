@@ -6,11 +6,12 @@
     >
       <span
         class="recipe__category margin-right--large"
-        :class="{ editable: isRecipeOwner }"
         v-for="(category, index) in categories"
+        :class="{ editable: isRecipeOwner, edit: beforeEdit === index }"
         :key="`category-${index}`"
-        >{{ category }}
+        ><span @click="toggleEditClass(index)">{{ category }}</span>
         <edit-icon
+          tabindex="0"
           class="icon recipe__category-edit-icon"
           @click="event => toggleEditMode(event)"
       /></span>
@@ -33,7 +34,7 @@
 </template>
 <script>
 import CategoryEdit from "./Editing/CategoryEdit.vue";
-
+import ClickOutside from "vue-click-outside";
 export default {
   name: "category-display",
   components: {
@@ -56,7 +57,8 @@ export default {
   data() {
     return {
       editMode: false,
-      loading: false
+      loading: false,
+      beforeEdit: null
     };
   },
   computed: {
@@ -65,6 +67,10 @@ export default {
     }
   },
   methods: {
+    toggleEditClass(index) {
+      if (index === this.beforeEdit) index = null;
+      this.beforeEdit = index;
+    },
     toggleEditMode(event) {
       event && event.stopPropagation();
       this.editMode = !this.editMode;
@@ -90,6 +96,9 @@ export default {
         this.$emit("update", { categories });
       }
     }
+  },
+  directives: {
+    ClickOutside
   }
 };
 </script>

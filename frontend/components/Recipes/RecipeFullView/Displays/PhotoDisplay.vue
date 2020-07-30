@@ -6,6 +6,7 @@
       :style="`background-image: url(${photoURL || backupImage})`"
     >
       <edit-icon
+        tabindex="0"
         v-if="isRecipeOwner"
         class="icon recipe__image-edit-btn"
         @click="toggleEditMode"
@@ -13,6 +14,15 @@
     </div>
     <div v-if="loading" class="flex-center-container">
       <span class="simple-loading-spinner"></span>
+    </div>
+    <div class="flex-column flex-column--align-right">
+      <button
+        v-if="editMode && !loading"
+        class="button button--small button--dynamic button--cancel margin-bottom--medium"
+        @click="toggleEditMode"
+      >
+        ✕ Cancel
+      </button>
     </div>
     <photo-edit
       v-if="editMode"
@@ -22,13 +32,6 @@
       @save="photoURL => saveImage(photoURL)"
       @loading="setLoading"
     />
-    <button
-      v-if="editMode && !loading"
-      class="button button--dynamic-small button--cancel margin-top--large"
-      @click="toggleEditMode"
-    >
-      ✕ Cancel
-    </button>
   </div>
 </template>
 <script>

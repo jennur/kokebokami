@@ -1,34 +1,46 @@
 <template>
   <section class="margin--auto margin-top--xlarge">
     <div v-if="editMode" class="text-align--right margin-bottom--medium">
-      <deleteIcon @click="toggleAlert" class="icon" />
+      <delete-icon tabindex="0" @click="toggleAlert" class="icon" />
     </div>
     <Alert
-      :alertMessage="`Are you sure you want to delete this recipe: ${title}? This operation cannot be undone.`"
+      :alertMessage="
+        `Are you sure you want to delete this recipe: ${title}? This operation cannot be undone.`
+      "
       :showAlert="showAlert"
       @confirmed="deleteRecipe"
       @cancel="toggleAlert"
     />
     <form v-on:submit.prevent class="add-recipe-form">
       <div>
-        <div v-if="!imageLoaded" class="simple-loading-spinner margin--auto"></div>
+        <div
+          v-if="!imageLoaded"
+          class="simple-loading-spinner margin--auto"
+        ></div>
         <div
           v-if="photoURL"
           :style="`background-image: url(${photoURL})`"
           class="add-recipe-form__image"
         ></div>
-        <image-input id="dropImage" ref="dropImage" @uploaded="updateRecipeImg" />
+        <image-input
+          id="dropImage"
+          ref="dropImage"
+          @uploaded="updateRecipeImg"
+        />
         <div class="text-align--right">
           <button
             v-if="photoURL"
             class="button button--transparent button--transparent-red"
             @click="removePhotoURL"
-          >✕ Remove image</button>
+          >
+            ✕ Remove image
+          </button>
         </div>
         <span
           v-if="imageSystemMessage"
           class="system-message margin-vertical--large"
-        >{{imageSystemMessage}}</span>
+          >{{ imageSystemMessage }}</span
+        >
       </div>
       <div class="recipes-filter__form">
         <category-filter
@@ -44,7 +56,11 @@
       <div class="mobile-width margin-top--xlarge margin--auto">
         <!-- TITLE / DESCRIPTION -->
         <fieldset class="flex-column">
-          <title-input id="recipeTitle" class="margin-bottom--medium" :existingTitle="title" />
+          <title-input
+            id="recipeTitle"
+            class="margin-bottom--medium"
+            :existingTitle="title"
+          />
           <description-input
             id="recipeDescription"
             class="margin-bottom--medium"
@@ -71,7 +87,9 @@
         <fieldset class="container">
           <label class="flex-row flex-row--align-center flex-row--nowrap">
             <input type="checkbox" id="publicCheck" v-model="publicCheck" />
-            <span class="margin-left--small">Make recipe public (share with all users of Kokebokami)</span>
+            <span class="margin-left--small"
+              >Make recipe public (share with all users of Kokebokami)</span
+            >
           </label>
         </fieldset>
 
@@ -94,7 +112,6 @@
 const uuid = require("uuid");
 import user from "~/mixins/user.js";
 
-import deleteIcon from "~/assets/graphics/icons/delete-icon.svg";
 import Alert from "~/components/Alert.vue";
 import ImageInput from "~/components/Input/ImageInput.vue";
 import CategoryFilter from "~/components/Filter/CategoryFilter.vue";
@@ -108,7 +125,6 @@ import TitleInput from "~/components/Input/TitleInput.vue";
 export default {
   name: "add-recipe-form",
   components: {
-    deleteIcon,
     Alert,
     ImageInput,
     CategoryFilter,

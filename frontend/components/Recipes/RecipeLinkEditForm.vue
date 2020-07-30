@@ -93,7 +93,12 @@
             'flex-row--justify-right': !recipeLinkID
           }"
         >
-          <deleteIcon v-if="recipeLinkID" class="icon" @click="toggleAlert" />
+          <delete-icon
+            tabindex="0"
+            v-if="recipeLinkID"
+            class="icon"
+            @click="toggleAlert"
+          />
           <button
             type="submit"
             name="submit"
@@ -124,15 +129,13 @@ import userRecipeLinks from "~/mixins/userRecipeLinks.js";
 import SelectComponent from "~/components/Input/SelectComponent.vue";
 import ExpandTransition from "~/components/Transitions/Expand.vue";
 import Alert from "~/components/Alert.vue";
-import deleteIcon from "~/assets/graphics/icons/delete-icon.svg";
 
 export default {
   name: "recipe-link-edit-form",
   components: {
     SelectComponent,
     ExpandTransition,
-    Alert,
-    deleteIcon
+    Alert
   },
   props: {
     recipeLink: {

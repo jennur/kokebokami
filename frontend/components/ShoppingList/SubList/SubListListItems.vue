@@ -7,9 +7,11 @@
         :data-list-item="`list-item-${index}`"
         class="margin-vertical--medium"
       >
-        <label :class="{
+        <label
+          :class="{
             complete: listItems[index].complete
-          }">
+          }"
+        >
           <input
             tabindex="0"
             type="checkbox"
@@ -30,26 +32,31 @@
         <decrement-button @decrement="removeListItem(index)" />
       </li>
     </ul>
-    <editIcon v-if="!editMode" class="icon margin--small" @click="toggleEditMode" />
+    <edit-icon
+      tabindex="0"
+      v-if="!editMode"
+      class="icon margin--small"
+      @click="toggleEditMode"
+    />
     <div v-if="editMode" class="flex-row flex-row--align-center">
       <increment-button
         class="margin-right--medium margin-vertical--large"
         @increment="addNewListItem"
-      >Add item</increment-button>
+        >Add item</increment-button
+      >
       <button
         v-if="listItems.length"
         class="button button--xsmall button--dynamic button--cancel margin-left--medium margin-vertical--large"
         @click="saveListItems"
-      >✕ Close</button>
+      >
+        ✕ Close
+      </button>
     </div>
   </div>
 </template>
 
 <script>
 import ClickOutside from "vue-click-outside";
-
-import editIcon from "~/assets/graphics/icons/edit-icon.svg";
-
 import user from "~/mixins/user.js";
 
 import IncrementButton from "~/components/Input/IncrementButton.vue";
@@ -58,7 +65,6 @@ import DecrementButton from "~/components/Input/DecrementButton.vue";
 export default {
   name: "sublist-list-items",
   components: {
-    editIcon,
     IncrementButton,
     DecrementButton
   },

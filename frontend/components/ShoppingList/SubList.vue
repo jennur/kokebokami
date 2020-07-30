@@ -1,7 +1,8 @@
 <template>
   <section class="sub-list margin-vertical--large">
     <div class="flex-row flex-row--align-top flex-row--nowrap">
-      <deleteIcon
+      <delete-icon
+        tabindex="0"
         v-if="subListKey"
         class="icon margin-top--medium margin-right--medium"
         @click="toggleAlert"
@@ -23,7 +24,9 @@
       </div>
     </div>
     <Alert
-      :alertMessage="`Are you sure you want to delete this sublist: '${subList.title}'?`"
+      :alertMessage="
+        `Are you sure you want to delete this sublist: '${subList.title}'?`
+      "
       :showAlert="showAlert"
       @confirmed="deleteSubList"
       @cancel="toggleAlert"
@@ -36,8 +39,6 @@ import ClickOutside from "vue-click-outside";
 
 import user from "~/mixins/user.js";
 
-import deleteIcon from "~/assets/graphics/icons/delete-icon.svg";
-
 import SubListTitle from "./SubList/SubListTitle.vue";
 import SubListListItems from "./SubList/SubListListItems.vue";
 import Alert from "~/components/Alert.vue";
@@ -45,7 +46,6 @@ import Alert from "~/components/Alert.vue";
 export default {
   name: "sub-list",
   components: {
-    deleteIcon,
     SubListTitle,
     SubListListItems,
     Alert

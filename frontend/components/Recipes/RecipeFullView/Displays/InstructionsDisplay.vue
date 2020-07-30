@@ -3,6 +3,7 @@
     <div class="flex-row flex-row--align-center flex-row--nowrap">
       <h4 class="margin-vertical--medium">Instructions</h4>
       <edit-icon
+        tabindex="0"
         v-if="isRecipeOwner && !editMode"
         class="icon margin--medium"
         @click="toggleEditMode"

@@ -10,6 +10,7 @@
         >{{ typeOfMealList }}</span
       >
       <edit-icon
+        tabindex="0"
         v-if="isRecipeOwner && !typeOfMealList && !editMode"
         class="icon"
         @click="event => toggleEditMode(event)"

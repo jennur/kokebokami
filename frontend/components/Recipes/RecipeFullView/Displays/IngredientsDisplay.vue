@@ -13,6 +13,7 @@
       <div class="flex-row flex-row--align-center flex-row--nowrap">
         <h4 class="margin-vertical--medium">Ingredients</h4>
         <edit-icon
+          tabindex="0"
           v-if="isRecipeOwner && !editMode"
           @click="toggleEditMode"
           class="icon margin--medium"

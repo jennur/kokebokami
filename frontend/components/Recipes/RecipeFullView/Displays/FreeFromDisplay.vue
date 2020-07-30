@@ -10,6 +10,7 @@
         >{{ freeFromList }}</span
       >
       <edit-icon
+        tabindex="0"
         v-if="isRecipeOwner && !freeFromList && !editMode"
         class="icon"
         @click="event => toggleEditMode(event)"

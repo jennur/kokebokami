@@ -1,12 +1,6 @@
 <template>
   <div class="servings">
-    <input
-      type="number"
-      placeholder="4"
-      min="0"
-      step="1"
-      v-model="updatedServings"
-    /><button
+    <input type="number" min="0" step="1" v-model="updatedServings" /><button
       class="button button--dynamic-small button--round padding-vertical--small margin-horizontal--large"
       @click="$emit('save', updatedServings)"
     >

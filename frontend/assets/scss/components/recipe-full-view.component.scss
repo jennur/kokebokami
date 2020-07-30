@@ -115,8 +115,9 @@
   }
   &__servings {
     width: 50px;
-    border: 1px solid $green;
-    border-radius: $spacingSmall;
+    //border: 1px solid $green;
+    //border-radius: $spacingSmall;
+    border: none;
     position: relative;
     &:focus {
       border: 1px solid $green;
@@ -256,6 +257,7 @@
     border: 2px solid transparent;
     //transition: background-color 0.2s;
     box-sizing: border-box;
+    font-size: $fontSizeSmall;
     &:not(:last-child) {
       margin-bottom: $spacingMedium;
     }
@@ -272,7 +274,8 @@
     }
     &.editable {
       cursor: default;
-      &:hover {
+      &:hover,
+      &.edit {
         background-color: $lightOrange;
         color: $orange;
         border: 2px solid $orange;

@@ -1,6 +1,7 @@
 <template>
   <div v-if="isRecipeOwner || commentObj.approved" class="comment">
-    <deleteIcon
+    <delete-icon
+      tabindex="0"
       v-if="isRecipeOwner || commentObj.isMyComment"
       class="comment__delete-btn icon"
       @click="confirmDelete"
@@ -113,7 +114,6 @@
 
 <script>
 import CookSilhouette from "~/assets/graphics/icons/cook-silhouette-circle.svg";
-import deleteIcon from "~/assets/graphics/icons/delete-icon.svg";
 import SubComment from "./SubComment.vue";
 import ExpandTransition from "~/components/Transitions/Expand.vue";
 import Alert from "~/components/Alert.vue";
@@ -123,7 +123,6 @@ export default {
   components: {
     CommentForm: () => import("./CommentForm.vue"),
     CookSilhouette,
-    deleteIcon,
     SubComment,
     ExpandTransition,
     Alert

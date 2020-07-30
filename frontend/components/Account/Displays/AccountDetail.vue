@@ -30,7 +30,8 @@
           <button
             class="button button--small button--cancel account__detail-warning-btn margin-top--medium margin-left--small"
           >
-            <deleteIcon
+            <delete-icon
+              tabindex="0"
               v-if="removeOption && currentValue"
               @click="toggleAlert"
               class="icon icon--in-button margin-right--small"
@@ -85,7 +86,8 @@
       <div class="system-message">{{ systemMessage }}</div>
     </expand-transition>
     <div v-if="!editMode" class="flex-row">
-      <editIcon
+      <edit-icon
+        tabindex="0"
         v-if="editOption"
         @click="toggleEditMode"
         class="icon margin-top--large"
@@ -98,9 +100,6 @@ import Dropzone from "nuxt-dropzone";
 import "nuxt-dropzone/dropzone.css";
 import Compressor from "compressorjs";
 
-import deleteIcon from "~/assets/graphics/icons/delete-icon.svg";
-import editIcon from "~/assets/graphics/icons/edit-icon.svg";
-
 import Alert from "~/components/Alert.vue";
 import ExpandTransition from "~/components/Transitions/Expand.vue";
 
@@ -109,9 +108,7 @@ export default {
   components: {
     ExpandTransition,
     Dropzone,
-    Alert,
-    deleteIcon,
-    editIcon
+    Alert
   },
   props: {
     title: {

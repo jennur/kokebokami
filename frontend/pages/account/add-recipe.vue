@@ -47,8 +47,8 @@ export default {
       recipeKey: null,
       recipe: {
         public: false,
-        title: "My new recipe",
-        description: "Describe it",
+        title: "",
+        description: "",
         ingredients: [],
         instructions: [],
         categories: [],

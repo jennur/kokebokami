@@ -9,7 +9,7 @@
       >-</span
     >
     <input
-      v-if="!editMode && !loading"
+      v-if="servings && !editMode && !loading"
       class="recipe__servings margin-right--medium"
       type="Number"
       min="1"
@@ -21,9 +21,9 @@
     <span v-if="loading" class="simple-loading-spinner"></span>
     <h4
       class="margin--none margin-bottom--small"
-      :class="{ disabled: !servings }"
+      :class="{ disabled: !servings && !editMode }"
     >
-      {{ !servings ? "Servings 🤷" : "Servings" }}
+      {{ servingsTitle }}
     </h4>
     <servings-edit
       v-if="editMode"
@@ -32,6 +32,7 @@
     />
 
     <edit-icon
+      tabindex="0"
       v-if="isRecipeOwner && !editMode"
       @click="toggleEditMode"
       class="icon margin-left--medium"
@@ -72,6 +73,19 @@ export default {
       loading: false
     };
   },
+  computed: {
+    servingsTitle() {
+      let servings;
+      if (this.editMode) {
+        servings = parseInt(this.defaultServings);
+      } else {
+        servings = parseInt(this.updatedServings);
+      }
+      if (!servings && !this.editMode) return "Servings 🤷";
+      if (servings > 1 || this.editMode) return "Servings";
+      if (servings === 1) return "Serving";
+    }
+  },
   methods: {
     toggleEditMode() {
       this.editMode = !this.editMode;
@@ -80,13 +94,14 @@ export default {
       this.editMode = false;
       let recipeKey = this.recipeKey;
 
-      if (recipeKey && servings !== this.servings) {
+      if (recipeKey && servings !== this.defaultServings) {
         this.loading = true;
         let servingsRef = this.$fireDb.ref(`recipes/${recipeKey}/servings`);
         servingsRef
           .set(servings)
           .then(() => {
             console.log("Successfully updated servings");
+            this.updatedServings = parseInt(servings);
             this.$emit("update");
           })
           .then(() => {
