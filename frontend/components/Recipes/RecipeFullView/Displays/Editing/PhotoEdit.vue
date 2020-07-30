@@ -1,5 +1,7 @@
 <template>
-  <image-input class="recipe-photo" @uploaded="uploadImage" />
+  <div>
+    <image-input class="recipe-photo" @uploaded="uploadImage" />
+  </div>
 </template>
 <script>
 const uuid = require("uuid");
@@ -23,41 +25,55 @@ export default {
   methods: {
     async uploadImage(upload) {
       this.removeRecipeImg();
-      var imageName = uuid.v1();
+      var imageKey = uuid.v1();
       let recipeKey = this.recipeKey;
-      this.$emit("loading");
-      try {
-        //upload image
-        let file = upload;
-        var metadata = {
-          contentType: "image/png"
-        };
-        var storageRef = this.$fireStorage.ref();
-        var imageRef = storageRef.child(
-          `images/recipes/${recipeKey}/${imageName}.png`
-        );
-        await imageRef.put(file, metadata);
-        await imageRef.getDownloadURL().then(result => {
+
+      //Upload image
+      let file = upload;
+      var metadata = {
+        contentType: "image/png"
+      };
+      var storageRef = this.$fireStorage.ref();
+      var imageRef = storageRef.child(`images/recipes/${imageKey}.png`);
+      await imageRef.put(file, metadata);
+      await imageRef
+        .getDownloadURL()
+        .then(result => {
+          console.log("Uploaded image", result);
+          this.$emit("loading");
+
           this.$emit("save", result);
-        });
-      } catch (error) {
-        console.log("Error updating recipe image:", error.message);
-      }
+        })
+        .catch(error => console.log("Error uploading image:", error.message));
     },
     removeRecipeImg() {
       let recipeKey = this.recipeKey;
       var storageRef = this.$fireStorage.ref();
-      var imageRef = storageRef.child(`images/recipes/${recipeKey}`);
-      imageRef
-        .listAll()
-        .then(function(res) {
-          res.items.forEach(function(itemRef) {
-            itemRef.delete();
-          });
-        })
-        .catch(function(error) {
-          console.log("Error deleting files:", error.message);
+      if (recipeKey) {
+        let photoRef = this.$fireDb.ref(`recipes/${recipeKey}/photoURL`);
+        photoRef.once("value", snapshot => {
+          if (snapshot.exists()) {
+            let photoURL = snapshot.val();
+            if (photoURL !== "") {
+              var fileRef = this.$fireStorage.refFromURL(photoURL);
+              fileRef
+                .delete()
+                .then(() => {
+                  console.log("Successfully deleted image");
+                  photoRef
+                    .set("")
+                    .then(() => console.log("Updated photoURL in db"))
+                    .catch(error =>
+                      console.log("Error updating image in db:", error.message)
+                    );
+                })
+                .catch(error =>
+                  console.log("Error deleting file:", error.message)
+                );
+            }
+          }
         });
+      }
     }
   }
 };

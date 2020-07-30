@@ -1,16 +1,16 @@
 <template>
   <section class="shopping-list margin-bottom--large">
     <!-- Delete / Cancel action -->
+
     <div class="shopping-list__cancel-action">
-      <delete-icon
-        tabindex="0"
-        v-if="list.key"
-        class="icon"
-        @click="toggleAlert"
-        title="Delete collection"
-      />
+      <settings-dropdown v-if="list.key" :right="true">
+        <span class="system-message" @click="toggleAlert"
+          ><delete-icon tabindex="0" class="icon margin-right--medium" />Delete
+          collection</span
+        >
+      </settings-dropdown>
       <button
-        v-else
+        v-if="!list.key"
         class="button button--dynamic button--cancel"
         @click="$emit('cancel')"
       >
@@ -60,11 +60,21 @@
         >
           {{ list.title }}
         </h2>
-        <span v-if="shared" class="shopping-list__created-by">
+        <span v-if="shared" class="shopping-list__shared">
           Shared from:
           <nuxt-link :to="`/cooks/${list.createdBy.id}/`">{{
             list.createdBy.displayName
           }}</nuxt-link>
+        </span>
+        <span v-if="sharedWith" class="shopping-list__shared">
+          Shared with:
+          <nuxt-link
+            v-for="(user, index) in sharedWith"
+            :key="user.id"
+            :to="`/cooks/${user.id}/`"
+            >{{ user.displayName }}
+            {{ index !== sharedWith.length - 1 ? ", " : "" }}</nuxt-link
+          >
         </span>
       </div>
 
@@ -124,6 +134,7 @@ import shareIcon from "~/assets/graphics/icons/shareicon.svg";
 
 import user from "~/mixins/user.js";
 
+import SettingsDropdown from "~/components/SettingsDropdown.vue";
 import Alert from "~/components/Alert.vue";
 import ShareBox from "./ShareBox.vue";
 import IncrementButton from "~/components/Input/IncrementButton.vue";
@@ -134,6 +145,7 @@ export default {
   name: "shopping-list",
   components: {
     shareIcon,
+    SettingsDropdown,
     Alert,
     ShareBox,
     IncrementButton,
@@ -161,6 +173,16 @@ export default {
     shared() {
       let createdByID = this.list.createdBy && this.list.createdBy.id;
       return createdByID && createdByID !== this.user.id;
+    },
+    sharedWith() {
+      let createdByID = this.list.createdBy && this.list.createdBy.id;
+      let sharedWith = [];
+      if (createdByID === this.user.id) {
+        sharedWith = Object.values(this.list.owners).filter(
+          user => user.id !== this.user.id
+        );
+      }
+      return sharedWith.length && sharedWith;
     },
     subLists() {
       let subLists = this.list.subLists;

@@ -1,20 +1,5 @@
 <template>
   <div class="recipe__image-wrap">
-    <div
-      v-if="!editMode && !loading"
-      class="recipe__image"
-      :style="`background-image: url(${photoURL || backupImage})`"
-    >
-      <edit-icon
-        tabindex="0"
-        v-if="isRecipeOwner"
-        class="icon recipe__image-edit-btn"
-        @click="toggleEditMode"
-      />
-    </div>
-    <div v-if="loading" class="flex-center-container">
-      <span class="simple-loading-spinner"></span>
-    </div>
     <div class="flex-column flex-column--align-right">
       <button
         v-if="editMode && !loading"
@@ -24,14 +9,29 @@
         ✕ Cancel
       </button>
     </div>
-    <photo-edit
-      v-if="editMode"
-      v-show="editMode && !loading"
-      :photoURL="photoURL"
-      :recipeKey="recipeKey"
-      @save="photoURL => saveImage(photoURL)"
-      @loading="setLoading"
-    />
+    <div
+      v-if="!loading"
+      class="recipe__image"
+      :style="`background-image: url(${photoURL || backupImage})`"
+    >
+      <edit-icon
+        tabindex="0"
+        v-if="isRecipeOwner && !editMode"
+        class="icon recipe__image-edit-btn"
+        @click="toggleEditMode"
+      />
+      <photo-edit
+        class="recipe__image--edit"
+        v-show="editMode && !loading"
+        :photoURL="photoURL"
+        :recipeKey="recipeKey"
+        @loading="setLoading"
+        @save="fileURL => saveImage(fileURL)"
+      />
+    </div>
+    <div v-if="loading" class="flex-center-container">
+      <span class="simple-loading-spinner"></span>
+    </div>
   </div>
 </template>
 <script>
@@ -74,25 +74,27 @@ export default {
     setLoading() {
       this.loading = true;
     },
-    saveImage(photoURL) {
+    saveImage(fileURL) {
       this.editMode = false;
       let recipeKey = this.recipeKey;
-
       if (recipeKey) {
+        console.log("Setting new image:", fileURL);
         let imageRef = this.$fireDb.ref(`recipes/${recipeKey}/photoURL`);
         imageRef
-          .set(photoURL)
+          .set(fileURL)
           .then(() => {
             console.log("Successfully updated recipe photo");
             this.$emit("update");
           })
-          .then(() => (this.loading = false))
+          .then(() => {
+            this.loading = false;
+          })
           .catch(error =>
             console.log("Error updating recipe photo:", error.message)
           );
       } else {
-        this.$emit("update", { photoURL });
         this.loading = false;
+        this.$emit("update", { photoURL: fileURL });
       }
     }
   }
