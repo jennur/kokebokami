@@ -110,12 +110,14 @@
 
         &.complete {
           color: $orange;
+          position: relative;
           &::after {
             content: "";
             border-bottom: 1px solid $orange;
             width: 100%;
             position: absolute;
             top: 50%;
+            left: 0;
           }
           input[type="checkbox"] {
             border-color: $orange;
