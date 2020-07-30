@@ -1,9 +1,6 @@
 <template>
   <div class="settings-dropdown">
-    <settings-icon
-      class="icon margin--medium"
-      @click="event => toggleDropdown(event)"
-    />
+    <settings-icon class="icon" @click="event => toggleDropdown(event)" />
     <transition name="pop-settings-dropdown">
       <div
         v-if="open"

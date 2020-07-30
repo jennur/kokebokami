@@ -1,18 +1,34 @@
 <template>
   <section>
     <div ref="recipe" id="recipe" class="recipe margin--auto">
-      <settings-dropdown v-if="isRecipeOwner">
-        <public-note
+      <div
+        class="flex-row flex-row--align-center margin-bottom--medium"
+        :class="{
+          'flex-row--space-between': isRecipeOwner,
+          'flex-row--justify-right': !isRecipeOwner
+        }"
+      >
+        <settings-dropdown v-if="isRecipeOwner">
+          <public-note
+            :isRecipeOwner="isRecipeOwner"
+            :recipeKey="recipeKey"
+            :isPublic="recipe.public"
+            @update="payload => $emit('update', payload)"
+          />
+          <span v-if="recipeKey" @click="toggleAlert">
+            <delete-icon tabindex="0" class="icon margin-left--small" />
+            Delete recipe
+          </span>
+        </settings-dropdown>
+
+        <language-display
+          v-if="recipe.language || isRecipeOwner"
+          :language="recipe.language"
           :isRecipeOwner="isRecipeOwner"
           :recipeKey="recipeKey"
-          :isPublic="recipe.public"
           @update="payload => $emit('update', payload)"
         />
-        <span v-if="recipeKey" @click="toggleAlert">
-          <delete-icon tabindex="0" class="icon margin-left--small" />
-          Delete recipe
-        </span>
-      </settings-dropdown>
+      </div>
       <Alert
         :alertMessage="
           `Are you sure you want to delete this recipe: ${recipe.title}? This operation cannot be undone.`
@@ -114,6 +130,7 @@ import pdfFonts from "pdfmake/build/vfs_fonts";
 
 import SettingsDropdown from "~/components/SettingsDropdown.vue";
 import PublicNote from "./Displays/PublicNote.vue";
+import LanguageDisplay from "./Displays/LanguageDisplay.vue";
 import PhotoDisplay from "./Displays/PhotoDisplay.vue";
 import TitleDisplay from "./Displays/TitleDisplay.vue";
 import DescriptionDisplay from "./Displays/DescriptionDisplay.vue";
@@ -132,6 +149,7 @@ export default {
   components: {
     SettingsDropdown,
     PublicNote,
+    LanguageDisplay,
     PhotoDisplay,
     TitleDisplay,
     DescriptionDisplay,
@@ -181,17 +199,41 @@ export default {
         recipeDetails.childNodes[childNodesLength - 1]
       );
     },
+    deleteRecipeImageFromStorage() {
+      let photoRef = this.$fireDb.ref(`recipes/${this.recipeKey}/photoURL`);
+      return photoRef.once("value", snapshot => {
+        if (snapshot.exists()) {
+          let photoURL = snapshot.val();
+          if (photoURL !== "") {
+            var fileRef = this.$fireStorage.refFromURL(photoURL);
+            fileRef
+              .delete()
+              .then(() => {
+                console.log("Successfully deleted image");
+              })
+              .catch(error =>
+                console.log("Error deleting file:", error.message)
+              );
+          }
+        }
+      });
+    },
     deleteRecipe() {
-      const recipeRef = this.$fireDb.ref("recipes/" + this.recipeKey);
-      recipeRef
-        .remove()
-        .then(() => {
-          this.$router.push("/account/my-cookbook/");
-        })
-        .catch(error => {
-          this.systemMessage = error.message;
-          console.log("Error deleting recipe:", error.message);
+      let recipeKey = this.recipeKey;
+      if (recipeKey) {
+        this.deleteRecipeImageFromStorage().then(() => {
+          const recipeRef = this.$fireDb.ref(`recipes/${recipeKey}`);
+          recipeRef
+            .remove()
+            .then(() => {
+              this.$router.push("/account/my-cookbook/");
+            })
+            .catch(error => {
+              this.systemMessage = error.message;
+              console.log("Error deleting recipe:", error.message);
+            });
         });
+      }
     }
   }
 };

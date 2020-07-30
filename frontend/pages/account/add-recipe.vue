@@ -70,6 +70,7 @@ export default {
         newRecipeRef
           .push(recipeObj)
           .then(result => {
+            console.log("Saved new recipe");
             this.recipeKey = result.key;
           })
           .then(() => {
