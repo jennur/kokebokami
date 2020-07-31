@@ -129,6 +129,7 @@
 </template>
 
 <script>
+import axios from "axios";
 import ClickOutside from "vue-click-outside";
 import shareIcon from "~/assets/graphics/icons/shareicon.svg";
 
@@ -288,6 +289,9 @@ export default {
                   .then(() => {
                     componentThis.systemMessage = `Successfully shared with ${followerUsername}`;
                     componentThis.$emit("update");
+                    if (!follower.emailNotificationsOff) {
+                      this.sendEmail(follower);
+                    }
                   });
               }
             }
@@ -299,6 +303,24 @@ export default {
       } else {
         this.systemMessage = "We were unable to find this user in the database";
       }
+    },
+    sendEmail(receiver) {
+      let message = `<p>Hi ${receiver[1].displayName},
+          <br>
+          <br>You just received a shopping list from ${this.user.displayName}.
+          <br>'${this.list.title}' is now available among your shopping list.
+          <br>
+          <br>Login to <a href="https://kokebokami.com">Kokebokami</a> to check it out!
+          <br>
+          <br>Best wishes,
+          <br>Your Kokebokami team 👩‍🍳</p>`;
+      axios
+        .post("/api/send-email", {
+          email: receiver[1].email,
+          subject: `${this.user.displayName} just shared a shopping list with you 📝`,
+          message
+        })
+        .catch(error => console.log("Error:", error));
     },
     deleteShoppingList() {
       let componentThis = this;

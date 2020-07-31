@@ -24,6 +24,7 @@
   </div>
 </template>
 <script>
+import axios from "axios";
 import ClickOutside from "vue-click-outside";
 import user from "~/mixins/user.js";
 import allUsers from "~/mixins/allUsers.js";
@@ -59,6 +60,10 @@ export default {
     recipeOwnerID: {
       type: String,
       default: null
+    },
+    recipeTitle: {
+      type: String,
+      default: ""
     }
   },
   computed: {
@@ -83,23 +88,53 @@ export default {
             if (user.val().displayName === selectedDisplayName) {
               userID = user.key;
               username = user.val().displayName;
+              let userEmail = user.val().email;
+              let emailNotificationsOff = user.val().emailNotificationsOff;
 
-              if (recipeKey !== null) {
+              if (recipeKey) {
                 const recipeRef = this.$fireDb.ref(
                   "recipes/" + recipeKey + "/sharedWith"
                 );
 
                 recipeRef.once("value", shares => {
                   if (shares.exists()) {
-                    let sharedWith = Object.values(shares.val());
+                    let userIDs = Object.values(shares.val());
 
-                    if (sharedWith.indexOf(userID) === -1) {
-                      recipeRef.push(userID);
+                    if (userIDs.indexOf(userID) === -1) {
+                      recipeRef
+                        .push(userID)
+                        .then(() => {
+                          if (!emailNotificationsOff) {
+                            this.sendEmail({
+                              displayName: username,
+                              email: userEmail
+                            });
+                          }
+                        })
+                        .catch(error =>
+                          console.log(
+                            "Error while sharing recipe:",
+                            error.message
+                          )
+                        );
                       componentThis.systemMessage = `Successfully shared with ${username}`;
                     } else
                       componentThis.systemMessage = `This recipe is already shared with ${username}`;
                   } else {
-                    recipeRef.push(userID);
+                    recipeRef
+                      .push(userID)
+                      .then(() => {
+                        this.sendEmail({
+                          displayName: username,
+                          email: userEmail
+                        });
+                      })
+                      .catch(error =>
+                        console.log(
+                          "Error while sharing recipe:",
+                          error.message
+                        )
+                      );
                     componentThis.systemMessage = `Successfully shared with ${username}`;
                   }
                 });
@@ -114,11 +149,31 @@ export default {
               "This user does not exist in the database";
           }
         })
-
         .catch(error => {
           componentThis.systemMessage = error.message;
           console.log("Error sharing recipe:", error.message);
         });
+    },
+    sendEmail(receiver) {
+      let message = `<p>Hi ${receiver.displayName},
+          <br>
+          <br>You just received a recipe from ${this.user.displayName}.
+          <br>'${this.recipeTitle}' is now available in your cookbook.
+          <br>
+          <br>Login to <a href="https://kokebokami.com">Kokebokami</a> to check it out!
+          <br>
+          <br>Best wishes,
+          <br>Your Kokebokami team 👩‍🍳</p>`;
+      axios
+        .post("/api/send-email", {
+          email: receiver.email,
+          subject: `${this.user.displayName} just shared a recipe with you 📝`,
+          message
+        })
+        .then(response => {
+          console.log("Response:", response);
+        })
+        .catch(error => console.log("Error:", error));
     }
   },
   directives: {

@@ -91,6 +91,7 @@
               :isRecipeOwner="isRecipeOwner"
               :recipeOwnerID="recipeOwnerID"
               :recipeKey="recipeKey"
+              :recipeTitle="recipe.title"
               @download="pdfExport"
             />
           </div>

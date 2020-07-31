@@ -116,6 +116,7 @@ export default {
       }
     ] */
   ],
+  serverMiddleware: ["~/api/send-email.js"],
   firebase: {
     config: {
       apiKey: process.env.API_KEY,

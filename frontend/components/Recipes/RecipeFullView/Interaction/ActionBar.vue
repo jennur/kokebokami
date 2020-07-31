@@ -31,6 +31,7 @@
       :open="sharing"
       :recipeKey="recipeKey"
       :recipeOwnerID="recipeOwnerID"
+      :recipeTitle="recipeTitle"
     />
   </div>
 </template>
@@ -61,6 +62,10 @@ export default {
       default: ""
     },
     recipeOwnerID: {
+      type: String,
+      default: ""
+    },
+    recipeTitle: {
       type: String,
       default: ""
     }
