@@ -88,6 +88,7 @@
               @update="payload => $emit('update', payload)"
             />
             <action-bar
+              v-if="recipeKey"
               :isRecipeOwner="isRecipeOwner"
               :recipeOwnerID="recipeOwnerID"
               :recipeKey="recipeKey"
