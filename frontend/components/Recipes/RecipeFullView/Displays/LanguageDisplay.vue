@@ -5,13 +5,13 @@
       <span
         v-if="language && !editMode"
         @click="event => toggleEditMode(event)"
-        class="margin-left--small"
         :class="{ editable: isRecipeOwner }"
+        class="margin-left--small"
         >{{ language }}</span
       >
       <edit-icon
         v-if="!language && isRecipeOwner && !editMode"
-        class="icon"
+        class="icon margin-left--small"
         @click="event => toggleEditMode(event)"
       />
       <language-edit
@@ -59,6 +59,7 @@ export default {
       }
     },
     setLanguage(language) {
+      language = language === "Not set" ? null : language;
       let recipeKey = this.recipeKey;
       if (recipeKey) {
         let languageRef = this.$fireDb.ref(`recipes/${recipeKey}/language`);
