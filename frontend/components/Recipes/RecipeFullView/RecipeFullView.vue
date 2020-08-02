@@ -15,7 +15,7 @@
             :isPublic="recipe.public"
             @update="payload => $emit('update', payload)"
           />
-          <span v-if="recipeKey" @click="toggleAlert">
+          <span v-if="recipeKey" class="system-message" @click="toggleAlert">
             <delete-icon tabindex="0" class="icon margin-left--small" />
             Delete recipe
           </span>
@@ -88,9 +88,11 @@
               @update="payload => $emit('update', payload)"
             />
             <action-bar
+              v-if="recipeKey"
               :isRecipeOwner="isRecipeOwner"
               :recipeOwnerID="recipeOwnerID"
               :recipeKey="recipeKey"
+              :recipeTitle="recipe.title"
               @download="pdfExport"
             />
           </div>

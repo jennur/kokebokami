@@ -24,6 +24,7 @@
   </div>
 </template>
 <script>
+import axios from "axios";
 import ClickOutside from "vue-click-outside";
 import user from "~/mixins/user.js";
 import allUsers from "~/mixins/allUsers.js";
@@ -59,6 +60,10 @@ export default {
     recipeOwnerID: {
       type: String,
       default: null
+    },
+    recipeTitle: {
+      type: String,
+      default: ""
     }
   },
   computed: {
@@ -73,52 +78,64 @@ export default {
       const componentThis = this;
       const selectedDisplayName = this.selected;
       const recipeKey = this.recipeKey;
-      const userRef = this.$fireDb.ref("users");
-      userRef
-        .once("value", snapshot => {
-          let userID = null;
-          let username = "";
-          let existingShare = 1;
-          snapshot.forEach(user => {
-            if (user.val().displayName === selectedDisplayName) {
-              userID = user.key;
-              username = user.val().displayName;
+      const sharesRef = this.$fireDb.ref(`recipes/${recipeKey}/sharedWith`);
 
-              if (recipeKey !== null) {
-                const recipeRef = this.$fireDb.ref(
-                  "recipes/" + recipeKey + "/sharedWith"
-                );
+      let followers = this.followers;
+      let selectedFollower = followers.filter(follower => {
+        return follower[1].displayName === selectedDisplayName;
+      })[0];
 
-                recipeRef.once("value", shares => {
-                  if (shares.exists()) {
-                    let sharedWith = Object.values(shares.val());
+      if (!selectedFollower) {
+        this.systemMessage = "This user does not exist in the database";
+        return;
+      }
 
-                    if (sharedWith.indexOf(userID) === -1) {
-                      recipeRef.push(userID);
-                      componentThis.systemMessage = `Successfully shared with ${username}`;
-                    } else
-                      componentThis.systemMessage = `This recipe is already shared with ${username}`;
-                  } else {
-                    recipeRef.push(userID);
-                    componentThis.systemMessage = `Successfully shared with ${username}`;
-                  }
-                });
-              } else {
-                console.log("Error: No recipeKey found in shareRecipe");
-              }
-              existingShare *= 0;
-            }
-          });
-          if (existingShare === 1) {
-            componentThis.systemMessage =
-              "This user does not exist in the database";
+      let selectedFollowerID = selectedFollower[0];
+      let username = selectedFollower[1].displayName;
+      let emailNotificationsOff = selectedFollower[1].emailNotificationsOff;
+      let userEmail = selectedFollower[1].email;
+
+      sharesRef.once("value", snapshot => {
+        if (snapshot.exists()) {
+          let shares = Object.values(snapshot.val());
+          if (shares.indexOf(selectedFollowerID) > -1) {
+            this.systemMessage = `This recipe is already shared with ${username}`;
+            return;
           }
+        }
+        sharesRef
+          .push(selectedFollowerID)
+          .then(() => {
+            if (!emailNotificationsOff) {
+              this.sendEmail({
+                displayName: username,
+                email: userEmail
+              });
+            }
+          })
+          .catch(error =>
+            console.log("Error while sharing recipe:", error.message)
+          );
+        this.systemMessage = `Successfully shared with ${username}`;
+      });
+    },
+    sendEmail(receiver) {
+      let message = `<p>Hi ${receiver.displayName},
+          <br>
+          <br>You just received a recipe from ${this.user.displayName}.
+          <br>'${this.recipeTitle}' is now available in your cookbook.
+          <br>
+          <br>Login to <a href="https://kokebokami.com">Kokebokami</a> to check it out!
+          <br>
+          <br>Best wishes,
+          <br>Your Kokebokami team 👩‍🍳</p>`;
+      axios
+        .post("/api/send-email", {
+          email: receiver.email,
+          subject: `${this.user.displayName} just shared a recipe with you 📝`,
+          message
         })
-
-        .catch(error => {
-          componentThis.systemMessage = error.message;
-          console.log("Error sharing recipe:", error.message);
-        });
+        .catch(error => console.log("Error:", error));
     }
   },
   directives: {
