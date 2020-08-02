@@ -89,11 +89,37 @@
             basePath="/cooks/"
           />
         </dl>
+        <dl class="flex-row">
+          <h3 class="full-width">Email notifications</h3>
+          <dt class="full-width account__detail account__detail--flex-column">
+            <h4 class="account__detail-title">
+              We send you email notifications when other users share recipes or
+              shopping lists with you.
+            </h4>
+            <div class="flex-row flex-row--align-center">
+              <p class="email-notifications margin-right--small">
+                Your email notifications are
+                <strong
+                  class="email-notifications__status"
+                  :class="{
+                    'color--pink': user.emailNotificationsOff,
+                    'color--blue': !user.emailNotificationsOff
+                  }"
+                  >{{ user.emailNotificationsOff ? "OFF" : "ON" }}</strong
+                >
+                <toggle-switch
+                  :checked="!user.emailNotificationsOff"
+                  @toggle="updateEmailNotificationStatus"
+                />
+              </p>
+            </div>
+          </dt>
+        </dl>
         <button
           class="button button--small button--transparent button--transparent-red margin-top--large"
           @click="toggleAlert"
         >
-          Delete my account
+          <delete-icon class="icon margin-right--small" />Delete my account
         </button>
         <p class="system-message">{{ systemMessage }}</p>
       </div>
@@ -121,13 +147,15 @@ import userRecipeLinks from "~/mixins/userRecipeLinks.js";
 import AccountDetail from "~/components/Account/Displays/AccountDetail.vue";
 import AccountLinkList from "~/components/Account/Displays/AccountLinkList.vue";
 import Alert from "~/components/Alert.vue";
+import ToggleSwitch from "~/components/Input/ToggleSwitch.vue";
 
 export default {
   name: "account-details",
   components: {
     AccountDetail,
     AccountLinkList,
-    Alert
+    Alert,
+    ToggleSwitch
   },
   props: {
     breadcrumbs: {
@@ -152,7 +180,8 @@ export default {
       email: "",
       biography: "",
       isLoading: false,
-      showAlert: false
+      showAlert: false,
+      emailNotificationsOff: false
     };
   },
   mixins: [
@@ -203,13 +232,33 @@ export default {
         .replace(regex, " ");
       return title;
     },
+    updateEmailNotificationStatus(checked) {
+      let emailNotificationsOff = !!this.emailNotificationsOff;
+      if (checked === emailNotificationsOff) {
+        var userRef = this.$fireDb.ref(`users/${this.user.id}`);
+        userRef
+          .update({ emailNotificationsOff: !checked })
+          .then(() => {
+            console.log("Successfully updated email notifications status");
+            this.updateUserDetailsInStore();
+            this.emailNotificationsOff = !checked;
+          })
+          .catch(error =>
+            console.log(
+              "Error updating email notification status:",
+              error.message
+            )
+          );
+      }
+    },
     updateUserDetailsInStore() {
       let userObj = {
         id: this.user.id,
         photoURL: this.photoURL,
         displayName: this.username,
         email: this.email,
-        biography: this.biography
+        biography: this.biography,
+        emailNotificationsOff: this.emailNotificationsOff
       };
       this.$store.dispatch("SET_USER", userObj);
     },
@@ -243,7 +292,7 @@ export default {
         };
         var storageRef = this.$fireStorage.ref();
         var imageRef = storageRef.child(
-          `images/users/${componentThis.user.id}/profileImg/${imageName}.png`
+          `images/users/${this.user.id}/profileImg/${imageName}.png`
         );
         await imageRef.put(file, metadata);
         this.photoURL = await imageRef.getDownloadURL();
@@ -428,6 +477,7 @@ export default {
     this.email = this.user.email;
     this.biography = this.user.biography;
     this.photoURL = this.user.photoURL;
+    this.emailNotificationsOff = this.user.emailNotificationsOff;
   }
 };
 </script>
