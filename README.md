@@ -30,11 +30,11 @@ Run `npm install` to install all dependencies necessary for the project to run.
 
 ## Serve with hot reload at localhost:3000 🖌
 
-You should now be all set to start developing. Simply run `npm run dev` and go to `localhost:3000` in your web browser.
+You should now be all set to start developing. Simply run `npm run dev` and go to `localhost:3000` in your web browser to follow the changes you make.
 
 ## Push your changes & create a PR 🕵️
 
-When you're done developing your awesome feature, push the changes to your own branch _not master_, and create a pull request to master for another developer to review.
+When you're done developing your awesome feature, push the changes to your own branch, _not master_, and create a pull request to master for another developer to review.
 
 ## When PR is merged 🚂
 
