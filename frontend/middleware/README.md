@@ -1,8 +1,13 @@
 # MIDDLEWARE
 
-**This directory is not required, you can delete it if you don't want to use it.**
+## router-auth.js
 
-This directory contains your application middleware.
-Middleware let you define custom functions that can be run before rendering either a page or a group of pages.
+Router-auth makes sure all admin pages are protected, and redirects unauthenticated users who try to access admin-routes to `/login`.
+
+It also redirects users who recently logged in to `/account`, unless their e-mail address is not verified.
+
+In the case of an unverified e-mail address, the user is redirected to `/verify-email`.
+
+## Nuxt.js middleware docs
 
 More information about the usage of this directory in [the documentation](https://nuxtjs.org/guide/routing#middleware).
