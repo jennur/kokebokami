@@ -67,9 +67,6 @@ export const mutations = {
   setShoppingListCount(state, payload) {
     state.shoppingListCount = payload;
   },
-  setAllUsers(state, payload) {
-    state.allUsers = payload;
-  },
   setLoginSystemMessage(state, payload) {
     state.loginSystemMessage = payload;
   },
