@@ -5,6 +5,7 @@
 ## Clone this repository ⬇️
 
 Clone the repo into whatever folder you like on your computer from your terminal:
+
 `git clone git@github.com:jennur/kokebokami.git`
 
 ## Navigate to frontend 🎨
