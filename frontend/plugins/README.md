@@ -2,7 +2,7 @@
 
 ## globalComponents.js
 
-This file registers selected components globally. If a component is registered in this file, it is ready for use anywhere in the app without a local import. Unless a component is frequently used, there is no need to register the component globally. Registering too many global components may affect the performance of the app as it means the components will load on _all_ pages.
+This file registers selected components globally. If a component is registered in this file, it is ready for use anywhere in the app without a local import. Unless a component is frequently used, there is no need to register the component globally.
 
 ## router-auth.client.js
 
