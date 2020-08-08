@@ -8,6 +8,14 @@ Clone the repo into whatever folder you like on your computer from your terminal
 
 `git clone git@github.com:jennur/kokebokami.git`
 
+## Create your own branch
+
+To prevent the app from breaking in production `(master)`, please create a new branch where you can knock yourself out:
+
+`git branch new_branch_name`
+
+`git checkout new_branch_name`
+
 ## Navigate to frontend 🎨
 
 Sanity is installed in this project (just in case of future needs). It is still not in use, so simply ignore this folder for now and navigate to the frontend folder - all the magic happens in there.
