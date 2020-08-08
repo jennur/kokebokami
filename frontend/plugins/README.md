@@ -6,7 +6,7 @@ This file registers selected components globally. If a component is registered i
 
 ## router-auth.client.js
 
-Router-auth makes sure the router-auth _middleware_ runs client-side upon page load, as the middleware runs server-side on page load, and client side on navigation.
+Router-auth makes sure the router-auth _middleware_ script runs client-side upon page load, as the middleware runs server-side on page load, and client side on navigation.
 
 ## Nuxt.js plugin docs
 
