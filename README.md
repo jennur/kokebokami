@@ -34,7 +34,7 @@ You should now be all set to start developing. Simply run `npm run dev` and go t
 
 ## Push your changes & create a PR 🕵️
 
-When you're done developing your awesome feature, push the changes to your own branch, _not master_, and create a pull request to master for another developer to review.
+When you're done developing your awesome feature, push the changes **to your own branch**, _not master_, and create a pull request to master for another developer to review.
 
 ## When PR is merged 🚂
 
@@ -44,7 +44,7 @@ When the pull request is reviewed and approved, it can be merged to master. Once
 
 Once deployed to staging, make sure to click around and see if your changes caused any errors and that your feature is working correctly. Preferably make someone else test it with you to make sure nothing is broken.
 
-## Deploy to production 🚂💨
+## Deploy to production 🎉
 
 When assured that everything works, go to heroku and do a manual deploy of the `kokebokami` app in production:
 
