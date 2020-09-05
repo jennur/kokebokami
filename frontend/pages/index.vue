@@ -1,69 +1,14 @@
 <template>
   <div>
-    <div v-if="!user">
-      <initial-info-section nextSection="signUp" />
-      <!-- <preview
-        id="addRecipe"
-        headline="Collect your favorite recipes in one place"
-        description="Add your personal recipes, or save recipes from anywhere on the web to make sure you don't forget about their existence."
-        videoTitle="add-recipe"
-        graphicTitle="favorite-cloud"
-        :flipGraphic="true"
-        nextSection="accessRecipes"
-        class="container--light-blue padding-horizontal--medium"
-      />
-      <preview
-        id="accessRecipes"
-        headline="Access your recipes wherever you are"
-        description="No more searching for your old cookbook or looking around the internet for that recipe you wanted to try. Store them all in one place to access them right away."
-        videoTitle="access-recipes"
-        graphicTitle="market"
-        :flip="true"
-        nextSection="changeServings"
-        class="container--green padding-horizontal--medium"
-      />
-      <preview
-        id="changeServings"
-        headline="Adjust servings to the amount you need"
-        description="Don't worry about calculating the amount you need for x servings. Just give us the number."
-        videoTitle="change-servings"
-        nextSection="addToShoppingList"
-        class="container--light-blue padding-horizontal--medium"
-      />
-
-      <preview
-        id="addToShoppingList"
-        headline="Plan and organize your shopping"
-        description="With the shopping planner you can easily plan for big events or simply the rest of the week."
-        imageTitle="shopping-list"
-        :flip="true"
-        nextSection="signUp"
-        class="container--green padding-horizontal--medium"
-      />-->
-
-      <sign-up-section
-        id="signUp"
-        class="container--full-height container--blue padding-top--xxxlarge"
-        :darkBg="true"
-        headline="Sign up to start building your own cookbook"
-        :bigHeadline="true"
-      />
+    <div v-if="user && !user.id">
+      <initial-info-section />
     </div>
 
-    <div
-      class="desktop-width padding-horizontal--large margin-top--xxlarge margin--auto"
-      v-else
-    >
-      <!-- <div class="margin-bottom--xxlarge">
-        <h2>Discover public recipes</h2>
-        <nuxt-link to="/account/my-cookbook/">Or go to my cookbook ➔</nuxt-link>
-      </div> -->
+    <div class="desktop-width padding-horizontal--large margin-top--xxlarge margin--auto">
       <button
         class="search__button button button--small button--green-border margin--medium"
         @click="event => toggleSearch(event)"
-      >
-        Search
-      </button>
+      >Search</button>
       <div class="flex-row flex-row--nowrap">
         <recipe-search
           :class="{ 'search--open': searchOpen }"
@@ -73,11 +18,18 @@
         />
         <recipes-list
           :recipes="visibleRecipes"
-          :publicRecipe="true"
+          :isPublicList="true"
           addRecipeUrl="/account/add-recipe"
         />
       </div>
     </div>
+    <sign-up-section
+      id="signUp"
+      class="container--full-height container--blue padding-top--xxxlarge"
+      :darkBg="true"
+      headline="Sign up to start building your own cookbook"
+      :bigHeadline="true"
+    />
   </div>
 </template>
 
@@ -101,13 +53,13 @@ export default {
     Preview,
     SignUpSection,
     RecipeSearch,
-    RecipesList
+    RecipesList,
   },
   data() {
     return {
       filteredRecipes: [],
       filtered: false,
-      searchOpen: false
+      searchOpen: false,
     };
   },
   mixins: [user, publicRecipes],
@@ -115,7 +67,7 @@ export default {
     visibleRecipes() {
       if (!this.filtered) return this.publicRecipes;
       if (this.filtered) return this.filteredRecipes;
-    }
+    },
   },
   methods: {
     closeSearch(event) {
@@ -129,10 +81,10 @@ export default {
     setVisibleRecipes(filteredRecipesObj) {
       this.filteredRecipes = filteredRecipesObj.recipes;
       this.filtered = filteredRecipesObj.filtered;
-    }
+    },
   },
   directives: {
-    ClickOutside
-  }
+    ClickOutside,
+  },
 };
 </script>

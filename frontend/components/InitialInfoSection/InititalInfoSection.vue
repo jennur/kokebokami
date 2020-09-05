@@ -5,49 +5,26 @@
     >
       <h1 class="container--center padding-horizontal--large">Build your personal cookbook online</h1>
       <p class="padding-horizontal--large color--blue mobile-width text-align--center">
-        Store and manage your recipes, create and organize shopping lists, share
-        everything with your friends - or keep it all to yourself.
+        Store and manage all your recipes, create and organize shopping lists, share
+        everything with your friends, the public - or keep it all to yourself.
       </p>
       <nuxt-link
         to="/sign-up/"
-        class="button button--large padding-horizontal--xlarge margin-top--large"
+        class="button button--large padding-horizontal--xlarge margin-vertical--large"
       >Get started ➔</nuxt-link>
     </div>
-    <client-only>
-      <component
-        :is="kokebokamiIllustration"
-        class="illustration illustration--kokeboka margin-top--xxlarge"
-      />
-    </client-only>
-    <anchor-button :scrollTo="nextSection" />
   </section>
 </template>
 
 <script>
-import kokeboka from "~/assets/graphics/illustrations/foodboard.svg";
-import kokebokaMobile from "~/assets/graphics/illustrations/foodboard-mobile.svg";
-import AnchorButton from "~/components/AnchorButton.vue";
-
 export default {
   name: "initial-info-section",
-  components: {
-    kokeboka,
-    kokebokaMobile,
-    AnchorButton
-  },
   props: {
     nextSection: {
       type: String,
-      default: ""
-    }
-  },
-  computed: {
-    isMobile() {
-      if (process.browser) return window.innerWidth < 600;
+      default: "",
     },
-    kokebokamiIllustration() {
-      return this.isMobile ? "kokebokaMobile" : "kokeboka";
-    }
-  }
+  },
+  computed: {},
 };
 </script>

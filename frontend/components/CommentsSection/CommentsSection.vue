@@ -6,13 +6,13 @@
     <comment-form
       class="margin-bottom--xlarge"
       @addComment="commentObj => submitComment(commentObj)"
-      :isRecipeOwner="recipeOwnerID === user.id"
+      :isRecipeOwner="user && user.id === recipeOwnerID"
       :submitted="submitted"
       :error="error"
     />
     <comments
       :recipeKey="recipeKey"
-      :isRecipeOwner="recipeOwnerID === user.id"
+      :isRecipeOwner="user && user.id === recipeOwnerID"
       :update="updateComments"
     />
   </div>
@@ -28,23 +28,23 @@ export default {
   name: "comments-section",
   components: {
     CommentForm,
-    Comments
+    Comments,
   },
   props: {
     recipeKey: {
       type: String,
-      default: ""
+      default: "",
     },
     recipeOwnerID: {
       type: String,
-      default: ""
-    }
+      default: "",
+    },
   },
   data() {
     return {
       submitted: false,
       error: false,
-      updateComments: 0
+      updateComments: 0,
     };
   },
   mixins: [user],
@@ -59,11 +59,11 @@ export default {
           this.error = false;
           this.updateComments++;
         })
-        .catch(error => {
+        .catch((error) => {
           this.error = true;
           console.log("Error submitting comment:", error.message);
         });
-    }
-  }
+    },
+  },
 };
 </script>

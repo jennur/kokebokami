@@ -7,8 +7,7 @@
         @click="event => toggleEditMode(event)"
         :class="{ editable: isRecipeOwner }"
         class="margin-left--small"
-        >{{ language }}</span
-      >
+      >{{ language }}</span>
       <edit-icon
         v-if="!language && isRecipeOwner && !editMode"
         class="icon margin-left--small"
@@ -30,25 +29,25 @@ import LanguageEdit from "./Editing/LanguageEdit.vue";
 export default {
   name: "language-display",
   components: {
-    LanguageEdit
+    LanguageEdit,
   },
   props: {
     language: {
       type: String,
-      default: ""
+      default: "",
     },
     recipeKey: {
       type: String,
-      default: ""
+      default: "",
     },
     isRecipeOwner: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   data() {
     return {
-      editMode: false
+      editMode: false,
     };
   },
   methods: {
@@ -70,14 +69,14 @@ export default {
             this.editMode = false;
             this.$emit("update");
           })
-          .catch(error =>
+          .catch((error) =>
             console.log("Error updating language:", error.message)
           );
       } else {
         this.$emit("update", { language });
         this.editMode = false;
       }
-    }
-  }
+    },
+  },
 };
 </script>

@@ -5,6 +5,7 @@ export default function(context) {
       if (
         user.emailVerified ||
         user.providerData[0].providerId === "facebook.com"
+        // Facebook users´ e-mail addresses are NOT automatically verified (Google users´ are)
       ) {
         performRedirect(route, redirect);
       } else if (
@@ -24,17 +25,18 @@ export default function(context) {
       }
     }
   });
+  if (route.name === "recipes") redirect("/");
 }
 
 function onAdminRoute(route) {
   if (route.matched.some(record => record.path.indexOf("account") > -1)) {
     return true;
-  } else if (route.matched.some(record => record.path.indexOf("cooks") > -1)) {
-    return true;
-  } else if (
+    /*}  else if (route.matched.some(record => record.path.indexOf("cooks") > -1)) {
+    return true; */
+    /* } else if (
     route.matched.some(record => record.path.indexOf("recipes") > -1)
   ) {
-    return true;
+    return true; */
   } else if (
     route.matched.some(record => record.path.indexOf("verify-email") > -1)
   ) {

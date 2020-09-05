@@ -21,6 +21,10 @@
     transform: translateX(0px);
     box-shadow: none;
     left: 0px;
+
+    &--sticky {
+      position: fixed;
+    }
   }
 
   &__button {

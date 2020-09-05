@@ -1,6 +1,6 @@
 <template>
   <div class="comment-form-wrap">
-    <form class="comment-form">
+    <form v-if="user && user.id" class="comment-form">
       <div class="flex-row flex-row--align-center position-relative">
         <span class="simple-loading-spinner"></span>
         <div
@@ -29,6 +29,9 @@
         <button type="submit" class="button button--small" @click.prevent="handleSubmit">Submit</button>
       </label>
     </form>
+    <section v-else class="comment-form">
+      <nuxt-link to="/login/" class="button button--small button--green margin-right--small">Log in</nuxt-link>to comment on this recipe
+    </section>
 
     <transition name="fade">
       <div
@@ -55,23 +58,23 @@ export default {
   props: {
     submitted: {
       type: Boolean,
-      default: false
+      default: false,
     },
     error: {
       type: Boolean,
-      default: false
+      default: false,
     },
     isRecipeOwner: {
       type: Boolean,
-      deafult: false
-    }
+      deafult: false,
+    },
   },
   data() {
     return {
       anonymous: false,
       comment: "",
       showingPreview: false,
-      showingPreviewModal: false
+      showingPreviewModal: false,
     };
   },
   mixins: [user],
@@ -87,10 +90,10 @@ export default {
         isAnonymous: this.anonymous,
         comment: this.comment,
         submitDate,
-        approved: this.isRecipeOwner
+        approved: this.isRecipeOwner,
       };
       this.$emit("addComment", commentObj);
-    }
-  }
+    },
+  },
 };
 </script>

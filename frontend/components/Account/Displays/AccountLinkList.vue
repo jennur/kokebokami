@@ -11,7 +11,7 @@
       </h4>
     </div>
     <ol>
-      <li v-for="link in links" :key="link[1].title">
+      <li v-for="link in links" :key="link[0]">
         <div v-if="externalURL">
           <a :href="link[1] && link[1].url" target="_blank">{{ link[1].title }}</a>
           <new-tab-icon class="account__recipe-link-icon" />
@@ -30,25 +30,25 @@ import newTabIcon from "~/assets/graphics/icons/new-tab-icon.svg";
 export default {
   name: "account-link-list",
   components: {
-    newTabIcon
+    newTabIcon,
   },
   props: {
     title: {
       type: String,
-      default: ""
+      default: "",
     },
     links: {
       type: Array,
-      default: () => []
+      default: () => [],
     },
     externalURL: {
       type: Boolean,
-      default: false
+      default: false,
     },
     basePath: {
       type: String,
-      default: ""
-    }
-  }
+      default: "",
+    },
+  },
 };
 </script>

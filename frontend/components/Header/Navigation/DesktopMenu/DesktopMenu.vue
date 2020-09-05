@@ -1,12 +1,10 @@
 <template>
   <!-- Desktop menu -->
   <div class="desktop-menu" v-click-outside="closeDropdown">
-    <div v-if="user" class="account-menu margin-bottom--small">
+    <div v-if="user && user.id" class="account-menu margin-bottom--small">
       <user-image :username="user.displayName" :photoURL="user.photoURL" />
       <!-- Link -->
-      <nuxt-link class="account-menu__button" to="/account">
-        {{ accountMenu.title }}
-      </nuxt-link>
+      <nuxt-link class="account-menu__button" to="/account">{{ accountMenu.title }}</nuxt-link>
       <!-- <transition name="pop-dropdown">
         <dropdown-menu
           v-if="open"
@@ -14,7 +12,7 @@
           @logout="$emit('logout')"
           @close="closeDropdown"
         />
-      </transition> -->
+      </transition>-->
     </div>
   </div>
 </template>
@@ -28,25 +26,25 @@ export default {
   name: "desktop-menu",
   components: {
     UserImage,
-    DropdownMenu
+    DropdownMenu,
   },
   props: {
     accountMenu: {
       type: Object,
-      default: {}
+      default: {},
     },
     loginMenu: {
       type: Array,
-      default: []
+      default: [],
     },
     user: {
       type: Object,
-      default: {}
-    }
+      default: {},
+    },
   },
   data() {
     return {
-      open: false
+      open: false,
     };
   },
   methods: {
@@ -55,10 +53,10 @@ export default {
     },
     closeDropdown() {
       this.open = false;
-    }
+    },
   },
   directives: {
-    ClickOutside
-  }
+    ClickOutside,
+  },
 };
 </script>

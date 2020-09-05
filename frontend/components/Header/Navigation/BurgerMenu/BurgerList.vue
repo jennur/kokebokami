@@ -10,7 +10,7 @@
         <nuxt-link
           class="burger-menu__link"
           :to="menuItem.path"
-          @click.native="$emit('closeMenu')"
+          @click.native="$emit('close-menu')"
         >{{ menuItem.title }}</nuxt-link>
       </div>
       <ul
@@ -21,12 +21,12 @@
           <nuxt-link
             class="burger-menu__link"
             :to="link.path"
-            @click.native="$emit('closeMenu')"
+            @click.native="$emit('close-menu')"
           >{{ link.title }}</nuxt-link>
         </li>
       </ul>
     </li>
-    <li v-if="user">
+    <li v-if="user && user.id">
       <button class="logout-button" @click="$emit('logout')">Log out</button>
     </li>
   </ul>
@@ -37,21 +37,21 @@ import UserImage from "../UserImage.vue";
 export default {
   name: "burger-list",
   components: {
-    UserImage
+    UserImage,
   },
   props: {
     open: {
       type: Boolean,
-      default: false
+      default: false,
     },
     user: {
       type: Object,
-      default: () => {}
+      default: () => {},
     },
     menuItems: {
       type: Array,
-      default: () => []
-    }
-  }
+      default: () => [],
+    },
+  },
 };
 </script>

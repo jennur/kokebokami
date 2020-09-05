@@ -11,7 +11,7 @@
       <backupImg />
     </div>
     <div class="profile__biography mobile-width">
-      <h1>{{ user && user.displayName ? user.displayName : "" }}</h1>
+      <h1>{{ user && user.displayName ? user.displayName : "User" }}</h1>
       <p>{{ user && user.biography ? user.biography : "" }}</p>
     </div>
   </div>
@@ -22,13 +22,13 @@ import backupImg from "~/assets/graphics/icons/cook-silhouette-circle.svg";
 export default {
   name: "profile-view",
   components: {
-    backupImg
+    backupImg,
   },
   props: {
     user: {
       type: Object,
-      default: () => {}
-    }
-  }
+      default: () => {},
+    },
+  },
 };
 </script>

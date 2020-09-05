@@ -1,22 +1,28 @@
 <template>
   <div>
-    <breadcrumbs class="margin-bottom--large" :routes="breadcrumbs" />
+    <div class="flex-center-container" v-if="!recipeLoaded">
+      <span class="simple-loading-spinner" />
+    </div>
+    <breadcrumbs v-if="recipeLoaded" class="margin-bottom--large" :routes="breadcrumbs" />
     <div class="tablet-width margin-top--xxlarge margin--auto">
       <expand-transition :show="recipeLoaded" slower>
         <recipe-full-view
           class="margin-bottom--xxlarge"
           :recipe="recipe"
           :recipeKey="recipeKey"
-          :isRecipeOwner="user.id === recipe.ownerID"
+          :isRecipeOwner="user && user.id === recipe.ownerID"
           :recipeOwnerID="recipe.ownerID"
+          :recipeOwnerDisplayName="recipeOwner.displayName"
           @update="handleUpdate"
         />
       </expand-transition>
 
       <comments-section
+        v-if="recipeLoaded"
         class="tablet-width margin--auto margin-top--xxlarge"
         :recipeKey="recipeKey"
         :recipeOwnerID="recipe.ownerID"
+        :recipeOwner="recipeOwner"
       />
     </div>
   </div>
@@ -37,7 +43,7 @@ export default {
   components: {
     RecipeFullView,
     CommentsSection,
-    ExpandTransition
+    ExpandTransition,
   },
   head() {
     return {
@@ -45,56 +51,31 @@ export default {
       link: [
         {
           rel: "canonical",
-          href: "https://www.kokebokami.com" + this.path
-        }
-      ]
+          href: "https://www.kokebokami.com" + this.path,
+        },
+      ],
     };
   },
-  mixins: [user, allUsers, getRecipe],
+  mixins: [user, getRecipe],
   computed: {
     path() {
       return this.$route.path;
     },
-    recipeOwner() {
-      let users = this.allUsers;
-      return (
-        users &&
-        users.find(user => {
-          return user[0] === this.recipe.ownerID;
-        })
-      );
-    },
     breadcrumbs() {
-      let recipeOwnerUsername = this.recipeOwner
-        ? this.recipeOwner[1].displayName
-        : "Unknown";
-
-      if (this.recipe && this.user.id !== this.recipe.ownerID) {
+      if (this.user && this.user.id === this.recipe.ownerID)
         return [
           { name: "Home", link: "/" },
-          { name: "Cooks", link: "/cooks/" },
-          {
-            name: recipeOwnerUsername,
-            link: `/cooks/${this.recipe.ownerID}/`
-          },
-          { name: this.recipe.title }
+          { name: "My account", link: "/account/" },
+          { name: "My cookbook", link: "/account/my-cookbook/" },
+          { name: this.recipe.title },
         ];
-      } else {
-        return [
-          { name: "Home", link: "/" },
-          {
-            name: "My cookbook",
-            link: "/account/my-cookbook/"
-          },
-          { name: this.recipe.title }
-        ];
-      }
-    }
+      return [{ name: "Recipes", link: "/" }, { name: this.recipe.title }];
+    },
   },
   methods: {
     handleUpdate() {
       this.getRecipe();
-    }
-  }
+    },
+  },
 };
 </script>

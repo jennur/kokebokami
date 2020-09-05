@@ -144,6 +144,10 @@ export default {
       type: String,
       default: ""
     },
+    recipeOwner: {
+      type: Array,
+      default: () => []
+    },
     isRecipeOwner: {
       type: Boolean,
       deafult: false

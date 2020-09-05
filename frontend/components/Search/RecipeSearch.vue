@@ -1,6 +1,6 @@
 <template>
-  <section class="search">
-    <form class="search__form">
+  <section class="search" :class="{'search--sticky': scrolled}">
+    <form class="search__form" @submit.prevent>
       <fieldset>
         <label class="search-field">
           <search-icon class="search-icon" />
@@ -28,11 +28,7 @@
           v-for="typeOfMeal in typesOfMeal"
           :key="typeOfMeal"
         >
-          <input
-            type="checkbox"
-            :value="typeOfMeal"
-            @change="event => handleSearch(event.target)"
-          />
+          <input type="checkbox" :value="typeOfMeal" @change="event => handleSearch(event.target)" />
           {{ typeOfMeal }}
         </label>
       </fieldset>
@@ -43,11 +39,7 @@
           v-for="category in categories"
           :key="category"
         >
-          <input
-            type="checkbox"
-            :value="category"
-            @change="event => handleSearch(event.target)"
-          />
+          <input type="checkbox" :value="category" @change="event => handleSearch(event.target)" />
           {{ category }}
         </label>
       </fieldset>
@@ -59,11 +51,7 @@
           v-for="allergen in allergens"
           :key="allergen"
         >
-          <input
-            type="checkbox"
-            :value="allergen"
-            @change="event => handleSearch(event.target)"
-          />
+          <input type="checkbox" :value="allergen" @change="event => handleSearch(event.target)" />
           {{ allergen }}
         </label>
       </fieldset>
@@ -77,19 +65,19 @@ import SelectComponent from "~/components/Input/SelectComponent.vue";
 export default {
   name: "recipe-search",
   components: {
-    SelectComponent
+    SelectComponent,
   },
   props: {
     recipes: {
       type: Array,
-      default: () => []
-    }
+      default: () => [],
+    },
   },
   data() {
     return {
       searchTerm: "",
       checkedCategories: [],
-      language: ""
+      language: "",
     };
   },
   computed: {
@@ -107,7 +95,11 @@ export default {
     },
     allergens() {
       return this.allCategories.allergens;
-    }
+    },
+    scrolled() {
+      //Check if scrolled
+      return false;
+    },
   },
   methods: {
     handleSearch(target) {
@@ -134,7 +126,7 @@ export default {
 
       //Filter on search term
       if (searchTerm !== "") {
-        recipes = recipes.filter(recipe => {
+        recipes = recipes.filter((recipe) => {
           return (
             recipe[1].title.toLowerCase().includes(searchTerm.toLowerCase()) ||
             recipe[1].description
@@ -146,7 +138,7 @@ export default {
       }
       // Filter on language
       if (language !== "" && language !== "All languages") {
-        recipes = recipes.filter(recipe => {
+        recipes = recipes.filter((recipe) => {
           if (recipe[1].language) {
             return recipe[1].language.toLowerCase() === language.toLowerCase();
           }
@@ -155,15 +147,15 @@ export default {
       }
       // Filter on categories
       if (checkedCategories.length) {
-        recipes = recipes.filter(recipe => {
+        recipes = recipes.filter((recipe) => {
           recipe = recipe[1];
           let categories = []
             .concat(recipe.categories)
             .concat(recipe.typeOfMeal)
             .concat(recipe.freeFrom)
-            .filter(elem => elem);
+            .filter((elem) => elem);
           let inCategory = 1;
-          checkedCategories.forEach(category => {
+          checkedCategories.forEach((category) => {
             if (categories) {
               inCategory *= categories.indexOf(category) > -1;
             }
@@ -180,7 +172,7 @@ export default {
         filtered = false;
       }
       this.$emit("search", { recipes, filtered });
-    }
-  }
+    },
+  },
 };
 </script>

@@ -2,7 +2,7 @@
   <nav class="navigation-menu-wrapper padding-horizontal--large margin--auto desktop-width">
     <logo />
     <div class="navigation-menu">
-      <ul v-if="!user" class="login-menu">
+      <ul v-if="user && !user.id" class="login-menu">
         <li v-for="link in loginMenu" :key="`login-link-${link.title}`">
           <nuxt-link
             :class="{
@@ -14,7 +14,7 @@
         </li>
       </ul>
       <desktop-menu
-        v-if="user"
+        v-if="user && user.id"
         class="navigation-menu__desktop-menu"
         :accountMenu="accountMenu"
         :loginMenu="loginMenu"
@@ -22,7 +22,7 @@
         @logout="logOut"
       />
 
-      <div v-if="user" class="navigation-menu__icons">
+      <div v-if="user && user.id" class="navigation-menu__icons">
         <nuxt-link class="icon__link" to="/account/shopping-list/" title="Shopping list">
           <shopping-list-icon class="icon--shopping-list" />
           <transition name="pop">
@@ -40,7 +40,7 @@
       </div>
 
       <burger-menu
-        v-if="user"
+        v-if="user && user.id"
         :open="burgerMenuOpen"
         :user="user"
         :menuItems="burgerMenuItems"
@@ -73,7 +73,7 @@ export default {
     DesktopMenu,
     ShoppingListIcon,
     CooksIcon,
-    FavoritesIcon
+    FavoritesIcon,
   },
   data() {
     return { burgerMenuOpen: false };
@@ -88,32 +88,32 @@ export default {
         link: "/account/",
         title: `${this.user && this.user.displayName}`,
         img: {
-          url: this.user && this.user.photoURL
+          url: this.user && this.user.photoURL,
         },
         subLinks: [
           {
             path: "/account/",
             title: "Dashboard",
-            icon: () => import(`~/assets/graphics/icons/dashboard-icon.svg`)
+            icon: () => import(`~/assets/graphics/icons/dashboard-icon.svg`),
           },
           {
             path: "/account/my-cookbook/",
             title: "My cookbook",
-            icon: () => import(`~/assets/graphics/icons/cookbook-icon.svg`)
+            icon: () => import(`~/assets/graphics/icons/cookbook-icon.svg`),
           },
           {
             path: "/account/account-details/",
             title: "Account details",
             icon: () =>
-              import(`~/assets/graphics/icons/account-details-icon.svg`)
-          }
-        ]
+              import(`~/assets/graphics/icons/account-details-icon.svg`),
+          },
+        ],
       };
     },
     loginMenu() {
       return [
         { path: "/sign-up/", title: "Sign up" },
-        { path: "/login/", title: "Log in" }
+        { path: "/login/", title: "Log in" },
       ];
     },
     burgerMenuItems() {
@@ -124,25 +124,25 @@ export default {
             path: "/account/",
             title: `${this.user.displayName}`,
             img: {
-              url: this.user.photoURL
+              url: this.user.photoURL,
             },
             subLinks: [
               { path: "/account/my-cookbook/", title: "My cookbook" },
               { path: "/account/shopping-list/", title: "Shopping list" },
-              { path: "/account/account-details/", title: "Account details" }
-            ]
+              { path: "/account/account-details/", title: "Account details" },
+            ],
           },
           { path: "/", title: "Discover public recipes" },
-          { path: "/cooks/", title: "Discover cooks" }
+          { path: "/cooks/", title: "Discover cooks" },
         ];
       } else {
         menuItems = [
           { path: "/sign-up/", title: "Sign up" },
-          { path: "/login/", title: "Log in" }
+          { path: "/login/", title: "Log in" },
         ];
       }
       return menuItems;
-    }
+    },
   },
   methods: {
     toggleMenu() {
@@ -157,10 +157,10 @@ export default {
       this.$store.dispatch("USER_SIGN_OUT");
       this.$router.push("/");
       this.burgerMenuOpen = false;
-    }
+    },
   },
   directives: {
-    ClickOutside
-  }
+    ClickOutside,
+  },
 };
 </script>
