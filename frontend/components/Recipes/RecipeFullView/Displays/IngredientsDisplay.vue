@@ -40,7 +40,7 @@
       :ingredients="calculatedIngredients"
     />
     <nuxt-link
-      v-else
+      v-if="user && !user.id"
       to="/login/"
       class="button button--xsmall button--round button--green padding-horizontal--large margin-bottom--xxlarge"
     >Log in to add to shopping list</nuxt-link>
