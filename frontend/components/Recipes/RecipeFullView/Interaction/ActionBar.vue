@@ -2,37 +2,28 @@
   <div>
     <div id="actionBar" class="flex-row">
       <button
-        class="button button--with-icon-left button--small button--green-border margin-bottom--large margin-right--large"
+        class="button button--with-icon-round margin-bottom--large margin-right--large"
         @click="handlePdfExport"
+        title="Download as PDF"
       >
-        <download-icon
-          class="icon icon--in-button icon--in-button-left margin-right--medium"
-        />Download as PDF
+        <download-icon class="icon icon--small" />
       </button>
       <button
-        v-if="!sharing"
-        @click="toggleShareBox"
-        class="button button--with-icon-left button--small button--green-border"
+        @click="openShareModal"
+        class="button button--with-icon-round"
+        title="Share this recipe"
       >
-        <share-icon
-          class="icon icon--in-button icon--in-button-left margin-right--medium"
-        />Share recipe
-      </button>
-      <button
-        v-else
-        class="button button--small button--transparent button--transparent-red"
-        @click="toggleShareBox"
-      >
-        ✕ Close
+        <share-icon class="icon icon--small" />
       </button>
     </div>
-    <share-form
-      class="margin-top--xlarge"
-      :open="sharing"
-      :recipeKey="recipeKey"
-      :recipeOwnerID="recipeOwnerID"
-      :recipeTitle="recipeTitle"
-    />
+    <transition name="pop-modal" v-if="sharing">
+      <share-form
+        :recipeKey="recipeKey"
+        :recipeOwnerID="recipeOwnerID"
+        :recipeTitle="recipeTitle"
+        @close-modal="closeShareModal"
+      />
+    </transition>
   </div>
 </template>
 <script>
@@ -41,42 +32,45 @@ import ShareForm from "./ShareForm.vue";
 export default {
   name: "action-bar",
   components: {
-    ShareForm
+    ShareForm,
   },
   data() {
     return {
-      sharing: false
+      sharing: false,
     };
   },
   props: {
     editMode: {
       type: Boolean,
-      default: false
+      default: false,
     },
     isRecipeOwner: {
       type: Boolean,
-      default: false
+      default: false,
     },
     recipeKey: {
       type: String,
-      default: ""
+      default: "",
     },
     recipeOwnerID: {
       type: String,
-      default: ""
+      default: "",
     },
     recipeTitle: {
       type: String,
-      default: ""
-    }
+      default: "",
+    },
   },
   methods: {
-    toggleShareBox() {
-      this.sharing = !this.sharing;
+    openShareModal() {
+      this.sharing = true;
+    },
+    closeShareModal() {
+      this.sharing = false;
     },
     handlePdfExport() {
       this.$emit("download");
-    }
-  }
+    },
+  },
 };
 </script>

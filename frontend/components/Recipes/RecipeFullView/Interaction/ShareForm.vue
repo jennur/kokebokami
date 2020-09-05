@@ -1,12 +1,19 @@
 <template>
   <div class="share-form-container">
-    <expand-transition :show="open">
-      <form class="share-form" v-on:submit.prevent>
-        <h4>Share with one of your followers</h4>
-        <p class="margin-top--none margin-bottom--large">
-          The recipe will show up under your friend's "Recipes shared with me"
-          tab in his/hers cookbook.
-        </p>
+    <div class="share-form-modal margin-horizontal--large">
+      <button
+        class="button button--cancel button--cancel-dynamic flex-align-self--end"
+        @click="$emit('close-modal')"
+      >✕</button>
+      <h3>Share '{{recipeTitle}}'</h3>
+      <form v-if="user && user.id" class="share-form margin-bottom--large" @submit.prevent>
+        <div class="flex-row flex-row--align-center flex-row--nowrap">
+          <h4 class="margin-bottom--small">Share with follower</h4>
+          <hover-info-box class="margin-left--small margin-bottom--small">
+            The recipe will show up under your friend's "Recipes shared with me"
+            tab in his/hers cookbook.
+          </hover-info-box>
+        </div>
         <fieldset class="flex-row margin-bottom--medium">
           <label class="share-form__followers">
             <select-component
@@ -19,8 +26,21 @@
         </fieldset>
         <button @click="shareRecipe" class="button button--small">Share</button>
       </form>
+
+      <form @submit.prevent>
+        <fieldset>
+          <h4 class="margin-bottom--small">Share by e-mail</h4>
+          <label class="flex-column">
+            <input id="shareEmail" type="email" placeholder="john.doe@example.com" />
+            <button
+              @click="shareRecipeByEmail"
+              class="button button--small margin-top--medium"
+            >Share</button>
+          </label>
+        </fieldset>
+      </form>
       <div class="system-message margin-top--large">{{ systemMessage }}</div>
-    </expand-transition>
+    </div>
   </div>
 </template>
 <script>
@@ -31,49 +51,75 @@ import allUsers from "~/mixins/allUsers.js";
 import connectedUsers from "~/mixins/connectedUsers.js";
 import ExpandTransition from "~/components/Transitions/Expand.vue";
 import SelectComponent from "~/components/Input/SelectComponent.vue";
+import HoverInfoBox from "~/components/HoverInfoBox.vue";
 
 export default {
   name: "share-form",
   components: {
     ExpandTransition,
-    SelectComponent
+    SelectComponent,
+    HoverInfoBox,
   },
   mixins: [user, allUsers, connectedUsers],
   data() {
     return {
       searchTerm: "",
       selected: "",
-      shareByEmail: false,
+      sharedByEmail: false,
       email: "",
-      systemMessage: ""
+      systemMessage: "",
     };
   },
   props: {
     open: {
       type: Boolean,
-      default: false
+      default: false,
     },
     recipeKey: {
       type: String,
-      default: null
+      default: null,
     },
     recipeOwnerID: {
       type: String,
-      default: null
+      default: null,
     },
     recipeTitle: {
       type: String,
-      default: ""
-    }
+      default: "",
+    },
   },
   computed: {
     followerNames() {
-      return this.followers.map(follower => {
+      return this.followers.map((follower) => {
         return follower[1].displayName;
       });
-    }
+    },
   },
   methods: {
+    shareRecipeByEmail() {
+      let email = document.getElementById("shareEmail").value;
+      let message = `<p>
+          <br>Someone shared a recipe with you:
+          <br>Check it out: <a href="https://kokebokami.com/recipes/${this.recipeKey}">'${this.recipeTitle}'</a>.
+          <br>
+          <br>Best wishes,
+          <br>Your Kokebokami team 👩‍🍳</p>`;
+      axios
+        .post("/api/send-email", {
+          email,
+          subject: `Someone just shared a recipe with you 📝`,
+          message,
+        })
+        .then(() => {
+          this.sharedByEmail = true;
+          this.systemMessage = "E-mail was sent";
+        })
+        .catch((error) => {
+          this.systemMessage =
+            "Something went wrong while attempting to send e-mail. Please try again later, or contact us if the issue continues.";
+          console.log("Error:", error);
+        });
+    },
     shareRecipe() {
       const componentThis = this;
       const selectedDisplayName = this.selected;
@@ -81,7 +127,7 @@ export default {
       const sharesRef = this.$fireDb.ref(`recipes/${recipeKey}/sharedWith`);
 
       let followers = this.followers;
-      let selectedFollower = followers.filter(follower => {
+      let selectedFollower = followers.filter((follower) => {
         return follower[1].displayName === selectedDisplayName;
       })[0];
 
@@ -95,7 +141,7 @@ export default {
       let emailNotificationsOff = selectedFollower[1].emailNotificationsOff;
       let userEmail = selectedFollower[1].email;
 
-      sharesRef.once("value", snapshot => {
+      sharesRef.once("value", (snapshot) => {
         if (snapshot.exists()) {
           let shares = Object.values(snapshot.val());
           if (shares.indexOf(selectedFollowerID) > -1) {
@@ -107,19 +153,19 @@ export default {
           .push(selectedFollowerID)
           .then(() => {
             if (!emailNotificationsOff) {
-              this.sendEmail({
+              this.sendNotificationEmail({
                 displayName: username,
-                email: userEmail
+                email: userEmail,
               });
             }
           })
-          .catch(error =>
+          .catch((error) =>
             console.log("Error while sharing recipe:", error.message)
           );
         this.systemMessage = `Successfully shared with ${username}`;
       });
     },
-    sendEmail(receiver) {
+    sendNotificationEmail(receiver) {
       let message = `<p>Hi ${receiver.displayName},
           <br>
           <br>You just received a recipe from ${this.user.displayName}.
@@ -133,13 +179,13 @@ export default {
         .post("/api/send-email", {
           email: receiver.email,
           subject: `${this.user.displayName} just shared a recipe with you 📝`,
-          message
+          message,
         })
-        .catch(error => console.log("Error:", error));
-    }
+        .catch((error) => console.log("Error:", error));
+    },
   },
   directives: {
-    ClickOutside
-  }
+    ClickOutside,
+  },
 };
 </script>

@@ -1,17 +1,10 @@
 <template>
   <nuxt-link :to="`/recipes/${recipeUrl}/`" class="recipe-display">
     <!-- Image -->
-    <div
-      :style="`background-image: url(${recipeImage})`"
-      class="recipe-display__image"
-    ></div>
+    <div :style="`background-image: url(${recipeImage})`" class="recipe-display__image"></div>
 
-    <span class="recipe-display__published-by" v-if="publicRecipe"
-      >Published by {{ recipeOwner ? recipeOwner : "Unknown" }}</span
-    >
-    <span class="recipe-display__public-note" v-if="showPublicNote">
-      Public
-    </span>
+    <span class="recipe-display__published-by" v-if="inPublicList">Published by {{ recipeOwner }}</span>
+    <span class="recipe-display__public-note" v-if="showPublicNote">Public</span>
     <div class="full-width padding--xlarge">
       <!-- Details -->
 
@@ -27,12 +20,12 @@
       </div>
 
       <!-- Description -->
-      <h3 class="recipe-display__title margin--none margin-bottom--medium">
-        {{ recipe.title ? recipe.title : "Recipe has no title" }}
-      </h3>
+      <h3
+        class="recipe-display__title margin--none margin-bottom--medium"
+      >{{ recipe.title ? recipe.title : "Recipe has no title" }}</h3>
       <div class="recipe-display__description margin-bottom--large">
         {{
-          recipe.description ? recipe.description : "Recipe has no description"
+        recipe.description ? recipe.description : "Recipe has no description"
         }}
       </div>
     </div>
@@ -43,8 +36,7 @@
           class="recipe-display__category margin-bottom--xxlarge margin-horizontal--small"
           v-for="category in categories"
           :key="category"
-          >{{ category }}</span
-        >
+        >{{ category }}</span>
       </div>
     </div>
   </nuxt-link>
@@ -57,32 +49,34 @@ import user from "~/mixins/user.js";
 export default {
   name: "recipe-display",
   components: {
-    recipeBackupImg
+    recipeBackupImg,
   },
   props: {
     recipe: {
       type: Object,
-      default: () => {}
+      default: () => {},
     },
     recipeID: {
       type: String,
-      default: ""
+      default: "",
     },
-    publicRecipe: {
+    inPublicList: {
       type: Boolean,
-      default: false
+      default: false,
     },
-    allUsers: {
-      type: Array,
-      default: () => []
-    }
+  },
+  data() {
+    return {
+      recipeOwner: "Unknown",
+    };
   },
   mixins: [user],
   computed: {
     showPublicNote() {
       return (
-        !this.publicRecipe &&
-        this.recipe.ownerID === this.user.id &&
+        !this.inPublicList &&
+        this.user &&
+        this.user.id === this.recipe.ownerID &&
         this.recipe.public
       );
     },
@@ -95,16 +89,6 @@ export default {
     recipeUrl() {
       return this.recipeID;
     },
-    recipeOwner() {
-      let allUsers = this.allUsers;
-      let recipeOwner = null;
-      this.allUsers.forEach(user => {
-        if (this.recipe.ownerID === user[0]) {
-          recipeOwner = user[1].displayName;
-        }
-      });
-      return recipeOwner;
-    },
     categories() {
       let categories = this.recipe.categories;
       return categories && Object.values(categories);
@@ -112,7 +96,7 @@ export default {
     typeOfMeal() {
       let typeOfMeal = [];
       if (this.recipe && this.recipe.typeOfMeal) {
-        this.recipe.typeOfMeal.forEach(type => {
+        this.recipe.typeOfMeal.forEach((type) => {
           type = type.charAt(0).toUpperCase() + type.slice(1);
           typeOfMeal.push(type);
         });
@@ -122,13 +106,26 @@ export default {
     freeFrom() {
       let freeFrom = [];
       if (this.recipe && this.recipe.freeFrom) {
-        this.recipe.freeFrom.forEach(allergen => {
+        this.recipe.freeFrom.forEach((allergen) => {
           allergen = allergen.charAt(0).toUpperCase() + allergen.slice(1);
           freeFrom.push(allergen);
         });
       }
       return freeFrom.join(", ");
-    }
-  }
+    },
+  },
+  methods: {
+    getRecipeOwner() {
+      let displayNameRef = this.$fireDb.ref(
+        `users/${this.recipe.ownerID}/displayName`
+      );
+      displayNameRef.once("value", (snapshot) => {
+        if (snapshot.exists()) this.recipeOwner = snapshot.val();
+      });
+    },
+  },
+  mounted() {
+    this.getRecipeOwner();
+  },
 };
 </script>

@@ -25,6 +25,44 @@
       <h4>Happy storing in kokeboka di 🧡</h4>
     </div>
     <clouds class="illustration illustration--clouds" />
+    <!-- <preview
+        id="addRecipe"
+        headline="Collect your favorite recipes in one place"
+        description="Add your personal recipes, or save recipes from anywhere on the web to make sure you don't forget about their existence."
+        videoTitle="add-recipe"
+        graphicTitle="favorite-cloud"
+        :flipGraphic="true"
+        nextSection="accessRecipes"
+        class="container--light-blue padding-horizontal--medium"
+      />
+      <preview
+        id="accessRecipes"
+        headline="Access your recipes wherever you are"
+        description="No more searching for your old cookbook or looking around the internet for that recipe you wanted to try. Store them all in one place to access them right away."
+        videoTitle="access-recipes"
+        graphicTitle="market"
+        :flip="true"
+        nextSection="changeServings"
+        class="container--green padding-horizontal--medium"
+      />
+      <preview
+        id="changeServings"
+        headline="Adjust servings to the amount you need"
+        description="Don't worry about calculating the amount you need for x servings. Just give us the number."
+        videoTitle="change-servings"
+        nextSection="addToShoppingList"
+        class="container--light-blue padding-horizontal--medium"
+      />
+
+      <preview
+        id="addToShoppingList"
+        headline="Plan and organize your shopping"
+        description="With the shopping planner you can easily plan for big events or simply the rest of the week."
+        imageTitle="shopping-list"
+        :flip="true"
+        nextSection="signUp"
+        class="container--green padding-horizontal--medium"
+    />-->
   </section>
 </template>
 <script>
@@ -38,21 +76,21 @@ export default {
       link: [
         {
           rel: "canonical",
-          href: "https://www.kokebokami.com/about/"
-        }
-      ]
+          href: "https://www.kokebokami.com/about/",
+        },
+      ],
     };
   },
   components: {
     foodclouds,
-    clouds
+    clouds,
   },
   props: {
     breadcrumbs: {
       type: Array,
-      default: () => [{ name: "Home", link: "/" }, { name: "About" }]
-    }
-  }
+      default: () => [{ name: "Home", link: "/" }, { name: "About" }],
+    },
+  },
 };
 </script>
 

@@ -19,13 +19,23 @@
     color: $richBlack;
     text-decoration: none;
   }
-
   &--with-icon {
     &-left {
       padding-left: $spacingXXLarge !important;
     }
     &-right {
       padding-right: $spacingXXLarge !important;
+    }
+    &-round {
+      width: 2em;
+      height: 2em;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid $green;
+      border-radius: $spacingLarge;
+      background-color: transparent;
+      padding: $spacingMedium;
     }
   }
   &--block {
@@ -152,7 +162,10 @@
     font-family: $bodyFont;
     line-height: 1em;
     border-radius: 0px;
-
+    &-dynamic {
+      width: max-content;
+      padding: 0px;
+    }
     &:hover {
       background-color: transparent;
       color: $orange;

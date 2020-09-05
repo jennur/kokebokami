@@ -16,18 +16,27 @@
             @update="payload => $emit('update', payload)"
           />
           <span v-if="recipeKey" class="system-message" @click="toggleAlert">
-            <delete-icon tabindex="0" class="icon margin-left--small" />
-            Delete recipe
+            <delete-icon tabindex="0" class="icon margin-left--small" />Delete recipe
           </span>
         </settings-dropdown>
 
-        <language-display
-          v-if="recipe.language || isRecipeOwner"
-          :language="recipe.language"
-          :isRecipeOwner="isRecipeOwner"
-          :recipeKey="recipeKey"
-          @update="payload => $emit('update', payload)"
-        />
+        <div class="flex-row flex-row--align-center">
+          <language-display
+            v-if="isRecipeOwner"
+            :language="recipe.language"
+            :isRecipeOwner="isRecipeOwner"
+            :recipeKey="recipeKey"
+            @update="payload => $emit('update', payload)"
+          />
+          <action-bar
+            v-if="recipeKey"
+            :isRecipeOwner="isRecipeOwner"
+            :recipeOwnerID="recipeOwnerID"
+            :recipeKey="recipeKey"
+            :recipeTitle="recipe.title"
+            @download="pdfExport"
+          />
+        </div>
       </div>
       <Alert
         :alertMessage="
@@ -87,21 +96,18 @@
               class="margin-bottom--xxlarge"
               @update="payload => $emit('update', payload)"
             />
-            <action-bar
-              v-if="recipeKey"
-              :isRecipeOwner="isRecipeOwner"
-              :recipeOwnerID="recipeOwnerID"
-              :recipeKey="recipeKey"
-              :recipeTitle="recipe.title"
-              @download="pdfExport"
-            />
+          </div>
+          <div
+            v-if="!isRecipeOwner"
+            class="recipe__category-note margin-bottom--large text-align--right"
+          >
+            Written by
+            <nuxt-link :to="`/cooks/${recipe.ownerID}`">{{recipeOwnerDisplayName}}</nuxt-link>
           </div>
         </div>
       </div>
 
-      <div
-        class="recipe__flex-no-wrap flex-row--align-top margin-vertical--xlarge"
-      >
+      <div class="recipe__flex-no-wrap flex-row--align-top margin-vertical--xlarge">
         <ingredients-display
           class="recipe__ingredients-wrap"
           :ingredients="recipe.ingredients"
@@ -162,19 +168,20 @@ export default {
     IngredientsDisplay,
     InstructionsDisplay,
     ExpandTransform,
-    Alert
+    Alert,
   },
   props: {
     isRecipeOwner: { type: Boolean, default: false },
     recipeOwnerID: { type: String, default: "" },
+    recipeOwnerDisplayName: { type: String, default: "Unknown" },
     recipe: { type: Object, default: () => {} },
-    recipeKey: { type: String, default: "" }
+    recipeKey: { type: String, default: "" },
   },
   data() {
     return {
       editMode: false,
       hide: false,
-      showAlert: false
+      showAlert: false,
     };
   },
   methods: {
@@ -203,7 +210,7 @@ export default {
     },
     deleteRecipeImageFromStorage() {
       let photoRef = this.$fireDb.ref(`recipes/${this.recipeKey}/photoURL`);
-      return photoRef.once("value", snapshot => {
+      return photoRef.once("value", (snapshot) => {
         if (snapshot.exists()) {
           let photoURL = snapshot.val();
           if (photoURL !== "") {
@@ -213,7 +220,7 @@ export default {
               .then(() => {
                 console.log("Successfully deleted image");
               })
-              .catch(error =>
+              .catch((error) =>
                 console.log("Error deleting file:", error.message)
               );
           }
@@ -230,13 +237,13 @@ export default {
             .then(() => {
               this.$router.push("/account/my-cookbook/");
             })
-            .catch(error => {
+            .catch((error) => {
               this.systemMessage = error.message;
               console.log("Error deleting recipe:", error.message);
             });
         });
       }
-    }
-  }
+    },
+  },
 };
 </script>

@@ -4,6 +4,11 @@
   max-height: 1em;
   cursor: pointer;
 
+  &--small {
+    width: 0.7em;
+    min-width: 0.7em;
+    max-height: 0.7em;
+  }
   &--in-button {
     position: absolute;
     top: 50%;
