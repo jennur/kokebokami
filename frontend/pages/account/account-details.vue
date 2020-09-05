@@ -494,6 +494,7 @@ export default {
     this.biography = this.user.biography;
     this.photoURL = this.user.photoURL;
     this.emailNotificationsOff = this.user.emailNotificationsOff;
+    this.hiddenProfile = this.user.hiddenProfile;
   },
 };
 </script>
