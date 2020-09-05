@@ -17,10 +17,14 @@
           v-click-outside="event => closeSearch(event)"
         />
         <recipes-list
+          v-if="loaded"
           :recipes="visibleRecipes"
           :isPublicList="true"
           addRecipeUrl="/account/add-recipe"
         />
+        <div v-else class="container">
+          <span class="simple-loading-spinner margin--auto" />
+        </div>
       </div>
     </div>
     <sign-up-section
