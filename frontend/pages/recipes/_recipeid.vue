@@ -33,7 +33,6 @@
 
 <script>
 import user from "~/mixins/user.js";
-import allUsers from "~/mixins/allUsers.js";
 import getRecipe from "~/mixins/getRecipe.js";
 import publicRecipes from "~/mixins/publicRecipes.js";
 
