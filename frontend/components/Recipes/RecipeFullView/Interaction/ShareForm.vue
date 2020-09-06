@@ -182,7 +182,7 @@ export default {
       let selectedFollowerID = selectedFollower[0];
       let username = selectedFollower[1].displayName;
       let emailNotificationsOff = selectedFollower[1].emailNotificationsOff;
-      let userEmail = selectedFollower[1].email;
+      //let userEmail = selectedFollower[1].email;
 
       sharesRef.once("value", snapshot => {
         if (snapshot.exists()) {
@@ -198,7 +198,7 @@ export default {
             if (!emailNotificationsOff) {
               this.sendNotificationEmail({
                 displayName: username,
-                email: userEmail
+                id: selectedFollowerID
               });
             }
           })
@@ -218,13 +218,23 @@ export default {
           <br>
           <br>Best wishes,
           <br>Your Kokebokami team 👩‍🍳</p>`;
-      axios
-        .post("/api/send-email", {
-          email: receiver.email,
-          subject: `${this.user.displayName} just shared a recipe with you 📝`,
-          message
+      let userRef = this.$fireDb.ref(`users/${receiver.id}`);
+      userRef
+        .once("value", user => {
+          if (user.exists()) {
+            user = user.val();
+            axios
+              .post("/api/send-email", {
+                email: user.email,
+                subject: `${this.user.displayName} just shared a recipe with you 📝`,
+                message
+              })
+              .catch(error =>
+                console.log("Error sending notification email:", error)
+              );
+          }
         })
-        .catch(error => console.log("Error:", error));
+        .catch(error => console.log("Error getting user:", error));
     },
     facebookPlugin() {
       (function(d, s, id) {
