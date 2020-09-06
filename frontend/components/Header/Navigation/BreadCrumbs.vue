@@ -42,7 +42,11 @@ export default {
             position: index + 1,
             name: route.name
           };
-          if (route.link) return { ...crumbObject, item: route.link };
+          if (route.link)
+            return {
+              ...crumbObject,
+              item: `https://kokebokami.com/${route.link}`
+            };
           return crumbObject;
         });
 
