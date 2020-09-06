@@ -45,7 +45,7 @@ export default {
           if (route.link)
             return {
               ...crumbObject,
-              item: `https://kokebokami.com/${route.link}`
+              item: `https://kokebokami.com${route.link}`
             };
           return crumbObject;
         });
