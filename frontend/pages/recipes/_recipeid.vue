@@ -60,35 +60,24 @@ export default {
       : "https://firebasestorage.googleapis.com/v0/b/kokebokami-e788f.appspot.com/o/images%2Fglobals%2FrecipeImage%2Frecipe-backup-img.png?alt=media&token=8c3e8a1a-4226-453b-a256-0ac1060adb59";
     return {
       title: `${this.recipe.title} | Kokebokami`,
-      link: [
-        {
-          rel: "canonical",
-          href: `https://www.kokebokami.com/recipes/${this.recipeKey}/`
-        }
-      ],
       meta: [
         {
-          name: "og:url",
           property: "og:url",
           content: `https://wwww.kokebokami.com/recipes/${this.recipeKey}/`
         },
         {
-          name: "og:type",
           property: "og:type",
           content: `article`
         },
         {
-          name: "og:title",
           property: "og:title",
           content: recipeTitle
         },
         {
-          name: "og:description",
           property: "og:description",
           content: recipeDescription
         },
         {
-          name: "og:image",
           property: "og:image",
           content: recipeImage
         }
