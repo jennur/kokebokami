@@ -3,7 +3,6 @@ export default {
   data() {
     return {
       userAuth: !!this.$fireAuth.currentUser,
-      recipeKey: "",
       recipe: {},
       recipeOwner: {},
       recipeLoaded: false,
@@ -21,20 +20,6 @@ export default {
       .then(async recipe => {
         if (recipe.data) {
           recipe = recipe.data;
-          let recipeOwner = await axios
-            .get(
-              `https://${process.env.PROJECT_ID}.firebaseio.com/users/${recipe.ownerID}.json?auth=${process.env.DATABASE_SECRET}`
-            )
-            .then(user => {
-              if (user.data)
-                return {
-                  displayName: user.data.displayName,
-                  photoURL: user.data.photoURL,
-                  id: recipe.ownerID
-                };
-              return {};
-            })
-            .catch(error => console.log("Error getting recipe owner:", error));
           let instructions = recipe.instructions;
           instructions = instructions.map(instruction => {
             return {
@@ -65,10 +50,6 @@ export default {
             recipeInstructions: instructions || []
           };
           return {
-            recipe: recipe,
-            recipeKey: recipeID,
-            recipeOwner,
-            structuredData,
             headData: {
               title: `${recipe.title} | Kokebokami`,
               meta: [
@@ -108,42 +89,64 @@ export default {
       })
       .catch(error => console.log("Error getting recipe:", error.message));
   },
+  computed: {
+    recipeKey() {
+      return this.$route.params.recipeid;
+    }
+  },
   methods: {
     getRecipe() {
       let recipeRef = this.$fireDb.ref(`recipes/${this.recipeKey}`);
       recipeRef
         .once("value", recipe => {
           if (recipe.exists()) {
-            this.recipe = recipe.val();
+            recipe = recipe.val();
+            let userRef = this.$fireDb.ref(`users/${recipe.ownerID}`);
+            userRef
+              .once("value", user => {
+                if (user.exists()) {
+                  user = user.val();
+                  this.recipeOwner = {
+                    displayName: user.displayName,
+                    photoURL: user.photoURL,
+                    id: recipe.ownerID
+                  };
+                }
+              })
+              .catch(error =>
+                console.log("Error getting recipe owner:", error)
+              );
+            if (
+              (!this.userAuth && !recipe.public) ||
+              (this.userAuth &&
+                !recipe.public &&
+                !this.checkIfSharedWithMe(recipe))
+            ) {
+              this.$router.push("/no-access");
+            } else {
+              this.recipe = recipe;
+              this.recipeLoaded = true;
+            }
           } else {
-            this.recipe = { ownerID: null };
+            this.$router.push("/no-access");
           }
         })
         .catch(error => {
           console.log("Error: Failed getting recipe:", error.message);
         });
     },
-    checkIfSharedWithMe() {
-      let recipe = this.recipe;
+    checkIfSharedWithMe(recipe) {
       let user = this.user;
-      if (recipe && user) {
+      if (user) {
         if (recipe.ownerID === user.id) return true;
-        else if (user && recipe && recipe.sharedWith) {
-          return Object.values(recipe.sharedWith).indexOf(this.user.id) > -1;
+        else if (user && recipe.sharedWith) {
+          return Object.values(recipe.sharedWith).indexOf(user.id) > -1;
         }
       }
       return false;
     }
   },
   created() {
-    if (
-      !this.recipe.ownerID ||
-      (this.recipe && !this.recipe.public && !this.checkIfSharedWithMe()) ||
-      (!this.userAuth && this.recipe && !this.recipe.public)
-    ) {
-      this.$router.push("/no-access");
-    } else {
-      this.recipeLoaded = true;
-    }
+    this.getRecipe();
   }
 };
