@@ -48,7 +48,7 @@ export default {
           "https://firebasestorage.googleapis.com/v0/b/kokebokami-e788f.appspot.com/o/images%2Fglobals%2Fkokebokami-assets%2FlogoK.png?alt=media&token=d0a53dcc-a160-4384-a3e4-2910943e3d06"
       },
       {
-        name: "fb:app_id",
+        property: "fb:app_id",
         content: "1354921524668944"
       }
     ],
