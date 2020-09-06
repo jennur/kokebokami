@@ -116,7 +116,7 @@ export const actions = {
   SET_USER: function({ commit, dispatch }) {
     try {
       let authUser = this.$fireAuth.currentUser;
-      let userRef = this.$fireDb.ref("users/" + authUser.uid);
+      let userRef = this.$fireDb.ref(`users/${authUser.uid}`);
       userRef.once("value", snapshot => {
         let loggedinUser = {
           id: authUser.uid,
