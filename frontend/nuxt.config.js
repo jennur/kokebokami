@@ -1,23 +1,12 @@
 require("dotenv").config();
-const axios = require("axios");
+const getRoutes = require("./build-helpers/getRoutes");
 
 export default {
   mode: "universal",
   generate: {
     fallback: true,
     routes() {
-      return axios
-        .get(
-          `https://${process.env.PROJECT_ID}.firebaseio.com/recipes.json?auth=${process.env.DATABASE_SECRET}`
-        )
-        .then(recipes => {
-          return Object.entries(recipes.data)
-            .filter(recipe => recipe[1].public)
-            .map(recipe => {
-              return `/recipes/${recipe[0]}`;
-            });
-        })
-        .catch(error => console.log("Error generating routes:", error.message));
+      return getRoutes();
     }
   },
 
@@ -139,8 +128,17 @@ export default {
     generate: false,
     hostname: "https://www.kokebokami.com",
     gzip: true,
-    exclude: ["/account", "/account/*", "/verify-email", "/cooks"],
-    routes: ["/", "/login", "/sign-up", "/cookies-policy", "/recipes"]
+    exclude: [
+      "/account",
+      "/account/*",
+      "/verify-email",
+      "/cooks/*",
+      "/goodbye",
+      "/recipes"
+    ],
+    routes() {
+      return getRoutes();
+    }
   },
   fontawesome: {
     component: "fa",
