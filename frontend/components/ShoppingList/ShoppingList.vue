@@ -206,7 +206,7 @@ export default {
       this.addingNewSubList = false;
       let componentThis = this;
       let mainListKey = this.list.key;
-      let userID = this.user.id;
+      let currentUserID = this.user.id;
       let username = this.user.displayName;
 
       if (this.list.title !== this.updatedTitle) {
@@ -230,8 +230,8 @@ export default {
             shoppingListRef
               .push({
                 title,
-                createdBy: { id: userID, displayName: username },
-                owners: [{ id: userID, displayName: username }]
+                createdBy: { id: currentUserID, displayName: username },
+                owners: [{ id: currentUserID, displayName: username }]
               })
               .then(mainListObject => {
                 console.log("New main list added");
@@ -257,7 +257,7 @@ export default {
     shareShoppingList(follower) {
       if (follower.length && follower[0] !== "") {
         let componentThis = this;
-        let userID = this.user.id;
+        let currentUserID = this.user.id;
         let username = this.user.displayName;
         let mainListKey = this.list.key;
         let followerUsername = follower[1].displayName;
@@ -268,8 +268,6 @@ export default {
         try {
           ownersRef.once("value", snapshot => {
             if (snapshot.exists()) {
-              console.log("Snapshot exists");
-
               let owners = Object.values(snapshot.val());
               let shared = false;
               owners.forEach(user => {
@@ -284,7 +282,7 @@ export default {
                   .push({
                     id: followerID,
                     displayName: followerUsername,
-                    sharedFrom: { id: userID, displayName: username }
+                    sharedFrom: { id: currentUserID, displayName: username }
                   })
                   .then(() => {
                     componentThis.systemMessage = `Successfully shared with ${followerUsername}`;
@@ -314,17 +312,25 @@ export default {
           <br>
           <br>Best wishes,
           <br>Your Kokebokami team 👩‍🍳</p>`;
-      axios
-        .post("/api/send-email", {
-          email: receiver[1].email,
-          subject: `${this.user.displayName} just shared a shopping list with you 📝`,
-          message
+      let receiverRef = this.$fireDb.ref(`users/${receiver[0]}`);
+      receiverRef
+        .once("value", receiver => {
+          if (receiver.exists()) {
+            receiver = receiver.val();
+            axios
+              .post("/api/send-email", {
+                email: receiver.email,
+                subject: `${this.user.displayName} just shared a shopping list with you 📝`,
+                message
+              })
+              .catch(error => console.log("Error:", error));
+          }
         })
-        .catch(error => console.log("Error:", error));
+        .catch(error => console.log("Error getting user", error));
     },
     deleteShoppingList() {
       let componentThis = this;
-      let userID = this.user.id;
+      let currentUserID = this.user.id;
       let mainListRef = this.$fireDb.ref(`shoppingLists/${this.list.key}`);
       let ownersRef = this.$fireDb.ref(`shoppingLists/${this.list.key}/owners`);
 
@@ -348,7 +354,7 @@ export default {
           if (snapshot.exists()) {
             let owners = Object.entries(snapshot.val());
             owners = owners.filter(user => {
-              return user[1].id !== userID;
+              return user[1].id !== currentUserID;
             });
 
             owners = Object.fromEntries(owners);

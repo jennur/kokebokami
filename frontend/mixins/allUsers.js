@@ -14,7 +14,22 @@ export default {
           "value",
           users => {
             if (users.exists()) {
-              componentThis.allUsers = Object.entries(users.val());
+              componentThis.allUsers = Object.entries(users.val())
+                .filter(user => !user[1].hiddenProfile)
+                .map(user => {
+                  let userID = user[0];
+                  user = user[1];
+                  return [
+                    userID,
+                    {
+                      displayName: user.displayName,
+                      photoURL: user.photoURL,
+                      biography: user.biography,
+                      following: user.following,
+                      hiddenProfile: user.hiddenProfile
+                    }
+                  ];
+                });
             }
           },
           error => {
