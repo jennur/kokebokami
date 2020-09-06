@@ -35,6 +35,8 @@
             :recipeOwnerID="recipeOwnerID"
             :recipeKey="recipeKey"
             :recipeTitle="recipe.title"
+            :recipeDescription="recipe.description"
+            :recipePublic="recipe.public"
             @download="pdfExport"
           />
         </div>

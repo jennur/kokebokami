@@ -1,14 +1,6 @@
 <template>
   <div class="share-form-container">
     <div id="fb-root"></div>
-    <script
-      async
-      defer
-      crossorigin="anonymous"
-      src="https://connect.facebook.net/nb_NO/sdk.js#xfbml=1&version=v8.0&appId=1354921524668944&autoLogAppEvents=1"
-      nonce="vuuU09ML"
-    ></script>
-
     <div class="share-form-modal margin-horizontal--large">
       <button
         class="button button--cancel button--cancel-dynamic flex-align-self--end"
@@ -18,14 +10,18 @@
       </button>
       <h3>Share '{{ recipeTitle }}'</h3>
       <div
+        v-if="recipePublic"
         class="fb-share-button"
-        :data-href="`https://kokebokami.com/recipes/${recipeKey}/`"
+        data-lazy="true"
+        :data-href="`https://www.kokebokami.com/recipes/${recipeKey}/`"
         data-layout="button"
         data-size="large"
       >
         <a
           target="_blank"
-          href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fdevelopers.facebook.com%2Fdocs%2Fplugins%2F&amp;src=sdkpreparse"
+          :href="
+            `https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fkokebokami.com%2Frecipes%2F${recipeKey}%2F&amp;src=sdkpreparse`
+          "
           class="fb-xfbml-parse-ignore"
           >Share on Facebook</a
         >
@@ -125,6 +121,14 @@ export default {
     recipeTitle: {
       type: String,
       default: ""
+    },
+    recipeDescription: {
+      type: String,
+      default: ""
+    },
+    recipePublic: {
+      type: Boolean,
+      default: false
     }
   },
   computed: {
@@ -221,7 +225,22 @@ export default {
           message
         })
         .catch(error => console.log("Error:", error));
+    },
+    facebookPlugin() {
+      (function(d, s, id) {
+        var js,
+          fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s);
+        js.id = id;
+        js.src =
+          "https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v3.0";
+        fjs.parentNode.insertBefore(js, fjs);
+      })(document, "script", "facebook-jssdk");
     }
+  },
+  mounted() {
+    this.facebookPlugin();
   },
   directives: {
     ClickOutside

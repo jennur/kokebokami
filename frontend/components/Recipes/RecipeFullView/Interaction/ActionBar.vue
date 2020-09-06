@@ -21,6 +21,8 @@
         :recipeKey="recipeKey"
         :recipeOwnerID="recipeOwnerID"
         :recipeTitle="recipeTitle"
+        :recipeDescription="recipeDescription"
+        :recipePublic="recipePublic"
         @close-modal="closeShareModal"
       />
     </transition>
@@ -59,6 +61,14 @@ export default {
     recipeTitle: {
       type: String,
       default: ""
+    },
+    recipeDescription: {
+      type: String,
+      default: ""
+    },
+    recipePublic: {
+      type: Boolean,
+      default: false
     }
   },
   methods: {
