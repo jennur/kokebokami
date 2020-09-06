@@ -86,18 +86,15 @@
             @update="payload => $emit('update', payload)"
           />
 
-          <div id="ignorePDF">
-            <category-display
-              v-if="recipe.categories || isRecipeOwner"
-              :categories="
-                recipe.categories && Object.values(recipe.categories)
-              "
-              :isRecipeOwner="isRecipeOwner"
-              :recipeKey="recipeKey"
-              class="margin-bottom--xxlarge"
-              @update="payload => $emit('update', payload)"
-            />
-          </div>
+          <category-display
+            v-if="recipe.categories || isRecipeOwner"
+            :categories="recipe.categories && Object.values(recipe.categories)"
+            :isRecipeOwner="isRecipeOwner"
+            :recipeKey="recipeKey"
+            class="margin-bottom--xxlarge"
+            @update="payload => $emit('update', payload)"
+          />
+
           <div
             v-if="!isRecipeOwner"
             class="recipe__category-note margin-bottom--large text-align--right"
@@ -196,19 +193,25 @@ export default {
     pdfExport() {
       pdfMake.vfs = pdfFonts.pdfMake.vfs;
       let recipe = this.recipe;
-      let categories = recipe.categories && recipe.categories.join(", ");
+      let categories = Array.isArray(recipe.categories)
+        ? recipe.categories.join(", ")
+        : recipe.categories;
 
-      let typeOfMeal = recipe.typeOfMeal && recipe.typeOfMeal.join(", ");
-      let freeFrom = recipe.freeFrom && recipe.freeFrom.join(", ");
+      let typeOfMeal = Array.isArray(recipe.typeOfMeal)
+        ? recipe.typeOfMeal.join(", ")
+        : recipe.typeOfMeal;
+      let freeFrom = Array.isArray(recipe.freeFrom)
+        ? recipe.freeFrom.join(", ")
+        : recipe.freeFrom;
       let ingredients =
-        recipe.ingredients &&
+        Array.isArray(recipe.ingredients) &&
         recipe.ingredients
           .map(ingredient => {
             return `<li style="margin-bottom: 5px;">${ingredient}</li>`;
           })
           .join("");
       let instructions =
-        recipe.instructions &&
+        Array.isArray(recipe.instructions) &&
         recipe.instructions
           .map(instruction => {
             return `<li style=""><p style="">${instruction}</p></li>`;

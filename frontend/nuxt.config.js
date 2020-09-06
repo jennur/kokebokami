@@ -20,6 +20,32 @@ export default {
         hid: "description",
         name: "description",
         content: process.env.npm_package_description || ""
+      },
+      {
+        hid: "title",
+        name: "title",
+        content: "Kokebokami"
+      },
+      {
+        hid: "title",
+        property: "og:title",
+        content: "Kokebokami"
+      },
+      {
+        hid: "og:url",
+        property: "og:url",
+        content: `https://kokebokami.com/`
+      },
+      {
+        hid: "og:type",
+        property: "og:type",
+        content: "website"
+      },
+      {
+        hid: "og:image",
+        property: "og:image",
+        content:
+          "https://firebasestorage.googleapis.com/v0/b/kokebokami-e788f.appspot.com/o/images%2Fglobals%2Fkokebokami-assets%2FlogoK.png?alt=media&token=d0a53dcc-a160-4384-a3e4-2910943e3d06"
       }
     ],
     link: [{ rel: "icon", type: "image/png", href: "/favicon.png" }]

@@ -5,11 +5,6 @@
       <nuxt />
     </main>
     <footer-component />
-    <script
-      id="dsq-count-scr"
-      src="//kokebokami.disqus.com/count.js"
-      async
-    ></script>
     <scroll-button />
   </div>
 </template>

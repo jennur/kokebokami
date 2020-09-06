@@ -1,7 +1,7 @@
 {
   "name": "kokebokami",
   "version": "1.0.0",
-  "description": "Build your personal cookbook online with Kokebokami. Manage your recipes, create and organize shopping lists.",
+  "description": "Build your personal cookbook online with Kokebokami. Manage and share your recipes, create and organize shopping lists.",
   "author": "Jenny Bonsak",
   "private": true,
   "scripts": {
