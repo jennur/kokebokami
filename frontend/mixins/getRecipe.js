@@ -35,6 +35,12 @@ export default {
                   text: instruction
                 };
               });
+              let categories = Array.isArray(recipe.categories)
+                ? recipe.categories.join(",")
+                : "";
+              let typeOfMeal = Array.isArray(recipe.typeOfMeal)
+                ? recipe.typeOfMeal.join(",")
+                : "";
               this.structuredData = {
                 "@context": "https://schema.org/",
                 "@type": "Recipe",
@@ -45,11 +51,9 @@ export default {
                     : "https://firebasestorage.googleapis.com/v0/b/kokebokami-e788f.appspot.com/o/images%2Fglobals%2FrecipeImage%2Frecipe-backup-img.png?alt=media&token=8c3e8a1a-4226-453b-a256-0ac1060adb59"
                 ],
                 description: recipe.description ? recipe.description : "",
-                keywords: recipe.categories ? recipe.categories.join(",") : "",
+                keywords: categories,
                 recipeYield: recipe.servings ? recipe.servings : 0,
-                recipeCategory: recipe.typeOfMeal
-                  ? recipe.typeOfMeal.join(",")
-                  : "",
+                recipeCategory: typeOfMeal,
 
                 recipeIngredient: recipe.ingredients ? recipe.ingredients : [],
                 recipeInstructions: instructions ? instructions : []

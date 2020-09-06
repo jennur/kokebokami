@@ -7,25 +7,16 @@ export default {
     fallback: true,
     routes() {
       return axios
-        .all([
-          axios.get(
-            `https://${process.env.PROJECT_ID}.firebaseio.com/recipes.json?auth=${process.env.DATABASE_SECRET}`
-          ),
-          axios.get(
-            `https://${process.env.PROJECT_ID}.firebaseio.com/users.json?auth=${process.env.DATABASE_SECRET}`
-          )
-        ])
-        .then(
-          axios.spread((recipes, users) => {
-            recipes = Object.keys(recipes.data).map(key => {
-              return `/recipes/${key}`;
-            });
-            users = Object.keys(users.data).map(key => {
-              return `/cooks/${key}`;
-            });
-            return recipes.concat(users);
-          })
+        .get(
+          `https://${process.env.PROJECT_ID}.firebaseio.com/recipes.json?auth=${process.env.DATABASE_SECRET}`
         )
+        .then(recipes => {
+          return Object.entries(recipes.data)
+            .filter(recipe => recipe[1].public)
+            .map(recipe => {
+              return `/recipes/${recipe[0]}`;
+            });
+        })
         .catch(error => console.log("Error generating routes:", error.message));
     }
   },
@@ -148,8 +139,8 @@ export default {
     generate: false,
     hostname: "https://www.kokebokami.com",
     gzip: true,
-    exclude: ["/account", "/account/*", "/recipes", "/verify-email", "/cooks"],
-    routes: ["/", "/login", "/sign-up", "/cookies-policy"]
+    exclude: ["/account", "/account/*", "/verify-email", "/cooks"],
+    routes: ["/", "/login", "/sign-up", "/cookies-policy", "/recipes"]
   },
   fontawesome: {
     component: "fa",
