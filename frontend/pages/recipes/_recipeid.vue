@@ -54,6 +54,12 @@ export default {
           href: "https://www.kokebokami.com" + this.path,
         },
       ],
+      script: [
+        {
+          type: "application/ld+json",
+          json: this.structuredData,
+        },
+      ],
     };
   },
   mixins: [user, getRecipe],

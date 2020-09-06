@@ -35,21 +35,8 @@
         'flex-order--one': flip && !isMobile
         }"
       >
-        <video
-          v-if="videoTitle"
-          class="preview__iphone-video"
-          :src="require(`~/assets/videos/${videoTitle}.mp4`)"
-          autoplay
-          muted
-          loop
-          playsinline
-        />
-        <img
-          v-if="imageTitle"
-          class="preview__iphone-video"
-          :src="require(`~/assets/images/${imageTitle}.png`)"
-          :alt="`${imageTitle}`"
-        />
+        <video v-if="videoTitle" class="preview__iphone-video" autoplay muted loop playsinline />
+        <img v-if="imageTitle" class="preview__iphone-video" :alt="`${imageTitle}`" />
       </div>
     </div>
     <anchor-button :scrollTo="nextSection" />
@@ -62,57 +49,57 @@ import AnchorButton from "~/components/AnchorButton.vue";
 export default {
   name: "preview",
   components: {
-    AnchorButton
+    AnchorButton,
   },
   props: {
     graphicTitle: {
       type: String,
-      default: ""
+      default: "",
     },
     videoTitle: {
       type: String,
-      default: ""
+      default: "",
     },
     imageTitle: {
       type: String,
-      default: ""
+      default: "",
     },
     headline: {
       type: String,
-      default: ""
+      default: "",
     },
     description: {
       type: String,
-      default: ""
+      default: "",
     },
     flip: {
       type: Boolean,
-      default: false
+      default: false,
     },
     flipGraphic: {
       type: Boolean,
-      default: false
+      default: false,
     },
     nextSection: {
       type: String,
-      default: ""
-    }
+      default: "",
+    },
   },
   data() {
     return {
-      illustration: null
+      illustration: null,
     };
   },
   computed: {
     isMobile() {
       if (process.browser) return window.innerWidth < 600;
-    }
+    },
   },
-  created() {
+  /* created() {
     if (this.graphicTitle) {
       this.illustration = () =>
         import(`../assets/graphics/illustrations/${this.graphicTitle}.svg`);
     }
-  }
+  } */
 };
 </script>
