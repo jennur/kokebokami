@@ -68,27 +68,22 @@ export default {
       ],
       meta: [
         {
-          name: "og:url",
           property: "og:url",
           content: `https://wwww.kokebokami.com/recipes/${this.recipeKey}/`
         },
         {
-          name: "og:type",
           property: "og:type",
           content: `article`
         },
         {
-          name: "og:title",
           property: "og:title",
           content: recipeTitle
         },
         {
-          name: "og:description",
           property: "og:description",
           content: recipeDescription
         },
         {
-          name: "og:image",
           property: "og:image",
           content: recipeImage
         }
