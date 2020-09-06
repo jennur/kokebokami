@@ -3,10 +3,10 @@
     <ul class="breadcrumbs__list">
       <li v-for="route in routes" :key="route.name">
         <span v-if="route.link">
-          <nuxt-link :to="route.link">{{route.name}}</nuxt-link>
-          {{" /"}}
+          <nuxt-link :to="route.link">{{ route.name }}</nuxt-link>
+          {{ " /" }}
         </span>
-        <span class="active-link" v-else>{{route.name}}</span>
+        <span class="active-link" v-else>{{ route.name }}</span>
       </li>
     </ul>
   </div>
@@ -21,36 +21,41 @@ export default {
         script: [
           {
             type: "application/ld+json",
-            json: structuredData,
-          },
-        ],
+            json: structuredData
+          }
+        ]
       };
   },
   props: {
     routes: {
       type: Array,
-      default: () => [],
-    },
+      default: () => []
+    }
   },
   computed: {
     structuredData() {
       let listElements = this.routes
-        .filter((route) => route.name !== "Home")
+        .filter(route => route.name !== "Home")
         .map((route, index) => {
-          return {
+          let crumbObject = {
             "@type": "ListItem",
             position: index + 1,
-            name: route.name,
-            item: route.link ? route.link : "",
+            name: route.name
           };
+          if (route.link)
+            return {
+              ...crumbObject,
+              item: `https://kokebokami.com${route.link}`
+            };
+          return crumbObject;
         });
 
       return {
         "@context": "https://schema.org",
         "@type": "BreadcrumbList",
-        itemListElement: listElements,
+        itemListElement: listElements
       };
-    },
-  },
+    }
+  }
 };
 </script>

@@ -1,7 +1,7 @@
 {
   "name": "kokebokami",
   "version": "1.0.0",
-  "description": "Build your personal cookbook online with Kokebokami. Manage your recipes, create and organize shopping lists.",
+  "description": "Build your personal cookbook online with Kokebokami. Manage and share your recipes, create and organize shopping lists.",
   "author": "Jenny Bonsak",
   "private": true,
   "scripts": {
@@ -9,7 +9,7 @@
     "build": "nuxt build",
     "start": "nuxt start",
     "generate": "nuxt generate",
-    "heroku-postbuild": "npm run build"
+    "heroku-postbuild": "npm run build && npm run generate"
   },
   "dependencies": {
     "@fortawesome/free-brands-svg-icons": "^5.13.0",
@@ -26,7 +26,6 @@
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-stage-0": "^6.24.1",
     "body-parser": "^1.19.0",
-    "cheerio": "^1.0.0-rc.3",
     "compressorjs": "^1.0.6",
     "core-js": "^2.6.11",
     "express": "^4.17.1",
@@ -44,9 +43,9 @@
     "nuxt-i18n": "^6.12.2",
     "nuxt-svg-loader": "^1.0.1",
     "pdfmake": "^0.1.65",
-    "puppeteer": "^3.1.0",
     "uuid": "^8.1.0",
     "vue-click-outside": "^1.0.7",
+    "vue-social-sharing": "^3.0.0-beta.11",
     "vuex": "^3.1.2",
     "ws": "^7.3.0"
   },

@@ -1,12 +1,36 @@
 <template>
   <div class="share-form-container">
+    <div id="fb-root"></div>
     <div class="share-form-modal margin-horizontal--large">
       <button
         class="button button--cancel button--cancel-dynamic flex-align-self--end"
         @click="$emit('close-modal')"
-      >✕</button>
-      <h3>Share '{{recipeTitle}}'</h3>
-      <form v-if="user && user.id" class="share-form margin-bottom--large" @submit.prevent>
+      >
+        ✕
+      </button>
+      <h3>Share '{{ recipeTitle }}'</h3>
+      <div
+        v-if="recipePublic"
+        class="fb-share-button"
+        data-lazy="true"
+        :data-href="`https://www.kokebokami.com/recipes/${recipeKey}/`"
+        data-layout="button"
+        data-size="large"
+      >
+        <a
+          target="_blank"
+          :href="
+            `https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fkokebokami.com%2Frecipes%2F${recipeKey}%2F&amp;src=sdkpreparse`
+          "
+          class="fb-xfbml-parse-ignore"
+          >Share on Facebook</a
+        >
+      </div>
+      <form
+        v-if="user && user.id"
+        class="share-form margin-vertical--large"
+        @submit.prevent
+      >
         <div class="flex-row flex-row--align-center flex-row--nowrap">
           <h4 class="margin-bottom--small">Share with follower</h4>
           <hover-info-box class="margin-left--small margin-bottom--small">
@@ -24,18 +48,29 @@
             />
           </label>
         </fieldset>
-        <button @click="shareRecipe" class="button button--small">Share</button>
+        <button
+          @click="shareRecipe"
+          class="button button--xsmall margin-left--xsmall"
+        >
+          Share
+        </button>
       </form>
 
-      <form @submit.prevent>
+      <form class="share-form margin-vertical--large" @submit.prevent>
         <fieldset>
           <h4 class="margin-bottom--small">Share by e-mail</h4>
           <label class="flex-column">
-            <input id="shareEmail" type="email" placeholder="john.doe@example.com" />
+            <input
+              id="shareEmail"
+              type="email"
+              placeholder="john.doe@example.com"
+            />
             <button
               @click="shareRecipeByEmail"
-              class="button button--small margin-top--medium"
-            >Share</button>
+              class="button button--xsmall margin-left--xsmall margin-top--medium"
+            >
+              Share
+            </button>
           </label>
         </fieldset>
       </form>
@@ -58,7 +93,7 @@ export default {
   components: {
     ExpandTransition,
     SelectComponent,
-    HoverInfoBox,
+    HoverInfoBox
   },
   mixins: [user, allUsers, connectedUsers],
   data() {
@@ -67,33 +102,41 @@ export default {
       selected: "",
       sharedByEmail: false,
       email: "",
-      systemMessage: "",
+      systemMessage: ""
     };
   },
   props: {
     open: {
       type: Boolean,
-      default: false,
+      default: false
     },
     recipeKey: {
       type: String,
-      default: null,
+      default: null
     },
     recipeOwnerID: {
       type: String,
-      default: null,
+      default: null
     },
     recipeTitle: {
       type: String,
-      default: "",
+      default: ""
     },
+    recipeDescription: {
+      type: String,
+      default: ""
+    },
+    recipePublic: {
+      type: Boolean,
+      default: false
+    }
   },
   computed: {
     followerNames() {
-      return this.followers.map((follower) => {
+      return this.followers.map(follower => {
         return follower[1].displayName;
       });
-    },
+    }
   },
   methods: {
     shareRecipeByEmail() {
@@ -108,13 +151,13 @@ export default {
         .post("/api/send-email", {
           email,
           subject: `Someone just shared a recipe with you 📝`,
-          message,
+          message
         })
         .then(() => {
           this.sharedByEmail = true;
           this.systemMessage = "E-mail was sent";
         })
-        .catch((error) => {
+        .catch(error => {
           this.systemMessage =
             "Something went wrong while attempting to send e-mail. Please try again later, or contact us if the issue continues.";
           console.log("Error:", error);
@@ -127,7 +170,7 @@ export default {
       const sharesRef = this.$fireDb.ref(`recipes/${recipeKey}/sharedWith`);
 
       let followers = this.followers;
-      let selectedFollower = followers.filter((follower) => {
+      let selectedFollower = followers.filter(follower => {
         return follower[1].displayName === selectedDisplayName;
       })[0];
 
@@ -141,7 +184,7 @@ export default {
       let emailNotificationsOff = selectedFollower[1].emailNotificationsOff;
       let userEmail = selectedFollower[1].email;
 
-      sharesRef.once("value", (snapshot) => {
+      sharesRef.once("value", snapshot => {
         if (snapshot.exists()) {
           let shares = Object.values(snapshot.val());
           if (shares.indexOf(selectedFollowerID) > -1) {
@@ -155,11 +198,11 @@ export default {
             if (!emailNotificationsOff) {
               this.sendNotificationEmail({
                 displayName: username,
-                email: userEmail,
+                email: userEmail
               });
             }
           })
-          .catch((error) =>
+          .catch(error =>
             console.log("Error while sharing recipe:", error.message)
           );
         this.systemMessage = `Successfully shared with ${username}`;
@@ -179,13 +222,28 @@ export default {
         .post("/api/send-email", {
           email: receiver.email,
           subject: `${this.user.displayName} just shared a recipe with you 📝`,
-          message,
+          message
         })
-        .catch((error) => console.log("Error:", error));
+        .catch(error => console.log("Error:", error));
     },
+    facebookPlugin() {
+      (function(d, s, id) {
+        var js,
+          fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s);
+        js.id = id;
+        js.src =
+          "https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v3.0";
+        fjs.parentNode.insertBefore(js, fjs);
+      })(document, "script", "facebook-jssdk");
+    }
+  },
+  mounted() {
+    this.facebookPlugin();
   },
   directives: {
-    ClickOutside,
-  },
+    ClickOutside
+  }
 };
 </script>

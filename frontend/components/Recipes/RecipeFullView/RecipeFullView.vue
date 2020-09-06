@@ -16,7 +16,8 @@
             @update="payload => $emit('update', payload)"
           />
           <span v-if="recipeKey" class="system-message" @click="toggleAlert">
-            <delete-icon tabindex="0" class="icon margin-left--small" />Delete recipe
+            <delete-icon tabindex="0" class="icon margin-left--small" />Delete
+            recipe
           </span>
         </settings-dropdown>
 
@@ -34,6 +35,8 @@
             :recipeOwnerID="recipeOwnerID"
             :recipeKey="recipeKey"
             :recipeTitle="recipe.title"
+            :recipeDescription="recipe.description"
+            :recipePublic="recipe.public"
             @download="pdfExport"
           />
         </div>
@@ -85,29 +88,30 @@
             @update="payload => $emit('update', payload)"
           />
 
-          <div id="ignorePDF">
-            <category-display
-              v-if="recipe.categories || isRecipeOwner"
-              :categories="
-                recipe.categories && Object.values(recipe.categories)
-              "
-              :isRecipeOwner="isRecipeOwner"
-              :recipeKey="recipeKey"
-              class="margin-bottom--xxlarge"
-              @update="payload => $emit('update', payload)"
-            />
-          </div>
+          <category-display
+            v-if="recipe.categories || isRecipeOwner"
+            :categories="recipe.categories && Object.values(recipe.categories)"
+            :isRecipeOwner="isRecipeOwner"
+            :recipeKey="recipeKey"
+            class="margin-bottom--xxlarge"
+            @update="payload => $emit('update', payload)"
+          />
+
           <div
             v-if="!isRecipeOwner"
             class="recipe__category-note margin-bottom--large text-align--right"
           >
             Written by
-            <nuxt-link :to="`/cooks/${recipe.ownerID}`">{{recipeOwnerDisplayName}}</nuxt-link>
+            <nuxt-link :to="`/cooks/${recipe.ownerID}`">{{
+              recipeOwnerDisplayName
+            }}</nuxt-link>
           </div>
         </div>
       </div>
 
-      <div class="recipe__flex-no-wrap flex-row--align-top margin-vertical--xlarge">
+      <div
+        class="recipe__flex-no-wrap flex-row--align-top margin-vertical--xlarge"
+      >
         <ingredients-display
           class="recipe__ingredients-wrap"
           :ingredients="recipe.ingredients"
@@ -134,7 +138,7 @@
 import logo from "~/static/kokebokamilogo.png";
 import htmlToPdfMake from "html-to-pdfmake";
 import pdfMake from "pdfmake/build/pdfmake";
-import pdfFonts from "pdfmake/build/vfs_fonts";
+import pdfFonts from "~/assets/fonts/vfs_fonts";
 
 import SettingsDropdown from "~/components/SettingsDropdown.vue";
 import PublicNote from "./Displays/PublicNote.vue";
@@ -168,20 +172,20 @@ export default {
     IngredientsDisplay,
     InstructionsDisplay,
     ExpandTransform,
-    Alert,
+    Alert
   },
   props: {
     isRecipeOwner: { type: Boolean, default: false },
     recipeOwnerID: { type: String, default: "" },
     recipeOwnerDisplayName: { type: String, default: "Unknown" },
     recipe: { type: Object, default: () => {} },
-    recipeKey: { type: String, default: "" },
+    recipeKey: { type: String, default: "" }
   },
   data() {
     return {
       editMode: false,
       hide: false,
-      showAlert: false,
+      showAlert: false
     };
   },
   methods: {
@@ -190,27 +194,72 @@ export default {
     },
     pdfExport() {
       pdfMake.vfs = pdfFonts.pdfMake.vfs;
-      let recipe = document.getElementById("recipe");
-      let recipeDetails = document.getElementById("recipeDetails");
-      let ignoreElement = document.getElementById("ignorePDF");
-      recipeDetails.removeChild(ignoreElement);
-      let pdfContent = htmlToPdfMake(recipe.outerHTML);
+      let recipe = this.recipe;
+      let categories = Array.isArray(recipe.categories)
+        ? recipe.categories.join(", ")
+        : recipe.categories;
 
-      let documentTitle = this.recipe.title;
+      let typeOfMeal = Array.isArray(recipe.typeOfMeal)
+        ? recipe.typeOfMeal.join(", ")
+        : recipe.typeOfMeal;
+      let freeFrom = Array.isArray(recipe.freeFrom)
+        ? recipe.freeFrom.join(", ")
+        : recipe.freeFrom;
+      let ingredients =
+        Array.isArray(recipe.ingredients) &&
+        recipe.ingredients
+          .map(ingredient => {
+            return `<li style="margin-bottom: 5px;">${ingredient}</li>`;
+          })
+          .join("");
+      let instructions =
+        Array.isArray(recipe.instructions) &&
+        recipe.instructions
+          .map(instruction => {
+            return `<li style=""><p style="">${instruction}</p></li>`;
+          })
+          .join("");
+
+      let recipeHTML = `<div style="margin: 30px;">
+      <span style="font-family:'delius';font-size:20px;color:#ff7300;text-align:right;">Kokebokami</span>
+      <h1 style="color:#063c60;margin-top: 30px; margin-bottom: 20px;">${recipe.title}</h1>
+      <p style="color:#063c60;font-size:20px;">${recipe.description}</p>
+      <span style="color:#063c60;margin-bottom:5px;margin-top:0px;"><strong>Meal type: </strong> ${typeOfMeal}</span>
+      <span style="color:#063c60;margin-bottom:5px;margin-top:0px;"><strong>Free from:</strong> ${freeFrom}</span>
+      <span style="color:#063c60;margin-bottom:5px;margin-top:0px;"><strong>Categories:</strong> ${categories}</span>
+      <h6 style="color:#063c60;margin-top: 35px; margin-bottom: 10px;">Ingredients</h6>
+      <ul style="margin-bottom: 15px;">${ingredients}</ul>
+      <h6 style="color:#063c60;margin-top: 25px; margin-bottom: 10px;">Instructions</h6>
+      <ol>${instructions}</ol>
+      <a style="margin-top:30px;" href="https://kokebokami.com">kokebokami.com</a>
+      </div>`;
+
+      let pdfContent = htmlToPdfMake(recipeHTML);
+
+      let documentTitle = recipe.title;
+      pdfMake.fonts = {
+        delius: {
+          normal: "Delius-Regular.ttf"
+        },
+        bevietnam: {
+          normal: "BeVietnam-Regular.ttf",
+          bold: "BeVietnam-ExtraBold.ttf"
+        }
+      };
       let pdf = pdfMake.createPdf(pdfContent);
-      let docDefinition = { content: [pdf.docDefinition[0]] };
+      let docDefinition = {
+        content: [pdf.docDefinition[0]],
+        defaultStyle: {
+          font: "bevietnam"
+        }
+      };
       pdfMake
         .createPdf(docDefinition)
         .download(`${documentTitle}_kokebokami.pdf`);
-      let childNodesLength = recipeDetails.childNodes.length;
-      recipeDetails.insertBefore(
-        ignoreElement,
-        recipeDetails.childNodes[childNodesLength - 1]
-      );
     },
     deleteRecipeImageFromStorage() {
       let photoRef = this.$fireDb.ref(`recipes/${this.recipeKey}/photoURL`);
-      return photoRef.once("value", (snapshot) => {
+      return photoRef.once("value", snapshot => {
         if (snapshot.exists()) {
           let photoURL = snapshot.val();
           if (photoURL !== "") {
@@ -220,7 +269,7 @@ export default {
               .then(() => {
                 console.log("Successfully deleted image");
               })
-              .catch((error) =>
+              .catch(error =>
                 console.log("Error deleting file:", error.message)
               );
           }
@@ -237,13 +286,13 @@ export default {
             .then(() => {
               this.$router.push("/account/my-cookbook/");
             })
-            .catch((error) => {
+            .catch(error => {
               this.systemMessage = error.message;
               console.log("Error deleting recipe:", error.message);
             });
         });
       }
-    },
-  },
+    }
+  }
 };
 </script>

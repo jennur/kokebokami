@@ -21,6 +21,8 @@
         :recipeKey="recipeKey"
         :recipeOwnerID="recipeOwnerID"
         :recipeTitle="recipeTitle"
+        :recipeDescription="recipeDescription"
+        :recipePublic="recipePublic"
         @close-modal="closeShareModal"
       />
     </transition>
@@ -32,34 +34,42 @@ import ShareForm from "./ShareForm.vue";
 export default {
   name: "action-bar",
   components: {
-    ShareForm,
+    ShareForm
   },
   data() {
     return {
-      sharing: false,
+      sharing: false
     };
   },
   props: {
     editMode: {
       type: Boolean,
-      default: false,
+      default: false
     },
     isRecipeOwner: {
       type: Boolean,
-      default: false,
+      default: false
     },
     recipeKey: {
       type: String,
-      default: "",
+      default: ""
     },
     recipeOwnerID: {
       type: String,
-      default: "",
+      default: ""
     },
     recipeTitle: {
       type: String,
-      default: "",
+      default: ""
     },
+    recipeDescription: {
+      type: String,
+      default: ""
+    },
+    recipePublic: {
+      type: Boolean,
+      default: false
+    }
   },
   methods: {
     openShareModal() {
@@ -70,7 +80,7 @@ export default {
     },
     handlePdfExport() {
       this.$emit("download");
-    },
-  },
+    }
+  }
 };
 </script>

@@ -1,32 +1,12 @@
 require("dotenv").config();
-const axios = require("axios");
+const getRoutes = require("./build-helpers/getRoutes");
 
 export default {
   mode: "universal",
   generate: {
     fallback: true,
     routes() {
-      return axios
-        .all([
-          axios.get(
-            `https://${process.env.PROJECT_ID}.firebaseio.com/recipes.json?auth=${process.env.DATABASE_SECRET}`
-          ),
-          axios.get(
-            `https://${process.env.PROJECT_ID}.firebaseio.com/users.json?auth=${process.env.DATABASE_SECRET}`
-          )
-        ])
-        .then(
-          axios.spread((recipes, users) => {
-            recipes = Object.keys(recipes.data).map(key => {
-              return `/recipes/${key}`;
-            });
-            users = Object.keys(users.data).map(key => {
-              return `/cooks/${key}`;
-            });
-            return recipes.concat(users);
-          })
-        )
-        .catch(error => console.log("Error generating routes:", error.message));
+      return getRoutes();
     }
   },
 
@@ -40,6 +20,32 @@ export default {
         hid: "description",
         name: "description",
         content: process.env.npm_package_description || ""
+      },
+      {
+        hid: "title",
+        name: "title",
+        content: "Kokebokami"
+      },
+      {
+        hid: "title",
+        property: "og:title",
+        content: "Kokebokami"
+      },
+      {
+        hid: "og:url",
+        property: "og:url",
+        content: `https://kokebokami.com/`
+      },
+      {
+        hid: "og:type",
+        property: "og:type",
+        content: "website"
+      },
+      {
+        hid: "og:image",
+        property: "og:image",
+        content:
+          "https://firebasestorage.googleapis.com/v0/b/kokebokami-e788f.appspot.com/o/images%2Fglobals%2Fkokebokami-assets%2FlogoK.png?alt=media&token=d0a53dcc-a160-4384-a3e4-2910943e3d06"
       }
     ],
     link: [{ rel: "icon", type: "image/png", href: "/favicon.png" }]
@@ -148,8 +154,17 @@ export default {
     generate: false,
     hostname: "https://www.kokebokami.com",
     gzip: true,
-    exclude: ["/account", "/account/*", "/recipes", "/verify-email", "/cooks"],
-    routes: ["/", "/login", "/sign-up", "/cookies-policy"]
+    exclude: [
+      "/account",
+      "/account/*",
+      "/verify-email",
+      "/cooks/*",
+      "/goodbye",
+      "/recipes"
+    ],
+    routes() {
+      return getRoutes();
+    }
   },
   fontawesome: {
     component: "fa",
