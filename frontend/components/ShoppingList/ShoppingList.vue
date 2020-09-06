@@ -312,21 +312,13 @@ export default {
           <br>
           <br>Best wishes,
           <br>Your Kokebokami team 👩‍🍳</p>`;
-      let receiverRef = this.$fireDb.ref(`users/${receiver[0]}`);
-      receiverRef
-        .once("value", receiver => {
-          if (receiver.exists()) {
-            receiver = receiver.val();
-            axios
-              .post("/api/send-email", {
-                email: receiver.email,
-                subject: `${this.user.displayName} just shared a shopping list with you 📝`,
-                message
-              })
-              .catch(error => console.log("Error:", error));
-          }
+      axios
+        .post("/api/send-email", {
+          receiverID: receiver[0],
+          subject: `${this.user.displayName} just shared a shopping list with you 📝`,
+          message
         })
-        .catch(error => console.log("Error getting user", error));
+        .catch(error => console.log("Error:", error));
     },
     deleteShoppingList() {
       let componentThis = this;

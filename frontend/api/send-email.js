@@ -2,6 +2,7 @@
 const express = require("express");
 const app = express();
 const nodemailer = require("nodemailer");
+const axios = require("axios");
 
 app.use(express.json());
 
@@ -24,12 +25,20 @@ async function sendEmail(data) {
       pass: process.env.EMAIL_PASSWORD // password
     }
   });
-
+  let receiverEmail = await axios
+    .get(
+      `https://${process.env.PROJECT_ID}.firebaseio.com/users/${data.receiverID}.json?auth=${process.env.DATABASE_SECRET}`
+    )
+    .then(user => {
+      if (user.data) return user.data.email;
+      else "";
+    })
+    .catch(error => console.log("Error getting user:", error));
   // send mail with defined transport object
   transporter.sendMail(
     {
       from: '"Kokebokami" <noreply@kokebokami.com>', // sender address
-      to: data.email, // list of receivers
+      to: receiverEmail, // list of receivers
       subject: data.subject, // Subject line
       text: data.message, // plain text body
       html: `${data.message}`, // html body

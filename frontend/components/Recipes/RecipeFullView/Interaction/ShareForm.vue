@@ -218,23 +218,15 @@ export default {
           <br>
           <br>Best wishes,
           <br>Your Kokebokami team 👩‍🍳</p>`;
-      let userRef = this.$fireDb.ref(`users/${receiver.id}`);
-      userRef
-        .once("value", user => {
-          if (user.exists()) {
-            user = user.val();
-            axios
-              .post("/api/send-email", {
-                email: user.email,
-                subject: `${this.user.displayName} just shared a recipe with you 📝`,
-                message
-              })
-              .catch(error =>
-                console.log("Error sending notification email:", error)
-              );
-          }
+      axios
+        .post("/api/send-email", {
+          receiverID: receiver.id,
+          subject: `${this.user.displayName} just shared a recipe with you 📝`,
+          message
         })
-        .catch(error => console.log("Error getting user:", error));
+        .catch(error =>
+          console.log("Error sending notification email:", error)
+        );
     },
     facebookPlugin() {
       (function(d, s, id) {
