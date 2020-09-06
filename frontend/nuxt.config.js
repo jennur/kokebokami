@@ -27,7 +27,7 @@ export default {
         content: "Kokebokami"
       },
       {
-        hid: "title",
+        hid: "og:title",
         property: "og:title",
         content: "Kokebokami"
       },
