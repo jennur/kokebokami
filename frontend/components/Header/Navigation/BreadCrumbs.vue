@@ -14,11 +14,43 @@
 <script>
 export default {
   name: "breadcrumbs",
+  head() {
+    let structuredData = this.structuredData;
+    if (structuredData.itemListElement.length)
+      return {
+        script: [
+          {
+            type: "application/ld+json",
+            json: structuredData,
+          },
+        ],
+      };
+  },
   props: {
     routes: {
       type: Array,
-      default: () => []
-    }
-  }
+      default: () => [],
+    },
+  },
+  computed: {
+    structuredData() {
+      let listElements = this.routes
+        .filter((route) => route.name !== "Home")
+        .map((route, index) => {
+          return {
+            "@type": "ListItem",
+            position: index + 1,
+            name: route.name,
+            item: route.link ? route.link : "",
+          };
+        });
+
+      return {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        itemListElement: listElements,
+      };
+    },
+  },
 };
 </script>

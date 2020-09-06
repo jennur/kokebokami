@@ -5,7 +5,8 @@ export default {
       recipe: [],
       recipeOwner: {},
       recipeLoaded: false,
-      errorMessage: ""
+      errorMessage: "",
+      structuredData: {}
     };
   },
   computed: {
@@ -27,6 +28,32 @@ export default {
               });
               this.recipe = recipe;
               this.recipeLoaded = true;
+              let instructions = recipe.instructions;
+              instructions = instructions.map(instruction => {
+                return {
+                  "@type": "HowToStep",
+                  text: instruction
+                };
+              });
+              this.structuredData = {
+                "@context": "https://schema.org/",
+                "@type": "Recipe",
+                name: recipe.title,
+                image: [
+                  recipe.photoURL
+                    ? recipe.photoURL
+                    : "https://firebasestorage.googleapis.com/v0/b/kokebokami-e788f.appspot.com/o/images%2Fglobals%2FrecipeImage%2Frecipe-backup-img.png?alt=media&token=8c3e8a1a-4226-453b-a256-0ac1060adb59"
+                ],
+                description: recipe.description ? recipe.description : "",
+                keywords: recipe.categories ? recipe.categories.join(",") : "",
+                recipeYield: recipe.servings ? recipe.servings : 0,
+                recipeCategory: recipe.typeOfMeal
+                  ? recipe.typeOfMeal.join(",")
+                  : "",
+
+                recipeIngredient: recipe.ingredients ? recipe.ingredients : [],
+                recipeInstructions: instructions ? instructions : []
+              };
               return true;
             }
             this.$router.push("/404");
