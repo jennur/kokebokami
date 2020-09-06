@@ -26,7 +26,6 @@
         class="tablet-width margin--auto margin-top--xxlarge"
         :recipeKey="recipeKey"
         :recipeOwnerID="recipe.ownerID"
-        :recipeOwner="recipeOwner"
       />
     </div>
   </div>
@@ -50,45 +49,7 @@ export default {
     ExpandTransition
   },
   head() {
-    let recipe = this.recipe;
-    let recipeTitle = recipe.title ? recipe.title : "Untitled recipe";
-    let recipeDescription = recipe.description
-      ? recipe.description
-      : "No description available";
-    let recipeImage = recipe.photoURL
-      ? recipe.photoURL
-      : "https://firebasestorage.googleapis.com/v0/b/kokebokami-e788f.appspot.com/o/images%2Fglobals%2FrecipeImage%2Frecipe-backup-img.png?alt=media&token=8c3e8a1a-4226-453b-a256-0ac1060adb59";
-    return {
-      title: `${this.recipe.title} | Kokebokami`,
-      meta: [
-        {
-          property: "og:url",
-          content: `https://wwww.kokebokami.com/recipes/${this.recipeKey}/`
-        },
-        {
-          property: "og:type",
-          content: `article`
-        },
-        {
-          property: "og:title",
-          content: recipeTitle
-        },
-        {
-          property: "og:description",
-          content: recipeDescription
-        },
-        {
-          property: "og:image",
-          content: recipeImage
-        }
-      ],
-      script: [
-        {
-          type: "application/ld+json",
-          json: this.structuredData
-        }
-      ]
-    };
+    return this.headData;
   },
   mixins: [user, getRecipe],
   computed: {

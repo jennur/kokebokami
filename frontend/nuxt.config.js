@@ -164,7 +164,8 @@ export default {
       "/verify-email",
       "/cooks/*",
       "/goodbye",
-      "/recipes"
+      "/recipes",
+      "/no-access"
     ],
     routes() {
       return getRoutes();
