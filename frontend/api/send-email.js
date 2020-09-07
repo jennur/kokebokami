@@ -34,7 +34,7 @@ async function sendEmail(data) {
       )
       .then(user => {
         if (user.data) return user.data.email;
-        else "";
+        return false;
       })
       .catch(error => console.log("Error getting user:", error));
   } else if (data.email) {
