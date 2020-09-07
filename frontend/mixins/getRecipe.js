@@ -21,6 +21,17 @@ export default {
         .then(async recipe => {
           if (recipe.data) {
             recipe = recipe.data;
+            let recipeAuthor = await axios
+              .get(
+                `https://${process.env.PROJECT_ID}.firebaseio.com/users/${recipe.ownerID}.json?auth=${process.env.DATABASE_SECRET}`
+              )
+              .then(user => {
+                return user.data.displayName;
+              })
+              .catch(error => {
+                console.log("Error getting user:", error.message);
+                return "Kokebokami user";
+              });
             let instructions = recipe.instructions;
             instructions = instructions.map(instruction => {
               return {
@@ -37,6 +48,8 @@ export default {
             let structuredData = {
               "@context": "https://schema.org/",
               "@type": "Recipe",
+              url: `https://kokebokami.com/recipes/${recipeID}`,
+              author: recipeAuthor,
               name: recipe.title,
               image: [
                 recipe.photoURL ||
@@ -46,7 +59,6 @@ export default {
               keywords: categories,
               recipeYield: recipe.servings || 0,
               recipeCategory: typeOfMeal,
-
               recipeIngredient: recipe.ingredients || [],
               recipeInstructions: instructions || []
             };
