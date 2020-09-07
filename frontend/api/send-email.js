@@ -6,9 +6,9 @@ const axios = require("axios");
 
 app.use(express.json());
 
-app.post("/", (req, res) => {
-  sendEmail(req.body).catch(console.error);
-  return res.status(200).json({ body: req.body });
+app.post("/", async (req, res) => {
+  let response = await sendEmail(req.body);
+  return res.status(response.status).json({ message: response.message });
 });
 
 async function sendEmail(data) {
@@ -25,32 +25,41 @@ async function sendEmail(data) {
       pass: process.env.EMAIL_PASSWORD // password
     }
   });
-  let receiverEmail = await axios
-    .get(
-      `https://${process.env.PROJECT_ID}.firebaseio.com/users/${data.receiverID}.json?auth=${process.env.DATABASE_SECRET}`
-    )
-    .then(user => {
-      if (user.data) return user.data.email;
-      else "";
-    })
-    .catch(error => console.log("Error getting user:", error));
+
+  let receiverEmail = "";
+  if (data.receiverID) {
+    receiverEmail = await axios
+      .get(
+        `https://${process.env.PROJECT_ID}.firebaseio.com/users/${data.receiverID}.json?auth=${process.env.DATABASE_SECRET}`
+      )
+      .then(user => {
+        if (user.data) return user.data.email;
+        return false;
+      })
+      .catch(error => console.log("Error getting user:", error));
+  } else if (data.email) {
+    receiverEmail = data.email;
+  }
+
   // send mail with defined transport object
-  transporter.sendMail(
-    {
+
+  return transporter
+    .sendMail({
       from: '"Kokebokami" <noreply@kokebokami.com>', // sender address
       to: receiverEmail, // list of receivers
       subject: data.subject, // Subject line
       text: data.message, // plain text body
       html: `${data.message}`, // html body
       sendmail: true
-    },
-    function(error, info) {
-      if (error) {
-        return console.log("Error:", error);
-      }
+    })
+    .then(info => {
       console.log("Message sent: %s", info.response);
-    }
-  );
+      return { status: 200, message: "mail accepted for delivery" };
+    })
+    .catch(error => {
+      console.log("Error in with transporter:", error.message);
+      return { status: 500, message: error.message };
+    });
 }
 
 module.exports = {
