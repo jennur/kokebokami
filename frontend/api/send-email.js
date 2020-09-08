@@ -6,9 +6,21 @@ const axios = require("axios");
 
 app.use(express.json());
 
+const validHosts = [
+  "http://localhost:3000",
+  "https://kokebokami-development.herokuapp.com",
+  "https://www.kokebokami-development.herokuapp.com",
+  "https://kokebokami-staging.herokuapp.com",
+  "https://www.kokebokami-staging.herokuapp.com",
+  "https://kokebokami.com",
+  "https://www.kokebokami.com"
+];
 app.post("/", async (req, res) => {
-  let response = await sendEmail(req.body);
-  return res.status(response.status).json({ message: response.message });
+  let origin = req.headers.origin;
+  if (validHosts.indexOf(origin) > -1) {
+    let response = await sendEmail(req.body);
+    return res.status(response.status).json({ message: response.message });
+  } else return res.status(403).json({ message: "Access denied" });
 });
 
 async function sendEmail(data) {

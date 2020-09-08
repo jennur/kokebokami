@@ -1,5 +1,6 @@
 require("dotenv").config();
 const getRoutes = require("./build-helpers/getRoutes");
+const redirectSSL = require("redirect-ssl");
 
 export default {
   mode: "universal",
@@ -126,7 +127,12 @@ export default {
       }
     ] */
   ],
-  serverMiddleware: ["~/api/send-email.js"],
+  serverMiddleware: [
+    redirectSSL.create({
+      enabled: process.env.NODE_ENV === "production"
+    }),
+    "~/api/send-email.js"
+  ],
   firebase: {
     config: {
       apiKey: process.env.API_KEY,
