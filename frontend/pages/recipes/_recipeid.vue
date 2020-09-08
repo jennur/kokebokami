@@ -48,7 +48,7 @@ export default {
     ExpandTransition
   },
   head() {
-    return this.headData;
+    return this.headData; // from getRecipe
   },
   mixins: [user, getRecipe],
   computed: {

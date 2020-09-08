@@ -510,7 +510,7 @@ export default {
       link: [
         {
           rel: "canonical",
-          href: "https://www.kokebokami.com/privacy-policy/"
+          href: "https://kokebokami.com/privacy-policy/"
         }
       ]
     };

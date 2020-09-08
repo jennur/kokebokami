@@ -1,12 +1,14 @@
 <template>
   <section>
     <breadcrumbs :routes="breadcrumbs" />
-    <div
-      class="system-message margin-vertical--large"
-    >This is how other users of Kokebokami see your profile</div>
+    <div class="system-message margin-vertical--large">
+      This is how other users of Kokebokami see your profile
+    </div>
     <profile-view :user="user && !user.hiddenProfile ? user : null" />
     <h3>Check out my recipes</h3>
-    <recipes-list :recipes="currentUsersPublicRecipes ? currentUsersPublicRecipes : []" />
+    <recipes-list
+      :recipes="currentUsersPublicRecipes ? currentUsersPublicRecipes : []"
+    />
   </section>
 </template>
 
@@ -25,9 +27,9 @@ export default {
       link: [
         {
           rel: "canonical",
-          href: "https://www.kokebokami.com/public-profile-view/",
-        },
-      ],
+          href: "https://kokebokami.com/public-profile-view/"
+        }
+      ]
     };
   },
   components: { ProfileView, RecipesList },
@@ -37,20 +39,20 @@ export default {
       default: () => [
         { name: "Home", link: "/" },
         { name: "My account", link: "/account/" },
-        { name: "My public profile" },
-      ],
-    },
+        { name: "My public profile" }
+      ]
+    }
   },
   mixins: [user, publicRecipes],
   computed: {
     currentUsersPublicRecipes() {
       let publicRecipes = this.publicRecipes;
-      let currentUsersPublicRecipes = publicRecipes.filter((recipe) => {
+      let currentUsersPublicRecipes = publicRecipes.filter(recipe => {
         return recipe[1].ownerID === this.user.id;
       });
 
       return currentUsersPublicRecipes;
-    },
-  },
+    }
+  }
 };
 </script>

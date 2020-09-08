@@ -172,7 +172,7 @@ export default {
       link: [
         {
           rel: "canonical",
-          href: "https://www.kokebokami.com/terms-and-conditions/"
+          href: "https://kokebokami.com/terms-and-conditions/"
         }
       ]
     };

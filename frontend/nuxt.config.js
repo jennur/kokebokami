@@ -131,6 +131,7 @@ export default {
     redirectSSL.create({
       enabled: process.env.NODE_ENV === "production"
     }),
+    "~/modules/redirectToTrailingSlash.js",
     "~/api/send-email.js"
   ],
   firebase: {
@@ -162,7 +163,7 @@ export default {
   sitemap: {
     path: "/sitemap.xml",
     generate: false,
-    hostname: "https://www.kokebokami.com",
+    hostname: "https://kokebokami.com",
     gzip: true,
     exclude: [
       "/account",

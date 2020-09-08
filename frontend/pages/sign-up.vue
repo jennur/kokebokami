@@ -21,7 +21,7 @@ export default {
       link: [
         {
           rel: "canonical",
-          href: "https://www.kokebokami.com/sign-up/"
+          href: "https://kokebokami.com/sign-up/"
         }
       ]
     };

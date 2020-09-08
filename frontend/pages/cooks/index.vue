@@ -1,14 +1,18 @@
 <template>
   <div>
     <breadcrumbs :routes="breadcrumbs" />
-    <div class="cooks container container--center mobile-width margin-top--xlarge margin--auto">
+    <div
+      class="cooks container container--center mobile-width margin-top--xlarge margin--auto"
+    >
       <div v-if="user && user.id">
         <h2>Discover cooks of Kokebokami</h2>
         <cooks-search />
       </div>
       <div v-else>
         <h2>Log in to discover cooks of Kokebokami</h2>
-        <nuxt-link to="/login" class="button button--small button--green">Log in</nuxt-link>
+        <nuxt-link to="/login" class="button button--small button--green"
+          >Log in</nuxt-link
+        >
       </div>
     </div>
     <div class="margin-top--xlarge">
@@ -46,7 +50,7 @@ export default {
   components: {
     Tabs,
     CooksSearch,
-    CooksList,
+    CooksList
   },
   head() {
     return {
@@ -54,23 +58,23 @@ export default {
       link: [
         {
           rel: "canonical",
-          href: "https://www.kokebokami.com/cooks/",
-        },
-      ],
+          href: "https://kokebokami.com/cooks/"
+        }
+      ]
     };
   },
   data() {
     return {
       activeTabIndex: 0,
       showFollowedCooks: true,
-      showFollowers: false,
+      showFollowers: false
     };
   },
   props: {
     breadcrumbs: {
       type: Array,
-      default: () => [{ name: "Home", link: "/" }, { name: "Cooks" }],
-    },
+      default: () => [{ name: "Home", link: "/" }, { name: "Cooks" }]
+    }
   },
   mixins: [user, allUsers, connectedUsers],
   methods: {
@@ -88,7 +92,7 @@ export default {
         this.showFollowers = !this.showFollowers;
         this.showFollowedCooks = !this.showFollowedCooks;
       }
-    },
-  },
+    }
+  }
 };
 </script>

@@ -4,11 +4,15 @@
       <initial-info-section />
     </div>
 
-    <div class="desktop-width padding-horizontal--large margin-top--xxlarge margin--auto">
+    <div
+      class="desktop-width padding-horizontal--large margin-top--xxlarge margin--auto"
+    >
       <button
         class="search__button button button--small button--green-border margin--medium"
         @click="event => toggleSearch(event)"
-      >Search</button>
+      >
+        Search
+      </button>
       <div class="flex-row flex-row--nowrap">
         <recipe-search
           :class="{ 'search--open': searchOpen }"
@@ -57,13 +61,23 @@ export default {
     Preview,
     SignUpSection,
     RecipeSearch,
-    RecipesList,
+    RecipesList
+  },
+  head() {
+    return {
+      link: [
+        {
+          rel: "canonical",
+          href: "https://kokebokami.com/"
+        }
+      ]
+    };
   },
   data() {
     return {
       filteredRecipes: [],
       filtered: false,
-      searchOpen: false,
+      searchOpen: false
     };
   },
   mixins: [user, publicRecipes],
@@ -71,7 +85,7 @@ export default {
     visibleRecipes() {
       if (!this.filtered) return this.publicRecipes;
       if (this.filtered) return this.filteredRecipes;
-    },
+    }
   },
   methods: {
     closeSearch(event) {
@@ -85,10 +99,10 @@ export default {
     setVisibleRecipes(filteredRecipesObj) {
       this.filteredRecipes = filteredRecipesObj.recipes;
       this.filtered = filteredRecipesObj.filtered;
-    },
+    }
   },
   directives: {
-    ClickOutside,
-  },
+    ClickOutside
+  }
 };
 </script>

@@ -1,25 +1,37 @@
 <template>
   <section :key="key">
-    <breadcrumbs :routes="breadcrumbs" />
-    <div v-if="user && user.id" class="flex-column flex-align--end">
-      <button
-        @click="unfollowUser"
-        class="button button--small button--red-border margin-top--large"
-        v-if="isFollowingUser"
-      >Unfollow {{ cookVisited ? cookVisited.displayName : "" }}</button>
-      <button
-        @click="followUser"
-        class="button button--small button--green-border margin-top--large"
-        v-else
-      >Follow {{ cookVisited ? cookVisited.displayName : "" }}</button>
-      <span class="system-message margin-top--medium">{{ systemMessage }}</span>
+    <div v-if="user && user.id">
+      <breadcrumbs :routes="breadcrumbs" />
+      <div class="flex-column flex-align--end">
+        <button
+          @click="unfollowUser"
+          class="button button--small button--red-border margin-top--large"
+          v-if="isFollowingUser"
+        >
+          Unfollow {{ cookVisited ? cookVisited.displayName : "" }}
+        </button>
+        <button
+          @click="followUser"
+          class="button button--small button--green-border margin-top--large"
+          v-else
+        >
+          Follow {{ cookVisited ? cookVisited.displayName : "" }}
+        </button>
+        <span class="system-message margin-top--medium">{{
+          systemMessage
+        }}</span>
+      </div>
+
+      <profile-view class="margin-top--medium" :user="cookVisited" />
+      <h3>Check out my recipes</h3>
+      <recipes-list
+        :recipes="cookVisitedsPublicRecipes"
+        :emptyListMessage="`${userName} did not add any public recipes yet 🤷🏾‍♂️`"
+      />
     </div>
-    <profile-view class="margin-top--medium" :user="cookVisited" />
-    <h3>Check out my recipes</h3>
-    <recipes-list
-      :recipes="cookVisitedsPublicRecipes"
-      :emptyListMessage="`${userName} did not add any public recipes yet 🤷🏾‍♂️`"
-    />
+    <div v-else class="flex-center-container">
+      <nuxt-link to="/login/">Log in</nuxt-link> to see user profile
+    </div>
   </section>
 </template>
 <script>
@@ -38,9 +50,9 @@ export default {
       link: [
         {
           rel: "canonical",
-          href: "https://www.kokebokami.com" + this.cookUserID,
-        },
-      ],
+          href: "https://kokebokami.com" + this.cookUserID
+        }
+      ]
     };
   },
   data() {
@@ -59,7 +71,7 @@ export default {
         return [
           { name: "Home", link: "/" },
           { name: "Cooks", link: "/cooks/" },
-          { name: `${this.cookVisited.displayName}` },
+          { name: `${this.cookVisited.displayName}` }
         ];
       }
     },
@@ -67,7 +79,7 @@ export default {
       let publicRecipes = this.publicRecipes;
       let cookVisitedsPublicRecipes = [];
       if (this.cookVisited && publicRecipes) {
-        cookVisitedsPublicRecipes = publicRecipes.filter((recipe) => {
+        cookVisitedsPublicRecipes = publicRecipes.filter(recipe => {
           return recipe[1].ownerID === this.cookUserID;
         });
       }
@@ -82,23 +94,23 @@ export default {
           );
         }
       }
-    },
+    }
   },
   methods: {
     getCookVisited() {
       let cookRef = this.$fireDb.ref(`users/${this.cookUserID}`);
       cookRef
-        .once("value", (cook) => {
+        .once("value", cook => {
           if (cook.exists()) cook = cook.val();
           if (cook.hiddenProfile) this.cookVisited = null;
           else
             this.cookVisited = {
               displayName: cook.displayName,
               biography: cook.biography,
-              photoURL: cook.photoURL,
+              photoURL: cook.photoURL
             };
         })
-        .catch((error) => console.log("Error getting cook:", error));
+        .catch(error => console.log("Error getting cook:", error));
     },
     followUser() {
       let componentThis = this;
@@ -106,10 +118,10 @@ export default {
         let currentUserRef = this.$fireDb.ref(
           `users/${this.user.id}/following`
         );
-        currentUserRef.once("value", async (snapshot) => {
+        currentUserRef.once("value", async snapshot => {
           let followingAlready = false;
           if (snapshot.exists()) {
-            snapshot.forEach((value) => {
+            snapshot.forEach(value => {
               if (value.val() === componentThis.cookUserID) {
                 followingAlready = true;
                 return;
@@ -129,7 +141,7 @@ export default {
                 componentThis.followed = true;
                 componentThis.$store.dispatch("SET_USER");
               })
-              .catch((error) => {
+              .catch(error => {
                 console.log(error);
                 componentThis.systemMessage = error.message;
               });
@@ -143,9 +155,9 @@ export default {
       let componentThis = this;
       try {
         let userRef = this.$fireDb.ref(`users/${this.user.id}/following`);
-        userRef.once("value", (snapshot) => {
+        userRef.once("value", snapshot => {
           if (snapshot.exists()) {
-            snapshot.forEach((value) => {
+            snapshot.forEach(value => {
               if (value.val() === componentThis.cookUserID) {
                 try {
                   userRef
@@ -166,10 +178,10 @@ export default {
       } catch (error) {
         console.log("Error while trying to unfollow user:", error.message);
       }
-    },
+    }
   },
   mounted() {
     this.getCookVisited();
-  },
+  }
 };
 </script>

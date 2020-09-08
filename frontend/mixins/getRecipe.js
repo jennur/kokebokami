@@ -65,24 +65,47 @@ export default {
             return {
               headData: {
                 title: `${recipe.title} | Kokebokami`,
+                link: [
+                  {
+                    rel: "canonical",
+                    href: `https://kokebokami.com/recipes/${recipeID}/`
+                  }
+                ],
                 meta: [
                   {
-                    property: "og:url",
-                    content: `https://wwww.kokebokami.com/recipes/${recipeID}/`
+                    hid: "description",
+                    name: "description",
+                    content:
+                      recipe.description ||
+                      "No description available for this recipe"
                   },
                   {
+                    hid: "keywords",
+                    name: "keywords",
+                    content: categories || "recipe, kokebokami"
+                  },
+                  {
+                    hid: "og:url",
+                    property: "og:url",
+                    content: `https://kokebokami.com/recipes/${recipeID}/`
+                  },
+                  {
+                    hid: "og:type",
                     property: "og:type",
                     content: `article`
                   },
                   {
+                    hid: "og:title",
                     property: "og:title",
                     content: recipe.title || "Untitled recipe"
                   },
                   {
+                    hid: "og:description",
                     property: "og:description",
                     content: recipe.description || "No description available"
                   },
                   {
+                    hid: "og:image",
                     property: "og:image",
                     content:
                       recipe.photoURL ||

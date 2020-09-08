@@ -29,7 +29,7 @@ export default {
       link: [
         {
           rel: "canonical",
-          href: "https://www.kokebokami.com/login/"
+          href: "https://kokebokami.com/login/"
         }
       ]
     };

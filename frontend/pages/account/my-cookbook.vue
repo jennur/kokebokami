@@ -102,7 +102,7 @@ export default {
       link: [
         {
           rel: "canonical",
-          href: "https://www.kokebokami.com/account/my-cookbook/"
+          href: "https://kokebokami.com/account/my-cookbook/"
         }
       ]
     };
