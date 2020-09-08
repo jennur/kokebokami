@@ -160,7 +160,7 @@ export default {
         .catch(error => {
           this.systemMessage =
             "Something went wrong while attempting to send e-mail. Please try again later, or contact us if the issue continues.";
-          console.log(error);
+          console.log("Error in api call:", error);
         });
     },
     shareRecipe() {
