@@ -1,16 +1,18 @@
 import axios from "axios";
+import getUserByID from "~/mixins/getUserByID.js";
 export default {
   data() {
     return {
       userAuth: !!this.$fireAuth.currentUser,
       recipe: {},
-      recipeOwner: {},
+      cook: {},
       recipeLoaded: false,
       errorMessage: "",
       structuredData: {},
       headData: {}
     };
   },
+  mixins: [getUserByID],
   async asyncData({ params }) {
     if (process.server) {
       let recipeID = params.recipeid;
@@ -138,32 +140,29 @@ export default {
         .once("value", recipe => {
           if (recipe.exists()) {
             recipe = recipe.val();
-            let userRef = this.$fireDb.ref(`users/${recipe.ownerID}`);
-            userRef
-              .once("value", user => {
-                if (user.exists()) {
-                  user = user.val();
-                  this.recipeOwner = {
-                    displayName: user.displayName,
-                    photoURL: user.photoURL,
-                    id: recipe.ownerID
-                  };
-                }
-              })
-              .catch(error =>
-                console.log("Error getting recipe owner:", error)
-              );
+
             if (
               (!this.userAuth && !recipe.public) ||
               (this.userAuth &&
                 !recipe.public &&
-                !this.checkIfSharedWithMe(recipe))
+                !this.recipeIsSharedWithMe(recipe))
             ) {
               this.$router.push("/no-access");
+              return false;
             } else {
               this.recipe = recipe;
               this.recipeLoaded = true;
             }
+            this.$fireDb
+              .ref(`users/${recipe.ownerID}/displayName`)
+              .once("value", displayName => {
+                if (displayName.exists()) {
+                  this.cook = {
+                    id: recipe.ownerID,
+                    displayName: displayName.val()
+                  };
+                }
+              });
           } else {
             this.$router.push("/no-access");
           }
@@ -172,7 +171,7 @@ export default {
           console.log("Error: Failed getting recipe:", error.message);
         });
     },
-    checkIfSharedWithMe(recipe) {
+    recipeIsSharedWithMe(recipe) {
       let user = this.user;
       if (user) {
         if (recipe.ownerID === user.id) return true;

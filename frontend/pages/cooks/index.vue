@@ -8,16 +8,18 @@
         <h2>Discover cooks of Kokebokami</h2>
         <cooks-search />
       </div>
-      <div v-else>
+      <div v-else class="container container--center">
         <h2>Log in to discover cooks of Kokebokami</h2>
-        <nuxt-link to="/login" class="button button--small button--green"
-          >Log in</nuxt-link
-        >
+        <div>
+          <nuxt-link to="/login" class="button button--small button--green"
+            >Log in</nuxt-link
+          >
+        </div>
+        <cooksSilhouettes class="illustration--cooks" />
       </div>
     </div>
-    <div class="margin-top--xlarge">
+    <div v-if="user && user.id" class="margin-top--xlarge">
       <Tabs
-        v-if="user && user.id"
         class="margin-top--xxlarge"
         :tabTitles="['Currently following', 'Followers']"
         @switchTab="index => handleTabSwitch(index)"
@@ -44,13 +46,14 @@ import connectedUsers from "~/mixins/connectedUsers.js";
 import Tabs from "~/components/Tabs.vue";
 import CooksSearch from "~/components/Cooks/CooksSearch/CooksSearch.vue";
 import CooksList from "~/components/Cooks/CooksList.vue";
-
+import cooksSilhouettes from "~/assets/graphics/illustrations/cooks.svg";
 export default {
   name: "cooks",
   components: {
     Tabs,
     CooksSearch,
-    CooksList
+    CooksList,
+    cooksSilhouettes
   },
   head() {
     return {

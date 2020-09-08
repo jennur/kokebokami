@@ -16,7 +16,7 @@
           :recipeKey="recipeKey"
           :isRecipeOwner="user && user.id === recipe.ownerID"
           :recipeOwnerID="recipe.ownerID"
-          :recipeOwnerDisplayName="recipeOwner.displayName"
+          :recipeOwnerDisplayName="cook.displayName"
           @update="handleUpdate"
         />
       </expand-transition>

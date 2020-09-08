@@ -4,7 +4,7 @@
       <h4 class="account__detail-title">
         {{ title }}
         <span v-if="visibleToPublic" class="system-message"
-          >(visible to other users)</span
+          >(visible to everyone)</span
         >
       </h4>
 

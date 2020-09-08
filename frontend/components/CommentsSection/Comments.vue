@@ -7,7 +7,9 @@
     <div
       v-if="!loading && !comments.length"
       class="comments--empty margin-vertical--xxlarge"
-    >Be the first one to leave a comment!</div>
+    >
+      Be the first one to leave a comment!
+    </div>
 
     <div v-if="!loading && comments.length" class="comments">
       <comment
@@ -26,7 +28,9 @@
       v-if="cutOffComments.length"
       class="comments__load-more-btn button button--transparent margin-top--large"
       @click="loadMoreComments"
-    >Load more</button>
+    >
+      Load more
+    </button>
   </div>
 </template>
 

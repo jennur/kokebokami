@@ -23,6 +23,7 @@
 
         <div class="flex-row flex-row--align-center">
           <language-display
+            class="margin-right--xlarge"
             v-if="isRecipeOwner"
             :language="recipe.language"
             :isRecipeOwner="isRecipeOwner"
@@ -102,7 +103,7 @@
             class="recipe__category-note margin-bottom--large text-align--right"
           >
             Written by
-            <nuxt-link :to="`/cooks/${recipe.ownerID}`">{{
+            <nuxt-link :to="`/cooks/${recipe.ownerID}/`">{{
               recipeOwnerDisplayName
             }}</nuxt-link>
           </div>

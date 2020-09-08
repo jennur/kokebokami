@@ -119,8 +119,11 @@
           <h3 class="full-width">Profile visibility</h3>
           <dt class="full-width account__detail account__detail--flex-column">
             <h4 class="account__detail-title">
-              If you want to prevent people from seeing your profile, turn off
-              this setting.
+              <p>
+                If you want to prevent people from seeing your profile, turn off
+                this setting. <br />* Note that people will still see your
+                public recipes.
+              </p>
             </h4>
             <div class="flex-row flex-row--align-center">
               <p class="email-notifications margin-right--small">
@@ -420,6 +423,8 @@ export default {
     },
     updateUsername(value) {
       let componentThis = this;
+      if (!value) value = "User";
+
       this.$fireDb
         .ref("/users/" + this.user.id)
         .update({

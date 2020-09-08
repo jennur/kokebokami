@@ -25,6 +25,7 @@
     margin: $spacingXXLarge auto;
     padding-bottom: $spacingLarge;
   }
+
   &--clouds {
     max-height: 80px;
     margin: $spacingXXLarge auto;
@@ -36,9 +37,19 @@
     margin: $spacingMedium auto;
   }
 
+  &--cook-bubble {
+    max-width: 150px;
+    margin: $spacingMedium;
+  }
+
+  &--cooks {
+    max-width: 250px;
+    margin-top: $spacingXXLarge;
+  }
   &--loading-book {
     max-width: 220px;
   }
+
   &--preview-section {
     max-width: 350px;
     padding: 0px $spacingXLarge;
