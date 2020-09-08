@@ -68,7 +68,7 @@ export default {
       link: [
         {
           rel: "canonical",
-          href: `https://kokebokami.com/${this.cookUserID}`
+          href: `https://kokebokami.com/cooks/${this.cookUserID}/`
         }
       ]
     };

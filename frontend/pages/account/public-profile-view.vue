@@ -27,7 +27,7 @@ export default {
       link: [
         {
           rel: "canonical",
-          href: "https://kokebokami.com/public-profile-view/"
+          href: "https://kokebokami.com/account/public-profile-view/"
         }
       ]
     };

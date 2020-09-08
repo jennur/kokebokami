@@ -42,7 +42,7 @@ export default {
       link: [
         {
           rel: "canonical",
-          href: "https://kokebokami.com/shopping-list/"
+          href: "https://kokebokami.com/account/shopping-list/"
         }
       ]
     };
