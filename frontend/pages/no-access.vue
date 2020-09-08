@@ -19,6 +19,16 @@
 import crackedEggs from "~/assets/graphics/illustrations/cracked-eggs.svg";
 export default {
   name: "no-access",
+  head() {
+    return {
+      link: [
+        {
+          rel: "canonical",
+          href: "https://kokebokami.com/no-access/"
+        }
+      ]
+    };
+  },
   components: {
     crackedEggs
   },

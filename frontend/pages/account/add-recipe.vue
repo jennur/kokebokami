@@ -24,7 +24,7 @@ export default {
       link: [
         {
           rel: "canonical",
-          href: "https://www.kokebokami.com/add-recipe/"
+          href: "https://kokebokami.com/account/add-recipe/"
         }
       ]
     };

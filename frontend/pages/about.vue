@@ -38,21 +38,21 @@ export default {
       link: [
         {
           rel: "canonical",
-          href: "https://www.kokebokami.com/about/",
-        },
-      ],
+          href: "https://kokebokami.com/about/"
+        }
+      ]
     };
   },
   components: {
     foodclouds,
-    clouds,
+    clouds
   },
   props: {
     breadcrumbs: {
       type: Array,
-      default: () => [{ name: "Home", link: "/" }, { name: "About" }],
-    },
-  },
+      default: () => [{ name: "Home", link: "/" }, { name: "About" }]
+    }
+  }
 };
 </script>
 

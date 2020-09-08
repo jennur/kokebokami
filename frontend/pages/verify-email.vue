@@ -24,7 +24,7 @@ export default {
       link: [
         {
           rel: "canonical",
-          href: "https://www.kokebokami.com/verify-email/"
+          href: "https://kokebokami.com/verify-email/"
         }
       ]
     };

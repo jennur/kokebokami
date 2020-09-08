@@ -21,7 +21,7 @@ export default {
       link: [
         {
           rel: "canonical",
-          href: "https://www.kokebokami.com/goodbye/"
+          href: "https://kokebokami.com/goodbye/"
         }
       ]
     };

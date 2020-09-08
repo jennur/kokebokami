@@ -9,11 +9,9 @@ app.use(express.json());
 const validHosts = [
   "http://localhost:3000",
   "https://kokebokami-development.herokuapp.com",
-  "https://www.kokebokami-development.herokuapp.com",
   "https://kokebokami-staging.herokuapp.com",
-  "https://www.kokebokami-staging.herokuapp.com",
-  "https://kokebokami.com",
-  "https://www.kokebokami.com"
+  "https://www.kokebokami.com",
+  "https://kokebokami.com"
 ];
 app.post("/", async (req, res) => {
   let origin = req.headers.origin;

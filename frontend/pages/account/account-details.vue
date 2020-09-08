@@ -2,7 +2,9 @@
   <div>
     <breadcrumbs :routes="breadcrumbs" />
     <div class="account container tablet-width padding-horizontal--large">
-      <h1 class="margin-top--xxlarge margin-bottom--large">My account details</h1>
+      <h1 class="margin-top--xxlarge margin-bottom--large">
+        My account details
+      </h1>
       <nuxt-link to="/account/public-profile-view/">
         See your public profile
         <right-arrow class="icon icon--blue" />
@@ -57,19 +59,35 @@
 
         <h3>Recipes connected to your account</h3>
         <dl class="flex-row">
-          <account-link-list title="My recipes:" :links="userRecipes" basePath="/recipes/" />
+          <account-link-list
+            title="My recipes:"
+            :links="userRecipes"
+            basePath="/recipes/"
+          />
           <account-link-list
             title="Recipes shared with me:"
             :links="sharedRecipes"
             basePath="/recipes/"
           />
-          <account-link-list title="My recipe links:" :links="recipeLinks" :externalURL="true" />
+          <account-link-list
+            title="My recipe links:"
+            :links="recipeLinks"
+            :externalURL="true"
+          />
         </dl>
 
         <h3>Cooks connected to your account</h3>
         <dl class="flex-row">
-          <account-link-list title="Following:" :links="cooksFollowed" basePath="/cooks/" />
-          <account-link-list title="Followers:" :links="cookFollowers" basePath="/cooks/" />
+          <account-link-list
+            title="Following:"
+            :links="cooksFollowed"
+            basePath="/cooks/"
+          />
+          <account-link-list
+            title="Followers:"
+            :links="cookFollowers"
+            basePath="/cooks/"
+          />
         </dl>
         <dl class="flex-row">
           <h3 class="full-width">E-mail notifications</h3>
@@ -87,7 +105,8 @@
                     'color--pink': user.emailNotificationsOff,
                     'color--blue': !user.emailNotificationsOff
                   }"
-                >{{ user.emailNotificationsOff ? "OFF" : "ON" }}</strong>
+                  >{{ user.emailNotificationsOff ? "OFF" : "ON" }}</strong
+                >
                 <toggle-switch
                   :checked="!user.emailNotificationsOff"
                   @toggle="updateEmailNotificationStatus"
@@ -99,9 +118,13 @@
         <dl class="flex-row">
           <h3 class="full-width">Profile visibility</h3>
           <dt class="full-width account__detail account__detail--flex-column">
-            <h4
-              class="account__detail-title"
-            >If you want to prevent people from seeing your profile, turn off this setting.</h4>
+            <h4 class="account__detail-title">
+              <p>
+                If you want to prevent people from seeing your profile, turn off
+                this setting. <br />* Note that people will still see your
+                public recipes.
+              </p>
+            </h4>
             <div class="flex-row flex-row--align-center">
               <p class="email-notifications margin-right--small">
                 Your profile is
@@ -111,8 +134,12 @@
                     'color--pink': user.hiddenProfile,
                     'color--blue': !user.hiddenProfile
                   }"
-                >{{ user.hiddenProfile ? "Hidden" : "Open" }}</strong>
-                <toggle-switch :checked="!user.hiddenProfile" @toggle="updateHiddenProfileStatus" />
+                  >{{ user.hiddenProfile ? "Hidden" : "Open" }}</strong
+                >
+                <toggle-switch
+                  :checked="!user.hiddenProfile"
+                  @toggle="updateHiddenProfileStatus"
+                />
               </p>
             </div>
           </dt>
@@ -157,7 +184,18 @@ export default {
     AccountDetail,
     AccountLinkList,
     Alert,
-    ToggleSwitch,
+    ToggleSwitch
+  },
+  head() {
+    return {
+      title: `Account details | Kokebokami`,
+      link: [
+        {
+          rel: "canonical",
+          href: "https://kokebokami.com/account/account-details/"
+        }
+      ]
+    };
   },
   props: {
     breadcrumbs: {
@@ -165,9 +203,9 @@ export default {
       default: () => [
         { name: "Home", link: "/" },
         { name: "My account", link: "/account/" },
-        { name: "Account details" },
-      ],
-    },
+        { name: "Account details" }
+      ]
+    }
   },
   data() {
     return {
@@ -184,7 +222,7 @@ export default {
       isLoading: false,
       showAlert: false,
       emailNotificationsOff: false,
-      hiddenProfile: false,
+      hiddenProfile: false
     };
   },
   mixins: [
@@ -193,12 +231,12 @@ export default {
     connectedUsers,
     userRecipes,
     sharedRecipes,
-    userRecipeLinks,
+    userRecipeLinks
   ],
   computed: {
     recipeLinks() {
       let links = this.userRecipeLinks;
-      links = links.map((link) => {
+      links = links.map(link => {
         link[1].title = link[1].title || this.makeBackupTitle(link[1]);
         return link;
       });
@@ -206,18 +244,18 @@ export default {
     },
     cooksFollowed() {
       let followed = this.followed;
-      return followed.map((cook) => {
+      return followed.map(cook => {
         cook[1].title = cook[1].displayName;
         return cook;
       });
     },
     cookFollowers() {
       let followers = this.followers;
-      return followers.map((cook) => {
+      return followers.map(cook => {
         cook[1].title = cook[1].hiddenProfile ? "User" : cook[1].displayName;
         return cook;
       });
-    },
+    }
   },
   methods: {
     toggleAlert() {
@@ -229,7 +267,10 @@ export default {
     makeBackupTitle(link) {
       let regex = /-/gi;
       let url = link.url;
-      let title = url.split("/").pop().replace(regex, " ");
+      let title = url
+        .split("/")
+        .pop()
+        .replace(regex, " ");
       return title;
     },
     updateHiddenProfileStatus(checked) {
@@ -243,7 +284,7 @@ export default {
             this.updateUserDetailsInStore();
             this.hiddenProfile = !checked;
           })
-          .catch((error) =>
+          .catch(error =>
             console.log("Error updating hidden profile status:", error.message)
           );
       }
@@ -259,7 +300,7 @@ export default {
             this.updateUserDetailsInStore();
             this.emailNotificationsOff = !checked;
           })
-          .catch((error) =>
+          .catch(error =>
             console.log(
               "Error updating email notification status:",
               error.message
@@ -274,7 +315,7 @@ export default {
         displayName: this.username,
         email: this.email,
         biography: this.biography,
-        emailNotificationsOff: this.emailNotificationsOff,
+        emailNotificationsOff: this.emailNotificationsOff
       };
       this.$store.dispatch("SET_USER", userObj);
     },
@@ -293,7 +334,7 @@ export default {
         },
         error(error) {
           console.log("Error compressing image:", error.message);
-        },
+        }
       });
     },
     async updateProfileImg(upload) {
@@ -304,7 +345,7 @@ export default {
         //save image
         let file = upload;
         var metadata = {
-          contentType: "image/png",
+          contentType: "image/png"
         };
         var storageRef = this.$fireStorage.ref();
         var imageRef = storageRef.child(
@@ -316,7 +357,7 @@ export default {
         this.$fireDb
           .ref("/users/" + this.user.id)
           .update({
-            photoURL: componentThis.photoURL,
+            photoURL: componentThis.photoURL
           })
           .then(() => {
             this.updateProfileImgSystemMessage = "";
@@ -325,7 +366,7 @@ export default {
           .then(() => {
             componentThis.isLoading = false;
           })
-          .catch((error) => {
+          .catch(error => {
             this.removeProfileImgSystemMessage = error.message;
             console.log(error.message);
           });
@@ -347,15 +388,15 @@ export default {
 
         profileImgRef
           .listAll()
-          .then(function (res) {
-            res.items.forEach(function (itemRef) {
+          .then(function(res) {
+            res.items.forEach(function(itemRef) {
               itemRef.delete();
             });
           })
           .then(() => {
             componentThis.removeProfileImageFromDb();
           })
-          .catch(function (error) {
+          .catch(function(error) {
             console.log("Error deleting files:", error.message);
             componentThis.removeProfileImgSystemMessage =
               "We're having trouble deleting your profile image. Please try again later or contact us.";
@@ -368,7 +409,7 @@ export default {
       this.$fireDb
         .ref("/users/" + this.user.id)
         .update({
-          photoURL: "",
+          photoURL: ""
         })
         .then(() => {
           componentThis.removeProfileImgSystemMessage = "";
@@ -376,23 +417,25 @@ export default {
           componentThis.updateUserDetailsInStore();
           console.log("Successfully deleted profile img");
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error.message);
         });
     },
     updateUsername(value) {
       let componentThis = this;
+      if (!value) value = "User";
+
       this.$fireDb
         .ref("/users/" + this.user.id)
         .update({
-          displayName: value,
+          displayName: value
         })
         .then(() => {
           componentThis.username = value;
           componentThis.updateUserDetailsInStore();
           this.usernameSystemMessage = "";
         })
-        .catch((e) => {
+        .catch(e => {
           this.usernameSystemMessage = e.message;
           console.log(e);
         });
@@ -421,14 +464,14 @@ export default {
       this.$fireDb
         .ref("/users/" + this.user.id)
         .update({
-          biography: value,
+          biography: value
         })
         .then(() => {
           componentThis.biography = value;
           componentThis.updateUserDetailsInStore();
           this.biographySystemMessage = "";
         })
-        .catch((e) => {
+        .catch(e => {
           this.biographySystemMessage = e.message;
           console.log(e);
         });
@@ -441,8 +484,8 @@ export default {
 
       //Remove user's recipes
       recipesRef
-        .once("value", (recipes) => {
-          recipes.forEach((recipe) => {
+        .once("value", recipes => {
+          recipes.forEach(recipe => {
             if (recipe.val().ownerID === user.uid) {
               this.$fireDb
                 .ref("recipes/" + recipe.key)
@@ -450,7 +493,7 @@ export default {
                 .then(() => {
                   console.log("Success: Deleted recipe:", recipe.key);
                 })
-                .catch((error) => {
+                .catch(error => {
                   console.log("Error: Recipe removal failed:", error.message);
                 });
             }
@@ -460,10 +503,10 @@ export default {
           this.$fireDb
             .ref("users/" + user.uid)
             .remove()
-            .then(function () {
+            .then(function() {
               console.log("Success: User was removed from database");
             })
-            .catch(function (error) {
+            .catch(function(error) {
               console.log("Error: User remove failed:", error.message);
               componentThis.systemMessage = error.message;
             });
@@ -477,16 +520,16 @@ export default {
               componentThis.$store.dispatch("REMOVE_USER");
               componentThis.$router.push("/goodbye/");
             })
-            .catch(function (error) {
+            .catch(function(error) {
               componentThis.systemMessage = error.message;
               console.log("Error: User delete failed:", error.message);
             });
         })
-        .catch(function (error) {
+        .catch(function(error) {
           componentThis.systemMessage = error.message;
           console.log("Error: Recipes reference failed:", error.message);
         });
-    },
+    }
   },
   created() {
     this.username = this.user.displayName;
@@ -495,6 +538,6 @@ export default {
     this.photoURL = this.user.photoURL;
     this.emailNotificationsOff = this.user.emailNotificationsOff;
     this.hiddenProfile = this.user.hiddenProfile;
-  },
+  }
 };
 </script>

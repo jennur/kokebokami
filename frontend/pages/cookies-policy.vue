@@ -192,7 +192,7 @@ export default {
       link: [
         {
           rel: "canonical",
-          href: "https://www.kokebokami.com/cookies-policy/"
+          href: "https://kokebokami.com/cookies-policy/"
         }
       ]
     };

@@ -13,7 +13,7 @@
         v-if="recipePublic"
         class="fb-share-button"
         data-lazy="true"
-        :data-href="`https://www.kokebokami.com/recipes/${recipeKey}/`"
+        :data-href="`https://kokebokami.com/recipes/${recipeKey}/`"
         data-layout="button"
         data-size="large"
       >

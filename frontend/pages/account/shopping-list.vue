@@ -19,7 +19,8 @@
       <increment-button
         class="margin-bottom--xxlarge"
         @increment="addNewShoppingList"
-      >New shopping list</increment-button>
+        >New shopping list</increment-button
+      >
     </div>
   </div>
 </template>
@@ -35,6 +36,17 @@ import IncrementButton from "~/components/Input/IncrementButton.vue";
 export default {
   name: "addRecipe",
   components: { ShoppingList, IncrementButton },
+  head() {
+    return {
+      title: `Shopping list | Kokebokami`,
+      link: [
+        {
+          rel: "canonical",
+          href: "https://kokebokami.com/account/shopping-list/"
+        }
+      ]
+    };
+  },
   props: {
     breadcrumbs: {
       type: Array,
