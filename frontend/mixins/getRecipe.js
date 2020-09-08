@@ -75,6 +75,11 @@ export default {
                 ],
                 meta: [
                   {
+                    hid: "title",
+                    name: "title",
+                    content: recipe.title || "Kokebokami"
+                  },
+                  {
                     hid: "description",
                     name: "description",
                     content:
