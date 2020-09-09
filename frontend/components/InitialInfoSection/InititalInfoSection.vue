@@ -9,10 +9,11 @@
       <p
         class="padding-horizontal--large color--blue mobile-width text-align--center"
       >
-        <strong>Store and manage</strong> all your recipes from your mind, your
-        handwritten cookbook or the internet. Create and organize
-        <strong>shopping lists</strong>. <strong>Share everything</strong> with
-        your friends, the public - <strong>or keep it all to yourself</strong>.
+        <strong>Store and manage</strong> all your <strong>recipes</strong> from
+        your mind, your handwritten cookbook or the internet. Create and
+        organize <strong>shopping lists</strong>.
+        <strong>Share everything</strong> with your friends, the public -
+        <strong>or keep it all to yourself</strong>.
       </p>
       <nuxt-link
         to="/sign-up/"
