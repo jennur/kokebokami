@@ -23,6 +23,12 @@ export default {
         content: process.env.npm_package_description || ""
       },
       {
+        hid: "keywords",
+        name: "keywords",
+        content:
+          "save, manage, online, recipes, cookbook, shopping lists, share, friends, family, private"
+      },
+      {
         hid: "title",
         name: "title",
         content: "Kokebokami"
