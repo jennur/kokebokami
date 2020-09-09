@@ -132,7 +132,8 @@ export default {
       enabled: process.env.NODE_ENV === "production"
     }),
     "~/modules/redirectToTrailingSlash.js",
-    "~/api/send-email.js"
+    "~/api/send-email.js",
+    "~/api/image-sitemap.js"
   ],
   firebase: {
     config: {
