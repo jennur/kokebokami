@@ -47,7 +47,7 @@ export default {
   },
   computed: {
     loading() {
-      return this.$route.fullPath.indexOf("loading") > -1;
+      return this.$route.fullPath.indexOf("?loading") > -1;
     }
   }
 };

@@ -70,7 +70,7 @@ export default {
   plugins: ["~/plugins/globalComponents.js", "~/plugins/router-auth.client.js"],
   vendor: ["axios", "babel-polyfill"],
   router: {
-    middleware: "router-auth",
+    middleware: ["router-auth", "redirect-trailing-slash"],
     linkExactActiveClass: "active-link"
   },
   pageTransition: "fade",
