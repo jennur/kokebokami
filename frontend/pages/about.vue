@@ -12,13 +12,19 @@
         available to you - recipes that you know by heart and want to pass on to
         your loved ones.
         <br />
-        <br />In Norway, nothing is as special as grandmas «kjøttkaker» (meat
-        cakes), but even though there are tons of recipes for kjøttkaker out
-        there, grandma's recipe is always the one and only. Kokebokami was
-        created for those who want to save and access their handwritten recipes
-        easily, without the struggle of searching to find the beloved book that
-        the recipes were written into. Keep your recipes in a place where only
-        you have access, and have the option of sharing them with the world.
+        <br />In Norway, nothing is as special as grandmas «kjøttkaker», but
+        even though there are tons of recipes for kjøttkaker out there,
+        grandma's recipe is always the one and only.
+        <br />
+        <br />Kokebokami was created for those who want to save and access their
+        handwritten recipes easily, without the struggle of searching to find
+        the beloved book that the recipes were written into. It was also created
+        for those who are tired of always forgetting where they saved the recipe
+        they wanted to try.
+        <br />
+        <br />Keep all your recipes, whether you found them in a book or online,
+        in a place where only you have access, and have the option of sharing
+        them with the world.
         <br />
         <br />
       </p>
