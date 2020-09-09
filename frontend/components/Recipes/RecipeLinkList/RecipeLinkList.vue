@@ -1,41 +1,44 @@
 <template>
   <section class="container">
-    <div v-for="category in categories" :key="`category-${category.title}`">
-      <div
-        v-if="
-          hiddenCategories.indexOf(category.title) === -1 &&
-            category.links.length
-        "
-      >
-        <div class="flex-row flex-row--align-center">
-          <h4
-            class="recipe-link-list__headline margin-left--small margin-bottom--small margin-top--large"
-          >
+    <h3 class="color--blue">Categories</h3>
+    <div
+      class="accordion"
+      v-for="(category, index) in categories"
+      :key="`category-${category.title}-${index}`"
+    >
+      <div>
+        <div
+          class="accordion__tab margin-bottom--medium"
+          @click="toggleAccordion(index)"
+        >
+          <span class="recipe-link-list__headline margin--none">
             {{ category && category.title }}
-          </h4>
+          </span>
           <button
-            class="button--increment button--increment-small margin-bottom--small margin-top--large margin-left--medium"
+            class="button--increment button--increment-small margin-left--medium"
             @click="addNewLink(category.title)"
           >
             Add link
           </button>
         </div>
-        <div class="recipe-link-list">
-          <recipe-link
-            v-for="(link, index) in category.links"
-            :key="`recipe-link-${index}`"
-            :link="link"
-            @update="$emit('update')"
-          />
-          <recipe-link
-            v-if="addingNew && addingToCategory === category.title"
-            :key="`recipe-link-new`"
-            :link="['', {}]"
-            :addingToCategory="addingToCategory"
-            @update="saveNewLink"
-            @cancel="cancelNewLink"
-          />
-        </div>
+        <expand-transition :show="accordionOpen(index)">
+          <div class="recipe-link-list">
+            <recipe-link
+              v-if="addingNew && addingToCategory === category.title"
+              :key="`recipe-link-new`"
+              :link="['', {}]"
+              :addingToCategory="addingToCategory"
+              @update="saveNewLink"
+              @cancel="cancelNewLink"
+            />
+            <recipe-link
+              v-for="(link, index) in category.links"
+              :key="`recipe-link-${index}`"
+              :link="link"
+              @update="$emit('update')"
+            />
+          </div>
+        </expand-transition>
       </div>
     </div>
     <div
@@ -45,7 +48,7 @@
       {{ emptyListMessage }}
       <button
         class="button button--transparent margin-top--xxlarge"
-        @click="$emit('openForm')"
+        @click="$emit('open-form')"
       >
         Add recipe to this list
       </button>
@@ -53,11 +56,13 @@
   </section>
 </template>
 <script>
-import RecipeLink from "./RecipeLink";
+import RecipeLink from "./Children/RecipeLink";
+import ExpandTransition from "~/components/Transitions/Expand.vue";
 export default {
   name: "recipes-link-list",
   components: {
-    RecipeLink
+    RecipeLink,
+    ExpandTransition
   },
   props: {
     links: {
@@ -76,18 +81,19 @@ export default {
   data() {
     return {
       addingNew: false,
-      addingToCategory: null
+      addingToCategory: null,
+      openAccordions: []
     };
   },
   computed: {
     categories() {
       let links = this.links;
-      let categories = ["No category"];
+      let categories = [];
       links.forEach(link => {
         if (link[1].category) {
           if (categories.indexOf(link[1].category) === -1)
             categories.push(link[1].category);
-        }
+        } else categories.push("No category");
       });
       categories = categories.map(category => {
         let linksInCategory = [];
@@ -108,6 +114,15 @@ export default {
     }
   },
   methods: {
+    toggleAccordion(index) {
+      let openAccordions = this.openAccordions;
+      let accordionIndex = openAccordions.indexOf(index);
+      if (accordionIndex > -1) this.openAccordions.splice(accordionIndex, 1);
+      else this.openAccordions.push(index);
+    },
+    accordionOpen(index) {
+      return this.openAccordions.indexOf(index) > -1;
+    },
     addNewLink(categoryTitle) {
       this.addingNew = true;
       this.addingToCategory = categoryTitle;

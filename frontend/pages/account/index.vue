@@ -45,19 +45,19 @@ export default {
     gateways() {
       return [
         {
-          title: "My cookbook",
-          link: "/account/my-cookbook/",
-          description: "See and manage all your recipes",
-          graphic: {
-            name: "cookbook"
-          }
-        },
-        {
           title: "Shopping lists",
           link: "/account/shopping-list/",
           description: "See and manage your shopping lists",
           graphic: {
             name: "shopping-list"
+          }
+        },
+        {
+          title: "My cookbook",
+          link: "/account/my-cookbook/",
+          description: "See and manage all your recipes",
+          graphic: {
+            name: "cookbook"
           }
         },
         {
