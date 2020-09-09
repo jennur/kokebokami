@@ -66,7 +66,6 @@ export default {
             };
             return {
               headData: {
-                title: `${recipe.title} | Kokebokami`,
                 link: [
                   {
                     rel: "canonical",
