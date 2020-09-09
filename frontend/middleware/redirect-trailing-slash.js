@@ -5,7 +5,6 @@ export default function(context) {
     route.path &&
     !route.path.endsWith("/")
   ) {
-    console.log("Redirecting");
     redirect(`${route.path}/`);
   }
 }
