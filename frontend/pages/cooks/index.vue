@@ -11,7 +11,7 @@
       <div v-else class="container container--center">
         <h2>Log in to discover cooks of Kokebokami</h2>
         <div>
-          <nuxt-link to="/login" class="button button--small button--green"
+          <nuxt-link to="/login/" class="button button--small button--green"
             >Log in</nuxt-link
           >
         </div>

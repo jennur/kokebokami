@@ -57,7 +57,10 @@
       </form>
 
       <form class="share-form margin-vertical--large" @submit.prevent>
-        <fieldset>
+        <div v-if="sharedByEmail === false" class="flex-center-container">
+          <span class="simple-loading-spinner" />
+        </div>
+        <fieldset v-if="sharedByEmail === null">
           <h4 class="margin-bottom--small">Share by e-mail</h4>
           <label class="flex-column">
             <input
@@ -100,7 +103,7 @@ export default {
     return {
       searchTerm: "",
       selected: "",
-      sharedByEmail: false,
+      sharedByEmail: null,
       email: "",
       systemMessage: ""
     };
@@ -139,29 +142,47 @@ export default {
     }
   },
   methods: {
+    validateEmail(email) {
+      const emailRegex = /^\S+@\S+\.\S+$/;
+      let validated = 1;
+
+      if (!email.match(emailRegex)) {
+        validated = validated * 0;
+        this.systemMessage = "Please enter a valid email address";
+        return false;
+      } else {
+        this.systemMessage = "";
+        return true;
+      }
+    },
     shareRecipeByEmail() {
       let email = document.getElementById("shareEmail").value;
-      let message = `<p>
+
+      if (this.validateEmail(email)) {
+        this.sharedByEmail = false;
+        let message = `<p>
           <br>Someone shared a recipe with you:
           <br>Check it out: <a href="https://kokebokami.com/recipes/${this.recipeKey}">'${this.recipeTitle}'</a>.
           <br>
           <br>Best wishes,
           <br>Your Kokebokami team 👩‍🍳</p>`;
-      axios
-        .post("/api/send-email", {
-          email,
-          subject: `Someone just shared a recipe with you 📝`,
-          message
-        })
-        .then(() => {
-          this.sharedByEmail = true;
-          this.systemMessage = "E-mail was sent";
-        })
-        .catch(error => {
-          this.systemMessage =
-            "Something went wrong while attempting to send e-mail. Please try again later, or contact us if the issue continues.";
-          console.log("Error in api call:", error);
-        });
+        axios
+          .post("/api/send-email", {
+            email,
+            subject: `Someone just shared a recipe with you 📝`,
+            message
+          })
+          .then(() => {
+            this.sharedByEmail = true;
+            this.systemMessage = "E-mail was sent";
+          })
+          .catch(error => {
+            this.sharedByEmail = null;
+            this.systemMessage =
+              "Something went wrong while attempting to send e-mail. Please try again later, or contact us if the issue continues.";
+            console.log("Error in api call:", error);
+          });
+      }
     },
     shareRecipe() {
       const componentThis = this;

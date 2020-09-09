@@ -31,7 +31,9 @@
         autocomplete="new-password"
         v-model="passwordRepeat"
       />
-      <span class="system-message margin-top--small">{{ passwordRepeatError }}</span>
+      <span class="system-message margin-top--small">{{
+        passwordRepeatError
+      }}</span>
     </label>
     <label class="flex-column margin-bottom--medium">
       <span class="flex-row flex-row--nowrap">
@@ -44,15 +46,21 @@
         />
         <span class="sign-up-form_terms padding-horizontal--small">
           I agree to the
-          <nuxt-link to="/terms-and-conditions/">Terms and Conditions</nuxt-link>
+          <nuxt-link to="/terms-and-conditions/"
+            >Terms and Conditions</nuxt-link
+          >
           {{ " " }}and
           <nuxt-link to="/privacy-policy/">Privacy Policy</nuxt-link>
         </span>
       </span>
-      <span class="system-message margin-top--small">{{ termsAndConditionsError }}</span>
+      <span class="system-message margin-top--small">{{
+        termsAndConditionsError
+      }}</span>
     </label>
     <div class="flex-column margin-top--small">
-      <button @click="validateForm" class="button button--small button--green">Sign up</button>
+      <button @click="validateForm" class="button button--small button--green">
+        Sign up
+      </button>
       <span class="system-message margin-top--small">{{ systemMessage }}</span>
     </div>
   </form>
@@ -100,7 +108,7 @@ export default {
         });
     },
     validateForm() {
-      const emailRegex = /.{1,}@[^.]{1,}/;
+      const emailRegex = /^\S+@\S+\.\S+$/;
       let validated = 1;
 
       if (!this.email.match(emailRegex)) {
