@@ -67,7 +67,7 @@ async function sendEmail(data) {
       return { status: 200, message: "mail accepted for delivery" };
     })
     .catch(error => {
-      console.log("Error in with transporter:", error.message);
+      console.log("Error in transporter:", error.message);
       return { status: 500, message: error.message };
     });
 }
