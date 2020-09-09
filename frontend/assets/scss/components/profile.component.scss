@@ -1,18 +1,47 @@
 .profile {
   &__img {
     display: block;
-    width: 4 * $spacingXLarge;
-    height: 4 * $spacingXLarge;
+    width: 4 * $spacingLarge;
+    height: 4 * $spacingLarge;
+    min-width: 4 * $spacingLarge;
+    min-height: 4 * $spacingLarge;
     border-radius: 50%;
     background-position: 50% 50%;
     background-size: cover;
     background-repeat: no-repeat;
-
-    &--backup {
+    @media screen and (min-width: $mobileWidth) {
       width: 4 * $spacingXLarge;
       height: 4 * $spacingXLarge;
+      min-width: 4 * $spacingXLarge;
+      min-height: 4 * $spacingXLarge;
+    }
+
+    &--backup {
+      width: 4 * $spacingLarge;
+      height: 4 * $spacingLarge;
+      min-width: 4 * $spacingLarge;
+      min-height: 4 * $spacingLarge;
       display: block;
       opacity: 0.9;
+      @media screen and (min-width: $mobileWidth) {
+        width: 4 * $spacingXLarge;
+        height: 4 * $spacingXLarge;
+        min-width: 4 * $spacingXLarge;
+        min-height: 4 * $spacingXLarge;
+      }
+    }
+  }
+
+  .hidden-mobile {
+    display: none;
+    @media screen and (min-width: $mobileWidth) {
+      display: block;
+    }
+  }
+  .visible-mobile {
+    display: block;
+    @media screen and (min-width: $mobileWidth) {
+      display: none;
     }
   }
 }

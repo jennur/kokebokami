@@ -48,7 +48,8 @@ export default {
     ExpandTransition
   },
   head() {
-    return this.headData; // from getRecipe
+    let title = this.recipe.title || "";
+    return { ...this.headData, title: `${title} | Kokebokami` }; // from getRecipe
   },
   mixins: [user, getRecipe],
   computed: {
