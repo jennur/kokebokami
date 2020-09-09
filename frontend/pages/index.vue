@@ -70,6 +70,32 @@ export default {
           rel: "canonical",
           href: "https://kokebokami.com/"
         }
+      ],
+      script: [
+        {
+          type: "application/ld+json",
+          json: {
+            "@context": "https://schema.org",
+            "@type": "Organization",
+            url: "https://kokebokami.com",
+            logo: {
+              "@type": "ImageObject",
+              url:
+                "https://firebasestorage.googleapis.com/v0/b/kokebokami-e788f.appspot.com/o/images%2Fglobals%2Fkokebokami-assets%2Fkokebokami-logo.png?alt=media&token=c6af8291-7665-4317-b2c2-436d717d3e99",
+              width: 542,
+              height: 100
+            },
+            sameAs: ["https://www.facebook.com/kokebokami"]
+          }
+        },
+        {
+          type: "application/ld+json",
+          json: {
+            "@context": "https://schema.org",
+            "@type": "WebSite",
+            url: "https://kokebokami.com"
+          }
+        }
       ]
     };
   },
