@@ -34,6 +34,7 @@
 
     <!-- Recipes list -->
     <Tabs
+      class="margin-top--xlarge"
       :tabTitles="[
         'My personal recipes',
         'My recipe links',
@@ -42,13 +43,6 @@
       :activeTabIndexControl="activeTabIndex"
       @switchTab="index => handleTabSwitch(index)"
     >
-      <!-- <div class="container" v-if="activeTabIndex === 0 || activeTabIndex === 2">
-        <recipes-filter
-          class="margin-bottom--xlarge margin--auto"
-          :recipes="recipesToBeFiltered"
-          @filter="setVisibleRecipes"
-        />
-      </div> -->
       <recipes-list
         v-if="activeTabIndex === 0 || activeTabIndex === 2"
         class="margin-top--large padding-bottom--large"
@@ -58,13 +52,6 @@
         :addRecipeUrl="activeTabIndex === 0 ? '/account/add-recipe/' : ''"
       />
       <div v-if="activeTabIndex === 1">
-        <!--         <user-categories-filter
-          v-if="userRecipeLinks.length"
-          :categories="userCategories"
-          @updateCategories="
-            hiddenCategories => updateHiddenCategories(hiddenCategories)
-          "
-        /> -->
         <recipe-link-list
           class="margin-top--xxlarge"
           :hiddenCategories="hiddenCategories"

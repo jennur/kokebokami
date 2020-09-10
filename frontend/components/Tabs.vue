@@ -1,15 +1,26 @@
 <template>
   <div class="tabs-wrap">
-    <span class="tabs-mobile-helper margin-top--large"></span>
-    <div ref="tabs" class="tabs margin-vertical--xlarge" v-click-outside="closeDropDown">
-      <span
-        class="tab tab--hide-mobile"
-        v-for="(title, index) in tabTitles"
-        :data-tab-index="index"
-        :class="{'tab--active': activeTabIndex === index}"
-        :key="`tab-${title}`"
-        @click="(event) => switchTab(event,index)"
-      >{{title}}</span>
+    <div
+      ref="tabs"
+      :class="{ tabs: !isTablet, 'tabs-select': isTablet }"
+      v-click-outside="closeDropdown"
+      @click="openDropdown"
+    >
+      <span class="active-tab" v-if="isTablet">
+        {{ activeTitle }}
+        <down-arrow class="icon icon--small" />
+      </span>
+      <div v-if="!isTablet || dropdownOpen" class="dropdown">
+        <span
+          class="tab"
+          v-for="(title, index) in tabTitles"
+          :data-tab-index="index"
+          :class="{ 'tab--active': activeTabIndex === index }"
+          :key="`tab-${title}`"
+          @click="event => switchTab(event, index)"
+          >{{ title }}</span
+        >
+      </div>
     </div>
     <slot />
   </div>
@@ -31,43 +42,36 @@ export default {
     }
   },
   data() {
-    return { activeTabIndex: this.activeTabIndexControl || 0 };
+    return {
+      activeTabIndex: this.activeTabIndexControl || 0,
+      dropdownOpen: false
+    };
+  },
+  computed: {
+    isTablet() {
+      let width = window.innerWidth > 0 ? window.innerWidth : screen.width;
+      return width < 800;
+    },
+    activeTitle() {
+      let titles = this.tabTitles;
+      return titles[this.activeTabIndex];
+    }
   },
   methods: {
-    closeDropDown() {
-      let tabs = this.$refs.tabs;
-      tabs.classList.remove("tab--dropdown-list");
-      let tabElems = Object.values(tabs.getElementsByClassName("tab"));
-      tabElems.forEach(tab => {
-        if (!tab.classList.contains("tab--active-tab")) {
-          tab.classList.add("tab--hide-mobile");
-        }
-      });
+    openDropdown() {
+      this.dropdownOpen = true;
+    },
+    closeDropdown() {
+      this.dropdownOpen = false;
     },
     switchTab(event, index) {
       this.activeTabIndex = index;
-      let tabs = this.$refs.tabs;
-      tabs.classList.add("tab--dropdown-list");
-      let tabElems = Object.values(tabs.getElementsByClassName("tab"));
-      tabElems.forEach(tab => {
-        if (tab.classList.contains("tab--hide-mobile")) {
-          tab.classList.remove("tab--hide-mobile");
-        } else if (tab !== event.target) {
-          tab.classList.add("tab--hide-mobile");
-        }
-      });
+      this.closeDropdown();
       this.$emit("switchTab", index);
     }
   },
   directives: {
     ClickOutside
-  },
-  updated() {
-    if (
-      this.activeTabIndexControl !== null &&
-      this.activeTabIndex !== this.activeTabIndexControl
-    )
-      this.activeTabIndex = this.activeTabIndexControl;
   }
 };
 </script>
