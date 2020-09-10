@@ -1,14 +1,21 @@
 <template>
-  <nuxt-link :to="`/recipes/${recipeUrl}/`" class="recipe-display">
+  <nuxt-link :to="`/recipes/${recipeUrl}/`" class="recipe-preview">
     <!-- Image -->
-    <div :style="`background-image: url(${recipeImage})`" class="recipe-display__image"></div>
+    <div
+      :style="`background-image: url(${recipeImage})`"
+      class="recipe-preview__image"
+    ></div>
 
-    <span class="recipe-display__published-by" v-if="inPublicList">Published by {{ recipeOwner }}</span>
-    <span class="recipe-display__public-note" v-if="showPublicNote">Public</span>
+    <span class="recipe-preview__published-by" v-if="inPublicList"
+      >Published by {{ recipeOwner }}</span
+    >
+    <span class="recipe-preview__public-note" v-if="showPublicNote"
+      >Public</span
+    >
     <div class="full-width padding--xlarge">
       <!-- Details -->
 
-      <div class="recipe-display__category-note">
+      <div class="recipe-preview__category-note">
         <p v-if="typeOfMeal">
           <b>Meal type:</b>
           {{ typeOfMeal }}
@@ -20,23 +27,24 @@
       </div>
 
       <!-- Description -->
-      <h3
-        class="recipe-display__title margin--none margin-bottom--medium"
-      >{{ recipe.title ? recipe.title : "Recipe has no title" }}</h3>
-      <div class="recipe-display__description margin-bottom--large">
+      <h3 class="recipe-preview__title margin--none margin-bottom--medium">
+        {{ recipe.title ? recipe.title : "Recipe has no title" }}
+      </h3>
+      <div class="recipe-preview__description margin-bottom--large">
         {{
-        recipe.description ? recipe.description : "Recipe has no description"
+          recipe.description ? recipe.description : "Recipe has no description"
         }}
       </div>
-    </div>
-    <!-- Categories -->
-    <div>
-      <div class="recipe-display__categories">
-        <span
-          class="recipe-display__category margin-bottom--xxlarge margin-horizontal--small"
-          v-for="category in categories"
-          :key="category"
-        >{{ category }}</span>
+      <!-- Categories -->
+      <div>
+        <div class="recipe-preview__categories">
+          <span
+            class="recipe-preview__category"
+            v-for="category in categories"
+            :key="category"
+            >{{ category }}</span
+          >
+        </div>
       </div>
     </div>
   </nuxt-link>
@@ -47,27 +55,27 @@ import recipeBackupImg from "~/assets/graphics/icons/recipe-backup-img.svg";
 import user from "~/mixins/user.js";
 
 export default {
-  name: "recipe-display",
+  name: "recipe-preview",
   components: {
-    recipeBackupImg,
+    recipeBackupImg
   },
   props: {
     recipe: {
       type: Object,
-      default: () => {},
+      default: () => {}
     },
     recipeID: {
       type: String,
-      default: "",
+      default: ""
     },
     inPublicList: {
       type: Boolean,
-      default: false,
-    },
+      default: false
+    }
   },
   data() {
     return {
-      recipeOwner: "Unknown",
+      recipeOwner: "Unknown"
     };
   },
   mixins: [user],
@@ -96,7 +104,7 @@ export default {
     typeOfMeal() {
       let typeOfMeal = [];
       if (this.recipe && this.recipe.typeOfMeal) {
-        this.recipe.typeOfMeal.forEach((type) => {
+        this.recipe.typeOfMeal.forEach(type => {
           type = type.charAt(0).toUpperCase() + type.slice(1);
           typeOfMeal.push(type);
         });
@@ -106,26 +114,26 @@ export default {
     freeFrom() {
       let freeFrom = [];
       if (this.recipe && this.recipe.freeFrom) {
-        this.recipe.freeFrom.forEach((allergen) => {
+        this.recipe.freeFrom.forEach(allergen => {
           allergen = allergen.charAt(0).toUpperCase() + allergen.slice(1);
           freeFrom.push(allergen);
         });
       }
       return freeFrom.join(", ");
-    },
+    }
   },
   methods: {
     getRecipeOwner() {
       let displayNameRef = this.$fireDb.ref(
         `users/${this.recipe.ownerID}/displayName`
       );
-      displayNameRef.once("value", (snapshot) => {
+      displayNameRef.once("value", snapshot => {
         if (snapshot.exists()) this.recipeOwner = snapshot.val();
       });
-    },
+    }
   },
   mounted() {
     this.getRecipeOwner();
-  },
+  }
 };
 </script>

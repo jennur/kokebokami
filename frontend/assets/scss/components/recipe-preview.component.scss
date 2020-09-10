@@ -1,5 +1,5 @@
-.recipe-display,
-.recipe-link-display-wrap {
+.recipe-preview,
+.recipe-link-wrap {
   display: flex;
   flex-direction: column;
   flex-grow: 1;
@@ -9,18 +9,20 @@
   min-width: 280px;
 }
 
-.recipe-link-display-wrap {
+.recipe-link-wrap {
   align-items: flex-end;
   @media screen and (min-width: $mobileWidth) {
-    min-width: 345px;
+    min-width: 304px;
     flex-grow: 0;
     flex-basis: calc(50% - 16px);
     width: calc(50% - 16px);
   }
 }
 
-.recipe-display {
+.recipe-preview {
   align-items: center;
+  text-align: center;
+
   @media screen and (min-width: $tabletWidth) {
     min-width: 304px;
     flex-grow: 0;
@@ -35,7 +37,7 @@
     border-radius: ($spacingMedium - 2px) ($spacingMedium - 2px) 0px 0px;
     background-position: 50%;
   }
-  svg.recipe-display__image {
+  svg.recipe-preview__image {
     height: auto;
   }
   &__published-by,
@@ -54,13 +56,74 @@
     color: $pink;
   }
 }
-.recipe-link-display {
+.recipe-link {
   display: block;
   flex: 1 1 0;
-
+  text-align: left;
+  &__settings {
+    width: 15px;
+    position: absolute;
+    left: $spacingMedium;
+    top: $spacingMedium;
+    .icon {
+      transition: 0.1s;
+      &:hover {
+        width: 1.1em;
+        height: 1.1em;
+        max-height: 1.1em;
+      }
+    }
+  }
+  &__new-tab-icon {
+    width: 15px;
+    position: absolute;
+    right: $spacingMedium;
+    top: $spacingMedium;
+  }
   &__edit-form-wrap {
     display: block;
     max-width: 100%;
+    .recipe-link-edit-form {
+      position: relative;
+      border-radius: $spacingMedium;
+
+      form {
+        border-radius: $spacingMedium;
+      }
+
+      &.recipe-preview:hover {
+        background-color: transparent;
+        cursor: default;
+      }
+      &:hover {
+        background-color: transparent;
+      }
+      fieldset {
+        position: relative;
+        margin-top: $spacingLarge;
+      }
+
+      &__url,
+      &__title,
+      &__labels,
+      &__comment {
+        width: 100%;
+        max-width: 100%;
+      }
+      &__category {
+        max-width: 138px;
+      }
+
+      &--required {
+        color: $pink;
+        position: absolute;
+        right: -$spacingLarge;
+        bottom: $spacingSmall;
+      }
+      &__comment {
+        min-height: 100px;
+      }
+    }
   }
   &__published-by {
     display: block;
@@ -71,8 +134,8 @@
   }
 }
 
-.recipe-display,
-.recipe-link-display {
+.recipe-preview,
+.recipe-link {
   width: 100%;
   max-width: 100%;
   border: 2px solid $green;
@@ -81,7 +144,6 @@
   cursor: pointer;
   color: $blue;
   text-decoration: none;
-  text-align: center;
   transition: all 0.2s;
 
   &:hover {
@@ -104,12 +166,6 @@
     text-align: left;
   }
 
-  &__new-tab-icon {
-    width: 15px;
-    position: absolute;
-    right: $spacingMedium;
-    top: $spacingMedium;
-  }
   &__title {
     padding-top: $spacingLarge;
     text-transform: capitalize;
@@ -128,6 +184,7 @@
     background-color: $orange;
     color: $white;
     padding: 1px $spacingMedium;
+    margin: $spacingXSmall;
     border-radius: $spacingLarge;
     text-transform: capitalize;
     font-size: $fontSizeSmall;
