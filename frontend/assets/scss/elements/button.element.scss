@@ -212,7 +212,7 @@
     }
     &-small {
       height: $spacingLarge;
-      padding: 0px $spacingMedium 0px $spacingLarge;
+      padding: 0px $spacingMedium 0px $spacingLarge + 3px;
     }
   }
 

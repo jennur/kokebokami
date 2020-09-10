@@ -58,19 +58,19 @@
         :addRecipeUrl="activeTabIndex === 0 ? '/account/add-recipe/' : ''"
       />
       <div v-if="activeTabIndex === 1">
-        <user-categories-filter
+        <!--         <user-categories-filter
           v-if="userRecipeLinks.length"
           :categories="userCategories"
           @updateCategories="
             hiddenCategories => updateHiddenCategories(hiddenCategories)
           "
-        />
-        <recipes-link-list
+        /> -->
+        <recipe-link-list
           class="margin-top--xxlarge"
           :hiddenCategories="hiddenCategories"
           :links="userRecipeLinks"
           :emptyListMessage="emptyListMessage"
-          @openForm="toggleRecipeForm"
+          @open-form="toggleRecipeForm"
           @update="updateLinkList"
         />
       </div>
@@ -90,7 +90,7 @@ import ExpandTransition from "~/components/Transitions/Expand.vue";
 import AddRecipeFromUrlForm from "~/components/Recipes/AddRecipeForm/AddRecipeFromUrlForm.vue";
 import Tabs from "~/components/Tabs.vue";
 import RecipesList from "~/components/Recipes/RecipesList.vue";
-import RecipesLinkList from "~/components/Recipes/RecipesLinkList.vue";
+import RecipeLinkList from "~/components/Recipes/RecipeLinkList/RecipeLinkList.vue";
 import RecipesFilter from "~/components/Filter/RecipesFilter.vue";
 import UserCategoriesFilter from "~/components/Filter/UserCategoriesFilter.vue";
 
@@ -112,7 +112,7 @@ export default {
     AddRecipeFromUrlForm,
     Tabs,
     RecipesList,
-    RecipesLinkList,
+    RecipeLinkList,
     RecipesFilter,
     UserCategoriesFilter
   },
