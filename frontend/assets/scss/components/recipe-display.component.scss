@@ -1,20 +1,32 @@
 .recipe-display,
 .recipe-link-display-wrap {
-  max-width: 100%;
   display: flex;
   flex-direction: column;
-  //justify-content: stretch;
-  flex-basis: 50%;
-  flex: 1 1 0;
-  margin: $spacingSmall;
+  flex-grow: 1;
+  flex-basis: 100%;
+  max-width: 100%;
+  margin: $spacingMedium/2;
+  min-width: 280px;
 }
 
 .recipe-link-display-wrap {
   align-items: flex-end;
+  @media screen and (min-width: $mobileWidth) {
+    min-width: 345px;
+    flex-grow: 0;
+    flex-basis: calc(50% - 16px);
+    width: calc(50% - 16px);
+  }
 }
 
 .recipe-display {
   align-items: center;
+  @media screen and (min-width: $tabletWidth) {
+    min-width: 304px;
+    flex-grow: 0;
+    flex-basis: calc(50% - 16px);
+    width: calc(50% - 16px);
+  }
 
   &__image {
     width: 100%;
@@ -44,7 +56,6 @@
 }
 .recipe-link-display {
   display: block;
-  width: 100%;
   flex: 1 1 0;
 
   &__edit-form-wrap {
@@ -62,10 +73,8 @@
 
 .recipe-display,
 .recipe-link-display {
-  min-width: 280px;
-  @media screen and (min-width: $mobileWidth) {
-    min-width: 345px;
-  }
+  width: 100%;
+  max-width: 100%;
   border: 2px solid $green;
   border-radius: $spacingMedium;
   position: relative;

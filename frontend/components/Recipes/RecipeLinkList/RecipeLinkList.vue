@@ -12,11 +12,16 @@
           @click="toggleAccordion(index)"
         >
           <span class="recipe-link-list__headline margin--none">
+            <downArrow
+              v-if="accordionOpen(index)"
+              class="icon icon--small margin-right--medium"
+            />
+            <rightArrow v-else class="icon icon--small margin-right--medium" />
             {{ category && category.title }}
           </span>
           <button
             class="button--increment button--increment-small margin-left--medium"
-            @click="addNewLink(category.title)"
+            @click="event => addNewLink(event, category.title)"
           >
             Add link
           </button>
@@ -58,11 +63,16 @@
 <script>
 import RecipeLink from "./Children/RecipeLink";
 import ExpandTransition from "~/components/Transitions/Expand.vue";
+import rightArrow from "~/assets/graphics/icons/right-arrow.svg";
+import downArrow from "~/assets/graphics/icons/down-arrow.svg";
+
 export default {
   name: "recipes-link-list",
   components: {
     RecipeLink,
-    ExpandTransition
+    ExpandTransition,
+    rightArrow,
+    downArrow
   },
   props: {
     links: {
@@ -123,7 +133,8 @@ export default {
     accordionOpen(index) {
       return this.openAccordions.indexOf(index) > -1;
     },
-    addNewLink(categoryTitle) {
+    addNewLink(event, categoryTitle) {
+      event && event.stopPropagation();
       this.addingNew = true;
       this.addingToCategory = categoryTitle;
     },
