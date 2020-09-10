@@ -44,13 +44,14 @@
 .tabs-select {
   display: block;
   text-align: left;
-  border: 2px solid $blue;
+  border: 1px solid $green;
   border-radius: $spacingSmall;
   position: relative;
   max-width: 300px;
   width: 100%;
   box-sizing: border-box;
   margin-left: $spacingSmall;
+  color: $blue;
 
   .active-tab {
     display: block;
@@ -61,6 +62,7 @@
     width: 100%;
     box-sizing: border-box;
     cursor: pointer;
+    font-weight: bold;
     .icon {
       position: absolute;
       right: $spacingMedium;
@@ -75,7 +77,7 @@
     max-width: 300px;
     position: absolute;
     top: 50px;
-    border: 2px solid $blue;
+    border: 2px solid $green;
     border-radius: $spacingSmall;
     z-index: 2;
     background-color: $cream;
@@ -85,9 +87,6 @@
       padding: $spacingMedium;
       box-sizing: border-box;
       cursor: pointer;
-      &:not(:first-child) {
-        border-top: 1px dotted $blue;
-      }
 
       &:hover {
         background-color: rgba($green, 0.1);
