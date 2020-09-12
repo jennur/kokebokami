@@ -3,7 +3,7 @@
     <h3 class="recipes-list-container__headline" v-if="headline">
       {{ headline }}
     </h3>
-    <recipe-display
+    <recipe-preview
       v-for="recipe in recipes"
       :key="recipe[0]"
       :recipeID="recipe[0]"
@@ -22,12 +22,12 @@
 </template>
 
 <script>
-import RecipeDisplay from "./RecipeDisplay.vue";
+import RecipePreview from "./RecipePreview.vue";
 
 export default {
   name: "recipes-list",
   components: {
-    RecipeDisplay
+    RecipePreview
   },
   props: {
     recipeID: {

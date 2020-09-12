@@ -31,7 +31,16 @@
       transform: rotate(45deg);
     }
     span {
-      padding: $spacingMedium $spacingXLarge;
+      display: inline-flex;
+      align-items: center;
+      padding-left: $spacingXLarge;
+      padding-right: $spacingXLarge;
+      padding-top: $spacingMedium;
+      padding-bottom: $spacingMedium;
+      font-size: $fontSizeSmall;
+      &:not(.pointer):not(:nth-child(2)) {
+        border-top: 1px dotted $blue;
+      }
       cursor: pointer;
       &:hover {
         background-color: $lightOrange;

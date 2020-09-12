@@ -21,7 +21,7 @@
           </span>
           <button
             class="button--increment button--increment-small margin-left--medium"
-            @click="event => addNewLink(event, category.title)"
+            @click="event => addNewLink(event, index, category.title)"
           >
             Add link
           </button>
@@ -133,13 +133,18 @@ export default {
     accordionOpen(index) {
       return this.openAccordions.indexOf(index) > -1;
     },
-    addNewLink(event, categoryTitle) {
+    addNewLink(event, index, categoryTitle) {
       event && event.stopPropagation();
       this.addingNew = true;
       this.addingToCategory = categoryTitle;
+      let openAccordions = this.openAccordions;
+      let accordionIndex = openAccordions.indexOf(index);
+      if (accordionIndex === -1) this.openAccordions.push(index);
     },
     cancelNewLink() {
-      this.addingNew = false;
+      setTimeout(() => {
+        this.addingNew = false;
+      }, 350);
     },
     saveNewLink() {
       this.addingNew = false;

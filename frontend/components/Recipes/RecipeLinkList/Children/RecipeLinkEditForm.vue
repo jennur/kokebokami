@@ -87,18 +87,14 @@
       </fieldset>
       <fieldset>
         <div
-          class="flex-row flex-row--align-center margin-vertical--large"
-          :class="{
-            'flex-row--space-between': recipeLinkID,
-            'flex-row--justify-right': !recipeLinkID
-          }"
+          class="flex-row flex-row--align-center flex-row--space-between margin-vertical--large"
         >
-          <delete-icon
-            tabindex="0"
-            v-if="recipeLinkID"
-            class="icon"
-            @click="toggleAlert"
-          />
+          <button
+            class="button button--dynamic button--dynamic-small button--cancel margin-vertical--medium"
+            @click.prevent="$emit('close-edit-mode')"
+          >
+            ✕ Cancel
+          </button>
           <button
             type="submit"
             name="submit"
@@ -115,12 +111,6 @@
         </expand-transition>
       </fieldset>
     </form>
-    <Alert
-      :alertMessage="`Are you sure you want to delete this link: '${title}'? `"
-      :showAlert="showAlert"
-      @confirmed="deleteLink"
-      @cancel="toggleAlert"
-    />
   </div>
 </template>
 <script>
@@ -128,14 +118,12 @@ import user from "~/mixins/user.js";
 import userRecipeLinks from "~/mixins/userRecipeLinks.js";
 import SelectComponent from "~/components/Input/SelectComponent.vue";
 import ExpandTransition from "~/components/Transitions/Expand.vue";
-import Alert from "~/components/Alert.vue";
 
 export default {
   name: "recipe-link-edit-form",
   components: {
     SelectComponent,
-    ExpandTransition,
-    Alert
+    ExpandTransition
   },
   props: {
     recipeLink: {
@@ -163,8 +151,7 @@ export default {
       submitSystemMessage: "",
       newCategory: false,
       selectedCategory:
-        (recipeLink && recipeLink.category) || this.addingToCategory || "",
-      showAlert: false
+        (recipeLink && recipeLink.category) || this.addingToCategory || ""
     };
   },
   mixins: [user, userRecipeLinks],
@@ -182,9 +169,6 @@ export default {
     }
   },
   methods: {
-    toggleAlert() {
-      this.showAlert = !this.showAlert;
-    },
     getDefaultTitle() {
       let url = this.url;
       if (url) {
@@ -195,25 +179,6 @@ export default {
         return urlItems.pop().replace(/-/g, " ");
       }
       return "No title";
-    },
-    deleteLink() {
-      if (this.recipeLinkID) {
-        const recipeLinkRef = this.$fireDb.ref(
-          `users/${this.user.id}/recipeLinks/${this.recipeLinkID}`
-        );
-        recipeLinkRef
-          .remove()
-          .then(res => {
-            this.showAlert = false;
-            this.$emit("update");
-          })
-          .catch(error => {
-            this.submitSystemMessage = error.message;
-            console.log("Error deleting recipe:", error.message);
-          });
-      } else {
-        this.showAlert = false;
-      }
     },
     saveLink() {
       let url = this.url || "";

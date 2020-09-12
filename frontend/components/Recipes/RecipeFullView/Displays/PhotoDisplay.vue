@@ -22,7 +22,7 @@
       />
       <photo-edit
         class="recipe__image--edit"
-        v-show="editMode && !loading"
+        v-if="editMode && !loading"
         :photoURL="photoURL"
         :recipeKey="recipeKey"
         @loading="setLoading"
