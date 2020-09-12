@@ -11,7 +11,7 @@
           :recipeLink="link && link[1]"
           :addingToCategory="addingToCategory"
           @update="update"
-          @close-edit-mode="toggleEditMode"
+          @close-edit-mode="cancelEdit"
         />
       </expand-transition>
       <div
