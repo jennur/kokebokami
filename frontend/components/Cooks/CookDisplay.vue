@@ -1,8 +1,5 @@
 <template>
-  <nuxt-link
-    :to="`/cooks/${cookID}/`"
-    class="following-cooks__cook margin--small"
-  >
+  <nuxt-link :to="`/cooks/${cookID}/`" class="following-cooks__cook">
     <div
       role="img"
       v-if="photoURL"

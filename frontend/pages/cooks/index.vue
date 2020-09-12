@@ -28,11 +28,13 @@
           v-if="activeTabIndex == 0"
           :cooks="followed"
           emptyListMessage="You are not following anyone right now 🤷🏽. Follow cooks to get easier access to their profile and see their recipes."
+          class="margin-top--large"
         />
         <cooks-list
           v-if="activeTabIndex == 1"
           :cooks="followers"
           emptyListMessage="You don't have any followers yet 🤷🏻‍♀️"
+          class="margin-top--large"
         />
       </Tabs>
     </div>
