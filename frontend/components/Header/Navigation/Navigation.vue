@@ -1,20 +1,10 @@
 <template>
-  <nav class="navigation-menu-wrapper padding-horizontal--large margin--auto desktop-width">
+  <nav
+    class="navigation-menu-wrapper padding-horizontal--large margin--auto desktop-width"
+  >
     <logo />
     <div class="navigation-menu">
-      <ul v-if="user && !user.id" class="login-menu">
-        <li v-for="link in loginMenu" :key="`login-link-${link.title}`">
-          <nuxt-link
-            :class="{
-            'login-menu__signup-btn': link.path === '/sign-up/',
-            'login-menu__link': link.path !== '/sign-up/'
-          }"
-            :to="link.path"
-          >{{ link.title }}</nuxt-link>
-        </li>
-      </ul>
       <desktop-menu
-        v-if="user && user.id"
         class="navigation-menu__desktop-menu"
         :accountMenu="accountMenu"
         :loginMenu="loginMenu"
@@ -23,16 +13,27 @@
       />
 
       <div v-if="user && user.id" class="navigation-menu__icons">
-        <nuxt-link class="icon__link" to="/account/shopping-list/" title="Shopping list">
+        <nuxt-link
+          :to="localePath('/account/shopping-list/')"
+          class="icon__link"
+          title="Shopping list"
+        >
           <shopping-list-icon class="icon--shopping-list" />
           <transition name="pop">
             <span
-              v-show="shoppingListCount && $route.path !== '/account/shopping-list/'"
+              v-show="
+                shoppingListCount && $route.path !== '/account/shopping-list/'
+              "
               class="icon__notification"
-            >{{shoppingListCount}}</span>
+              >{{ shoppingListCount }}</span
+            >
           </transition>
         </nuxt-link>
-        <nuxt-link class="icon__link" to="/cooks/" title="Discover cooks">
+        <nuxt-link
+          :to="localePath('/cooks/')"
+          class="icon__link"
+          title="Discover cooks"
+        >
           <cooks-icon class="icon--cooks" />
         </nuxt-link>
         <!--         <favorites-icon class="icon--favorites" />
@@ -40,11 +41,10 @@
       </div>
 
       <burger-menu
-        v-if="user && user.id"
         :open="burgerMenuOpen"
         :user="user"
         :menuItems="burgerMenuItems"
-        @toggleMenu="toggleMenu"
+        @toggle-menu="toggleMenu"
         @logout="logOut"
         v-click-outside="closeMenu"
       />
@@ -73,7 +73,7 @@ export default {
     DesktopMenu,
     ShoppingListIcon,
     CooksIcon,
-    FavoritesIcon,
+    FavoritesIcon
   },
   data() {
     return { burgerMenuOpen: false };
@@ -85,82 +85,102 @@ export default {
     },
     accountMenu() {
       return {
-        link: "/account/",
+        link: this.localePath("/account/"),
         title: `${this.user && this.user.displayName}`,
         img: {
-          url: this.user && this.user.photoURL,
+          url: this.user && this.user.photoURL
         },
         subLinks: [
           {
-            path: "/account/",
+            path: this.localePath("/account/"),
             title: "Dashboard",
-            icon: () => import(`~/assets/graphics/icons/dashboard-icon.svg`),
+            icon: () => import(`~/assets/graphics/icons/dashboard-icon.svg`)
           },
           {
-            path: "/account/my-cookbook/",
+            path: this.localePath("/account/my-cookbook/"),
             title: "My cookbook",
-            icon: () => import(`~/assets/graphics/icons/cookbook-icon.svg`),
+            icon: () => import(`~/assets/graphics/icons/cookbook-icon.svg`)
           },
           {
-            path: "/account/account-details/",
+            path: this.localePath("/account/account-details/"),
             title: "Account details",
             icon: () =>
-              import(`~/assets/graphics/icons/account-details-icon.svg`),
-          },
-        ],
+              import(`~/assets/graphics/icons/account-details-icon.svg`)
+          }
+        ]
       };
     },
     loginMenu() {
       return [
-        { path: "/sign-up/", title: "Sign up" },
-        { path: "/login/", title: "Log in" },
+        { path: this.localePath("/sign-up/"), title: this.$t("signUpText") },
+        { path: this.localePath("/login/"), title: this.$t("loginText") }
       ];
     },
     burgerMenuItems() {
       let menuItems = [];
-      if (this.user !== null && this.user !== undefined) {
+      if (this.user && this.user.id !== null) {
         menuItems = [
           {
-            path: "/account/",
+            path: this.localePath("/account/"),
             title: `${this.user.displayName}`,
             img: {
-              url: this.user.photoURL,
+              url: this.user.photoURL
             },
             subLinks: [
-              { path: "/account/my-cookbook/", title: "My cookbook" },
-              { path: "/account/shopping-list/", title: "Shopping list" },
-              { path: "/account/account-details/", title: "Account details" },
-            ],
+              {
+                path: this.localePath("/account/my-cookbook/"),
+                title: this.$t("navigation.myCookbook")
+              },
+              {
+                path: this.localePath("/account/shopping-list/"),
+                title: this.$t("navigation.shoppingLists")
+              },
+              {
+                path: this.localePath("/account/account-details/"),
+                title: this.$t("navigation.accountDetails")
+              }
+            ]
           },
-          { path: "/", title: "Discover public recipes" },
-          { path: "/cooks/", title: "Discover cooks" },
+          {
+            path: this.localePath("/"),
+            title: this.$t("navigation.discoverPublicRecipes")
+          },
+          {
+            path: this.localePath("/cooks/"),
+            title: this.$t("navigation.discoverCooks")
+          }
         ];
       } else {
         menuItems = [
-          { path: "/sign-up/", title: "Sign up" },
-          { path: "/login/", title: "Log in" },
+          { path: this.localePath("/login/"), title: this.$t("loginText") },
+          { path: this.localePath("/sign-up/"), title: this.$t("signUpText") },
+          {
+            headline: this.$t("navigation.footer.aboutHeading"),
+            path: this.localePath("/about/"),
+            title: this.$t("navigation.footer.aboutText")
+          }
         ];
       }
       return menuItems;
-    },
+    }
   },
   methods: {
     toggleMenu() {
       this.burgerMenuOpen = !this.burgerMenuOpen;
-      this.$emit("toggleMenu", this.burgerMenuOpen);
+      this.$emit("toggle-menu", this.burgerMenuOpen);
     },
     closeMenu() {
       this.burgerMenuOpen = false;
-      this.$emit("toggleMenu", false);
+      this.$emit("toggle-menu", false);
     },
     logOut() {
       this.$store.dispatch("USER_SIGN_OUT");
-      this.$router.push("/");
+      this.$router.push(this.localePath("/"));
       this.burgerMenuOpen = false;
-    },
+    }
   },
   directives: {
-    ClickOutside,
-  },
+    ClickOutside
+  }
 };
 </script>

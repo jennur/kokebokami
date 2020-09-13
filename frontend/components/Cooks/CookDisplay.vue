@@ -1,5 +1,8 @@
 <template>
-  <nuxt-link :to="`/cooks/${cookID}/`" class="following-cooks__cook">
+  <nuxt-link
+    :to="localePath(`/cooks/${cookID}/`)"
+    class="following-cooks__cook"
+  >
     <div
       role="img"
       v-if="photoURL"
@@ -21,7 +24,7 @@
         {{
           biography
             ? biography.substring(0, 70) + "..."
-            : "This user did not write a biography yet."
+            : $t("cooks.noBiography")
         }}
       </p>
     </div>

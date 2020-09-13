@@ -3,17 +3,19 @@
     <breadcrumbs :routes="breadcrumbs" />
     <div class="account container tablet-width padding-horizontal--large">
       <h1 class="margin-top--xxlarge margin-bottom--large">
-        My account details
+        {{ $t("accountDetails.headline") }}
       </h1>
-      <nuxt-link to="/account/public-profile-view/">
-        See your public profile
+      <nuxt-link :to="localePath('/account/public-profile-view/')">
+        {{ $t("accountDetails.seeYourPublicProfile") }}
         <right-arrow class="icon icon--blue" />
       </nuxt-link>
       <div>
-        <h3 class="margin-top--xxlarge">Personal data</h3>
+        <h3 class="margin-top--xxlarge">
+          {{ $t("accountDetails.personalData") }}
+        </h3>
         <dl class="flex-row">
           <account-detail
-            title="Profile image"
+            :title="$t('accountDetails.profileImage')"
             :systemMessage="
               removeProfileImgSystemMessage || updateProfileImgSystemMessage
             "
@@ -27,7 +29,7 @@
             :isLoading="isLoading"
           />
           <account-detail
-            title="Biography"
+            :title="$t('accountDetails.biography')"
             :systemMessage="biographySystemMessage"
             :visibleToPublic="true"
             :editOption="true"
@@ -36,7 +38,7 @@
             :currentValue="biography"
           />
           <account-detail
-            title="Username"
+            :title="$t('accountDetails.username')"
             :systemMessage="usernameSystemMessage"
             :visibleToPublic="true"
             :editOption="true"
@@ -49,7 +51,7 @@
             :systemMessage="emailSystemMessage"
             :visibleToPublic="false"
             :editOption="false"
-            title="E-mail"
+            :title="$t('accountDetails.email')"
             inputType="email"
             autocompleteType="email"
             @update="value => updateEmail(value)"
@@ -57,55 +59,62 @@
           />
         </dl>
 
-        <h3>Recipes connected to your account</h3>
+        <h3>{{ $t("accountDetails.recipesConnectedToYourAccount") }}</h3>
         <dl class="flex-row">
           <account-link-list
-            title="My recipes:"
+            :title="`${$t('accountDetails.myRecipes')}:`"
             :links="userRecipes"
             basePath="/recipes/"
           />
           <account-link-list
-            title="Recipes shared with me:"
+            :title="`${$t('accountDetails.recipesSharedWithMe')}:`"
             :links="sharedRecipes"
             basePath="/recipes/"
           />
           <account-link-list
-            title="My recipe links:"
+            :title="`${$t('accountDetails.myRecipeLinks')}:`"
             :links="recipeLinks"
             :externalURL="true"
           />
         </dl>
 
-        <h3>Cooks connected to your account</h3>
+        <h3>{{ $t("accountDetails.cooksConnectedToYourAccount") }}</h3>
         <dl class="flex-row">
           <account-link-list
-            title="Following:"
+            :title="`${$t('accountDetails.following')}:`"
             :links="cooksFollowed"
             basePath="/cooks/"
           />
           <account-link-list
-            title="Followers:"
+            :title="`${$t('accountDetails.followers')}:`"
             :links="cookFollowers"
             basePath="/cooks/"
           />
         </dl>
         <dl class="flex-row">
-          <h3 class="full-width">E-mail notifications</h3>
+          <h3 class="full-width">
+            {{ $t("accountDetails.emailNotifications.headline") }}
+          </h3>
           <dt class="full-width account__detail account__detail--flex-column">
             <h4 class="account__detail-title">
-              We send you email notifications when other users share recipes or
-              shopping lists with you.
+              {{ $t("accountDetails.emailNotifications.infoNote") }}
             </h4>
             <div class="flex-row flex-row--align-center">
               <p class="email-notifications margin-right--small">
-                Your email notifications are
+                {{
+                  $t(
+                    "accountDetails.emailNotifications.yourEmailNotificationsAre"
+                  )
+                }}
                 <strong
                   class="email-notifications__status"
                   :class="{
                     'color--pink': user.emailNotificationsOff,
                     'color--blue': !user.emailNotificationsOff
                   }"
-                  >{{ user.emailNotificationsOff ? "OFF" : "ON" }}</strong
+                  >{{
+                    user.emailNotificationsOff ? $t("off") : $t("on")
+                  }}</strong
                 >
                 <toggle-switch
                   :checked="!user.emailNotificationsOff"
@@ -116,25 +125,25 @@
           </dt>
         </dl>
         <dl class="flex-row">
-          <h3 class="full-width">Profile visibility</h3>
+          <h3 class="full-width">
+            {{ $t("accountDetails.profileVisibility.headline") }}
+          </h3>
           <dt class="full-width account__detail account__detail--flex-column">
             <h4 class="account__detail-title">
               <p>
-                If you want to prevent people from seeing your profile, turn off
-                this setting. <br />* Note that people will still see your
-                public recipes.
+                {{ $t("accountDetails.profileVisibility.infoNote") }}
               </p>
             </h4>
             <div class="flex-row flex-row--align-center">
               <p class="email-notifications margin-right--small">
-                Your profile is
+                {{ $t("accountDetails.profileVisibility.yourProfileIs") }}
                 <strong
                   class="email-notifications__status"
                   :class="{
                     'color--pink': user.hiddenProfile,
                     'color--blue': !user.hiddenProfile
                   }"
-                  >{{ user.hiddenProfile ? "Hidden" : "Open" }}</strong
+                  >{{ user.hiddenProfile ? $t("closed") : $t("open") }}</strong
                 >
                 <toggle-switch
                   :checked="!user.hiddenProfile"
@@ -148,7 +157,9 @@
           class="button button--small button--transparent button--transparent-red margin-top--large"
           @click="toggleAlert"
         >
-          <delete-icon class="icon margin-right--small" />Delete my account
+          <delete-icon class="icon margin-right--small" />{{
+            $t("accountDetails.deleteMyAccount")
+          }}
         </button>
         <p class="system-message">{{ systemMessage }}</p>
       </div>
@@ -197,16 +208,6 @@ export default {
       ]
     };
   },
-  props: {
-    breadcrumbs: {
-      type: Array,
-      default: () => [
-        { name: "Home", link: "/" },
-        { name: "My account", link: "/account/" },
-        { name: "Account details" }
-      ]
-    }
-  },
   data() {
     return {
       systemMessage: "",
@@ -234,6 +235,13 @@ export default {
     userRecipeLinks
   ],
   computed: {
+    breadcrumbs() {
+      return [
+        { name: this.$t("navigation.home"), link: "/" },
+        { name: this.$t("navigation.myAccount"), link: "/account/" },
+        { name: this.$t("navigation.accountDetails") }
+      ];
+    },
     recipeLinks() {
       let links = this.userRecipeLinks;
       links = links.map(link => {

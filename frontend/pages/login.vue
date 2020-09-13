@@ -39,13 +39,13 @@ export default {
     LoginContainer,
     kokebokapen
   },
-  props: {
-    breadcrumbs: {
-      type: Array,
-      default: () => [{ name: "Home", link: "/" }, { name: "Login" }]
-    }
-  },
   computed: {
+    breadcrumbs() {
+      return [
+        { name: this.$t("navigation.home"), link: "/" },
+        { name: this.$t("loginText") }
+      ];
+    },
     loading() {
       return this.$route.fullPath.indexOf("?loading") > -1;
     }

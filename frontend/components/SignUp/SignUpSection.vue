@@ -1,11 +1,16 @@
 <template>
   <section class="padding--xlarge">
     <div class="container container--center">
-      <h2 v-if="bigHeadline" class="margin-top--xlarge">{{ headline }}</h2>
-      <h3 v-else>{{ headline }}</h3>
+      <h2 class="margin-top--xlarge">
+        {{
+          signUpPage ? $t("signUp.headingSignUp") : $t("signUp.headingIndex")
+        }}
+      </h2>
     </div>
     <div class="sign-up-section">
-      <sign-in-with-provider class="flex-row__half sign-in-with-provider margin-top--xxlarge" />
+      <sign-in-with-provider
+        class="flex-row__half sign-in-with-provider margin-top--xxlarge"
+      />
       <sign-up-form
         class="flex-row__half margin-top--xxlarge"
         :class="{
@@ -32,13 +37,9 @@ export default {
       type: Boolean,
       default: false
     },
-    bigHeadline: {
+    signUpPage: {
       type: Boolean,
       default: false
-    },
-    headline: {
-      type: String,
-      default: null
     }
   }
 };

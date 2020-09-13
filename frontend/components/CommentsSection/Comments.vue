@@ -2,13 +2,13 @@
   <div>
     <div v-if="loading" class="flex-row flex-row--align-center">
       <span class="simple-loading-spinner"></span>
-      Loading comments
+      {{ $t("comments.loadingComments") }}
     </div>
     <div
       v-if="!loading && !comments.length"
       class="comments--empty margin-vertical--xxlarge"
     >
-      Be the first one to leave a comment!
+      {{ $t("comments.noCommentsNote") }}
     </div>
 
     <div v-if="!loading && comments.length" class="comments">
@@ -29,7 +29,7 @@
       class="comments__load-more-btn button button--transparent margin-top--large"
       @click="loadMoreComments"
     >
-      Load more
+      {{ $t("comments.loadMore") }}
     </button>
   </div>
 </template>
@@ -104,7 +104,7 @@ export default {
                     subComment[1].isMyComment = true;
                   }
                   if (subComment[1].isAnonymous) {
-                    subComment[1].username = "Anonymous";
+                    subComment[1].username = this.$t("anonymous");
                     subComment[1].photoURL = "";
                   }
                   return subComment;

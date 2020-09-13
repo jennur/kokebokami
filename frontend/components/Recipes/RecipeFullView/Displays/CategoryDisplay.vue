@@ -9,7 +9,7 @@
         v-for="(category, index) in categories"
         :class="{ editable: isRecipeOwner, edit: beforeEdit === index }"
         :key="`category-${index}`"
-        ><span @click="toggleEditClass(index)">{{ category }}</span>
+        ><span @click="toggleEditClass(index)">{{ categoryNames[index] }}</span>
         <edit-icon
           tabindex="0"
           class="icon recipe__category-edit-icon"
@@ -20,7 +20,7 @@
         class="button button--xsmall button--round"
         @click="event => toggleEditMode(event)"
       >
-        Add category
+        {{ $t("recipes.addCategory") }}
       </button>
     </div>
     <category-edit
@@ -64,6 +64,17 @@ export default {
   computed: {
     allCategories() {
       return this.$store.state.allCategories.categories;
+    },
+    categoryNames() {
+      let allCategories = this.$store.state.allCategories.categories;
+      let localeCategories = this.$t("recipes.allCategories.categories");
+      return (
+        this.categories &&
+        this.categories.map(category => {
+          let index = allCategories.indexOf(category);
+          return localeCategories[index];
+        })
+      );
     }
   },
   methods: {

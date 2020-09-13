@@ -53,10 +53,12 @@ export default {
     foodclouds,
     clouds
   },
-  props: {
-    breadcrumbs: {
-      type: Array,
-      default: () => [{ name: "Home", link: "/" }, { name: "About" }]
+  computed: {
+    breadcrumbs() {
+      return [
+        { name: this.$t("navigation.home"), link: "/" },
+        { name: this.$t("navigation.about") }
+      ];
     }
   }
 };

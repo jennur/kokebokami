@@ -11,39 +11,59 @@
           :style="`background-image: url(${user.photoURL});`"
         ></div>
         <CookSilhouette v-else class="comment__user-img" />
-        <span class="margin-left--medium">{{anonymous ? "Anonymous" : user.displayName}}</span>
+        <span class="margin-left--medium">{{
+          anonymous ? "Anonymous" : user.displayName
+        }}</span>
       </div>
-      <label class="comment-form__anonymous flex-row flex-row--align-center margin-vertical--large">
+      <label
+        class="comment-form__anonymous flex-row flex-row--align-center margin-vertical--large"
+      >
         <input type="checkbox" v-model="anonymous" />
-        <span class="margin-left--small">I want to be anonymous</span>
+        <span class="margin-left--small">{{
+          $t("comments.iWantToBeAnonymous")
+        }}</span>
       </label>
       <label>
         <textarea
           class="comment-form__comment"
-          placeholder="Your comment..."
+          :placeholder="`${$t('comments.yourComment')}...`"
           tabindex="0"
           v-model="comment"
         ></textarea>
       </label>
       <label class="comment-form__submit-wrap margin-top--medium">
-        <button type="submit" class="button button--small" @click.prevent="handleSubmit">Submit</button>
+        <button
+          type="submit"
+          class="button button--small"
+          @click.prevent="handleSubmit"
+        >
+          {{ $t("submit") }}
+        </button>
       </label>
     </form>
     <section v-else class="comment-form">
-      <nuxt-link to="/login/" class="button button--small button--green margin-right--small">Log in</nuxt-link>to comment on this recipe
+      <nuxt-link
+        :to="localePath('/login/')"
+        class="button button--small button--green margin-right--small"
+        >{{ $t("loginText") }}</nuxt-link
+      >{{ $t("comments.loginNote") }}
     </section>
 
     <transition name="fade">
       <div
         v-if="submitted && !isRecipeOwner"
         class="comment-form__success padding-vertical--medium padding-horizontal--large margin-vertical--large"
-      >🎉Your comment was successfully added and is awaiting approval</div>
+      >
+        🎉{{ $t("comments.awaitingApproval") }}
+      </div>
     </transition>
     <transition name="fade">
       <div
         v-if="error"
         class="comment-form__error padding-vertical--medium padding-horizontal--large margin-vertical--large"
-      >🌧An error occured while posting your comment. Please try again later.</div>
+      >
+        🌧{{ $t("comments.errorSubmitting") }}
+      </div>
     </transition>
   </div>
 </template>
@@ -58,23 +78,23 @@ export default {
   props: {
     submitted: {
       type: Boolean,
-      default: false,
+      default: false
     },
     error: {
       type: Boolean,
-      default: false,
+      default: false
     },
     isRecipeOwner: {
       type: Boolean,
-      deafult: false,
-    },
+      deafult: false
+    }
   },
   data() {
     return {
       anonymous: false,
       comment: "",
       showingPreview: false,
-      showingPreviewModal: false,
+      showingPreviewModal: false
     };
   },
   mixins: [user],
@@ -90,10 +110,10 @@ export default {
         isAnonymous: this.anonymous,
         comment: this.comment,
         submitDate,
-        approved: this.isRecipeOwner,
+        approved: this.isRecipeOwner
       };
       this.$emit("addComment", commentObj);
-    },
-  },
+    }
+  }
 };
 </script>

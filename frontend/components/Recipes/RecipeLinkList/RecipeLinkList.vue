@@ -1,6 +1,6 @@
 <template>
   <section class="container">
-    <h3 class="color--blue">Categories</h3>
+    <h3 class="color--blue">{{ $t("recipes.categories") }}</h3>
     <div
       class="accordion"
       v-for="(category, index) in categories"

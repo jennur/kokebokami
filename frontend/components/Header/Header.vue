@@ -2,13 +2,14 @@
   <header>
     <div class="header--space-reserver"></div>
     <div :class="`header ${scrollDown ? '' : 'header--open'}`">
-      <navigation @toggleMenu="handleMenu" />
+      <navigation @toggle-menu="handleMenu" />
     </div>
   </header>
 </template>
 
 <script>
 import Navigation from "./Navigation/Navigation.vue";
+
 export default {
   name: "header-component",
   components: {

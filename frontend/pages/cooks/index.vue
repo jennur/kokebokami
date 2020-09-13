@@ -5,14 +5,16 @@
       class="cooks container container--center mobile-width margin-top--xlarge margin--auto"
     >
       <div v-if="user && user.id">
-        <h2>Discover cooks of Kokebokami</h2>
+        <h2>{{ $t("cooks.headline") }}</h2>
         <cooks-search />
       </div>
       <div v-else class="container container--center">
-        <h2>Log in to discover cooks of Kokebokami</h2>
+        <h2>{{ $t("cooks.loginHeadline") }}</h2>
         <div>
-          <nuxt-link to="/login/" class="button button--small button--green"
-            >Log in</nuxt-link
+          <nuxt-link
+            :to="localePath('/login/')"
+            class="button button--small button--green"
+            >{{ $t("loginText") }}</nuxt-link
           >
         </div>
         <cooksSilhouettes class="illustration--cooks" />
@@ -21,19 +23,19 @@
     <div v-if="user && user.id" class="margin-top--xlarge">
       <Tabs
         class="margin-top--xxlarge"
-        :tabTitles="['Currently following', 'Followers']"
+        :tabTitles="[$t('cooks.tabs.following'), $t('cooks.tabs.followers')]"
         @switchTab="index => handleTabSwitch(index)"
       >
         <cooks-list
           v-if="activeTabIndex == 0"
           :cooks="followed"
-          emptyListMessage="You are not following anyone right now 🤷🏽. Follow cooks to get easier access to their profile and see their recipes."
+          :emptyListMessage="$t('cooks.followedEmptyListMessage')"
           class="margin-top--large"
         />
         <cooks-list
           v-if="activeTabIndex == 1"
           :cooks="followers"
-          emptyListMessage="You don't have any followers yet 🤷🏻‍♀️"
+          :emptyListMessage="$t('cooks.followersEmptyListMessage')"
           class="margin-top--large"
         />
       </Tabs>
@@ -75,13 +77,15 @@ export default {
       showFollowers: false
     };
   },
-  props: {
-    breadcrumbs: {
-      type: Array,
-      default: () => [{ name: "Home", link: "/" }, { name: "Cooks" }]
+  mixins: [user, allUsers, connectedUsers],
+  computed: {
+    breadcrumbs() {
+      return [
+        { name: this.$t("navigation.home"), link: "/" },
+        { name: this.$t("navigation.cooks") }
+      ];
     }
   },
-  mixins: [user, allUsers, connectedUsers],
   methods: {
     handleTabSwitch(index) {
       this.activeTabIndex = index;

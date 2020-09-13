@@ -1,7 +1,7 @@
 <template>
   <div class="recipe__category-note margin-top--small">
     <p class="margin-top--small margin-bottom--small">
-      <b>Meal type:</b>
+      <b>{{ $t("recipes.typeOfMeal") }}:</b>
       <span
         v-if="!editMode && !loading"
         class="recipe__type-of-meal"
@@ -55,8 +55,12 @@ export default {
   },
   computed: {
     typeOfMealList() {
+      let allTypesOfMeal = this.$store.state.allCategories.typeOfMeal;
+      let localetypeOfMeal = this.$t("recipes.allCategories.typeOfMeal");
       return this.typeOfMeal
         .map(type => {
+          let index = allTypesOfMeal.indexOf(type);
+          type = localetypeOfMeal[index];
           return type.charAt(0).toUpperCase() + type.slice(1, type.length);
         })
         .join(", ");

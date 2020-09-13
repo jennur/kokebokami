@@ -1,7 +1,7 @@
 <template>
   <div class="recipe__category-note margin-top--small">
     <p class="margin-top--small margin-bottom--small">
-      <b>Free from:</b>
+      <b>{{ $t("recipes.freeFrom") }}:</b>
       <span
         v-if="!editMode && !loading"
         class="recipe__type-of-meal"
@@ -55,8 +55,12 @@ export default {
   },
   computed: {
     freeFromList() {
+      let allAllergens = this.$store.state.allCategories.allergens;
+      let localeAllergens = this.$t("recipes.allCategories.allergens");
       return this.freeFrom
         .map(type => {
+          let index = allAllergens.indexOf(type);
+          type = localeAllergens[index];
           return type.charAt(0).toUpperCase() + type.slice(1, type.length);
         })
         .join(", ");

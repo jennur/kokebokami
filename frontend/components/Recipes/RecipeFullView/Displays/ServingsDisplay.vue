@@ -15,7 +15,7 @@
       min="1"
       step="1"
       v-model="updatedServings"
-      @change="$emit('updateServings', updatedServings)"
+      @change="$emit('update-servings', updatedServings)"
       :disabled="!servings"
     />
     <span v-if="loading" class="simple-loading-spinner"></span>
@@ -81,9 +81,10 @@ export default {
       } else {
         servings = parseInt(this.updatedServings);
       }
-      if (!servings && !this.editMode) return "Servings 🤷";
-      if (servings > 1 || this.editMode) return "Servings";
-      if (servings === 1) return "Serving";
+      if (!servings && !this.editMode)
+        return `${this.$t("recipes.servings")} 🤷`;
+      if (servings > 1 || this.editMode) return this.$t("recipes.servings");
+      if (servings === 1) return this.$t("recipes.serving");
     }
   },
   methods: {

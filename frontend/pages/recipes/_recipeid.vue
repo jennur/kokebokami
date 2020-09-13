@@ -59,12 +59,21 @@ export default {
     breadcrumbs() {
       if (this.user && this.user.id === this.recipe.ownerID)
         return [
-          { name: "Home", link: "/" },
-          { name: "My account", link: "/account/" },
-          { name: "My cookbook", link: "/account/my-cookbook/" },
+          { name: this.$t("navigation.home"), link: "/" },
+          {
+            name: this.$t("navigation.myAccount"),
+            link: "/account/"
+          },
+          {
+            name: this.$t("navigation.myCookbook"),
+            link: "/account/my-cookbook/"
+          },
           { name: this.recipe.title }
         ];
-      return [{ name: "Recipes", link: "/" }, { name: this.recipe.title }];
+      return [
+        { name: this.$t("navigation.recipes"), link: "/" },
+        { name: this.recipe.title }
+      ];
     }
   },
   methods: {
