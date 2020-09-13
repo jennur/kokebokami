@@ -1,6 +1,6 @@
 <template>
   <span @click="togglePublic" :key="updated">
-    Make recipe {{ isPublic ? "private" : "public" }}
+    {{ isPublic ? $t("recipes.makePrivate") : $t("recipes.makePublic") }}
   </span>
 </template>
 <script>

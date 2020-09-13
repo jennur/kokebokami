@@ -4,6 +4,7 @@ export default {
   Share everything with your friends, the public - or keep it all to
   yourself.`,
   introCTA: "Get started",
+  email: "E-mail",
   password: "Password",
   searchText: "Search",
   loginText: "Log in",
@@ -27,7 +28,11 @@ export default {
   open: "Open",
   closed: "Closed",
   login: {
-    headingText: "Login to kokeboka di"
+    headingText: "Login to kokeboka di",
+    forgottenPassword: "I forgot my password",
+    newPasswordText: "Enter your email address to reset your password",
+    noAccount: "Don't already have an account",
+    withNewPassword: "Log in with your new password"
   },
   signUp: {
     headingIndex: "Sign up to start building your own cookbook",
@@ -141,6 +146,8 @@ export default {
   recipes: {
     publishedBy: "Published by",
     public: "Public",
+    makePublic: "Make recipe public",
+    makePrivate: "Make recipe private",
     noTitle: "Untitled recipe",
     noDescription: "Recipe has no description",
     language: "Recipe language",
@@ -209,6 +216,7 @@ export default {
     loginToAddToShoppingList: "Log in to add to shopping list",
     addToShoppingList: "Add to shopping list",
     addedToShoppingList: "Added to shopping list",
+    deleteRecipe: "Delete recipe",
     deleteAlert: {
       beforeTitle: "Are you sure you want to delete this recipe",
       afterTitle: "This operation cannot be undone"
@@ -218,7 +226,8 @@ export default {
       shareWithFollower: "Share with one of your followers",
       shareWithFollowerNote: `The recipe will show up under your friend's 'Recipes shared with me'
       tab in his/hers cookbook.`,
-      shareByEmail: "Share by e-mail"
+      shareByEmail: "Share by e-mail",
+      shareOnFb: "Share on Facebook"
     }
   }
 };

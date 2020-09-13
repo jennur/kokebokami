@@ -10,23 +10,7 @@
         <language-navigation />
       </ul>
 
-      <ul v-if="user && !user.id" class="footer__nav margin--large">
-        <li>
-          <h4 class="color--blue">
-            {{ $t("navigation.footer.shortcutsHeading") }}
-          </h4>
-        </li>
-        <li>
-          <nuxt-link :to="localePath('/login/')">{{
-            $t("loginText")
-          }}</nuxt-link>
-        </li>
-        <li>
-          <nuxt-link :to="localePath('/sign-up/')">{{
-            $t("signUpText")
-          }}</nuxt-link>
-        </li>
-      </ul>
+      <shortcuts />
 
       <ul class="footer__nav margin--large">
         <li>
@@ -77,13 +61,15 @@
   </footer>
 </template>
 <script>
-import LanguageNavigation from "./LanguageNavigation.vue";
-
+import LanguageNavigation from "../LanguageNavigation.vue";
+import Shortcuts from "./Shortcuts.vue";
 import user from "~/mixins/user.js";
+
 export default {
   name: "footer-component",
   components: {
-    LanguageNavigation
+    LanguageNavigation,
+    Shortcuts
   },
   mixins: [user],
   computed: {

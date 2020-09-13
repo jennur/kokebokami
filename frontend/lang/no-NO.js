@@ -3,6 +3,7 @@ export default {
   introDescription: `Bygg din egen personlige kokebok, opprett og organiser handlelister.
   Del alt med vennene dine, verden - eller hold alt for deg selv!`,
   introCTA: "Kom igang",
+  email: "E-post",
   password: "Passord",
   searchText: "Søk",
   loginText: "Logg inn",
@@ -26,7 +27,12 @@ export default {
   open: "Åpen",
   closed: "Lukket",
   login: {
-    headingText: "Logg inn på kokeboka di"
+    headingText: "Login to kokeboka di",
+    forgottenPassword: "Jeg har glemt passordet mitt",
+    newPasswordText:
+      "Skriv inn e-postadressen din for å gjenopprette passordet ditt.",
+    noAccount: "Har du ikke allerede en konto",
+    withNewPassword: "Logg inn med ditt nye passord"
   },
   signUp: {
     headingIndex: "Registrer deg for å opprette din egen kokebok",
@@ -140,6 +146,8 @@ export default {
   recipes: {
     publishedBy: "Publisert av",
     public: "Offentlig",
+    makePublic: "Gjør oppskriften offentlig",
+    makePrivate: "Gjør oppskriften privat",
     noTitle: "Uten tittel",
     noDescription: "Oppskriften har ingen beskrivelse",
     language: "Språk",
@@ -208,6 +216,7 @@ export default {
     loginToAddToShoppingList: "Logg inn for å legge i handleliste",
     addToShoppingList: "Legg i handleliste",
     addedToShoppingList: "Lagt til i handleliste",
+    deleteRecipe: "Slett oppskrift",
     deleteAlert: {
       beforeTitle: "Er du sikker på at du vil slette denne oppskriften",
       afterTitle: "Denne handlingen kan ikke reverseres"
@@ -216,7 +225,8 @@ export default {
       share: "Del",
       shareWithFollower: "Del med en av dine følgere",
       shareWithFollowerNote: `Oppskriften vil dukke opp under din følgers´ 'Oppskrifter delt med meg'-fane i hans/hennes kokebok.`,
-      shareByEmail: "Del på e-post"
+      shareByEmail: "Del på e-post",
+      shareOnFb: "Del på Facebook"
     }
   }
 };
