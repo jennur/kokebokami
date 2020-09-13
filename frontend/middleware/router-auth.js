@@ -40,7 +40,6 @@ function onAdminRoute(route) {
 }
 
 function performRedirect(route, redirect, app) {
-  console.log("Routename:", route.name);
   if (
     route.name.indexOf("login") > -1 ||
     route.name.indexOf("sign-up") > -1 ||
