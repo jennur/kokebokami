@@ -26,18 +26,12 @@ export default function(context) {
       }
     }
   });
-  if (route.name === "recipes") redirect("/");
+  if (route.name === "recipes") redirect(app.localePath("/"));
 }
 
 function onAdminRoute(route) {
   if (route.matched.some(record => record.path.indexOf("account") > -1)) {
     return true;
-    /*}  else if (route.matched.some(record => record.path.indexOf("cooks") > -1)) {
-    return true; */
-    /* } else if (
-    route.matched.some(record => record.path.indexOf("recipes") > -1)
-  ) {
-    return true; */
   } else if (
     route.matched.some(record => record.path.indexOf("verify-email") > -1)
   ) {
