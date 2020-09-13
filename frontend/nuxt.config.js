@@ -121,6 +121,12 @@ export default {
     "nuxt-fontawesome"
   ],
   i18n: {
+    detectBrowserLanguage: {
+      useCookie: true,
+      cookieKey: "i18n_redirected",
+      alwaysRedirect: true
+    },
+
     objectNotation: true,
     baseUrl: "https://kokebokami.com",
     locales: [
@@ -139,12 +145,7 @@ export default {
     ],
     lazy: true,
     langDir: "lang/",
-    defaultLocale: "en",
-    detectBrowserLanguage: {
-      useCookie: true,
-      cookieKey: "i18n_redirected",
-      onlyOnRoot: true
-    }
+    defaultLocale: "en"
   },
   firebase: {
     config: {
