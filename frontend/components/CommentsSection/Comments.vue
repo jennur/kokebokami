@@ -29,7 +29,7 @@
       class="comments__load-more-btn button button--transparent margin-top--large"
       @click="loadMoreComments"
     >
-      {{ $t("comments.loadMore") }}
+      {{ $t("loadMore") }}
     </button>
   </div>
 </template>
