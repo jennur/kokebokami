@@ -29,8 +29,8 @@ export default {
     headingText: "Logg inn på kokeboka di"
   },
   signUp: {
-    headingIndex: "Registrer deg for å bygge din egen kokebok",
-    headingSignUp: "Registrer deg for å lagre dine egne oppskrifter",
+    headingIndex: "Registrer deg for å lagre din egen kokebok",
+    headingSignUp: "Registrer deg for å samle dine egne oppskrifter",
     soMeLoginText:
       "Hvis du har en Google eller Facebook-konto, trenger du ikke å registrere deg - bare logg inn direkte.",
     repeatPassword: "Repeter passord",
