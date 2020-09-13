@@ -112,7 +112,7 @@ export default {
       let updatedServings = this.updatedServings;
       let servings = this.servings;
 
-      return ingredients.map(ingredient => {
+      ingredients = ingredients.map(ingredient => {
         let amount = ingredient.amount;
         if (amount && servings && updatedServings !== servings) {
           let oneServing = amount / servings;
@@ -121,6 +121,11 @@ export default {
         }
         return ingredient;
       });
+      this.$emit("calculated-ingredients", {
+        ingredients,
+        servings: updatedServings
+      });
+      return ingredients;
     }
   },
   methods: {

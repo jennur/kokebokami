@@ -1,7 +1,7 @@
 <template>
   <form class="sign-up-form" v-on:submit.prevent>
     <label class="flex-column margin-bottom--medium">
-      E-mail
+      {{ $t("email") }}
       <input
         class="margin-top--small"
         id="email"

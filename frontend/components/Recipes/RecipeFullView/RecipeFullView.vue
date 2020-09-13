@@ -16,8 +16,9 @@
             @update="payload => $emit('update', payload)"
           />
           <span v-if="recipeKey" class="system-message" @click="toggleAlert">
-            <delete-icon tabindex="0" class="icon margin-left--small" />Delete
-            recipe
+            <delete-icon tabindex="0" class="icon margin-left--small" />{{
+              $t("recipe.deleteRecipe")
+            }}
           </span>
         </settings-dropdown>
 
@@ -122,6 +123,7 @@
           :isRecipeOwner="isRecipeOwner"
           :recipeKey="recipeKey"
           @update="payload => $emit('update', payload)"
+          @calculated-ingredients="setCalculatedIngredients"
         />
 
         <instructions-display
@@ -187,10 +189,14 @@ export default {
     return {
       editMode: false,
       hide: false,
-      showAlert: false
+      showAlert: false,
+      calculatedIngredients: {}
     };
   },
   methods: {
+    setCalculatedIngredients(ingredientsObj) {
+      this.calculatedIngredients = ingredientsObj;
+    },
     toggleAlert() {
       this.showAlert = !this.showAlert;
     },
@@ -207,13 +213,30 @@ export default {
       let freeFrom = Array.isArray(recipe.freeFrom)
         ? recipe.freeFrom.join(", ")
         : recipe.freeFrom;
+
+      let calculatedIngredients = this.calculatedIngredients;
+
       let ingredients =
-        Array.isArray(recipe.ingredients) &&
-        recipe.ingredients
+        calculatedIngredients && calculatedIngredients.ingredients;
+
+      let servings =
+        (calculatedIngredients && calculatedIngredients.servings) ||
+        recipe.servings;
+
+      if (ingredients) {
+        ingredients = ingredients.map(ingredient => {
+          return `${ingredient.amount} ${ingredient.item}`;
+        });
+      } else ingredients = recipe.ingredients;
+
+      ingredients =
+        Array.isArray(ingredients) &&
+        ingredients
           .map(ingredient => {
             return `<li style="margin-bottom: 5px;">${ingredient}</li>`;
           })
           .join("");
+
       let instructions =
         Array.isArray(recipe.instructions) &&
         recipe.instructions
@@ -229,6 +252,8 @@ export default {
       <span style="color:#063c60;margin-bottom:5px;margin-top:0px;"><strong>Meal type: </strong> ${typeOfMeal}</span>
       <span style="color:#063c60;margin-bottom:5px;margin-top:0px;"><strong>Free from:</strong> ${freeFrom}</span>
       <span style="color:#063c60;margin-bottom:5px;margin-top:0px;"><strong>Categories:</strong> ${categories}</span>
+      <h6 style="color:#063c60;margin-top: 35px; margin-bottom: 10px;">Servings:</h6>
+      <div>${servings}</div>
       <h6 style="color:#063c60;margin-top: 35px; margin-bottom: 10px;">Ingredients</h6>
       <ul style="margin-bottom: 15px;">${ingredients}</ul>
       <h6 style="color:#063c60;margin-top: 25px; margin-bottom: 10px;">Instructions</h6>

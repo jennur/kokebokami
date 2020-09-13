@@ -11,10 +11,10 @@
         <form class="kokebokami-login-modal-form" v-on:submit.prevent>
           <fieldset>
             <div v-if="resettingPassword" class="margin-bottom--large">
-              Enter your email address to reset your password
+              {{ $t("login.newPasswordText") }}
             </div>
             <label>
-              E-mail
+              {{ $t("email") }}
               <input
                 type="text"
                 autocomplete="email"
@@ -23,7 +23,7 @@
               />
             </label>
             <label v-if="!resettingPassword">
-              Password
+              {{ $t("password") }}
               <input
                 type="password"
                 autocomplete="password"
@@ -44,7 +44,7 @@
             @click="kokebokamiSignIn"
             class="button button--small button--green margin-top--large"
           >
-            Log in
+            {{ $t("loginText") }}
           </button>
           <button
             v-else
@@ -62,7 +62,7 @@
                 v-if="successReset"
                 class="link--orange-underline"
                 @click="closePasswordReset"
-                >Log in with your new password</span
+                >{{ $t("login.withNewPassword") }}</span
               >
             </div>
           </expand-transition>
@@ -72,12 +72,14 @@
               class="link color--green margin-top--large"
               @click="openPasswordReset"
             >
-              I forgot my password
+              {{ $t("login.forgottenPassword") }}
             </div>
           </expand-transition>
           <div class="kokebokami-login-modal-signup margin-top--large">
-            Don't already have an account?
-            <nuxt-link :to="localePath('/sign-up/')">Sign up</nuxt-link>
+            {{ $t("login.noAccount") }}?
+            <nuxt-link :to="localePath('/sign-up/')">{{
+              $t("signUpText")
+            }}</nuxt-link>
           </div>
         </form>
       </div>
