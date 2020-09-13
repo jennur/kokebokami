@@ -12,7 +12,7 @@
         ></div>
         <CookSilhouette v-else class="comment__user-img" />
         <span class="margin-left--medium">{{
-          anonymous ? "Anonymous" : user.displayName
+          anonymous ? $t("anonymous") : user.displayName
         }}</span>
       </div>
       <label
