@@ -1,6 +1,6 @@
 export default {
-  introHeading: "Bygg din personlige kokebok på nett",
-  introDescription: `Lagre alle oppskriftene dine på ett sted, opprett og organiser handlelister.
+  introHeading: "Samle oppskriftene dine på ett sted",
+  introDescription: `Bygg din egen personlige kokebok, opprett og organiser handlelister.
   Del alt med vennene dine, verden - eller hold alt for deg selv!`,
   introCTA: "Kom igang",
   password: "Passord",
@@ -29,7 +29,7 @@ export default {
     headingText: "Logg inn på kokeboka di"
   },
   signUp: {
-    headingIndex: "Registrer deg for å lagre din egen kokebok",
+    headingIndex: "Registrer deg for å opprette din egen kokebok",
     headingSignUp: "Registrer deg for å samle dine egne oppskrifter",
     soMeLoginText:
       "Hvis du har en Google eller Facebook-konto, trenger du ikke å registrere deg - bare logg inn direkte.",
