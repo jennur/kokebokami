@@ -101,7 +101,6 @@ export default {
   methods: {
     handleSubmit() {
       let submitDate = JSON.stringify(new Date());
-      console.log("SubmitDate:", submitDate);
 
       let commentObj = {
         userId: this.user.id,

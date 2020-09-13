@@ -48,10 +48,14 @@
       </h5>
     </li>
     <li>
-      <nuxt-link class="burger-menu__link" to="/">English</nuxt-link>
+      <nuxt-link class="burger-menu__link" :to="switchLocalePath('en')"
+        >English</nuxt-link
+      >
     </li>
     <li>
-      <nuxt-link class="burger-menu__link" to="/no/">Norsk (beta)</nuxt-link>
+      <nuxt-link class="burger-menu__link" :to="switchLocalePath('no')"
+        >Norsk (beta)</nuxt-link
+      >
     </li>
   </ul>
 </template>
