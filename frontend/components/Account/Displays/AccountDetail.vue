@@ -4,7 +4,7 @@
       <h4 class="account__detail-title">
         {{ title }}
         <span v-if="visibleToPublic" class="system-message"
-          >(visible to everyone)</span
+          >({{ $t("accountDetails.visibleToEveryone") }})</span
         >
       </h4>
 
@@ -36,7 +36,7 @@
               @click="toggleAlert"
               class="icon icon--in-button icon--in-button-left margin-right--small"
             />
-            Delete
+            {{ $t("delete") }}
           </button>
           <Alert
             alertMessage="You're about to delete your profile picture"
@@ -48,7 +48,7 @@
             class="button button--small button--cancel account__detail-warning-btn margin-top--medium"
             @click="toggleEditMode"
           >
-            ✕ Cancel
+            ✕ {{ $t("cancel") }}
           </button>
         </div>
       </div>
@@ -76,7 +76,7 @@
             class="button button--small button--cancel"
             @click="toggleEditMode"
           >
-            ✕ Cancel
+            ✕ {{ $t("cancel") }}
           </button>
         </div>
       </fieldset>

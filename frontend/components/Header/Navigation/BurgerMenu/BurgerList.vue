@@ -7,11 +7,21 @@
           :username="user.displayName"
           :photoURL="menuItem.img && menuItem.img.url"
         />
-        <nuxt-link
-          class="burger-menu__link"
-          :to="menuItem.path"
-          @click.native="$emit('close-menu')"
-        >{{ menuItem.title }}</nuxt-link>
+        <span>
+          <h5
+            v-if="menuItem.headline"
+            class="margin-top--xxlarge margin-bottom--small color--blue"
+          >
+            {{ menuItem.headline }}
+          </h5>
+          <nuxt-link
+            v-if="!menuItem.noLink"
+            class="burger-menu__link"
+            :to="menuItem.path"
+            @click.native="$emit('close-menu')"
+            >{{ menuItem.title }}</nuxt-link
+          ></span
+        >
       </div>
       <ul
         v-if="menuItem.subLinks"
@@ -22,12 +32,26 @@
             class="burger-menu__link"
             :to="link.path"
             @click.native="$emit('close-menu')"
-          >{{ link.title }}</nuxt-link>
+            >{{ link.title }}</nuxt-link
+          >
         </li>
       </ul>
     </li>
     <li v-if="user && user.id">
-      <button class="logout-button" @click="$emit('logout')">Log out</button>
+      <button class="logout-button" @click="$emit('logout')">
+        {{ $t("logout") }}
+      </button>
+    </li>
+    <li>
+      <h5 class="margin-top--xxlarge margin-bottom--small color--blue">
+        {{ $t("navigation.footer.languageHeading") }}
+      </h5>
+    </li>
+    <li>
+      <nuxt-link class="burger-menu__link" to="/">English</nuxt-link>
+    </li>
+    <li>
+      <nuxt-link class="burger-menu__link" to="/no/">Norsk (beta)</nuxt-link>
     </li>
   </ul>
 </template>
@@ -37,21 +61,21 @@ import UserImage from "../UserImage.vue";
 export default {
   name: "burger-list",
   components: {
-    UserImage,
+    UserImage
   },
   props: {
     open: {
       type: Boolean,
-      default: false,
+      default: false
     },
     user: {
       type: Object,
-      default: () => {},
+      default: () => {}
     },
     menuItems: {
       type: Array,
-      default: () => [],
-    },
-  },
+      default: () => []
+    }
+  }
 };
 </script>

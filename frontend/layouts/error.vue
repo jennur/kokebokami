@@ -1,5 +1,7 @@
 <template>
-  <main class="mobile-width padding-horizontal--large margin--auto margin-bottom--xxlarge">
+  <main
+    class="mobile-width padding-horizontal--large margin--auto margin-bottom--xxlarge"
+  >
     <div v-if="error.statusCode === 404" class="container container--center">
       <h1 class="margin-top--xxlarge">404 Whoops!</h1>
       <cracked-eggs class="illustration--cracked-eggs" />
@@ -14,7 +16,9 @@
       <p>If the problem continues, please contact us.</p>
     </div>
     <div class="container container--center">
-      <nuxt-link to="/">Take me back to the front page</nuxt-link>
+      <nuxt-link :to="localePath('/')"
+        >Take me back to the front page</nuxt-link
+      >
     </div>
   </main>
 </template>

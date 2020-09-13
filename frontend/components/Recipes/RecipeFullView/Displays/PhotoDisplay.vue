@@ -6,7 +6,7 @@
         class="button button--small button--dynamic button--cancel margin-bottom--medium"
         @click="toggleEditMode"
       >
-        ✕ Cancel
+        ✕ {{ $t("cancel") }}
       </button>
     </div>
     <div

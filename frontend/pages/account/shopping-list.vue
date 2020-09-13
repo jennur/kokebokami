@@ -47,21 +47,23 @@ export default {
       ]
     };
   },
-  props: {
-    breadcrumbs: {
-      type: Array,
-      default: () => [
-        { name: "Home", link: "/" },
-        { name: "My account", link: "/account/" },
-        { name: "Shopping list" }
-      ]
-    }
-  },
   mixins: [user, shoppingLists],
   data() {
     return {
       addingNewShoppingList: false
     };
+  },
+  computed: {
+    breadcrumbs() {
+      return [
+        { name: this.$t("navigation.home"), link: "/" },
+        {
+          name: this.$t("navigation.myAccount"),
+          link: "/account/"
+        },
+        { name: this.$t("navigation.shoppingLists") }
+      ];
+    }
   },
   methods: {
     addNewShoppingList() {

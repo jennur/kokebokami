@@ -1,10 +1,26 @@
 <template>
   <!-- Desktop menu -->
   <div class="desktop-menu" v-click-outside="closeDropdown">
+    <ul v-if="user && !user.id" class="login-menu">
+      <li>
+        <nuxt-link
+          class="login-menu__signup-btn"
+          :to="localePath('/sign-up')"
+          >{{ $t("signUpText") }}</nuxt-link
+        >
+      </li>
+      <li>
+        <nuxt-link class="login-menu__link" :to="localePath('/login')">
+          {{ $t("loginText") }}</nuxt-link
+        >
+      </li>
+    </ul>
     <div v-if="user && user.id" class="account-menu margin-bottom--small">
       <user-image :username="user.displayName" :photoURL="user.photoURL" />
       <!-- Link -->
-      <nuxt-link class="account-menu__button" to="/account">{{ accountMenu.title }}</nuxt-link>
+      <nuxt-link class="account-menu__button" :to="localePath('/account')">{{
+        accountMenu.title
+      }}</nuxt-link>
       <!-- <transition name="pop-dropdown">
         <dropdown-menu
           v-if="open"
@@ -26,25 +42,25 @@ export default {
   name: "desktop-menu",
   components: {
     UserImage,
-    DropdownMenu,
+    DropdownMenu
   },
   props: {
     accountMenu: {
       type: Object,
-      default: {},
+      default: {}
     },
     loginMenu: {
       type: Array,
-      default: [],
+      default: []
     },
     user: {
       type: Object,
-      default: {},
-    },
+      default: {}
+    }
   },
   data() {
     return {
-      open: false,
+      open: false
     };
   },
   methods: {
@@ -53,10 +69,10 @@ export default {
     },
     closeDropdown() {
       this.open = false;
-    },
+    }
   },
   directives: {
-    ClickOutside,
-  },
+    ClickOutside
+  }
 };
 </script>

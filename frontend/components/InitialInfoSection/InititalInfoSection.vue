@@ -4,19 +4,17 @@
       class="flex-center-container flex-center-container--column tablet-width padding--none margin--auto"
     >
       <h1 class="container--center padding-horizontal--large">
-        Build your personal cookbook online
+        {{ $t("introHeading") }}
       </h1>
       <p
         class="padding-horizontal--large color--blue mobile-width text-align--center"
       >
-        Store and manage all your recipes,reate and organize shopping lists.
-        Share everything with your friends, the public - or keep it all to
-        yourself.
+        {{ $t("introDescription") }}
       </p>
       <nuxt-link
-        to="/sign-up/"
+        :to="localePath('/sign-up/')"
         class="button button--large padding-horizontal--xlarge margin-vertical--large"
-        >Get started ➔</nuxt-link
+        >{{ $t("introCTA") }} ➔</nuxt-link
       >
     </div>
   </section>

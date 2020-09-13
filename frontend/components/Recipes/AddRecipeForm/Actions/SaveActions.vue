@@ -5,17 +5,30 @@
         <button
           @click="toggleAlert"
           class="button button--small button--cancel margin-top--xxlarge"
-        >✕ Cancel</button>
+        >
+          ✕ {{ $t("cancel") }}
+        </button>
         <Alert
-          :alertMessage="editMode ?  'Are you sure you want to discard the changes?' : 'Are you sure you want to discard your new recipe?'"
+          :alertMessage="
+            editMode
+              ? 'Are you sure you want to discard the changes?'
+              : 'Are you sure you want to discard your new recipe?'
+          "
           :showAlert="showAlert"
           @confirmed="$emit('cancel')"
           @cancel="toggleAlert"
         />
-        <button @click="$emit('save')" class="button button--small margin-top--xxlarge">Save</button>
+        <button
+          @click="$emit('save')"
+          class="button button--small margin-top--xxlarge"
+        >
+          Save
+        </button>
       </div>
       <div class="system-message">{{ systemMessage }}</div>
-      <nuxt-link v-if="deleted" to="/account/my-cookbook/">Go back to your cookbook</nuxt-link>
+      <nuxt-link v-if="deleted" to="/account/my-cookbook/"
+        >Go back to your cookbook</nuxt-link
+      >
     </fieldset>
 
     <div
@@ -23,7 +36,9 @@
       v-else-if="saved && recipeKey"
     >
       <div class="system-message">{{ systemMessage }}</div>
-      <nuxt-link v-if="recipeKey !== ''" :to="'/recipes/' + recipeKey">Look at your new recipe ➔</nuxt-link>
+      <nuxt-link v-if="recipeKey !== ''" :to="'/recipes/' + recipeKey"
+        >Look at your new recipe ➔</nuxt-link
+      >
     </div>
   </div>
 </template>

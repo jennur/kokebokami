@@ -2,7 +2,7 @@
   <section class="loading-splash">
     <div class="container container--center mobile-width" v-show="loginError">
       <p class="system-message">{{ loginError }}</p>
-      <nuxt-link to="/login/">Try again</nuxt-link>
+      <nuxt-link :to="localePath('/login/')">Try again</nuxt-link>
     </div>
     <div v-show="!loginError">
       <loadingBook class="illustration--loading-book" />

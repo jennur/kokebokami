@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="flex-row flex-row--align-center flex-row--nowrap">
-      <h4 class="margin-vertical--medium">Instructions</h4>
+      <h4 class="margin-vertical--medium">{{ $t("recipes.instructions") }}</h4>
       <edit-icon
         tabindex="0"
         v-if="isRecipeOwner && !editMode"

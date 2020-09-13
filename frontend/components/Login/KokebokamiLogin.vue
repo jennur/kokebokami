@@ -1,46 +1,69 @@
 <template>
-  <section :class="'kokebokami-login ' + (open ? 'kokebokami-login--open' : '')">
+  <section
+    :class="'kokebokami-login ' + (open ? 'kokebokami-login--open' : '')"
+  >
     <transition name="pop-modal">
       <div v-if="open" class="kokebokami-login-modal margin-horizontal--medium">
-        <button @click="closeModal" class="remove-icon kokebokami-login-modal--close"></button>
+        <button
+          @click="closeModal"
+          class="remove-icon kokebokami-login-modal--close"
+        ></button>
         <form class="kokebokami-login-modal-form" v-on:submit.prevent>
           <fieldset>
-            <div
-              v-if="resettingPassword"
-              class="margin-bottom--large"
-            >Enter your email address to reset your password</div>
+            <div v-if="resettingPassword" class="margin-bottom--large">
+              Enter your email address to reset your password
+            </div>
             <label>
               E-mail
-              <input type="text" autocomplete="email" v-model="email" required />
+              <input
+                type="text"
+                autocomplete="email"
+                v-model="email"
+                required
+              />
             </label>
             <label v-if="!resettingPassword">
               Password
-              <input type="password" autocomplete="password" v-model="password" required />
+              <input
+                type="password"
+                autocomplete="password"
+                v-model="password"
+                required
+              />
             </label>
           </fieldset>
           <expand-transition :show="!!loginSystemMessage">
             <div
               class="system-message system-message--dark-bg margin-top--large"
-            >{{ loginSystemMessage }}</div>
+            >
+              {{ loginSystemMessage }}
+            </div>
           </expand-transition>
           <button
             v-if="!resettingPassword"
             @click="kokebokamiSignIn"
             class="button button--small button--green margin-top--large"
-          >Log in</button>
+          >
+            Log in
+          </button>
           <button
             v-else
             @click="handlePasswordReset"
             class="button button--small button--green margin-top--large"
-          >Send</button>
+          >
+            Send
+          </button>
           <expand-transition :show="!!resetEmailMessage">
-            <div class="system-message system-message--dark-bg margin-top--large">
+            <div
+              class="system-message system-message--dark-bg margin-top--large"
+            >
               {{ resetEmailMessage }}
               <span
                 v-if="successReset"
                 class="link--orange-underline"
                 @click="closePasswordReset"
-              >Log in with your new password</span>
+                >Log in with your new password</span
+              >
             </div>
           </expand-transition>
           <expand-transition :show="!resettingPassword">
@@ -48,11 +71,13 @@
               v-if="!resettingPassword"
               class="link color--green margin-top--large"
               @click="openPasswordReset"
-            >I forgot my password</div>
+            >
+              I forgot my password
+            </div>
           </expand-transition>
           <div class="kokebokami-login-modal-signup margin-top--large">
             Don't already have an account?
-            <nuxt-link to="/sign-up/">Sign up</nuxt-link>
+            <nuxt-link :to="localePath('/sign-up/')">Sign up</nuxt-link>
           </div>
         </form>
       </div>

@@ -1,5 +1,7 @@
 <template>
-  <section class="add-recipe-from-url padding-horizontal--large padding-vertical--xlarge">
+  <section
+    class="add-recipe-from-url padding-horizontal--large padding-vertical--xlarge"
+  >
     <h3 class="add-recipe-from-url__heading">Add new recipe from URL</h3>
     <form class="form mobile-width margin--auto">
       <fieldset class="flex-column">
@@ -16,7 +18,7 @@
         <span class="form--required">*</span>
       </fieldset>
       <expand-transition :show="!!systemMessage">
-        <div class="system-message">{{systemMessage}}</div>
+        <div class="system-message">{{ systemMessage }}</div>
       </expand-transition>
       <fieldset class="flex-column">
         <label for="title">Title</label>
@@ -40,13 +42,15 @@
             class="select--green margin-right--medium"
             :options="categories"
             defaultValue="No category"
-            @select="(option) => handleSelect(option)"
+            @select="option => handleSelect(option)"
           />
           <button
             v-if="!newCategory"
             class="form__category-btn button button--xsmall button--green button--round"
             @click.prevent="addNewCategory"
-          >New category</button>
+          >
+            New category
+          </button>
           <input
             v-if="newCategory"
             v-model="category"
@@ -87,14 +91,18 @@
         <button
           class="button button--small button--cancel"
           @click.prevent="$emit('cancel')"
-        >✕ Cancel</button>
+        >
+          ✕ {{ $t("cancel") }}
+        </button>
         <button
           type="submit"
           name="submit"
           value="Save"
           class="button button--small button--green margin-right--xlarge"
           @click.prevent="handleFormSubmit"
-        >Save</button>
+        >
+          Save
+        </button>
       </fieldset>
     </form>
   </section>

@@ -11,14 +11,14 @@
           class="button button--small button--red-border margin-top--large"
           v-if="isFollowingUser"
         >
-          Unfollow {{ cook ? cook.displayName : "" }}
+          {{ $t("cooks.unfollow") }} {{ cook ? cook.displayName : "" }}
         </button>
         <button
           @click="followUser"
           class="button button--small button--green-border margin-top--large"
           v-else
         >
-          Follow {{ cook ? cook.displayName : "" }}
+          {{ $t("cooks.follow") }} {{ cook ? cook.displayName : "" }}
         </button>
         <span class="system-message margin-top--medium">{{
           systemMessage
@@ -26,10 +26,12 @@
       </div>
 
       <profile-view class="margin-top--medium" :user="cook" />
-      <h3>Check out my recipes</h3>
+      <h3>{{ $t("cooks.checkOutMyRecipes") }}</h3>
       <recipes-list
         :recipes="cooksPublicRecipes"
-        :emptyListMessage="`${userName} did not add any public recipes yet 🤷🏾‍♂️`"
+        :emptyListMessage="
+          `${userName} ${$t('cooks.didNotAddAnyPublicRecipes')}`
+        "
       />
     </div>
     <div
@@ -87,8 +89,8 @@ export default {
     breadcrumbs() {
       if (this.cook) {
         return [
-          { name: "Home", link: "/" },
-          { name: "Cooks", link: "/cooks/" },
+          { name: this.$t("navigation.home"), link: "/" },
+          { name: this.$t("navigation.cooks"), link: "/cooks/" },
           { name: `${this.cook.displayName}` }
         ];
       }

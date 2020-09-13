@@ -5,7 +5,7 @@
       src="/f_logo_RGB-White_72.png"
       alt="fb logo"
     />
-    <span class="facebook-btn__text">Sign in with Facebook</span>
+    <span class="facebook-btn__text">{{ $t("loginWith") }} Facebook</span>
   </button>
 </template>
 <script>

@@ -3,7 +3,7 @@
     <servings-display
       :servings="updatedServings"
       :defaultServings="servings"
-      @updateServings="setServings"
+      @update-servings="setServings"
       :isRecipeOwner="isRecipeOwner"
       :recipeKey="recipeKey"
       @update="payload => $emit('update', payload)"
@@ -11,7 +11,7 @@
     />
     <div>
       <div class="flex-row flex-row--align-center flex-row--nowrap">
-        <h4 class="margin-vertical--medium">Ingredients</h4>
+        <h4 class="margin-vertical--medium">{{ $t("recipes.ingredients") }}</h4>
         <edit-icon
           tabindex="0"
           v-if="isRecipeOwner && !editMode"
@@ -20,8 +20,13 @@
         />
       </div>
       <ul v-if="!editMode && !loading" class="recipe__ingredients">
-        <li v-for="(ingredient, index) in calculatedIngredients" :key="`ingredient-${index}`">
-          <span class="recipe__ingredients-amount">{{ ingredient.amount }}</span>
+        <li
+          v-for="(ingredient, index) in calculatedIngredients"
+          :key="`ingredient-${index}`"
+        >
+          <span class="recipe__ingredients-amount">{{
+            ingredient.amount
+          }}</span>
           {{ ingredient.item }}
         </li>
       </ul>
@@ -41,9 +46,10 @@
     />
     <nuxt-link
       v-if="user && !user.id"
-      to="/login/"
+      :to="localePath('/login/')"
       class="button button--xsmall button--round button--green padding-horizontal--large margin-bottom--xxlarge"
-    >Log in to add to shopping list</nuxt-link>
+      >{{ $t("recipes.loginToAddToShoppingList") }}</nuxt-link
+    >
   </section>
 </template>
 
@@ -58,29 +64,29 @@ export default {
   components: {
     ServingsDisplay,
     AddToShoppingList,
-    IngredientsEdit,
+    IngredientsEdit
   },
   props: {
     servings: {
       type: String,
-      default: "",
+      default: ""
     },
     ingredients: {
       type: Array,
-      default: () => [],
+      default: () => []
     },
     recipeTitle: {
       type: String,
-      default: "",
+      default: ""
     },
     recipeKey: {
       type: String,
-      default: "",
+      default: ""
     },
     isRecipeOwner: {
       type: Boolean,
-      default: false,
-    },
+      default: false
+    }
   },
   mixins: [user],
   data() {
@@ -89,13 +95,13 @@ export default {
       amounts: [],
       editMode: false,
       loading: false,
-      updated: 0,
+      updated: 0
     };
   },
   watch: {
     servings(value) {
       this.updatedServings = value;
-    },
+    }
   },
   computed: {
     convertedIngredients() {
@@ -106,7 +112,7 @@ export default {
       let updatedServings = this.updatedServings;
       let servings = this.servings;
 
-      return ingredients.map((ingredient) => {
+      return ingredients.map(ingredient => {
         let amount = ingredient.amount;
         if (amount && servings && updatedServings !== servings) {
           let oneServing = amount / servings;
@@ -115,7 +121,7 @@ export default {
         }
         return ingredient;
       });
-    },
+    }
   },
   methods: {
     setServings(number) {
@@ -127,7 +133,7 @@ export default {
     saveIngredients(ingredients) {
       this.editMode = false;
       let recipeKey = this.recipeKey;
-      ingredients = ingredients.map((ingredient) => {
+      ingredients = ingredients.map(ingredient => {
         return `${ingredient.amount} ${ingredient.item}`;
       });
 
@@ -145,7 +151,7 @@ export default {
           .then(() => {
             this.loading = false;
           })
-          .catch((error) =>
+          .catch(error =>
             console.log("Error setting ingredients:", error.message)
           );
       } else {
@@ -167,7 +173,7 @@ export default {
           amount = this.fractionToDecimal(amount);
         } else if (wholeFractionRegex.test(amount)) {
           amount = amount.split(" ");
-          let fraction = amount.filter((elem) => {
+          let fraction = amount.filter(elem => {
             return fractionRegex.test(elem);
           });
           let decimal = this.fractionToDecimal(fraction[0]);
@@ -176,7 +182,7 @@ export default {
         return {
           amount,
           item: item && item.replace("NaN", ""),
-          id: index,
+          id: index
         };
       });
     },
@@ -185,7 +191,7 @@ export default {
       let dividend = parseInt(fraction[0]);
       let divisor = parseInt(fraction[1]);
       return Math.round((dividend / divisor) * 100) / 100;
-    },
-  },
+    }
+  }
 };
 </script>

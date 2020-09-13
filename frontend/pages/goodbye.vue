@@ -7,7 +7,7 @@
       <p>
         Your account was successfully deleted. You're welcome back at any time!
       </p>
-      <nuxt-link to="/">Back to home page</nuxt-link>
+      <nuxt-link :to="localePath('/')">Back to home page</nuxt-link>
     </div>
   </div>
 </template>
@@ -26,10 +26,12 @@ export default {
       ]
     };
   },
-  props: {
-    breadcrumbs: {
-      type: Array,
-      default: () => [{ name: "Home", link: "/" }, { name: "Goodbye" }]
+  computed: {
+    breadcrumbs() {
+      return [
+        { name: this.$t("navigation.home"), link: "/" },
+        { name: "Goodbye" }
+      ];
     }
   }
 };

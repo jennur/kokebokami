@@ -2,10 +2,10 @@
   <section>
     <breadcrumbs :routes="breadcrumbs" />
     <div class="system-message margin-vertical--large">
-      This is how other users of Kokebokami see your profile
+      {{ $t("accountDetails.publicProfileViewNote") }}
     </div>
     <profile-view :user="user && !user.hiddenProfile ? user : null" />
-    <h3>Check out my recipes</h3>
+    <h3>{{ $t("cooks.checkOutMyRecipes") }}</h3>
     <recipes-list
       :recipes="currentUsersPublicRecipes ? currentUsersPublicRecipes : []"
     />
@@ -33,18 +33,22 @@ export default {
     };
   },
   components: { ProfileView, RecipesList },
-  props: {
-    breadcrumbs: {
-      type: Array,
-      default: () => [
-        { name: "Home", link: "/" },
-        { name: "My account", link: "/account/" },
-        { name: "My public profile" }
-      ]
-    }
-  },
   mixins: [user, publicRecipes],
   computed: {
+    breadcrumbs() {
+      return [
+        { name: this.$t("navigation.home"), link: "/" },
+        {
+          name: this.$t("navigation.myAccount"),
+          link: "/account/"
+        },
+        {
+          name: this.$t("navigation.accountDetails"),
+          link: "/account/account-details/"
+        },
+        { name: this.$t("navigation.publicProfileView") }
+      ];
+    },
     currentUsersPublicRecipes() {
       let publicRecipes = this.publicRecipes;
       let currentUsersPublicRecipes = publicRecipes.filter(recipe => {

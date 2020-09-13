@@ -1,8 +1,7 @@
 <template>
   <div>
     <p class="margin-bottom--xlarge">
-      If you have a Google or Facebook account, there is no need to sign up -
-      just login directly.
+      {{ $t("signUp.soMeLoginText") }}
     </p>
     <google-login class="margin-bottom--medium" />
     <facebook-login class="margin-bottom--medium" />
