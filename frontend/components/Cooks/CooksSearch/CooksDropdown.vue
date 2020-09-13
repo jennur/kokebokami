@@ -36,9 +36,10 @@ export default {
       let searchTerm = this.searchTerm;
       let users = this.allUsers;
       return users.filter(user => {
-        return user[1].displayName
-          .toLowerCase()
-          .startsWith(searchTerm.toLowerCase());
+        return (
+          user[1].displayName.toLowerCase().indexOf(searchTerm.toLowerCase()) >
+          -1
+        );
       });
     }
   }

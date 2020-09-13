@@ -33,6 +33,7 @@
       </div>
     </div>
     <sign-up-section
+      v-if="user && !user.id"
       id="signUp"
       class="container--full-height container--blue padding-top--xxxlarge"
       :darkBg="true"

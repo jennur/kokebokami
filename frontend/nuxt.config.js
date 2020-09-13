@@ -71,7 +71,8 @@ export default {
   vendor: ["axios", "babel-polyfill"],
   router: {
     middleware: ["router-auth", "redirect-trailing-slash"],
-    linkExactActiveClass: "active-link"
+    linkExactActiveClass: "active-link",
+    linkActiveClass: null
   },
   pageTransition: "fade",
   // Nuxt.js dev-modules
