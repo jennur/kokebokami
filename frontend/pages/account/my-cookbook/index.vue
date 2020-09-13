@@ -16,7 +16,7 @@
       <transition name="pop-modal" tag="div">
         <div v-if="dropdown" class="add-recipe-dropdown">
           <nuxt-link
-            :to="localePath('/account/add-recipe/')"
+            :to="localePath('/account/my-cookbook/add-recipe/')"
             class="add-recipe-dropdown__link"
             >{{ $t("navigation.addPersonalRecipe") }}</nuxt-link
           >

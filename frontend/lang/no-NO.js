@@ -147,6 +147,7 @@ export default {
     typeOfMeal: "Måltid",
     categories: "Kategorier",
     freeFrom: "Fri for",
+    addCategory: "Legg til kategori",
     allCategories: {
       languages: [
         "Engelsk",

@@ -1,7 +1,6 @@
 <template>
   <div>
     <breadcrumbs :routes="breadcrumbs" />
-    <!--     <add-recipe-form :recipe="recipe" /> -->
     <recipe-full-view
       v-if="recipe"
       :recipe="recipe"
@@ -46,7 +45,7 @@ export default {
       }
     };
   },
-  comuted: {
+  computed: {
     breadcrumbs() {
       return [
         { name: this.$t("navigation.home"), link: "/" },

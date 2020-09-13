@@ -148,6 +148,7 @@ export default {
     typeOfMeal: "Meal type",
     categories: "Categories",
     freeFrom: "Free from",
+    addCategory: "Add category",
     allCategories: {
       languages: [
         "English",
