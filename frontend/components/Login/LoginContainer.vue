@@ -1,6 +1,7 @@
 <template>
   <section class="login-container">
-    <h2 class="margin-bottom--xlarge">{{ $t("login.headingText") }}</h2>
+    <!--     <h2 class="margin-bottom--xlarge">{{ $t("login.headingText") }}</h2>
+ -->
     <!-- Social Media login -->
     <google-login class="margin-bottom--medium" />
     <facebook-login class="margin-bottom--medium" />

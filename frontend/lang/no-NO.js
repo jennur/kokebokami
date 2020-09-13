@@ -26,7 +26,7 @@ export default {
   open: "Åpen",
   closed: "Lukket",
   login: {
-    headingText: "Logg inn til kokeboka di"
+    headingText: "Logg inn på kokeboka di"
   },
   signUp: {
     headingIndex: "Registrer deg for å bygge din egen kokebok",
