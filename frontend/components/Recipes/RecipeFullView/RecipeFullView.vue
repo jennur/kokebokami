@@ -16,8 +16,8 @@
             @update="payload => $emit('update', payload)"
           />
           <span v-if="recipeKey" class="system-message" @click="toggleAlert">
-            <delete-icon tabindex="0" class="icon margin-left--small" />{{
-              $t("recipe.deleteRecipe")
+            <delete-icon tabindex="0" class="icon margin-right--small" />{{
+              $t("recipes.deleteRecipe")
             }}
           </span>
         </settings-dropdown>

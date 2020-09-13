@@ -146,6 +146,8 @@ export default {
   recipes: {
     publishedBy: "Published by",
     public: "Public",
+    makePublic: "Make recipe public",
+    makePrivate: "Make recipe private",
     noTitle: "Untitled recipe",
     noDescription: "Recipe has no description",
     language: "Recipe language",

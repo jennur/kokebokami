@@ -146,6 +146,8 @@ export default {
   recipes: {
     publishedBy: "Publisert av",
     public: "Offentlig",
+    makePublic: "Gjør oppskriften offentlig",
+    makePrivate: "Gjør oppskriften privat",
     noTitle: "Uten tittel",
     noDescription: "Oppskriften har ingen beskrivelse",
     language: "Språk",
