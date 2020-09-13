@@ -75,7 +75,7 @@ export default {
   methods: {
     logOut() {
       this.$store.dispatch("USER_SIGN_OUT");
-      this.$router.push("/");
+      this.$router.push(this.localePath("/"));
     }
   }
 };
