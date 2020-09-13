@@ -4,7 +4,8 @@ export default {
       userAuth: !!this.$fireAuth.currentUser,
       publicRecipes: [],
       errorMessage: "",
-      loaded: false
+      loaded: false,
+      initialRecipes: []
     };
   },
   methods: {
@@ -18,8 +19,18 @@ export default {
           .once("value", recipes => {
             if (recipes.exists()) {
               recipes = Object.entries(recipes.val());
-              componentThis.publicRecipes = recipes.filter(recipe => {
+              let publicRecipes = recipes.filter(recipe => {
                 return recipe[1].public;
+              });
+              componentThis.publicRecipes = publicRecipes;
+              let language = "English";
+              if (this.$i18n.locale === "no") language = "Norwegian";
+
+              componentThis.initialRecipes = publicRecipes.filter(recipe => {
+                return (
+                  recipe[1].language &&
+                  recipe[1].language.toLowerCase() === language.toLowerCase()
+                );
               });
             }
           })

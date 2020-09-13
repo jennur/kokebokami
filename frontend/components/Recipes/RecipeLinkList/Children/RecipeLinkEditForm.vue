@@ -93,7 +93,7 @@
             class="button button--dynamic button--dynamic-small button--cancel margin-vertical--medium"
             @click.prevent="$emit('close-edit-mode')"
           >
-            ✕ Cancel
+            ✕ {{ $t("cancel") }}
           </button>
           <button
             type="submit"

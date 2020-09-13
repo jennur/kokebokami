@@ -12,7 +12,7 @@
     <div
       class="full-width flex-column flex-column--align-right margin-vertical--large"
     >
-      <button class="logout-button" @click="logOut">Log out</button>
+      <button class="logout-button" @click="logOut">{{ $t("logout") }}</button>
     </div>
   </div>
 </template>
@@ -35,35 +35,36 @@ export default {
   components: {
     GatewayLink
   },
-  props: {
-    breadcrumbs: {
-      type: Array,
-      default: () => [{ name: "Home", link: "/" }, { name: "My account" }]
-    }
-  },
+
   computed: {
+    breadcrumbs() {
+      return [
+        { name: this.$t("navigation.home"), link: "/" },
+        { name: this.$t("navigation.myAccount") }
+      ];
+    },
     gateways() {
       return [
         {
-          title: "Shopping lists",
-          link: "/account/shopping-list/",
-          description: "See and manage your shopping lists",
+          title: this.$t("navigation.shoppingLists"),
+          link: this.localePath("/account/shopping-list/"),
+          description: this.$t("account.shoppingListsDescription"),
           graphic: {
             name: "shopping-list"
           }
         },
         {
-          title: "My cookbook",
-          link: "/account/my-cookbook/",
-          description: "See and manage all your recipes",
+          title: this.$t("navigation.myCookbook"),
+          link: this.localePath("/account/my-cookbook/"),
+          description: this.$t("account.myCookbookDescription"),
           graphic: {
             name: "cookbook"
           }
         },
         {
-          title: "Account details",
-          link: "/account/account-details/",
-          description: "See and manage your account details",
+          title: this.$t("navigation.accountDetails"),
+          link: this.localePath("/account/account-details/"),
+          description: this.$t("account.accountDetailsDescription"),
           graphic: {
             name: "account-details"
           }
@@ -74,7 +75,7 @@ export default {
   methods: {
     logOut() {
       this.$store.dispatch("USER_SIGN_OUT");
-      this.$router.push("/");
+      this.$router.push(this.localePath("/"));
     }
   }
 };

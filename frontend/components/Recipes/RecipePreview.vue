@@ -1,38 +1,38 @@
 <template>
-  <nuxt-link :to="`/recipes/${recipeUrl}/`" class="recipe-preview">
+  <nuxt-link :to="localePath(`/recipes/${recipeUrl}/`)" class="recipe-preview">
     <!-- Image -->
     <div
       :style="`background-image: url(${recipeImage})`"
       class="recipe-preview__image"
     ></div>
 
-    <span class="recipe-preview__published-by" v-if="inPublicList"
-      >Published by {{ recipeOwner }}</span
+    <span class="recipe-preview__published-by" v-if="inPublicList">
+      {{ `${$t("recipes.publishedBy")} ${recipeOwner}` }}</span
     >
-    <span class="recipe-preview__public-note" v-if="showPublicNote"
-      >Public</span
-    >
+    <span class="recipe-preview__public-note" v-if="showPublicNote">{{
+      $t("recipes.public")
+    }}</span>
     <div class="full-width padding--xlarge">
       <!-- Details -->
 
       <div class="recipe-preview__category-note">
         <p v-if="typeOfMeal">
-          <b>Meal type:</b>
+          <b>{{ $t("recipes.typeOfMeal") }}: </b>
           {{ typeOfMeal }}
         </p>
         <p v-if="freeFrom">
-          <b>Free from:</b>
+          <b>{{ $t("recipes.freeFrom") }}:</b>
           {{ freeFrom }}
         </p>
       </div>
 
       <!-- Description -->
       <h3 class="recipe-preview__title margin--none margin-bottom--medium">
-        {{ recipe.title ? recipe.title : "Recipe has no title" }}
+        {{ recipe.title ? recipe.title : $t("recipes.noTitle") }}
       </h3>
       <div class="recipe-preview__description margin-bottom--large">
         {{
-          recipe.description ? recipe.description : "Recipe has no description"
+          recipe.description ? recipe.description : $t("recipes.noDescription")
         }}
       </div>
       <!-- Categories -->
@@ -98,13 +98,26 @@ export default {
       return this.recipeID;
     },
     categories() {
+      let allCategories = this.$store.state.allCategories.categories;
+      let localeCategories = this.$t("recipes.allCategories.categories");
+
       let categories = this.recipe.categories;
-      return categories && Object.values(categories);
+      return (
+        categories &&
+        Object.values(categories).map(category => {
+          let index = allCategories.indexOf(category);
+          return localeCategories[index];
+        })
+      );
     },
     typeOfMeal() {
       let typeOfMeal = [];
+      let allTypesOfMeal = this.$store.state.allCategories.typeOfMeal;
+      let localeTypesOfMeal = this.$t("recipes.allCategories.typeOfMeal");
       if (this.recipe && this.recipe.typeOfMeal) {
         this.recipe.typeOfMeal.forEach(type => {
+          let index = allTypesOfMeal.indexOf(type);
+          type = localeTypesOfMeal[index];
           type = type.charAt(0).toUpperCase() + type.slice(1);
           typeOfMeal.push(type);
         });
@@ -113,8 +126,12 @@ export default {
     },
     freeFrom() {
       let freeFrom = [];
+      let allAllergens = this.$store.state.allCategories.allergens;
+      let localeAllergens = this.$t("recipes.allCategories.allergens");
       if (this.recipe && this.recipe.freeFrom) {
         this.recipe.freeFrom.forEach(allergen => {
+          let index = allAllergens.indexOf(allergen);
+          allergen = localeAllergens[index];
           allergen = allergen.charAt(0).toUpperCase() + allergen.slice(1);
           freeFrom.push(allergen);
         });

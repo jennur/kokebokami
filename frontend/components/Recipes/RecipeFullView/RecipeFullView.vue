@@ -44,7 +44,8 @@
       </div>
       <Alert
         :alertMessage="
-          `Are you sure you want to delete this recipe: ${recipe.title}? This operation cannot be undone.`
+          `${$t('recipes.deleteAlert.beforeTitle')}: ${recipe.title}?
+          ${$t('recipes.deleteAlert.afterTitle')}.`
         "
         :showAlert="showAlert"
         @confirmed="deleteRecipe"
@@ -102,8 +103,8 @@
             v-if="!isRecipeOwner"
             class="recipe__category-note margin-bottom--large text-align--right"
           >
-            Written by
-            <nuxt-link :to="`/cooks/${recipe.ownerID}/`">{{
+            {{ $t("recipes.publishedBy") }}
+            <nuxt-link :to="localePath(`/cooks/${recipe.ownerID}/`)">{{
               recipeOwnerDisplayName
             }}</nuxt-link>
           </div>

@@ -31,12 +31,9 @@
 
 .initial-info-section {
   position: relative;
-  margin-top: -50px;
-  padding-top: 80px;
-  //height: 100vh;
+  padding-top: $spacingXLarge;
   box-sizing: border-box;
   @media screen and (min-width: $tabletWidth) {
-    margin-top: -60px;
-    padding-top: 100px;
+    padding-top: $spacingXLarge;
   }
 }

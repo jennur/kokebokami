@@ -11,15 +11,17 @@
         class="button button--large button--round margin--auto margin-vertical--xlarge"
         @click="toggleDropdown"
       >
-        Add new recipe
+        {{ $t("navigation.addRecipe") }}
       </button>
       <transition name="pop-modal" tag="div">
         <div v-if="dropdown" class="add-recipe-dropdown">
-          <nuxt-link to="/account/add-recipe/" class="add-recipe-dropdown__link"
-            >Add personal recipe</nuxt-link
+          <nuxt-link
+            :to="localePath('/account/my-cookbook/add-recipe/')"
+            class="add-recipe-dropdown__link"
+            >{{ $t("navigation.addPersonalRecipe") }}</nuxt-link
           >
           <button @click="toggleRecipeForm" class="add-recipe-dropdown__link">
-            Add recipe link
+            {{ $t("navigation.addRecipeLink") }}
           </button>
         </div>
       </transition>
@@ -36,9 +38,9 @@
     <Tabs
       class="margin-top--xlarge"
       :tabTitles="[
-        'My personal recipes',
-        'My recipe links',
-        'Recipes shared with me'
+        $t('myCookbook.tabs.myRecipes'),
+        $t('myCookbook.tabs.myRecipeLinks'),
+        $t('myCookbook.tabs.recipesSharedWithMe')
       ]"
       :activeTabIndexControl="activeTabIndex"
       @switchTab="index => handleTabSwitch(index)"
@@ -47,7 +49,7 @@
         v-if="activeTabIndex === 0 || activeTabIndex === 2"
         class="margin-top--large padding-bottom--large"
         :recipes="visibleRecipes"
-        :publicRecipe="activeTabIndex === 2"
+        :isPublicList="activeTabIndex === 2"
         :emptyListMessage="emptyListMessage"
         :addRecipeUrl="activeTabIndex === 0 ? '/account/add-recipe/' : ''"
       />
@@ -116,17 +118,17 @@ export default {
     };
   },
   mixins: [user, userRecipes, userRecipeLinks, sharedRecipes],
-  props: {
-    breadcrumbs: {
-      type: Array,
-      default: () => [
-        { name: "Home", link: "/" },
-        { name: "My account", link: "/account/" },
-        { name: "My cookbook" }
-      ]
-    }
-  },
   computed: {
+    breadcrumbs() {
+      return [
+        { name: this.$t("navigation.home"), link: "/" },
+        {
+          name: this.$t("navigation.myAccount"),
+          link: "/account/"
+        },
+        { name: this.$t("navigation.myCookbook") }
+      ];
+    },
     emptyListMessage() {
       if (this.activeTabIndex === 0)
         return "You didn´t add any recipes yet 👩‍🍳 Your personal recipes will appear in this list";

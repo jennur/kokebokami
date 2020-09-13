@@ -1,12 +1,7 @@
 <template>
   <div>
     <breadcrumbs :routes="breadcrumbs" />
-
-    <sign-up-section
-      headline="Sign up to start adding your recipes"
-      :bigHeadline="true"
-      :darkBg="false"
-    />
+    <sign-up-section :darkBg="false" :signUpPage="true" />
   </div>
 </template>
 
@@ -48,10 +43,12 @@ export default {
   components: {
     SignUpSection
   },
-  props: {
-    breadcrumbs: {
-      type: Array,
-      default: () => [{ name: "Home", link: "/" }, { name: "Sign up" }]
+  computed: {
+    breadcrumbs() {
+      return [
+        { name: this.$t("navigation.home"), link: "/" },
+        { name: this.$t("signUpText") }
+      ];
     }
   }
 };

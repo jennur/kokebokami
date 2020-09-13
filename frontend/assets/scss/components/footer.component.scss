@@ -1,50 +1,67 @@
 .footer {
   font-size: $fontSizeSmall;
   background-color: rgba($lightOrange, 0.8);
+  padding: $spacingLarge;
+  &__copyright {
+    text-align: center;
+  }
+  &__columns {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: flex-start;
+    max-width: max-content;
+    margin: 0 auto;
+    .footer__nav {
+      margin: $spacingXLarge;
+    }
+    .footer__nav,
+    .footer__nav ul {
+      flex-grow: 0;
+      list-style: none;
+      padding: 0px;
+      min-width: max-content;
+      max-width: 180px;
 
-  &__nav {
-    list-style: none;
-    padding: 0px;
-    max-width: 300px;
-    margin: 0px;
+      li {
+        margin-bottom: $spacingMedium;
 
-    & li {
-      margin-bottom: $spacingMedium;
-
-      a {
-        color: $blue;
-        transition: color 0.5s;
-        border-bottom: 0px;
-        &:hover {
-          text-decoration: none;
-          border-bottom: 1px solid $orange;
-          color: $richBlack;
-        }
-        &.active-link,
-        &.nuxt-link-active {
-          text-decoration: none;
-          color: $gray;
-          border-bottom: none;
-          cursor: default;
-
+        a {
+          color: $blue;
+          transition: color 0.5s;
+          border-bottom: 0px;
           &:hover {
-            border-bottom: none;
-            margin-bottom: 2px;
+            text-decoration: none;
+            border-bottom: 1px solid $orange;
+            color: $richBlack;
+          }
+          &.active-link,
+          &.nuxt-link-active {
+            text-decoration: none;
             color: $gray;
-          }
-        }
-        &.social-media {
-          display: inline-flex;
-          align-items: center;
-          .social-media__text {
-            margin-bottom: 1px;
-          }
-          &:hover {
-            border-bottom: 0px;
+            border-bottom: none;
+            cursor: default;
 
+            &:hover {
+              border-bottom: none;
+              margin-bottom: 2px;
+              color: $gray;
+            }
+          }
+          &.social-media {
+            display: inline-flex;
+            align-items: center;
             .social-media__text {
-              margin-bottom: 0px;
-              border-bottom: 1px solid $orange;
+              margin-bottom: 1px;
+            }
+            &:hover {
+              border-bottom: 0px;
+
+              .social-media__text {
+                margin-bottom: 0px;
+                border-bottom: 1px solid $orange;
+              }
             }
           }
         }

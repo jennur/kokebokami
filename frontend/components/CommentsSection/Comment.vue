@@ -20,13 +20,13 @@
     >
       <span
         class="comment__approval-text padding-vertical--medium margin-right--large"
-        >Awaiting your approval</span
+        >{{ $t("comments.awaitingYourApproval") }}</span
       >
       <span class="comment__approval-btn-wrap padding-vertical--medium">
         <button
           class="comment__approval-btn button button--dynamic button--round"
         >
-          Approve
+          {{ $t("approve") }}
         </button>
       </span>
     </div>
@@ -64,7 +64,7 @@
       }"
       @click="openCommentForm"
     >
-      Reply
+      {{ $t("reply") }}
     </button>
 
     <!-- Subcomments -->
@@ -80,7 +80,7 @@
         v-if="submitted && !isRecipeOwner"
         class="sub-comments-form__success padding-vertical--medium padding-horizontal--large margin-vertical--large"
       >
-        🎉Your comment was successfully added and is awaiting approval
+        🎉{{ $t("comments.awaitingApproval") }}
       </div>
     </transition>
     <transition name="fade">
@@ -88,7 +88,7 @@
         v-if="error"
         class="sub-comments-form__error padding-vertical--medium padding-horizontal--large margin-vertical--large"
       >
-        🌧An error occured while posting your comment. Please try again later.
+        🌧{{ $t("comments.errorSubmitting") }}
       </div>
     </transition>
     <div v-if="subComments.length" class="comment__sub-comments">
@@ -106,7 +106,7 @@
         class="button button--transparent margin-top--large"
         @click="loadMoreSubComments"
       >
-        Load more
+        {{ $t("loadMore") }}
       </button>
     </div>
   </div>
@@ -255,7 +255,9 @@ export default {
       }
     },
     confirmDelete() {
-      this.alertMessage = `Are you sure you want to delete this comment '${this.commentObj.comment}'?`;
+      this.alertMessage = `${this.$t("comments.deleteAlertNote")} '${
+        this.commentObj.comment
+      }'?`;
       this.showAlert = true;
     },
     closeAlert() {

@@ -1,11 +1,15 @@
 <template>
   <section class="login-container">
-    <h2 class="margin-bottom--xlarge">Log in to kokeboka di</h2>
+    <!--     <h2 class="margin-bottom--xlarge">{{ $t("login.headingText") }}</h2>
+ -->
     <!-- Social Media login -->
     <google-login class="margin-bottom--medium" />
     <facebook-login class="margin-bottom--medium" />
     <!-- Kokebokami login -->
-    <kokebokami-button class="margin-bottom--medium" @click.native="toggleLoginModal" />
+    <kokebokami-button
+      class="margin-bottom--medium"
+      @click.native="toggleLoginModal"
+    />
     <kokebokami-login :open="loginModalOpen" @toggle="toggleLoginModal" />
   </section>
 </template>

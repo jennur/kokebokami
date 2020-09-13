@@ -8,7 +8,7 @@
       >
         ✕
       </button>
-      <h3>Share '{{ recipeTitle }}'</h3>
+      <h3>{{ $t("recipes.share.share") }} '{{ recipeTitle }}'</h3>
       <div
         v-if="recipePublic"
         class="fb-share-button"
@@ -23,7 +23,7 @@
             `https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fkokebokami.com%2Frecipes%2F${recipeKey}%2F&amp;src=sdkpreparse`
           "
           class="fb-xfbml-parse-ignore"
-          >Share on Facebook</a
+          >{{ $t("recipes.share.shareOnFb") }}</a
         >
       </div>
       <form
@@ -32,10 +32,11 @@
         @submit.prevent
       >
         <div class="flex-row flex-row--align-center flex-row--nowrap">
-          <h4 class="margin-bottom--small">Share with follower</h4>
+          <h4 class="margin-bottom--small">
+            {{ $t("recipes.share.shareWithFollower") }}
+          </h4>
           <hover-info-box class="margin-left--small margin-bottom--small">
-            The recipe will show up under your friend's "Recipes shared with me"
-            tab in his/hers cookbook.
+            {{ $t("recipes.share.shareWithFollowerNote") }}
           </hover-info-box>
         </div>
         <fieldset class="flex-row margin-bottom--medium">
@@ -52,7 +53,7 @@
           @click="shareRecipe"
           class="button button--xsmall margin-left--xsmall"
         >
-          Share
+          {{ $t("recipes.share.share") }}
         </button>
       </form>
 
@@ -61,18 +62,20 @@
           <span class="simple-loading-spinner" />
         </div>
         <fieldset v-if="sharedByEmail === null">
-          <h4 class="margin-bottom--small">Share by e-mail</h4>
+          <h4 class="margin-bottom--small">
+            {{ $t("recipes.share.shareByEmail") }}
+          </h4>
           <label class="flex-column">
             <input
               id="shareEmail"
               type="email"
-              placeholder="john.doe@example.com"
+              :placeholder="$t('dummyEmail')"
             />
             <button
               @click="shareRecipeByEmail"
               class="button button--xsmall margin-left--xsmall margin-top--medium"
             >
-              Share
+              {{ $t("recipes.share.share") }}
             </button>
           </label>
         </fieldset>
@@ -148,7 +151,7 @@ export default {
 
       if (!email.match(emailRegex)) {
         validated = validated * 0;
-        this.systemMessage = "Please enter a valid email address";
+        this.systemMessage = this.$t("enterValidEmailAddress");
         return false;
       } else {
         this.systemMessage = "";

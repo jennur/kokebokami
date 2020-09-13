@@ -12,7 +12,7 @@
       <span class="system-message margin-top--small">{{ emailError }}</span>
     </label>
     <label class="flex-column margin-bottom--medium">
-      Password
+      {{ $t("password") }}
       <input
         class="margin-top--small"
         id="password"
@@ -23,7 +23,8 @@
       <span class="system-message margin-top--small">{{ passwordError }}</span>
     </label>
     <label class="flex-column margin-bottom--medium">
-      Repeat password
+      {{ $t("signUp.repeatPassword") }}
+
       <input
         class="margin-top--small"
         id="password-repeated"
@@ -45,12 +46,14 @@
           v-model="termsAndConditions"
         />
         <span class="sign-up-form_terms padding-horizontal--small">
-          I agree to the
-          <nuxt-link to="/terms-and-conditions/"
+          {{ $t("signUp.iAgreeTo") }}
+          <nuxt-link :to="localePath('/terms-and-conditions/')"
             >Terms and Conditions</nuxt-link
           >
-          {{ " " }}and
-          <nuxt-link to="/privacy-policy/">Privacy Policy</nuxt-link>
+          {{ " &" }}
+          <nuxt-link :to="localePath('/privacy-policy/')"
+            >Privacy Policy</nuxt-link
+          >
         </span>
       </span>
       <span class="system-message margin-top--small">{{
@@ -59,7 +62,7 @@
     </label>
     <div class="flex-column margin-top--small">
       <button @click="validateForm" class="button button--small button--green">
-        Sign up
+        {{ $t("signUpText") }}
       </button>
       <span class="system-message margin-top--small">{{ systemMessage }}</span>
     </div>

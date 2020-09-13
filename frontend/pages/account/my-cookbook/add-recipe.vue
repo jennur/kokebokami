@@ -1,7 +1,6 @@
 <template>
   <div>
     <breadcrumbs :routes="breadcrumbs" />
-    <!--     <add-recipe-form :recipe="recipe" /> -->
     <recipe-full-view
       v-if="recipe"
       :recipe="recipe"
@@ -30,18 +29,7 @@ export default {
     };
   },
   components: { RecipeFullView },
-  props: {
-    breadcrumbs: {
-      type: Array,
-      default: () => [
-        { name: "Home", link: "/" },
-        { name: "My cookbook", link: "/account/my-cookbook/" },
-        { name: "Add recipe" }
-      ]
-    }
-  },
   mixins: [user],
-
   data() {
     return {
       recipeKey: null,
@@ -56,6 +44,22 @@ export default {
         freeFrom: []
       }
     };
+  },
+  computed: {
+    breadcrumbs() {
+      return [
+        { name: this.$t("navigation.home"), link: "/" },
+        {
+          name: this.$t("navigation.myAccount"),
+          link: "/account/"
+        },
+        {
+          name: this.$t("navigation.myCookbook"),
+          link: "/account/my-cookbook/"
+        },
+        { name: this.$t("navigation.addRecipe") }
+      ];
+    }
   },
   methods: {
     saveRecipe(payload) {

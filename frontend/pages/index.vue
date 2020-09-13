@@ -11,12 +11,13 @@
         class="search__button button button--small button--green-border margin--medium"
         @click="event => toggleSearch(event)"
       >
-        Search
+        {{ $t("searchText") }}
       </button>
       <div class="flex-row flex-row--nowrap">
         <recipe-search
           :class="{ 'search--open': searchOpen }"
           :recipes="publicRecipes"
+          :initialRecipes="initialRecipes"
           @search="setVisibleRecipes"
           v-click-outside="event => closeSearch(event)"
         />
@@ -35,8 +36,6 @@
       id="signUp"
       class="container--full-height container--blue padding-top--xxxlarge"
       :darkBg="true"
-      headline="Sign up to start building your own cookbook"
-      :bigHeadline="true"
     />
   </div>
 </template>
@@ -101,6 +100,7 @@ export default {
   },
   data() {
     return {
+      initialFiltered: true,
       filteredRecipes: [],
       filtered: false,
       searchOpen: false
@@ -109,7 +109,9 @@ export default {
   mixins: [user, publicRecipes],
   computed: {
     visibleRecipes() {
-      if (!this.filtered) return this.publicRecipes;
+      if (this.initialFiltered && this.initialRecipes)
+        return this.initialRecipes;
+      if (!this.filtered && !this.initialFiltered) return this.publicRecipes;
       if (this.filtered) return this.filteredRecipes;
     }
   },
@@ -123,6 +125,7 @@ export default {
       this.searchOpen = !this.searchOpen;
     },
     setVisibleRecipes(filteredRecipesObj) {
+      this.initialFiltered = false;
       this.filteredRecipes = filteredRecipesObj.recipes;
       this.filtered = filteredRecipesObj.filtered;
     }

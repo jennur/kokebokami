@@ -5,7 +5,7 @@
       src="/f_logo_RGB-White_72.png"
       alt="fb logo"
     />
-    <span class="facebook-btn__text">Sign in with Facebook</span>
+    <span class="facebook-btn__text">{{ $t("loginWith") }} Facebook</span>
   </button>
 </template>
 <script>
@@ -14,7 +14,7 @@ export default {
   name: "facebook-login",
   methods: {
     facebookSignIn() {
-      this.$router.push("/login?loading");
+      this.$router.push(this.localePath("/login?loading"));
       const FacebookProvider = new this.$fireAuthObj.FacebookAuthProvider();
       this.$fireAuth.signInWithRedirect(FacebookProvider);
     }

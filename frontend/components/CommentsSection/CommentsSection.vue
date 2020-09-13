@@ -1,7 +1,9 @@
 <template>
   <div class="comments-section margin-bottom--xxlarge">
     <div class="comments-section__headline">
-      <h3 class="margin-top--xxlarge margin-bottom--medium">Leave a comment</h3>
+      <h3 class="margin-top--xxlarge margin-bottom--medium">
+        {{ $t("comments.headline") }}
+      </h3>
     </div>
     <comment-form
       class="margin-bottom--xlarge"
@@ -28,23 +30,23 @@ export default {
   name: "comments-section",
   components: {
     CommentForm,
-    Comments,
+    Comments
   },
   props: {
     recipeKey: {
       type: String,
-      default: "",
+      default: ""
     },
     recipeOwnerID: {
       type: String,
-      default: "",
-    },
+      default: ""
+    }
   },
   data() {
     return {
       submitted: false,
       error: false,
-      updateComments: 0,
+      updateComments: 0
     };
   },
   mixins: [user],
@@ -59,11 +61,11 @@ export default {
           this.error = false;
           this.updateComments++;
         })
-        .catch((error) => {
+        .catch(error => {
           this.error = true;
           console.log("Error submitting comment:", error.message);
         });
-    },
-  },
+    }
+  }
 };
 </script>

@@ -10,12 +10,15 @@
       :recipe="recipe[1]"
       :inPublicList="isPublicList"
     />
-    <div v-if="!recipesLength" class="container container--center">
-      <p class="margin--auto margin-bottom--medium mobile-width">
+    <div v-if="!recipesLength" class="container">
+      <p
+        class="margin-bottom--medium mobile-width"
+        :class="{ 'margin--auto': centerText }"
+      >
         {{ emptyListMessage }}
       </p>
       <nuxt-link v-if="addRecipeUrl" :to="addRecipeUrl"
-        >➔ Add a recipe 👨‍🍳</nuxt-link
+        >➔ {{ $t("addRecipeToList") }}👨‍🍳</nuxt-link
       >
     </div>
   </section>
@@ -53,6 +56,10 @@ export default {
     addRecipeUrl: {
       type: String,
       default: ""
+    },
+    centerText: {
+      type: Boolean,
+      default: false
     }
   },
   computed: {

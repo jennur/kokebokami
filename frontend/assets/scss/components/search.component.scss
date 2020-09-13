@@ -4,10 +4,9 @@
   top: 0px;
   left: -300px;
   bottom: 0px;
-
+  z-index: 9999;
   width: 200px;
   background-color: $cream;
-  z-index: 999;
   padding: $spacingMedium;
   box-shadow: 3px 0px 10px rgba(0, 0, 0, 0.2);
   transition: transform 0.3s;
@@ -21,7 +20,7 @@
     transform: translateX(0px);
     box-shadow: none;
     left: 0px;
-
+    z-index: 1;
     &--sticky {
       position: fixed;
     }

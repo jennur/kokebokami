@@ -5,7 +5,7 @@
       class="button--increment"
       @click="openSelect"
     >
-      Add to shopping list
+      {{ $t("recipes.addToShoppingList") }}
     </button>
     <div v-if="addingToShoppingList" class="flex-row flex-row--align-center">
       <select-component
@@ -25,13 +25,13 @@
         class="button button--small button--dynamic button--green-border padding--medium margin-left--medium"
         @click="addToShoppingList"
       >
-        Add
+        {{ $t("add") }}
       </button>
     </div>
     <span
       v-if="!addingToShoppingList && addedToShoppingList"
       class="button--checked"
-      >Added to shopping list</span
+      >{{ $t("recipes.addedToShoppingList") }}</span
     >
   </div>
 </template>

@@ -7,12 +7,13 @@ export default function(context) {
         user.providerData[0].providerId === "facebook.com"
         // Facebook users´ e-mail addresses are NOT automatically verified (Google users´ are)
       ) {
-        performRedirect(route, redirect);
+        performRedirect(route, redirect, app);
       } else if (
         !user.emailVerified &&
         user.providerData[0].providerId === "password"
       ) {
-        if (route.name !== "verify-email") redirect("/verify-email/");
+        if (route.name !== "verify-email")
+          redirect(app.localePath("/verify-email/"));
         console.log("Redirecting to verify email");
       }
       unsubscribe();
@@ -21,22 +22,16 @@ export default function(context) {
         console.log(
           "Redirecting to login, unauthenticated user on admin route"
         );
-        redirect("/login/");
+        redirect(app.localePath("/login/"));
       }
     }
   });
-  if (route.name === "recipes") redirect("/");
+  if (route.name === "recipes") redirect(app.localePath("/"));
 }
 
 function onAdminRoute(route) {
   if (route.matched.some(record => record.path.indexOf("account") > -1)) {
     return true;
-    /*}  else if (route.matched.some(record => record.path.indexOf("cooks") > -1)) {
-    return true; */
-    /* } else if (
-    route.matched.some(record => record.path.indexOf("recipes") > -1)
-  ) {
-    return true; */
   } else if (
     route.matched.some(record => record.path.indexOf("verify-email") > -1)
   ) {
@@ -44,14 +39,15 @@ function onAdminRoute(route) {
   }
 }
 
-function performRedirect(route, redirect) {
+function performRedirect(route, redirect, app) {
+  console.log("Routename:", route.name);
   if (
-    route.name == "login" ||
-    route.name == "sign-up" ||
-    route.name == "verify-email" ||
-    route.name == "goodbye"
+    route.name.indexOf("login") > -1 ||
+    route.name.indexOf("sign-up") > -1 ||
+    route.name.indexOf("verify-email") > -1 ||
+    route.name.indexOf("goodbye") > -1
   ) {
     console.log("Redirecting to account");
-    redirect("/account/");
+    redirect(app.localePath("/account/"));
   }
 }

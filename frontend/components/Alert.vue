@@ -3,13 +3,17 @@
     <div v-if="showAlertWrap" class="alert-box-wrap">
       <transition name="pop-modal">
         <div v-if="showAlertBox" class="alert-box">
-          <p>{{alertMessage}}</p>
+          <p>{{ alertMessage }}</p>
           <div class="alert-box__buttons flex-row flex-row--align-center">
             <button
               class="button button--small button--red-border margin-right--large"
               @click="$emit('cancel')"
-            >Cancel</button>
-            <button class="button button--small" @click="$emit('confirmed')">Confirm</button>
+            >
+              {{ $t("cancel") }}
+            </button>
+            <button class="button button--small" @click="$emit('confirmed')">
+              {{ $t("confirm") }}
+            </button>
           </div>
         </div>
       </transition>

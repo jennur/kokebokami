@@ -101,38 +101,6 @@ export default {
       }
     ]
   ],
-
-  // Nuxt.js modules
-  modules: [
-    "@nuxtjs/firebase",
-    "@nuxtjs/axios",
-    "@nuxtjs/pwa",
-    "nuxt-svg-loader",
-    "@nuxtjs/dotenv",
-    "@nuxtjs/sitemap",
-    "nuxt-fontawesome"
-    /* [
-      "nuxt-i18n",
-      {
-        locales: [
-          {
-            name: "Norsk",
-            code: "no",
-            iso: "no-NO",
-            file: "no-NO.js"
-          },
-          {
-            name: "English",
-            code: "en",
-            iso: "en-US",
-            file: "en-US.js"
-          }
-        ],
-        langDir: "lang/",
-        defaultLocale: "en"
-      }
-    ] */
-  ],
   serverMiddleware: [
     redirectSSL.create({
       enabled: process.env.NODE_ENV === "production"
@@ -141,6 +109,43 @@ export default {
     "~/api/send-email.js",
     "~/api/image-sitemap.js"
   ],
+  // Nuxt.js modules
+  modules: [
+    "nuxt-i18n",
+    "@nuxtjs/firebase",
+    "@nuxtjs/axios",
+    "@nuxtjs/pwa",
+    "nuxt-svg-loader",
+    "@nuxtjs/dotenv",
+    "@nuxtjs/sitemap",
+    "nuxt-fontawesome"
+  ],
+  i18n: {
+    objectNotation: true,
+    baseUrl: "https://kokebokami.com",
+    locales: [
+      {
+        name: "Norsk",
+        code: "no",
+        iso: "no-NO",
+        file: "no-NO.js"
+      },
+      {
+        name: "English",
+        code: "en",
+        iso: "en-US",
+        file: "en-US.js"
+      }
+    ],
+    lazy: true,
+    langDir: "lang/",
+    defaultLocale: "en",
+    detectBrowserLanguage: {
+      useCookie: true,
+      cookieKey: "i18n_redirected",
+      onlyOnRoot: true
+    }
+  },
   firebase: {
     config: {
       apiKey: process.env.API_KEY,
