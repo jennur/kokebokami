@@ -108,7 +108,7 @@ export default {
     }),
     "~/modules/redirectToTrailingSlash.js",
     "~/api/send-email.js",
-    "~/api/image-sitemap.js"
+    "~/api/sitemap.js"
   ],
   // Nuxt.js modules
   modules: [
@@ -118,7 +118,6 @@ export default {
     "@nuxtjs/pwa",
     "nuxt-svg-loader",
     "@nuxtjs/dotenv",
-    "@nuxtjs/sitemap",
     "nuxt-fontawesome"
   ],
   i18n: {
@@ -174,24 +173,6 @@ export default {
     }
   },
   pwa: {},
-  sitemap: {
-    path: "/sitemap.xml",
-    generate: false,
-    hostname: "https://kokebokami.com",
-    gzip: true,
-    exclude: [
-      "/account",
-      "/account/*",
-      "/verify-email",
-      "/cooks/*",
-      "/goodbye",
-      "/recipes",
-      "/no-access"
-    ],
-    routes() {
-      return getRoutes();
-    }
-  },
   fontawesome: {
     component: "fa",
     imports: [
