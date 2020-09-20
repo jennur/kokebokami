@@ -6,7 +6,7 @@ const axios = require("axios");
 app.use(express.json());
 
 app.get("/", async (req, res) => {
-  let recipeImages = await axios
+  let recipes = await axios
     .get(
       `https://${process.env.PROJECT_ID}.firebaseio.com/recipes.json?auth=${process.env.DATABASE_SECRET}`
     )
@@ -27,12 +27,13 @@ app.get("/", async (req, res) => {
         });
     })
     .catch(error => console.log("Error generating routes:", error.message));
-  recipeImages = recipeImages.join("\n");
+
+  recipes = recipes.join("\n");
   let sitemap = `<?xml version="1.0" encoding="UTF-8"?>
                   <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
                           xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
                           <url>
-                            <loc>https://kokebokami.com</loc>
+                            <loc>https://kokebokami.com/</loc>
                               <image:image>
                                 <image:loc>
                                   https://firebasestorage.googleapis.com/v0/b/kokebokami-e788f.appspot.com/o/images%2Fglobals%2Fkokebokami-assets%2FlogoK.png?alt=media&amp;token=d0a53dcc-a160-4384-a3e4-2910943e3d06
@@ -44,13 +45,22 @@ app.get("/", async (req, res) => {
                                 </image:loc>
                               </image:image>
                           </url>
-                          ${recipeImages}
+                          <url>
+                            <loc>https://kokebokami.com/about/</loc>
+                          </url>
+                          <url>
+                            <loc>https://kokebokami.com/login/</loc>
+                          </url>
+                          <url>
+                            <loc>https://kokebokami.com/sign-up/</loc>
+                          </url>
+                          ${recipes}
                   </urlset> `;
   res.set("Content-Type", "text/xml");
   res.send(sitemap);
 });
 
 module.exports = {
-  path: "/api/image-sitemap",
+  path: "/sitemap",
   handler: app
 };
