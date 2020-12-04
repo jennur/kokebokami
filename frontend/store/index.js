@@ -131,13 +131,22 @@ export const actions = {
             biography: snapshot.val().biography,
             following: snapshot.val().following,
             hiddenProfile: snapshot.val().hiddenProfile,
-            notificationsOff: snapshot.val().notificationsOff
+            notificationsOff: snapshot.val().notificationsOff || {
+              recipes: false,
+              shoppingLists: false,
+              comments: false
+            }
           };
         } else {
           let databaseUser = {
             displayName: authUser.displayName ? authUser.displayName : "User",
             photoURL: authUser.photoURL && authUser.photoURL,
-            email: authUser.email
+            email: authUser.email,
+            notificationsOff: {
+              recipes: false,
+              shoppingLists: false,
+              comments: false
+            }
             // No more details available upon first login
           };
           userRef.set(databaseUser);
