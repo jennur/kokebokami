@@ -270,7 +270,7 @@ export default {
     submitSubComment(subCommentObj) {
       let recipeKey = this.recipeKey;
       let commentKey = this.comment[0];
-      let subCommentsRef = this.$fireDb.ref(
+      let subCommentsRef = this.$fire.database.ref(
         `recipes/${recipeKey}/comments/${commentKey}/subComments`
       );
       subCommentsRef
@@ -297,7 +297,7 @@ export default {
       let commentKey = this.comment[0];
 
       if (this.isSubComment) {
-        let subCommentRef = this.$fireDb.ref(
+        let subCommentRef = this.$fire.database.ref(
           `recipes/${recipeKey}/comments/${mainCommentKey}/subComments/${commentKey}`
         );
         subCommentRef
@@ -310,7 +310,7 @@ export default {
             console.log("Error updating subcomment:", error.message);
           });
       } else {
-        let commentRef = this.$fireDb.ref(
+        let commentRef = this.$fire.database.ref(
           `recipes/${recipeKey}/comments/${commentKey}`
         );
         commentRef
@@ -331,7 +331,7 @@ export default {
       let commentKey = this.comment[0];
 
       if (this.isSubComment) {
-        let subCommentRef = this.$fireDb.ref(
+        let subCommentRef = this.$fire.database.ref(
           `recipes/${recipeKey}/comments/${mainCommentKey}/subComments/${commentKey}`
         );
         subCommentRef
@@ -344,7 +344,7 @@ export default {
             console.log("Error deleting comment:", error.message);
           });
       } else {
-        let commentRef = this.$fireDb.ref(
+        let commentRef = this.$fire.database.ref(
           `recipes/${recipeKey}/comments/${commentKey}`
         );
         commentRef

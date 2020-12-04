@@ -89,7 +89,7 @@ export default {
                         </span>
                       </p>
                     </div>`;
-      this.$fireDb
+      this.$fire.database
         .ref(`users/${this.recipeOwnerID}/notificationsOff/comments`)
         .once("value", snapshot => {
           let commentNotificationsOff = snapshot.exists() && snapshot.val();
@@ -108,7 +108,7 @@ export default {
     },
     submitComment(commentObj) {
       let recipeKey = this.recipeKey;
-      let commentsRef = this.$fireDb.ref(`recipes/${recipeKey}/comments`);
+      let commentsRef = this.$fire.database.ref(`recipes/${recipeKey}/comments`);
       commentsRef
         .push(commentObj)
         .then(() => {

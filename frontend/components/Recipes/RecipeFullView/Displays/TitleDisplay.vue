@@ -65,7 +65,7 @@ export default {
 
       if (recipeKey && updatedTitle !== this.title) {
         this.loading = true;
-        let titleRef = this.$fireDb.ref(`recipes/${recipeKey}/title`);
+        let titleRef = this.$fire.database.ref(`recipes/${recipeKey}/title`);
         titleRef
           .set(updatedTitle)
           .then(() => {

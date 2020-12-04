@@ -1,7 +1,7 @@
 export default {
   data() {
     return {
-      userAuth: this.$fireAuth.currentUser,
+      userAuth: this.$fire.auth.currentUser,
       sharedRecipes: [],
       errorMessage: ""
     };
@@ -11,7 +11,7 @@ export default {
       let componentThis = this;
       if (this.userAuth) {
         try {
-          let sharedRecipesRef = this.$fireDb
+          let sharedRecipesRef = this.$fire.database
             .ref("recipes")
             .orderByChild("sharedWith");
           sharedRecipesRef.once("value", recipes => {

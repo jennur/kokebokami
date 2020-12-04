@@ -91,7 +91,7 @@ export default {
   methods: {
     signUp() {
       let credentials = { email: this.email, password: this.password };
-      this.$fireAuth
+      this.$fire.auth
         .createUserWithEmailAndPassword(credentials.email, credentials.password)
         .then(response => {
           response.user

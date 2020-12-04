@@ -202,7 +202,7 @@ export default {
 
         try {
           if (this.recipeLinkID) {
-            const recipeLinkRef = this.$fireDb.ref(
+            const recipeLinkRef = this.$fire.database.ref(
               `users/${this.user.id}/recipeLinks/${this.recipeLinkID}`
             );
             recipeLinkRef
@@ -216,7 +216,7 @@ export default {
                 console.log("Error saving recipe", error.message);
               });
           } else {
-            let userRef = this.$fireDb.ref(`users/${this.user.id}`);
+            let userRef = this.$fire.database.ref(`users/${this.user.id}`);
             userRef
               .child("recipeLinks")
               .push(dataObject)

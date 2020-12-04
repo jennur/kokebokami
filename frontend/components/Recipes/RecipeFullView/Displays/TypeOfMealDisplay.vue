@@ -82,7 +82,7 @@ export default {
 
       if (recipeKey) {
         this.loading = true;
-        let typeOfMealRef = this.$fireDb.ref(`recipes/${recipeKey}/typeOfMeal`);
+        let typeOfMealRef = this.$fire.database.ref(`recipes/${recipeKey}/typeOfMeal`);
         typeOfMealRef
           .set(types)
           .then(() => {

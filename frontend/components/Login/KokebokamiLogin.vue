@@ -128,7 +128,7 @@ export default {
     handlePasswordReset() {
       let email = this.email;
       var componentThis = this;
-      this.$fireAuth
+      this.$fire.auth
         .sendPasswordResetEmail(email)
         .then(function() {
           // Email sent.
@@ -146,7 +146,7 @@ export default {
     kokebokamiSignIn() {
       const componentThis = this;
       try {
-        this.$fireAuth
+        this.$fire.auth
           .signInWithEmailAndPassword(this.email, this.password)
           .then(() => console.log("Logging in with firebase"))
           .catch(error => {

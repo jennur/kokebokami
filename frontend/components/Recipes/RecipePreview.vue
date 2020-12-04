@@ -141,7 +141,7 @@ export default {
   },
   methods: {
     getRecipeOwner() {
-      let displayNameRef = this.$fireDb.ref(
+      let displayNameRef = this.$fire.database.ref(
         `users/${this.recipe.ownerID}/displayName`
       );
       displayNameRef.once("value", snapshot => {

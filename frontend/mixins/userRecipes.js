@@ -1,7 +1,7 @@
 export default {
   data() {
     return {
-      userAuth: this.$fireAuth.currentUser,
+      userAuth: this.$fire.auth.currentUser,
       userRecipes: [],
       errorMessage: ""
     };
@@ -11,7 +11,7 @@ export default {
       let componentThis = this;
       if (this.userAuth) {
         try {
-          let userRecipesRef = this.$fireDb.ref("recipes").orderByKey();
+          let userRecipesRef = this.$fire.database.ref("recipes").orderByKey();
           userRecipesRef.once("value", recipes => {
             if (recipes.exists()) {
               recipes = Object.entries(recipes.val());

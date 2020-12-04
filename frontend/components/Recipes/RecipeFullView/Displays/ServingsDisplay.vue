@@ -97,7 +97,7 @@ export default {
 
       if (recipeKey && servings !== this.defaultServings) {
         this.loading = true;
-        let servingsRef = this.$fireDb.ref(`recipes/${recipeKey}/servings`);
+        let servingsRef = this.$fire.database.ref(`recipes/${recipeKey}/servings`);
         servingsRef
           .set(servings)
           .then(() => {

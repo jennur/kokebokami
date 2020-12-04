@@ -27,7 +27,7 @@ export default {
       let recipeKey = this.recipeKey;
 
       if (recipeKey) {
-        let publicRef = this.$fireDb.ref(`recipes/${recipeKey}/public`);
+        let publicRef = this.$fire.database.ref(`recipes/${recipeKey}/public`);
         publicRef
           .set(isPublic)
           .then(() => {

@@ -131,7 +131,7 @@ export default {
     deleteLink() {
       let linkID = this.link && this.link[0];
       if (linkID) {
-        const recipeLinkRef = this.$fireDb
+        const recipeLinkRef = this.$fire.database
           .ref(`users/${this.user.id}/recipeLinks/${linkID}`)
           .remove()
           .then(res => {

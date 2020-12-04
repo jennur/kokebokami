@@ -1,7 +1,7 @@
 export default {
   data() {
     return {
-      userAuth: this.$fireAuth.currentUser,
+      userAuth: this.$fire.auth.currentUser,
       shoppingLists: []
     };
   },
@@ -14,7 +14,7 @@ export default {
         let userID = this.userAuth.uid;
         let username = this.$store.state.user.displayName;
 
-        let shoppingListsRef = this.$fireDb.ref(`shoppingLists`);
+        let shoppingListsRef = this.$fire.database.ref(`shoppingLists`);
         shoppingListsRef
           .once("value", shoppingLists => {
             let updatedShoppingLists = [];

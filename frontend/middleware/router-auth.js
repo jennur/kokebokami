@@ -1,6 +1,6 @@
 export default function(context) {
   let { redirect, route, app } = context;
-  let unsubscribe = app.$fireAuth.onAuthStateChanged(user => {
+  let unsubscribe = app.$fire.auth.onAuthStateChanged(user => {
     if (user) {
       if (
         user.emailVerified ||

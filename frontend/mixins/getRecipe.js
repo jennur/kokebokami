@@ -3,7 +3,7 @@ import getUserByID from "~/mixins/getUserByID.js";
 export default {
   data() {
     return {
-      userAuth: !!this.$fireAuth.currentUser,
+      userAuth: !!this.$fire.auth.currentUser,
       recipe: {},
       cook: {},
       recipeLoaded: false,
@@ -139,7 +139,7 @@ export default {
   },
   methods: {
     getRecipe() {
-      let recipeRef = this.$fireDb.ref(`recipes/${this.recipeKey}`);
+      let recipeRef = this.$fire.database.ref(`recipes/${this.recipeKey}`);
       recipeRef
         .once("value", recipe => {
           if (recipe.exists()) {
@@ -157,7 +157,7 @@ export default {
               this.recipe = recipe;
               this.recipeLoaded = true;
             }
-            this.$fireDb
+            this.$fire.database
               .ref(`users/${recipe.ownerID}/displayName`)
               .once("value", displayName => {
                 if (displayName.exists()) {

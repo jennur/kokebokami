@@ -1,7 +1,7 @@
 export default {
   data() {
     return {
-      userAuth: this.$fireAuth.currentUser,
+      userAuth: this.$fire.auth.currentUser,
       userRecipeLinks: []
     };
   },
@@ -10,7 +10,7 @@ export default {
       let componentThis = this;
       if (this.userAuth) {
         try {
-          let userRecipeLinksRef = this.$fireDb.ref(
+          let userRecipeLinksRef = this.$fire.database.ref(
             `users/${this.userAuth.uid}/recipeLinks`
           );
           userRecipeLinksRef.once("value", links => {

@@ -68,7 +68,7 @@ export default {
 
       if (recipeKey) {
         this.loading = true;
-        let instructionsRef = this.$fireDb.ref(
+        let instructionsRef = this.$fire.database.ref(
           `recipes/${recipeKey}/instructions`
         );
         instructionsRef

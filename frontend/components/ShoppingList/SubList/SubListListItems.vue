@@ -120,8 +120,8 @@ export default {
       let listItems = this.updatedListItems;
       let subListKey = this.subListKey;
 
-      let shoppingListsRef = this.$fireDb.ref(`shoppingLists`);
-      let mainListRef = this.$fireDb.ref(`shoppingLists/${mainListKey}`);
+      let shoppingListsRef = this.$fire.database.ref(`shoppingLists`);
+      let mainListRef = this.$fire.database.ref(`shoppingLists/${mainListKey}`);
 
       if (mainListKey && subListKey !== "") {
         mainListRef

@@ -285,12 +285,12 @@ export default {
         .download(`${documentTitle}_kokebokami.pdf`);
     },
     deleteRecipeImageFromStorage() {
-      let photoRef = this.$fireDb.ref(`recipes/${this.recipeKey}/photoURL`);
+      let photoRef = this.$fire.database.ref(`recipes/${this.recipeKey}/photoURL`);
       return photoRef.once("value", snapshot => {
         if (snapshot.exists()) {
           let photoURL = snapshot.val();
           if (photoURL !== "") {
-            var fileRef = this.$fireStorage.refFromURL(photoURL);
+            var fileRef = this.$fire.storage.refFromURL(photoURL);
             fileRef
               .delete()
               .then(() => {
@@ -307,7 +307,7 @@ export default {
       let recipeKey = this.recipeKey;
       if (recipeKey) {
         this.deleteRecipeImageFromStorage().then(() => {
-          const recipeRef = this.$fireDb.ref(`recipes/${recipeKey}`);
+          const recipeRef = this.$fire.database.ref(`recipes/${recipeKey}`);
           recipeRef
             .remove()
             .then(() => {

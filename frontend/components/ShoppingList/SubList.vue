@@ -133,7 +133,7 @@ export default {
       let mainListKey = this.mainListKey;
       let subListKey = this.subListKey;
 
-      let subListRef = this.$fireDb.ref(
+      let subListRef = this.$fire.database.ref(
         `shoppingLists/${mainListKey}/subLists/${subListKey}`
       );
       subListRef

@@ -285,7 +285,7 @@ export default {
     updateHiddenProfileStatus(checked) {
       let hiddenProfile = !!this.hiddenProfile;
       if (checked === hiddenProfile) {
-        var userRef = this.$fireDb.ref(`users/${this.user.id}`);
+        var userRef = this.$fire.database.ref(`users/${this.user.id}`);
         userRef
           .update({ hiddenProfile: !checked })
           .then(() => {
@@ -303,7 +303,7 @@ export default {
 
       if (status !== (notificationsOff && notificationsOff[type])) {
         notificationsOff[type] = status;
-        this.$fireDb.ref(`users/${this.user.id}/notificationsOff`)
+        this.$fire.database.ref(`users/${this.user.id}/notificationsOff`)
           .set(notificationsOff)
           .then(() => {
             console.log(`Successfully updated ${type} notifications status`);
@@ -357,14 +357,14 @@ export default {
         var metadata = {
           contentType: "image/png"
         };
-        var storageRef = this.$fireStorage.ref();
+        var storageRef = this.$fire.storage.ref();
         var imageRef = storageRef.child(
           `images/users/${this.user.id}/profileImg/${imageName}.png`
         );
         await imageRef.put(file, metadata);
         this.photoURL = await imageRef.getDownloadURL();
 
-        this.$fireDb
+        this.$fire.database
           .ref("/users/" + this.user.id)
           .update({
             photoURL: componentThis.photoURL
@@ -390,7 +390,7 @@ export default {
       let userID = this.user.id;
       let fileName = this.photoURL;
 
-      var storageRef = this.$fireStorage.ref();
+      var storageRef = this.$fire.storage.ref();
       if (userID) {
         var profileImgRef = storageRef.child(
           `images/users/${userID}/profileImg`
@@ -416,7 +416,7 @@ export default {
     removeProfileImageFromDb() {
       let componentThis = this;
 
-      this.$fireDb
+      this.$fire.database
         .ref("/users/" + this.user.id)
         .update({
           photoURL: ""
@@ -435,7 +435,7 @@ export default {
       let componentThis = this;
       if (!value) value = "User";
 
-      this.$fireDb
+      this.$fire.database
         .ref("/users/" + this.user.id)
         .update({
           displayName: value
@@ -453,7 +453,7 @@ export default {
     updateEmail(value) {
       //Fix this with firebase
       let componentThis = this;
-      /* this.$fireDb
+      /* this.$fire.database
         .ref("/users/" + this.user.id)
         .update({
           email: value
@@ -471,7 +471,7 @@ export default {
 
     updateBiography(value) {
       let componentThis = this;
-      this.$fireDb
+      this.$fire.database
         .ref("/users/" + this.user.id)
         .update({
           biography: value
@@ -487,17 +487,17 @@ export default {
         });
     },
     deleteAccount() {
-      let user = this.$fireAuth.currentUser;
+      let user = this.$fire.auth.currentUser;
       const componentThis = this;
 
-      let recipesRef = this.$fireDb.ref("recipes").orderByChild("ownerID");
+      let recipesRef = this.$fire.database.ref("recipes").orderByChild("ownerID");
 
       //Remove user's recipes
       recipesRef
         .once("value", recipes => {
           recipes.forEach(recipe => {
             if (recipe.val().ownerID === user.uid) {
-              this.$fireDb
+              this.$fire.database
                 .ref("recipes/" + recipe.key)
                 .remove()
                 .then(() => {
@@ -510,7 +510,7 @@ export default {
           });
         })
         .then(() => {
-          this.$fireDb
+          this.$fire.database
             .ref("users/" + user.uid)
             .remove()
             .then(function() {

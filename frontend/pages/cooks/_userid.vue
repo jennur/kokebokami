@@ -120,7 +120,7 @@ export default {
     followUser() {
       let componentThis = this;
       try {
-        let currentUserRef = this.$fireDb.ref(
+        let currentUserRef = this.$fire.database.ref(
           `users/${this.user.id}/following`
         );
         currentUserRef.once("value", async snapshot => {
@@ -158,7 +158,7 @@ export default {
     unfollowUser() {
       let componentThis = this;
       try {
-        let userRef = this.$fireDb.ref(`users/${this.user.id}/following`);
+        let userRef = this.$fire.database.ref(`users/${this.user.id}/following`);
         userRef.once("value", snapshot => {
           if (snapshot.exists()) {
             snapshot.forEach(value => {

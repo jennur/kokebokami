@@ -66,7 +66,7 @@ export default {
       let recipeKey = this.recipeKey;
 
       if (!recipeKey) {
-        let newRecipeRef = this.$fireDb.ref("recipes");
+        let newRecipeRef = this.$fire.database.ref("recipes");
         let recipeObj = {
           ...payload,
           ownerID: this.user.id
@@ -81,7 +81,7 @@ export default {
             this.getRecipe();
           });
       } else {
-        let recipeRef = this.$fireDb.ref(`recipes/${recipeKey}`);
+        let recipeRef = this.$fire.database.ref(`recipes/${recipeKey}`);
         recipeRef
           .update(payload)
           .then(() => {
@@ -94,7 +94,7 @@ export default {
     },
     getRecipe() {
       if (this.user) {
-        let recipeRef = this.$fireDb.ref(`recipes/${this.recipeKey}`);
+        let recipeRef = this.$fire.database.ref(`recipes/${this.recipeKey}`);
         recipeRef
           .once("value", recipe => {
             if (recipe.exists()) {

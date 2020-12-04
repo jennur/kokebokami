@@ -1,7 +1,7 @@
 export default {
   data() {
     return {
-      userAuth: !!this.$fireAuth.currentUser,
+      userAuth: !!this.$fire.auth.currentUser,
       allUsers: [],
       errorMessage: ""
     };
@@ -10,7 +10,7 @@ export default {
     getAllUsers() {
       let componentThis = this;
       if (this.userAuth) {
-        this.$fireDb.ref("users").once(
+        this.$fire.database.ref("users").once(
           "value",
           users => {
             if (users.exists()) {

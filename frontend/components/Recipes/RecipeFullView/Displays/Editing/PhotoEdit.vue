@@ -33,7 +33,7 @@ export default {
       var metadata = {
         contentType: "image/png"
       };
-      var storageRef = this.$fireStorage.ref();
+      var storageRef = this.$fire.storage.ref();
       var imageRef = storageRef.child(`images/recipes/${imageKey}.png`);
       await imageRef.put(file, metadata);
       await imageRef
@@ -48,14 +48,14 @@ export default {
     },
     removeRecipeImg() {
       let recipeKey = this.recipeKey;
-      var storageRef = this.$fireStorage.ref();
+      var storageRef = this.$fire.storage.ref();
       if (recipeKey) {
-        let photoRef = this.$fireDb.ref(`recipes/${recipeKey}/photoURL`);
+        let photoRef = this.$fire.database.ref(`recipes/${recipeKey}/photoURL`);
         photoRef.once("value", snapshot => {
           if (snapshot.exists()) {
             let photoURL = snapshot.val();
             if (photoURL !== "") {
-              var fileRef = this.$fireStorage.refFromURL(photoURL);
+              var fileRef = this.$fire.storage.refFromURL(photoURL);
               fileRef
                 .delete()
                 .then(() => {
