@@ -205,8 +205,7 @@ export default {
 
       let selectedFollowerID = selectedFollower[0];
       let username = selectedFollower[1].displayName;
-      let emailNotificationsOff = selectedFollower[1].emailNotificationsOff;
-      //let userEmail = selectedFollower[1].email;
+      let emailNotificationsOff = selectedFollower[1].notifications && selectedFollower[1].notifications.recipe;
 
       sharesRef.once("value", snapshot => {
         if (snapshot.exists()) {

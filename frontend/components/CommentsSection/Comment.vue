@@ -282,6 +282,8 @@ export default {
           this.error = false;
           if (this.isRecipeOwner) {
             this.$emit("update");
+          } else {
+            this.$emit("subCommentSubmitted", subCommentObj);
           }
         })
         .catch(error => {

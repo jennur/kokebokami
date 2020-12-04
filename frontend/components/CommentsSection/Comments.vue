@@ -21,6 +21,7 @@
         :isRecipeOwner="isRecipeOwner"
         class="padding-vertical--large"
         @update="getComments"
+        @subCommentSubmitted="commentObj => $emit('send-email', commentObj)"
       />
     </div>
 

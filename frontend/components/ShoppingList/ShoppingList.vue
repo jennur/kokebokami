@@ -287,7 +287,7 @@ export default {
                   .then(() => {
                     componentThis.systemMessage = `Successfully shared with ${followerUsername}`;
                     componentThis.$emit("update");
-                    if (!follower.emailNotificationsOff) {
+                    if (!follower.notificationsOff || !follower.notificationsOff.shoppingLists) {
                       this.sendEmail(follower);
                     }
                   });
