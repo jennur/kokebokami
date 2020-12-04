@@ -39,7 +39,7 @@ async function sendEmail(data) {
 
   const msg = {
       to: receiverEmail,
-      from: '"Kokebokami" <noreply@kokebokami.com>',
+      from: 'Kokebokami <noreply@kokebokami.com>',
       subject: data.subject,
       text: data.message,
       html: data.message,
