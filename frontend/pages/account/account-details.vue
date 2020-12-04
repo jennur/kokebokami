@@ -99,29 +99,28 @@
             <h4 class="account__detail-title">
               {{ $t("accountDetails.emailNotifications.infoNote") }}
             </h4>
-            <div class="flex-row flex-row--align-center">
-              <p class="email-notifications margin-right--small">
-                {{
-                  $t(
-                    "accountDetails.emailNotifications.yourEmailNotificationsAre"
-                  )
-                }}
-                <strong
-                  class="email-notifications__status"
-                  :class="{
-                    'color--pink': user.emailNotificationsOff,
-                    'color--blue': !user.emailNotificationsOff
-                  }"
-                  >{{
-                    user.emailNotificationsOff ? $t("off") : $t("on")
-                  }}</strong
-                >
-                <toggle-switch
-                  :checked="!user.emailNotificationsOff"
-                  @toggle="updateEmailNotificationStatus"
-                />
-              </p>
-            </div>
+            <p>{{ $t("accountDetails.notifyMe") }}...</p>
+            <toggle-setting
+              :setting="{
+                title: `${$t('accountDetails.recipeSharing')}`,
+                status: user.notificationsOff && !user.notificationsOff.recipes
+              }"
+              @update-notification-status="status => updateNotificationStatus('recipes', status)"
+            />
+            <toggle-setting
+              :setting="{
+                title: `${$t('accountDetails.shoppingListSharing')}`,
+                status: user.notificationsOff && !user.notificationsOff.shoppingLists
+              }"
+              @update-notification-status="status => updateNotificationStatus('shoppingLists', status)"
+            />
+            <toggle-setting
+              :setting="{
+                title: `${$t('accountDetails.comments')}`,
+                status: user.notificationsOff && !user.notificationsOff.comments
+              }"
+              @update-notification-status="status => updateNotificationStatus('comments', status)"
+            />
           </dt>
         </dl>
         <dl class="flex-row">
@@ -187,6 +186,7 @@ import userRecipeLinks from "~/mixins/userRecipeLinks.js";
 import AccountDetail from "~/components/Account/Displays/AccountDetail.vue";
 import AccountLinkList from "~/components/Account/Displays/AccountLinkList.vue";
 import Alert from "~/components/Alert.vue";
+import ToggleSetting from "~/components/Account/Displays/ToggleSetting.vue";
 import ToggleSwitch from "~/components/Input/ToggleSwitch.vue";
 
 export default {
@@ -195,6 +195,7 @@ export default {
     AccountDetail,
     AccountLinkList,
     Alert,
+    ToggleSetting,
     ToggleSwitch
   },
   head() {
@@ -222,7 +223,7 @@ export default {
       biography: "",
       isLoading: false,
       showAlert: false,
-      emailNotificationsOff: false,
+      notificationsOff: {},
       hiddenProfile: false
     };
   },
@@ -297,20 +298,21 @@ export default {
           );
       }
     },
-    updateEmailNotificationStatus(checked) {
-      let emailNotificationsOff = !!this.emailNotificationsOff;
-      if (checked === emailNotificationsOff) {
-        var userRef = this.$fireDb.ref(`users/${this.user.id}`);
-        userRef
-          .update({ emailNotificationsOff: !checked })
+    updateNotificationStatus(type, status) {
+      let notificationsOff = this.notificationsOff || {};
+
+      if (status !== (notificationsOff && notificationsOff[type])) {
+        notificationsOff[type] = status;
+        this.$fireDb.ref(`users/${this.user.id}/notificationsOff`)
+          .set(notificationsOff)
           .then(() => {
-            console.log("Successfully updated email notifications status");
+            console.log(`Successfully updated ${type} notifications status`);
+            this.notificationsOff[type] = status;
             this.updateUserDetailsInStore();
-            this.emailNotificationsOff = !checked;
           })
           .catch(error =>
             console.log(
-              "Error updating email notification status:",
+              "Error updating comment notification status:",
               error.message
             )
           );
@@ -323,7 +325,7 @@ export default {
         displayName: this.username,
         email: this.email,
         biography: this.biography,
-        emailNotificationsOff: this.emailNotificationsOff
+        notificationsOff: this.notificationsOff
       };
       this.$store.dispatch("SET_USER", userObj);
     },
@@ -544,8 +546,8 @@ export default {
     this.email = this.user.email;
     this.biography = this.user.biography;
     this.photoURL = this.user.photoURL;
-    this.emailNotificationsOff = this.user.emailNotificationsOff;
     this.hiddenProfile = this.user.hiddenProfile;
+    this.notificationsOff = this.user.notificationsOff;
   }
 };
 </script>

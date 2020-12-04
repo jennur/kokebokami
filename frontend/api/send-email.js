@@ -1,9 +1,9 @@
 "use strict";
 const express = require("express");
 const app = express();
-const nodemailer = require("nodemailer");
 const axios = require("axios");
-
+const sgMail = require('@sendgrid/mail');
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 app.use(express.json());
 
 const validHosts = [
@@ -22,20 +22,6 @@ app.post("/", async (req, res) => {
 });
 
 async function sendEmail(data) {
-  // create reusable transporter object using the default SMTP transport
-  let transporter = nodemailer.createTransport({
-    host: "smtpout.secureserver.net",
-    secureConnection: false,
-    port: 587,
-    tls: {
-      ciphers: "SSLv3"
-    },
-    auth: {
-      user: "contact@kokebokami.com", // email
-      pass: process.env.EMAIL_PASSWORD // password
-    }
-  });
-
   let receiverEmail = "";
   if (data.receiverID) {
     receiverEmail = await axios
@@ -51,25 +37,22 @@ async function sendEmail(data) {
     receiverEmail = data.email;
   }
 
-  // send mail with defined transport object
-
-  return transporter
-    .sendMail({
-      from: '"Kokebokami" <noreply@kokebokami.com>', // sender address
-      to: receiverEmail, // list of receivers
-      subject: data.subject, // Subject line
-      text: data.message, // plain text body
-      html: `${data.message}`, // html body
+  const msg = {
+      to: receiverEmail,
+      from: 'Kokebokami <noreply@kokebokami.com>',
+      subject: data.subject,
+      text: data.message,
+      html: data.message,
       sendmail: true
-    })
-    .then(info => {
-      console.log("Message sent: %s", info.response);
-      return { status: 200, message: "mail accepted for delivery" };
-    })
-    .catch(error => {
-      console.log("Error in transporter:", error.message);
+  }
+  try {
+    await sgMail.send(msg)
+    console.log("Message sent");
+    return { status: 200, message: "mail accepted for delivery" };
+  } catch (error) {
+    console.log("Error in sgMail:", error.message);
       return { status: 500, message: error.message };
-    });
+  }
 }
 
 module.exports = {

@@ -71,10 +71,14 @@ export default {
     cooksConnectedToYourAccount: "Cooks connected to your account",
     following: "Following",
     followers: "Followers",
+    notifyMe: "Notify me upon",
+    recipeSharing: "sharing of recipes",
+    shoppingListSharing: "sharing of shopping lists",
+    comments: "comments on my recipes",
     emailNotifications: {
       headline: "E-mail notifications",
       infoNote:
-        "We send you email notifications when other users share recipes or shopping lists with you.",
+        "We send you email notifications when someone comment on your recipes or share recipes and shopping lists with you.",
       yourEmailNotificationsAre: "Your email notifications are"
     },
     profileVisibility: {

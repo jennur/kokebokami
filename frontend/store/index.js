@@ -130,14 +130,23 @@ export const actions = {
             email: snapshot.val().email,
             biography: snapshot.val().biography,
             following: snapshot.val().following,
-            emailNotificationsOff: snapshot.val().emailNotificationsOff,
-            hiddenProfile: snapshot.val().hiddenProfile
+            hiddenProfile: snapshot.val().hiddenProfile,
+            notificationsOff: snapshot.val().notificationsOff || {
+              recipes: false,
+              shoppingLists: false,
+              comments: false
+            }
           };
         } else {
           let databaseUser = {
             displayName: authUser.displayName ? authUser.displayName : "User",
             photoURL: authUser.photoURL && authUser.photoURL,
-            email: authUser.email
+            email: authUser.email,
+            notificationsOff: {
+              recipes: false,
+              shoppingLists: false,
+              comments: false
+            }
             // No more details available upon first login
           };
           userRef.set(databaseUser);

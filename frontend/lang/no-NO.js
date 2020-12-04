@@ -71,10 +71,14 @@ export default {
     cooksConnectedToYourAccount: "Kokker forbundet med profilen din",
     following: "Følger",
     followers: "Følgere",
+    notifyMe: "Varsle meg ved",
+    recipeSharing: "deling av oppskrifter",
+    shoppingListSharing: "deling av handlelister",
+    comments: "kommentarer på oppskriftene mine",
     emailNotifications: {
       headline: "E-postvarsler",
       infoNote:
-        "Vi sender deg varsler når andre deler oppskrifter eller handlelister med deg.",
+        "Vi sender deg varsler når andre kommenterer på oppskriftene dine eller deler oppskrifter og handlelister med deg.",
       yourEmailNotificationsAre: "Dine e-post varsler er"
     },
     profileVisibility: {

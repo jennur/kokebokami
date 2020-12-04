@@ -26,6 +26,7 @@
         class="tablet-width margin--auto margin-top--xxlarge"
         :recipeKey="recipeKey"
         :recipeOwnerID="recipe.ownerID"
+        :recipeTitle="recipe.title"
       />
     </div>
   </div>

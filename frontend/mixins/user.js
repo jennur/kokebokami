@@ -1,8 +1,9 @@
 export default {
   computed: {
     user() {
+      let user = JSON.parse(JSON.stringify(this.$store.state.user));
       return (
-        this.$store.state.user || {
+        user || {
           id: null,
           displayName: null,
           photoURL: null,

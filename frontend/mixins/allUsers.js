@@ -26,7 +26,8 @@ export default {
                       photoURL: user.photoURL,
                       biography: user.biography,
                       following: user.following,
-                      hiddenProfile: user.hiddenProfile
+                      hiddenProfile: user.hiddenProfile,
+                      notificationsOff: user.notificationsOff
                     }
                   ];
                 });
