@@ -82,7 +82,7 @@ export default {
     getComments() {
       let componentThis = this;
       this.loading = true;
-      let commentsRef = this.$fireDb.ref(`recipes/${this.recipeKey}/comments`);
+      let commentsRef = this.$fire.database.ref(`recipes/${this.recipeKey}/comments`);
       commentsRef
         .once("value", comments => {
           if (comments.exists()) {

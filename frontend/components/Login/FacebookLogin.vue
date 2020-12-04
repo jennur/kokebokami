@@ -15,8 +15,8 @@ export default {
   methods: {
     facebookSignIn() {
       this.$router.push(this.localePath("/login?loading"));
-      const FacebookProvider = new this.$fireAuthObj.FacebookAuthProvider();
-      this.$fireAuth.signInWithRedirect(FacebookProvider);
+      const FacebookProvider = new this.$fireModule.auth.FacebookAuthProvider();
+      this.$fire.auth.signInWithRedirect(FacebookProvider);
     }
   }
 };

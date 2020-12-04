@@ -92,7 +92,7 @@ export default {
 
       if (recipeKey) {
         this.loading = true;
-        let categoriesRef = this.$fireDb.ref(`recipes/${recipeKey}/categories`);
+        let categoriesRef = this.$fire.database.ref(`recipes/${recipeKey}/categories`);
         categoriesRef
           .set(categories)
           .then(() => {

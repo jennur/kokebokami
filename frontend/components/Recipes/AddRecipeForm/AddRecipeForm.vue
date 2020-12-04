@@ -182,7 +182,7 @@ export default {
       }
     },
     deleteRecipe() {
-      const recipeRef = this.$fireDb.ref("recipes/" + this.recipeKey);
+      const recipeRef = this.$fire.database.ref("recipes/" + this.recipeKey);
       recipeRef
         .remove()
         .then(() => {
@@ -239,7 +239,7 @@ export default {
       };
 
       if (this.recipeKey !== "") {
-        const recipeRef = this.$fireDb.ref("recipes/" + this.recipeKey);
+        const recipeRef = this.$fire.database.ref("recipes/" + this.recipeKey);
         recipeRef
           .update(recipeObject)
           .then(() => {
@@ -250,7 +250,7 @@ export default {
             console.log("Error saving recipe", error.message);
           });
       } else {
-        const recipes = this.$fireDb.ref("recipes");
+        const recipes = this.$fire.database.ref("recipes");
         const newRecipeKey = recipes.push(recipeObject).key;
 
         if (newRecipeKey !== null) {
@@ -277,7 +277,7 @@ export default {
         var metadata = {
           contentType: "image/png"
         };
-        var storageRef = this.$fireStorage.ref();
+        var storageRef = this.$fire.storage.ref();
         var imageRef = storageRef.child(
           `images/recipes/${recipeKey}/${imageName}.png`
         );
@@ -296,7 +296,7 @@ export default {
       let recipeKey = this.recipeKey;
       let fileName = this.photoURL;
 
-      var storageRef = this.$fireStorage.ref();
+      var storageRef = this.$fire.storage.ref();
       var imageRef = storageRef.child(`images/recipes/${recipeKey}`);
       imageRef
         .listAll()

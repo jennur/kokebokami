@@ -7,7 +7,7 @@ export default function(context) {
     routerAuth(context);
   });
 
-  context.app.$fireAuth.getRedirectResult().catch(error => {
+  context.app.$fire.auth.getRedirectResult().catch(error => {
     console.log("Redirect error:", error.message);
     context.store.dispatch("SET_LOGIN_MESSAGE", error.message);
   });

@@ -62,7 +62,7 @@ export default {
 
       if (recipeKey && updatedDescription !== this.description) {
         this.loading = true;
-        let descriptionRef = this.$fireDb.ref(
+        let descriptionRef = this.$fire.database.ref(
           `recipes/${recipeKey}/description`
         );
         descriptionRef

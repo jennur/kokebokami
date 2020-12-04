@@ -185,7 +185,7 @@ export default {
           comment
         };
         try {
-          let userRef = this.$fireDb.ref(`users/${this.user.id}`);
+          let userRef = this.$fire.database.ref(`users/${this.user.id}`);
           userRef.child("recipeLinks").push(dataObject);
           this.$emit("save");
         } catch (error) {

@@ -10,7 +10,7 @@ export default {
       let componentThis = this;
       let hiddenProfile = false;
 
-      await componentThis.$fireDb
+      await componentThis.$fire.database
         .ref(`users/${userID}/hiddenProfile`)
         .once("value", hiddenStatus => {
           if (hiddenStatus.exists()) {
@@ -20,9 +20,9 @@ export default {
 
       if (!hiddenProfile) {
         let userPromises = [
-          this.$fireDb.ref(`users/${userID}/displayName`).once("value"),
-          this.$fireDb.ref(`users/${userID}/photoURL`).once("value"),
-          this.$fireDb.ref(`users/${userID}/biography`).once("value")
+          this.$fire.database.ref(`users/${userID}/displayName`).once("value"),
+          this.$fire.database.ref(`users/${userID}/photoURL`).once("value"),
+          this.$fire.database.ref(`users/${userID}/biography`).once("value")
         ];
 
         Promise.all(userPromises)

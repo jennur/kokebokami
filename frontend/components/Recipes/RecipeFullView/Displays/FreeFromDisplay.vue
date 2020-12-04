@@ -82,7 +82,7 @@ export default {
 
       if (recipeKey) {
         this.loading = true;
-        let freeFromRef = this.$fireDb.ref(`recipes/${recipeKey}/freeFrom`);
+        let freeFromRef = this.$fire.database.ref(`recipes/${recipeKey}/freeFrom`);
         freeFromRef
           .set(allergens)
           .then(() => {

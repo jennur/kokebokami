@@ -87,8 +87,8 @@ export const actions = {
   },
   SET_SHOPPING_LIST_COUNT: function({ commit }, payload) {
     if (!payload) {
-      let authUser = this.$fireAuth.currentUser;
-      let shoppingListsRef = this.$fireDb.ref(
+      let authUser = this.$fire.auth.currentUser;
+      let shoppingListsRef = this.$fire.database.ref(
         `users/${authUser.uid}/shoppingLists`
       );
       shoppingListsRef.once("value", shoppingLists => {
@@ -115,8 +115,8 @@ export const actions = {
 
   SET_USER: function({ commit, dispatch }) {
     try {
-      let authUser = this.$fireAuth.currentUser;
-      let userRef = this.$fireDb.ref(`users/${authUser.uid}`);
+      let authUser = this.$fire.auth.currentUser;
+      let userRef = this.$fire.database.ref(`users/${authUser.uid}`);
       userRef.once("value", snapshot => {
         let loggedinUser = {
           id: authUser.uid,
@@ -173,7 +173,7 @@ export const actions = {
 
   USER_SIGN_OUT: function({ commit }) {
     try {
-      this.$fireAuth.signOut().then(() => {
+      this.$fire.auth.signOut().then(() => {
         commit("setUser", null);
         console.log("User logged out");
       });

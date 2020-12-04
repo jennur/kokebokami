@@ -213,7 +213,7 @@ export default {
         let title = this.updatedTitle;
 
         if (mainListKey) {
-          let thisListRef = this.$fireDb.ref(`shoppingLists/${mainListKey}`);
+          let thisListRef = this.$fire.database.ref(`shoppingLists/${mainListKey}`);
           thisListRef
             .update({ title })
             .then(() => {
@@ -225,7 +225,7 @@ export default {
               console.log("Title update failed:", error.message);
             });
         } else {
-          let shoppingListRef = this.$fireDb.ref(`shoppingLists`);
+          let shoppingListRef = this.$fire.database.ref(`shoppingLists`);
           shoppingListRef.once("value", snapshot => {
             shoppingListRef
               .push({
@@ -263,7 +263,7 @@ export default {
         let followerUsername = follower[1].displayName;
         let followerID = follower[0];
 
-        let ownersRef = this.$fireDb.ref(`shoppingLists/${mainListKey}/owners`);
+        let ownersRef = this.$fire.database.ref(`shoppingLists/${mainListKey}/owners`);
 
         try {
           ownersRef.once("value", snapshot => {
@@ -323,8 +323,8 @@ export default {
     deleteShoppingList() {
       let componentThis = this;
       let currentUserID = this.user.id;
-      let mainListRef = this.$fireDb.ref(`shoppingLists/${this.list.key}`);
-      let ownersRef = this.$fireDb.ref(`shoppingLists/${this.list.key}/owners`);
+      let mainListRef = this.$fire.database.ref(`shoppingLists/${this.list.key}`);
+      let ownersRef = this.$fire.database.ref(`shoppingLists/${this.list.key}/owners`);
 
       let owners = this.list.owners && Object.values(this.list.owners);
 

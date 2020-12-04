@@ -62,7 +62,7 @@ export default {
       language = language === "Not set" ? null : language;
       let recipeKey = this.recipeKey;
       if (recipeKey) {
-        let languageRef = this.$fireDb.ref(`recipes/${recipeKey}/language`);
+        let languageRef = this.$fire.database.ref(`recipes/${recipeKey}/language`);
         languageRef
           .set(language)
           .then(() => {

@@ -144,7 +144,7 @@ export default {
 
       if (recipeKey) {
         this.loading = true;
-        let ingredientsRef = this.$fireDb.ref(
+        let ingredientsRef = this.$fire.database.ref(
           `recipes/${recipeKey}/ingredients`
         );
         ingredientsRef

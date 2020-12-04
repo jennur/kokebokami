@@ -113,7 +113,7 @@ export default {
         chosenShoppingList[0]
       ) {
         let shoppingListKey = chosenShoppingList[0];
-        let shoppingListRef = this.$fireDb.ref(
+        let shoppingListRef = this.$fire.database.ref(
           `shoppingLists/${shoppingListKey}`
         );
 
@@ -143,7 +143,7 @@ export default {
           );
       } else if (this.newListTitle !== "") {
         let title = this.newListTitle;
-        let newShoppingListRef = this.$fireDb.ref(`shoppingLists`);
+        let newShoppingListRef = this.$fire.database.ref(`shoppingLists`);
 
         newShoppingListRef
           .push({

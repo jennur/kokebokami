@@ -1,7 +1,7 @@
 export default {
   data() {
     return {
-      userAuth: !!this.$fireAuth.currentUser,
+      userAuth: !!this.$fire.auth.currentUser,
       publicRecipes: [],
       errorMessage: "",
       loaded: false,
@@ -12,7 +12,7 @@ export default {
     getPublicRecipes() {
       let componentThis = this;
       try {
-        let publicRecipesRef = this.$fireDb
+        let publicRecipesRef = this.$fire.database
           .ref("recipes")
           .orderByChild("public");
         publicRecipesRef

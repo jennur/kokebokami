@@ -1,4 +1,3 @@
-require("dotenv").config();
 const getRoutes = require("./build-helpers/getRoutes");
 const redirectSSL = require("redirect-ssl");
 
@@ -115,9 +114,7 @@ export default {
     "nuxt-i18n",
     "@nuxtjs/firebase",
     "@nuxtjs/axios",
-    "@nuxtjs/pwa",
     "nuxt-svg-loader",
-    "@nuxtjs/dotenv",
     "nuxt-fontawesome"
   ],
   i18n: {
@@ -168,7 +165,7 @@ export default {
         },
         ssr: false
       },
-      realtimeDb: true,
+      database: true,
       storage: true
     }
   },
@@ -182,29 +179,6 @@ export default {
       }
     ]
   },
-  env: {
-    baseURL: process.env.BASE_URL || "http://localhost:3000",
-    privateKeyId: process.env.PRIVATE_KEY_ID,
-    privateKey: process.env.PRIVATE_KEY,
-    clientEmail: process.env.CLIENT_EMAIL,
-    clientId: process.env.CLIENT_ID,
-    authURI: process.env.AUTH_URI,
-    tokenURI: process.env.TOKEN_URI,
-    authProviderCertURL: process.env.AUTH_PROVIDER_CERT_URL,
-    clientCertURL: process.env.CLIENT_CERT_URL
-  },
-
   // Build configuration
-  build: {
-    // You can extend webpack config here
-    /*  extend(config, ctx) {
-      config.node = {
-        fs: "empty",
-        child_process: "empty",
-        net: "empty",
-        tls: "empty",
-        dns: "empty"
-      };
-    } */
-  }
+  build: {}
 };

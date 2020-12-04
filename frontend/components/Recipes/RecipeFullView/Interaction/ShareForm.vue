@@ -191,7 +191,7 @@ export default {
       const componentThis = this;
       const selectedDisplayName = this.selected;
       const recipeKey = this.recipeKey;
-      const sharesRef = this.$fireDb.ref(`recipes/${recipeKey}/sharedWith`);
+      const sharesRef = this.$fire.database.ref(`recipes/${recipeKey}/sharedWith`);
 
       let followers = this.followers;
       let selectedFollower = followers.filter(follower => {
