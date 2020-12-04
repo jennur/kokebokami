@@ -80,7 +80,7 @@ export const actions = {
     if (authUser) {
       context.dispatch("SET_USER");
     }
-    this.$fire.authUnsubscribe;
+    this.$fireAuthUnsubscribe;
   },
   SET_LOGIN_MESSAGE: ({ commit }, payload) => {
     commit("setLoginSystemMessage", payload);
