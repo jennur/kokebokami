@@ -451,22 +451,38 @@ export default {
         });
     },
     updateEmail(value) {
-      //Fix this with firebase
-      let componentThis = this;
-      /* this.$fire.database
-        .ref("/users/" + this.user.id)
-        .update({
-          email: value
-        })
-        .then(() => {
-          componentThis.email = value;
-          componentThis.updateUserDetailsInStore();
-          this.emailSystemMessage = "";
-        })
-        .catch(e => {
-          this.emailSystemMessage = e.message;
-          console.log(e);
-        }); */
+      /* let componentThis = this;
+      const emailRegex = /^\S+@\S+\.\S+$/;
+
+      if (!this.email.match(emailRegex)) {
+        validated = validated * 0;
+        this.emailSystemMessage = "Please enter a valid email address";
+      } else {
+        this.emailSystemMessage = "";
+        var user = this.$fire.auth().currentUser;
+        user.updateEmail(value)
+            .then(function() {
+              componentThis.$fire.database
+                .ref("/users/" + user.id)
+                .update({
+                  email: value
+                })
+                .then(() => {
+                  componentThis.email = value;
+                  componentThis.updateUserDetailsInStore();
+                  componentThis.emailSystemMessage = "";
+                })
+                .catch(e => {
+                  componentThis.emailSystemMessage = e.message;
+                  console.log(e);
+                });
+              // Update successful.
+            }).catch(function(error) {
+            // An error happened.
+              console.log("Error updating email:", error);
+              componentThis.emailSystemMessage = error.message;
+          });
+      } */
     },
 
     updateBiography(value) {

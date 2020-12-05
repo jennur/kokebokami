@@ -12,17 +12,16 @@ export default {
     getPublicRecipes() {
       let componentThis = this;
       try {
-        let publicRecipesRef = this.$fire.database
+        this.$fire.database
           .ref("recipes")
-          .orderByChild("public");
-        publicRecipesRef
+          .orderByChild("public")
           .once("value", recipes => {
             if (recipes.exists()) {
               recipes = Object.entries(recipes.val());
               let publicRecipes = recipes.filter(recipe => {
                 return recipe[1].public;
               });
-              componentThis.publicRecipes = publicRecipes;
+              componentThis.publicRecipes = publicRecipes.reverse();
               let language = "English";
               if (this.$i18n.locale === "no") language = "Norwegian";
 

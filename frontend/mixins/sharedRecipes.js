@@ -11,12 +11,12 @@ export default {
       let componentThis = this;
       if (this.userAuth) {
         try {
-          let sharedRecipesRef = this.$fire.database
+          this.$fire.database
             .ref("recipes")
-            .orderByChild("sharedWith");
-          sharedRecipesRef.once("value", recipes => {
+            .orderByChild("sharedWith")
+            .once("value", recipes => {
             if (recipes.exists()) {
-              recipes = Object.entries(recipes.val());
+              recipes = Object.entries(recipes.val()).reverse();
               componentThis.sharedRecipes = recipes.filter(recipe => {
                 let shares = recipe[1].sharedWith
                   ? Object.values(recipe[1].sharedWith)

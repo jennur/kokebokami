@@ -11,10 +11,11 @@ export default {
       let componentThis = this;
       if (this.userAuth) {
         try {
-          let userRecipesRef = this.$fire.database.ref("recipes").orderByKey();
-          userRecipesRef.once("value", recipes => {
+          this.$fire.database
+          .ref("recipes")
+          .once("value", recipes => {
             if (recipes.exists()) {
-              recipes = Object.entries(recipes.val());
+              recipes = Object.entries(recipes.val()).reverse();
               componentThis.userRecipes = recipes.filter(recipe => {
                 return recipe[1].ownerID === componentThis.userAuth.uid;
               });
