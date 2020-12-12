@@ -17,7 +17,7 @@ export default {
           this.$fire.database
             .ref("recipes")
             .orderByChild("sharedWith")
-            .once("value", async snapshot => {
+            .once("value", snapshot => {
               if (snapshot.exists()) {
                 let recipes = snapshot.val();
 

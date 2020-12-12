@@ -185,16 +185,20 @@ export default {
       }
     },
     getUserID(){
+      let keySegment = this.$route.params.key;
+      let userid = this.$route.params.userid;
+
       this.$fire.database
         .ref("users")
         .once("value", snapshot => {
           if(snapshot.exists() && snapshot.val()){
+            let userPath = `${keySegment}/${userid}`;
             let users = snapshot.val();
 
             for(let key in users){
               let user = users[key];
-              let path = generatePath(user.displayName);
-              if(path === this.$route.params.userid){
+              let path = generatePath(user.displayName, key, true);
+              if(userPath === path) {
                 this.getUserByID(key)
                 return;
               }
