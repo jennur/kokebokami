@@ -55,22 +55,26 @@
 <script>
 import cookSilhouette from "~/assets/graphics/icons/cook-silhouette-circle.svg";
 import user from "~/mixins/user.js";
-import getUserByID from "~/mixins/getUserByID.js";
-import publicRecipes from "~/mixins/publicRecipes.js";
+import getUserByID from "~/mixins/get-user-by-id.js";
+import publicRecipes from "~/mixins/public-recipes.js";
 
 import ProfileView from "~/components/ProfileView.vue";
 import RecipesList from "~/components/Recipes/RecipesList";
+
+import generatePath from "~/helpers/generatePath";
 
 export default {
   name: "public-profile",
   components: { cookSilhouette, ProfileView, RecipesList },
   head() {
+    let displayName = this.cook && this.cook.displayName;
+    let path = displayName && generatePath(displayName) || "";
     return {
       title: `${this.userName} | Kokebokami`,
       link: [
         {
           rel: "canonical",
-          href: `https://kokebokami.com/cooks/${this.cookUserID}/`
+          href: `https://kokebokami.com/cooks/${path}/`
         }
       ]
     };
@@ -80,9 +84,6 @@ export default {
   },
   mixins: [user, getUserByID, publicRecipes],
   computed: {
-    cookUserID() {
-      return this.$route.params.userid;
-    },
     userName() {
       return (this.cook && this.cook.displayName) || "Unknown";
     },
@@ -100,7 +101,7 @@ export default {
       let cooksPublicRecipes = [];
       if (this.cook && publicRecipes) {
         cooksPublicRecipes = publicRecipes.filter(recipe => {
-          return recipe[1].ownerID === this.cookUserID;
+          return recipe.ownerID === this.cook.id;
         });
       }
       return cooksPublicRecipes;
@@ -108,9 +109,9 @@ export default {
     isFollowingUser() {
       if (this.followed !== null) return this.followed;
       else {
-        if (this.user && this.user.following && this.cookUserID) {
+        if (this.user && this.user.following && this.cook.id) {
           return (
-            Object.values(this.user.following).indexOf(this.cookUserID) > -1
+            Object.values(this.user.following).indexOf(this.cook.id) > -1
           );
         }
       }
@@ -127,7 +128,7 @@ export default {
           let followingAlready = false;
           if (snapshot.exists()) {
             snapshot.forEach(value => {
-              if (value.val() === componentThis.cookUserID) {
+              if (value.val() === componentThis.cook.id) {
                 followingAlready = true;
                 return;
               }
@@ -140,7 +141,7 @@ export default {
           }
           if (!followingAlready) {
             currentUserRef
-              .push(componentThis.cookUserID)
+              .push(componentThis.cook.id)
               .then(() => {
                 componentThis.followed = true;
                 componentThis.$store.dispatch("SET_USER");
@@ -162,7 +163,7 @@ export default {
         userRef.once("value", snapshot => {
           if (snapshot.exists()) {
             snapshot.forEach(value => {
-              if (value.val() === componentThis.cookUserID) {
+              if (value.val() === componentThis.cook.id) {
                 try {
                   userRef
                     .child(value.key)
@@ -182,10 +183,29 @@ export default {
       } catch (error) {
         console.log("Error while trying to unfollow user:", error.message);
       }
+    },
+    getUserID(){
+      this.$fire.database
+        .ref("users")
+        .once("value", snapshot => {
+          if(snapshot.exists() && snapshot.val()){
+            let users = snapshot.val();
+
+            for(let key in users){
+              let user = users[key];
+              let path = generatePath(user.displayName);
+              if(path === this.$route.params.userid){
+                this.getUserByID(key)
+                return;
+              }
+            }
+          }
+      })
     }
   },
   mounted() {
-    this.getUserByID(this.cookUserID);
+    let userID = this.$route.query.id;
+    userID && this.getUserByID(userID) || this.getUserID();
   }
 };
 </script>

@@ -11,11 +11,11 @@
         <settings-dropdown v-if="isRecipeOwner">
           <public-note
             :isRecipeOwner="isRecipeOwner"
-            :recipeKey="recipeKey"
+            :recipeKey="recipe.id"
             :isPublic="recipe.public"
             @update="payload => $emit('update', payload)"
           />
-          <span v-if="recipeKey" class="system-message" @click="toggleAlert">
+          <span v-if="recipe.id" class="system-message" @click="toggleAlert">
             <delete-icon tabindex="0" class="icon margin-right--small" />{{
               $t("recipes.deleteRecipe")
             }}
@@ -28,14 +28,14 @@
             v-if="isRecipeOwner"
             :language="recipe.language"
             :isRecipeOwner="isRecipeOwner"
-            :recipeKey="recipeKey"
+            :recipeKey="recipe.id"
             @update="payload => $emit('update', payload)"
           />
           <action-bar
-            v-if="recipeKey"
+            v-if="recipe.id"
             :isRecipeOwner="isRecipeOwner"
-            :recipeOwnerID="recipeOwnerID"
-            :recipeKey="recipeKey"
+            :recipeOwnerID="recipe.ownerID"
+            :recipeKey="recipe.id"
             :recipeTitle="recipe.title"
             :recipeDescription="recipe.description"
             :recipePublic="recipe.public"
@@ -57,7 +57,7 @@
         <photo-display
           :photoURL="recipe.photoURL"
           :isRecipeOwner="isRecipeOwner"
-          :recipeKey="recipeKey"
+          :recipeKey="recipe.id"
           @update="payload => $emit('update', payload)"
         />
 
@@ -66,14 +66,14 @@
             v-if="recipe.typeOfMeal || isRecipeOwner"
             :typeOfMeal="recipe && recipe.typeOfMeal"
             :isRecipeOwner="isRecipeOwner"
-            :recipeKey="recipeKey"
+            :recipeKey="recipe.id"
             @update="payload => $emit('update', payload)"
           />
           <free-from-display
             v-if="recipe.freeFrom || isRecipeOwner"
             :freeFrom="recipe && recipe.freeFrom"
             :isRecipeOwner="isRecipeOwner"
-            :recipeKey="recipeKey"
+            :recipeKey="recipe.id"
             class="margin-bottom--xlarge"
             @update="payload => $emit('update', payload)"
           />
@@ -81,13 +81,13 @@
           <title-display
             :title="recipe.title"
             :isRecipeOwner="isRecipeOwner"
-            :recipeKey="recipeKey"
+            :recipeKey="recipe.id"
             @update="payload => $emit('update', payload)"
           />
           <description-display
             :description="recipe.description"
             :isRecipeOwner="isRecipeOwner"
-            :recipeKey="recipeKey"
+            :recipeKey="recipe.id"
             @update="payload => $emit('update', payload)"
           />
 
@@ -95,7 +95,7 @@
             v-if="recipe.categories || isRecipeOwner"
             :categories="recipe.categories && Object.values(recipe.categories)"
             :isRecipeOwner="isRecipeOwner"
-            :recipeKey="recipeKey"
+            :recipeKey="recipe.id"
             class="margin-bottom--xxlarge"
             @update="payload => $emit('update', payload)"
           />
@@ -105,9 +105,9 @@
             class="recipe__category-note margin-bottom--large text-align--right"
           >
             {{ $t("recipes.publishedBy") }}
-            <nuxt-link :to="localePath(`/cooks/${recipe.ownerID}/`)">{{
-              recipeOwnerDisplayName
-            }}</nuxt-link>
+            <nuxt-link :to="localePath(`/cooks/${author && author.path}`)">
+            {{ author && author.displayName }}
+            </nuxt-link>
           </div>
         </div>
       </div>
@@ -121,7 +121,7 @@
           :servings="recipe.servings || ''"
           :recipeTitle="recipe.title"
           :isRecipeOwner="isRecipeOwner"
-          :recipeKey="recipeKey"
+          :recipeKey="recipe.id"
           @update="payload => $emit('update', payload)"
           @calculated-ingredients="setCalculatedIngredients"
         />
@@ -130,7 +130,7 @@
           class="recipe__instructions-wrap"
           :instructions="recipe.instructions"
           :isRecipeOwner="isRecipeOwner"
-          :recipeKey="recipeKey"
+          :recipeKey="recipe.id"
           @update="payload => $emit('update', payload)"
         />
       </div>
@@ -159,6 +159,7 @@ import InstructionsDisplay from "./Displays/InstructionsDisplay.vue";
 import ActionBar from "./Interaction/ActionBar.vue";
 import Alert from "~/components/Alert.vue";
 import ExpandTransform from "~/components/Transitions/Expand.vue";
+import getRecipeAuthor from "~/mixins/get-recipe-author";
 
 export default {
   name: "recipe-full-view",
@@ -180,10 +181,7 @@ export default {
   },
   props: {
     isRecipeOwner: { type: Boolean, default: false },
-    recipeOwnerID: { type: String, default: "" },
-    recipeOwnerDisplayName: { type: String, default: "Unknown" },
-    recipe: { type: Object, default: () => {} },
-    recipeKey: { type: String, default: "" }
+    recipe: { type: Object, default: () => {} }
   },
   data() {
     return {
@@ -193,6 +191,7 @@ export default {
       calculatedIngredients: {}
     };
   },
+  mixins: [getRecipeAuthor],
   methods: {
     setCalculatedIngredients(ingredientsObj) {
       this.calculatedIngredients = ingredientsObj;
@@ -246,7 +245,7 @@ export default {
           .join("");
 
       let recipeHTML = `<div style="margin: 30px;">
-      <span style="font-family:'delius';font-size:20px;color:#ff7300;text-align:right;">Kokebokami</span>
+      <span style="font-size:20px;color:#ff7300;text-align:right;">Kokebokami</span>
       <h1 style="color:#063c60;margin-top: 30px; margin-bottom: 20px;">${recipe.title}</h1>
       <p style="color:#063c60;font-size:20px;">${recipe.description}</p>
       <span style="color:#063c60;margin-bottom:5px;margin-top:0px;"><strong>Meal type: </strong> ${typeOfMeal}</span>
@@ -285,29 +284,29 @@ export default {
         .download(`${documentTitle}_kokebokami.pdf`);
     },
     deleteRecipeImageFromStorage() {
-      let photoRef = this.$fire.database.ref(`recipes/${this.recipeKey}/photoURL`);
-      return photoRef.once("value", snapshot => {
-        if (snapshot.exists()) {
-          let photoURL = snapshot.val();
-          if (photoURL !== "") {
-            var fileRef = this.$fire.storage.refFromURL(photoURL);
-            fileRef
-              .delete()
-              .then(() => {
-                console.log("Successfully deleted image");
-              })
-              .catch(error =>
-                console.log("Error deleting file:", error.message)
-              );
+      return this.$fire.database
+        .ref(`recipes/${this.recipe.id}/photoURL`)
+        .once("value", snapshot => {
+          if (snapshot.exists()) {
+            let photoURL = snapshot.val();
+            if (photoURL !== "") {
+              var fileRef = this.$fire.storage.refFromURL(photoURL);
+              fileRef
+                .delete()
+                .then(() => {
+                  console.log("Successfully deleted image");
+                })
+                .catch(error =>
+                  console.log("Error deleting file:", error.message)
+                );
+            }
           }
-        }
-      });
+        });
     },
     deleteRecipe() {
-      let recipeKey = this.recipeKey;
-      if (recipeKey) {
+      if (this.recipe.id) {
         this.deleteRecipeImageFromStorage().then(() => {
-          const recipeRef = this.$fire.database.ref(`recipes/${recipeKey}`);
+          const recipeRef = this.$fire.database.ref(`recipes/${this.recipe.id}`);
           recipeRef
             .remove()
             .then(() => {
@@ -320,6 +319,9 @@ export default {
         });
       }
     }
+  },
+  mounted(){
+    this.getRecipeAuthor(this.recipe.ownerID);
   }
 };
 </script>

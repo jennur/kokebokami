@@ -13,10 +13,7 @@
         <recipe-full-view
           class="margin-bottom--xxlarge"
           :recipe="recipe"
-          :recipeKey="recipeKey"
           :isRecipeOwner="user && user.id === recipe.ownerID"
-          :recipeOwnerID="recipe.ownerID"
-          :recipeOwnerDisplayName="cook.displayName"
           @update="handleUpdate"
         />
       </expand-transition>
@@ -24,7 +21,7 @@
       <comments-section
         v-if="recipeLoaded"
         class="tablet-width margin--auto margin-top--xxlarge"
-        :recipeKey="recipeKey"
+        :recipeKey="recipe.id"
         :recipeOwnerID="recipe.ownerID"
         :recipeTitle="recipe.title"
       />
@@ -34,8 +31,8 @@
 
 <script>
 import user from "~/mixins/user.js";
-import getRecipe from "~/mixins/getRecipe.js";
-import publicRecipes from "~/mixins/publicRecipes.js";
+import getRecipe from "~/mixins/get-recipe.js";
+import publicRecipes from "~/mixins/public-recipes.js";
 
 import ExpandTransition from "~/components/Transitions/Expand.vue";
 import RecipeFullView from "~/components/Recipes/RecipeFullView/RecipeFullView.vue";
@@ -79,8 +76,13 @@ export default {
   },
   methods: {
     handleUpdate() {
-      this.getRecipe();
+      this.getRecipe(this.recipe.id);
     }
+  },
+  mounted(){
+    let recipeKey = this.$route.query.id;
+    if(recipeKey) this.getRecipe(recipeKey)
+    else this.getRecipeKey();
   }
 };
 </script>

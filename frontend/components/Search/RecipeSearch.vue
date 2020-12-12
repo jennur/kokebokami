@@ -158,8 +158,8 @@ export default {
       if (searchTerm !== "") {
         recipes = recipes.filter(recipe => {
           return (
-            recipe[1].title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            recipe[1].description
+            recipe.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            recipe.description
               .toLowerCase()
               .includes(searchTerm.toLowerCase())
           );
@@ -169,8 +169,8 @@ export default {
       // Filter on language
       if (language !== "" && language !== "All languages") {
         recipes = recipes.filter(recipe => {
-          if (recipe[1].language) {
-            return recipe[1].language.toLowerCase() === language.toLowerCase();
+          if (recipe.language) {
+            return recipe.language.toLowerCase() === language.toLowerCase();
           }
         });
         filtered = true;
@@ -178,7 +178,6 @@ export default {
       // Filter on categories
       if (checkedCategories.length) {
         recipes = recipes.filter(recipe => {
-          recipe = recipe[1];
           let categories = []
             .concat(recipe.categories)
             .concat(recipe.typeOfMeal)

@@ -16,9 +16,7 @@
         <dl class="flex-row">
           <account-detail
             :title="$t('accountDetails.profileImage')"
-            :systemMessage="
-              removeProfileImgSystemMessage || updateProfileImgSystemMessage
-            "
+            :systemMessage="removeProfileImgSystemMessage || updateProfileImgSystemMessage"
             :visibleToPublic="true"
             :editOption="true"
             :removeOption="true"
@@ -82,12 +80,12 @@
         <dl class="flex-row">
           <account-link-list
             :title="`${$t('accountDetails.following')}:`"
-            :links="cooksFollowed"
+            :links="followed"
             basePath="/cooks/"
           />
           <account-link-list
             :title="`${$t('accountDetails.followers')}:`"
-            :links="cookFollowers"
+            :links="followers"
             basePath="/cooks/"
           />
         </dl>
@@ -177,11 +175,10 @@ const uuid = require("uuid");
 import Compressor from "compressorjs";
 
 import user from "~/mixins/user.js";
-import allUsers from "~/mixins/allUsers.js";
-import connectedUsers from "~/mixins/connectedUsers.js";
-import sharedRecipes from "~/mixins/sharedRecipes.js";
-import userRecipes from "~/mixins/userRecipes.js";
-import userRecipeLinks from "~/mixins/userRecipeLinks.js";
+import connectedUsers from "~/mixins/followed-and-followers.js";
+import sharedRecipes from "~/mixins/shared-recipes.js";
+import userRecipes from "~/mixins/user-recipes.js";
+import userRecipeLinks from "~/mixins/user-recipe-links.js";
 
 import AccountDetail from "~/components/Account/Displays/AccountDetail.vue";
 import AccountLinkList from "~/components/Account/Displays/AccountLinkList.vue";
@@ -229,7 +226,6 @@ export default {
   },
   mixins: [
     user,
-    allUsers,
     connectedUsers,
     userRecipes,
     sharedRecipes,
@@ -242,28 +238,6 @@ export default {
         { name: this.$t("navigation.myAccount"), link: "/account/" },
         { name: this.$t("navigation.accountDetails") }
       ];
-    },
-    recipeLinks() {
-      let links = this.userRecipeLinks;
-      links = links.map(link => {
-        link[1].title = link[1].title || this.makeBackupTitle(link[1]);
-        return link;
-      });
-      return links;
-    },
-    cooksFollowed() {
-      let followed = this.followed;
-      return followed.map(cook => {
-        cook[1].title = cook[1].displayName;
-        return cook;
-      });
-    },
-    cookFollowers() {
-      let followers = this.followers;
-      return followers.map(cook => {
-        cook[1].title = cook[1].hiddenProfile ? "User" : cook[1].displayName;
-        return cook;
-      });
     }
   },
   methods: {
@@ -272,15 +246,6 @@ export default {
     },
     setProfileImgSystemMessage(message) {
       this.updateProfileImgSystemMessage = message;
-    },
-    makeBackupTitle(link) {
-      let regex = /-/gi;
-      let url = link.url;
-      let title = url
-        .split("/")
-        .pop()
-        .replace(regex, " ");
-      return title;
     },
     updateHiddenProfileStatus(checked) {
       let hiddenProfile = !!this.hiddenProfile;

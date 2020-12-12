@@ -51,13 +51,13 @@
         :recipes="visibleRecipes"
         :isPublicList="activeTabIndex === 2"
         :emptyListMessage="emptyListMessage"
-        :addRecipeUrl="activeTabIndex === 0 ? '/account/add-recipe/' : ''"
+        :addRecipeUrl="activeTabIndex === 0 ? '/account/my-cookbook/add-recipe/' : ''"
       />
       <div v-if="activeTabIndex === 1">
         <recipe-link-list
           class="margin-top--xxlarge"
           :hiddenCategories="hiddenCategories"
-          :links="userRecipeLinks"
+          :links="recipeLinks"
           :emptyListMessage="emptyListMessage"
           @open-form="toggleRecipeForm"
           @update="updateLinkList"
@@ -71,9 +71,9 @@
 import ClickOutside from "vue-click-outside";
 
 import user from "~/mixins/user.js";
-import sharedRecipes from "~/mixins/sharedRecipes.js";
-import userRecipes from "~/mixins/userRecipes.js";
-import userRecipeLinks from "~/mixins/userRecipeLinks.js";
+import sharedRecipes from "~/mixins/shared-recipes.js";
+import userRecipes from "~/mixins/user-recipes.js";
+import userRecipeLinks from "~/mixins/user-recipe-links.js";
 
 import ExpandTransition from "~/components/Transitions/Expand.vue";
 import AddRecipeFromUrlForm from "~/components/Recipes/AddRecipeForm/AddRecipeFromUrlForm.vue";
@@ -159,12 +159,12 @@ export default {
       }
     },
     userCategories() {
-      let links = this.userRecipeLinks;
+      let links = this.recipeLinks;
       let categories = ["No category"];
       links.forEach(link => {
-        if (link[1].category) {
-          if (categories.indexOf(link[1].category) === -1)
-            categories.push(link[1].category);
+        if (link.category) {
+          if (categories.indexOf(link.category) === -1)
+            categories.push(link.category);
         }
       });
       categories.push(categories.shift());

@@ -1,10 +1,10 @@
 <template>
   <section class="container">
-    <h3 class="color--blue">{{ $t("recipes.categories") }}</h3>
+    <h3 v-if="links.length" class="color--blue">{{ $t("recipes.categories") }}</h3>
     <div
       class="accordion"
       v-for="(category, index) in categories"
-      :key="`category-${category.title}-${index}`"
+      :key="`category-${category && category.title}-${index}`"
     >
       <div>
         <div
@@ -27,11 +27,11 @@
           </button>
         </div>
         <expand-transition :show="accordionOpen(index)">
-          <div class="recipe-link-list">
+          <div v-if="category && category.links" class="recipe-link-list">
             <recipe-link
               v-if="addingNew && addingToCategory === category.title"
               :key="`recipe-link-new`"
-              :link="['', {}]"
+              :link="{}"
               :addingToCategory="addingToCategory"
               @update="saveNewLink"
               @cancel="cancelNewLink"
@@ -100,18 +100,18 @@ export default {
       let links = this.links;
       let categories = [];
       links.forEach(link => {
-        if (link[1].category) {
-          if (categories.indexOf(link[1].category) === -1)
-            categories.push(link[1].category);
+        if (link.category) {
+          if (categories.indexOf(link.category) === -1)
+            categories.push(link.category);
         } else categories.push("No category");
       });
       categories = categories.map(category => {
         let linksInCategory = [];
         links.forEach(link => {
-          let hostName = link[1].url.split("/")[2];
-          link[1].hostName = hostName.replace("www.", "");
-          if (link[1].category === category) linksInCategory.push(link);
-          if (category === "No category" && link[1].category === "")
+          let hostName = link.url.split("/")[2];
+          link.hostName = hostName.replace("www.", "");
+          if (link.category === category) linksInCategory.push(link);
+          if (category === "No category" && link.category === "")
             linksInCategory.push(link);
         });
         return {
@@ -120,7 +120,7 @@ export default {
         };
       });
       categories.push(categories.shift());
-      return categories;
+      return categories.filter(category => category);
     }
   },
   methods: {

@@ -7,26 +7,26 @@ export default {
   },
   methods: {
     getShoppingLists() {
-      let componentThis = this;
       if (this.userAuth) {
 
-        let userID = this.userAuth.uid;
+        let authID = this.userAuth.uid;
         let username = this.$store.state.user.displayName;
+        let shoppingListRef = this.$fire.database.ref(`shoppingLists`);
 
-        this.$fire.database
-          .ref(`shoppingLists`)
-          .once("value", shoppingLists => {
-            let updatedShoppingLists = [];
+        shoppingListRef
+          .once("value", snapshot => {
+            let userShoppingLists = [];
 
-            if (shoppingLists.exists()) {
-              shoppingLists = Object.entries(shoppingLists.val()).reverse() || [];
+            if (snapshot.exists()) {
+              let shoppingLists = Object.entries(snapshot.val()).reverse() || [];
               let shoppingListCount = 0;
 
               shoppingLists.forEach(list => {
                 let owners = Object.values(list[1].owners);
                 owners.forEach(user => {
-                  if (user.id === userID) {
-                    updatedShoppingLists.push(list);
+
+                  if (user.id === authID) {
+                    userShoppingLists.push(list);
 
                     if (list[1].subLists) {
                       let subLists = Object.values(list[1].subLists) || [];
@@ -40,25 +40,22 @@ export default {
                 });
               });
 
-              componentThis.$store.dispatch(
-                "SET_SHOPPING_LIST_COUNT",
-                shoppingListCount
-              );
+              this.$store.dispatch("SET_SHOPPING_LIST_COUNT", shoppingListCount);
             } else {
               shoppingListsRef
                 .push({
                   title: "My shopping list",
-                  createdBy: { id: userID, displayName: username },
-                  owners: [{ id: userID, displayName: username }],
+                  createdBy: { id: authID, displayName: username },
+                  owners: [{ id: authID, displayName: username }],
                   subLists: []
                 })
                 .then(() => {
                   shoppingListsRef.once("value", shoppingLists => {
-                    updatedShoppingLists = Object.entries(shoppingLists.val());
+                    userShoppingLists = Object.entries(shoppingLists.val());
                   });
                 });
             }
-            componentThis.shoppingLists = updatedShoppingLists;
+            this.shoppingLists = userShoppingLists;
           })
           .catch(error => {
             console.log("Error: Failed getting shopping list:", error.message);

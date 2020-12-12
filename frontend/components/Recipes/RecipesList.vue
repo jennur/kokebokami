@@ -5,9 +5,9 @@
     </h3>
     <recipe-preview
       v-for="recipe in recipes"
-      :key="recipe[0]"
-      :recipeID="recipe[0]"
-      :recipe="recipe[1]"
+      :key="recipe.id"
+      :recipeID="recipe.id"
+      :recipe="recipe"
       :inPublicList="isPublicList"
     />
     <div v-if="!recipesLength" class="container">

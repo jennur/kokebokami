@@ -1,14 +1,14 @@
 <template>
   <nuxt-link
-    :to="localePath(`/cooks/${cookID}/`)"
+    :to="localePath(`/cooks/${cook.path}`)"
     class="following-cooks__cook"
   >
     <div
       role="img"
-      v-if="photoURL"
+      v-if="!cook.hiddenProfile && cook.photoURL"
       class="following-cooks__img margin-right--xlarge"
-      :style="`background-image: url(${photoURL})`"
-      :aria-label="displayName + '´s profile picture'"
+      :style="`background-image: url(${cook.photoURL})`"
+      :aria-label="(cook.hiddenProfile ? 'User' : cook.displayName) + '´s profile picture'"
     />
     <div
       v-else
@@ -18,14 +18,10 @@
     </div>
     <div class="flex-column">
       <h2 class="margin-bottom--small margin--none">
-        {{ displayName ? displayName : "" }}
+        {{ !cook.hiddenProfile && cook.displayName || "User" }}
       </h2>
       <p class="following-cooks__biography margin--none">
-        {{
-          biography
-            ? biography.substring(0, 70) + "..."
-            : $t("cooks.noBiography")
-        }}
+        {{ biography }}
       </p>
     </div>
   </nuxt-link>
@@ -38,10 +34,18 @@ export default {
     BackupImg
   },
   props: {
-    cookID: { type: String, default: "" },
-    photoURL: { type: String, default: "" },
-    displayName: { type: String, default: "" },
-    biography: { type: String, default: "" }
+    cook: {
+      type: Object,
+      default: () => {}
+    }
+  },
+  computed: {
+    biography(){
+      if(!this.cook.hiddenProfile && this.cook.biography) {
+        return this.cook.biography.substring(0, 70) + "..."
+      }
+      return this.$t("cooks.noBiography")
+    }
   }
 };
 </script>

@@ -3,11 +3,11 @@
     <div class="flex-row following-cooks margin-bottom--xxlarge">
       <cook-display
         v-for="cook in cooks"
-        :key="cook[0]"
-        :cookID="cook[0]"
-        :photoURL="cook[1].hiddenProfile ? '' : cook[1].photoURL"
-        :displayName="cook[1].hiddenProfile ? 'User' : cook[1].displayName"
-        :biography="cook[1].hiddenProfile ? '' : cook[1].biography"
+        :key="cook.id"
+        :cook="cook"
+        :photoURL="cook.hiddenProfile ? '' : cook.photoURL"
+        :displayName="cook.hiddenProfile ? 'User' : cook.displayName"
+        :biography="cook.hiddenProfile ? '' : cook.biography"
       />
     </div>
     <div v-if="!cooksLength" class="container container--center">
@@ -34,6 +34,7 @@ export default {
   },
   computed: {
     cooksLength() {
+      console.log("Cooks:", this.cooks);
       return this.cooks ? this.cooks.length : 0;
     },
   },

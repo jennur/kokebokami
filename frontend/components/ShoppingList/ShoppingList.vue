@@ -40,7 +40,9 @@
         </button>
         <shareBox
           :open="sharing"
-          @share="follower => shareShoppingList(follower)"
+          :listKey="list.key"
+          @systemMessage="message => systemMessage = message"
+          @shared="follower => sendEmail(follower)"
           class="margin-top--medium"
         />
         <div v-if="systemMessage" class="system-message margin-top--large">
@@ -204,39 +206,38 @@ export default {
     },
     saveTitle() {
       this.addingNewSubList = false;
-      let componentThis = this;
       let mainListKey = this.list.key;
-      let currentUserID = this.user.id;
-      let username = this.user.displayName;
 
       if (this.list.title !== this.updatedTitle) {
         let title = this.updatedTitle;
 
         if (mainListKey) {
-          let thisListRef = this.$fire.database.ref(`shoppingLists/${mainListKey}`);
-          thisListRef
+          this.$fire.database
+            .ref(`shoppingLists/${mainListKey}`)
             .update({ title })
             .then(() => {
               console.log("Title updated");
-              componentThis.toggleEditTitle();
-              componentThis.$emit("update");
+              this.toggleEditTitle();
+              this.$emit("update");
             })
             .catch(error => {
               console.log("Title update failed:", error.message);
             });
         } else {
           let shoppingListRef = this.$fire.database.ref(`shoppingLists`);
+
           shoppingListRef.once("value", snapshot => {
+            let currentUserObj = { id: this.user.id, displayName: this.user.displayName };
             shoppingListRef
               .push({
                 title,
-                createdBy: { id: currentUserID, displayName: username },
-                owners: [{ id: currentUserID, displayName: username }]
+                createdBy: currentUserObj,
+                owners: [currentUserObj]
               })
               .then(mainListObject => {
                 console.log("New main list added");
-                componentThis.toggleEditTitle();
-                componentThis.$emit("update");
+                this.toggleEditTitle();
+                this.$emit("update");
               })
               .catch(error => {
                 console.log("Title update failed:", error.message);
@@ -254,56 +255,8 @@ export default {
       this.addingNewSubList = false;
       this.$emit("update");
     },
-    shareShoppingList(follower) {
-      if (follower.length && follower[0] !== "") {
-        let componentThis = this;
-        let currentUserID = this.user.id;
-        let username = this.user.displayName;
-        let mainListKey = this.list.key;
-        let followerUsername = follower[1].displayName;
-        let followerID = follower[0];
-
-        let ownersRef = this.$fire.database.ref(`shoppingLists/${mainListKey}/owners`);
-
-        try {
-          ownersRef.once("value", snapshot => {
-            if (snapshot.exists()) {
-              let owners = Object.values(snapshot.val());
-              let shared = false;
-              owners.forEach(user => {
-                if (user.id === followerID) {
-                  componentThis.systemMessage = `This shopping list is already shared with ${followerUsername} `;
-                  shared = true;
-                }
-              });
-
-              if (!shared) {
-                ownersRef
-                  .push({
-                    id: followerID,
-                    displayName: followerUsername,
-                    sharedFrom: { id: currentUserID, displayName: username }
-                  })
-                  .then(() => {
-                    componentThis.systemMessage = `Successfully shared with ${followerUsername}`;
-                    componentThis.$emit("update");
-                    if (!follower[1].notificationsOff || !follower[1].notificationsOff.shoppingLists) {
-                      this.sendEmail(follower);
-                    }
-                  });
-              }
-            }
-          });
-        } catch (error) {
-          console.log("Error while sharing:", error.message);
-          this.systemMessage = "An error occured while sharing";
-        }
-      } else {
-        this.systemMessage = "We were unable to find this user in the database";
-      }
-    },
     sendEmail(receiver) {
-      let message = `<p>Hi ${receiver[1].displayName},
+      let message = `<p>Hi ${receiver.displayName},
           <br>
           <br>You just received a shopping list from ${this.user.displayName}.
           <br>'${this.list.title}' is now available among your shopping list.
@@ -314,15 +267,13 @@ export default {
           <br>Your Kokebokami team 👩‍🍳</p>`;
       axios
         .post("/api/send-email", {
-          receiverID: receiver[0],
+          receiverID: receiver.id,
           subject: `${this.user.displayName} just shared a shopping list with you 📝`,
           message
         })
         .catch(error => console.log("Error:", error));
     },
     deleteShoppingList() {
-      let componentThis = this;
-      let currentUserID = this.user.id;
       let mainListRef = this.$fire.database.ref(`shoppingLists/${this.list.key}`);
       let ownersRef = this.$fire.database.ref(`shoppingLists/${this.list.key}/owners`);
 
@@ -334,8 +285,8 @@ export default {
           .remove()
           .then(() => {
             console.log("Successfully deleted shopping list");
-            componentThis.toggleAlert();
-            componentThis.$emit("update");
+            this.toggleAlert();
+            this.$emit("update");
           })
           .catch(error =>
             console.log("Error deleting shopping list:", error.message)
@@ -345,14 +296,15 @@ export default {
         ownersRef.once("value", snapshot => {
           if (snapshot.exists()) {
             let owners = Object.entries(snapshot.val());
+
             owners = owners.filter(user => {
-              return user[1].id !== currentUserID;
+              return user[1].id !== this.user.id;
             });
 
             owners = Object.fromEntries(owners);
             mainListRef.update({ owners }).then(() => {
-              componentThis.toggleAlert();
-              componentThis.$emit("update");
+              this.toggleAlert();
+              this.$emit("update");
             });
           }
         });

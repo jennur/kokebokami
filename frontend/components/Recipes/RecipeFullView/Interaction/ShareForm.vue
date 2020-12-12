@@ -89,7 +89,7 @@ import axios from "axios";
 import ClickOutside from "vue-click-outside";
 import user from "~/mixins/user.js";
 import allUsers from "~/mixins/allUsers.js";
-import connectedUsers from "~/mixins/connectedUsers.js";
+import connectedUsers from "~/mixins/followed-and-followers.js";
 import ExpandTransition from "~/components/Transitions/Expand.vue";
 import SelectComponent from "~/components/Input/SelectComponent.vue";
 import HoverInfoBox from "~/components/HoverInfoBox.vue";
@@ -101,7 +101,7 @@ export default {
     SelectComponent,
     HoverInfoBox
   },
-  mixins: [user, allUsers, connectedUsers],
+  mixins: [user, connectedUsers],
   data() {
     return {
       searchTerm: "",
@@ -140,7 +140,7 @@ export default {
   computed: {
     followerNames() {
       return this.followers.map(follower => {
-        return follower[1].displayName;
+        return follower.displayName;
       });
     }
   },
@@ -195,7 +195,7 @@ export default {
 
       let followers = this.followers;
       let selectedFollower = followers.filter(follower => {
-        return follower[1].displayName === selectedDisplayName;
+        return follower.displayName === selectedDisplayName;
       })[0];
 
       if (!selectedFollower) {
@@ -203,25 +203,24 @@ export default {
         return;
       }
 
-      let selectedFollowerID = selectedFollower[0];
-      let username = selectedFollower[1].displayName;
-      let emailNotificationsOff = selectedFollower[1].notificationsOff && selectedFollower[1].notificationsOff.recipe;
+      let username = selectedFollower.displayName;
+      let emailNotificationsOff = selectedFollower.notificationsOff && selectedFollower.notificationsOff.recipe;
 
       sharesRef.once("value", snapshot => {
         if (snapshot.exists()) {
           let shares = Object.values(snapshot.val());
-          if (shares.indexOf(selectedFollowerID) > -1) {
+          if (shares.indexOf(selectedFollower.id) > -1) {
             this.systemMessage = `This recipe is already shared with ${username}`;
             return;
           }
         }
         sharesRef
-          .push(selectedFollowerID)
+          .push(selectedFollower.id)
           .then(() => {
             if (!emailNotificationsOff) {
               this.sendNotificationEmail({
                 displayName: username,
-                id: selectedFollowerID
+                id: selectedFollower.id
               });
             }
           })

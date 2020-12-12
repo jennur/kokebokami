@@ -38,7 +38,7 @@
 
 <script>
 import user from "~/mixins/user.js";
-import shoppingLists from "~/mixins/shoppingLists.js";
+import shoppingLists from "~/mixins/shopping-lists.js";
 import SelectComponent from "~/components/Input/SelectComponent.vue";
 
 export default {

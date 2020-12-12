@@ -25,7 +25,7 @@
           v-if="loaded"
           :recipes="visibleRecipes"
           :isPublicList="true"
-          addRecipeUrl="/account/add-recipe"
+          addRecipeUrl="/account/my-cookbook/add-recipe"
         />
         <div v-else class="container">
           <span class="simple-loading-spinner margin--auto" />
@@ -45,10 +45,9 @@
 import ClickOutside from "vue-click-outside";
 
 import user from "~/mixins/user.js";
-import publicRecipes from "~/mixins/publicRecipes.js";
+import publicRecipes from "~/mixins/public-recipes.js";
 
 import InitialInfoSection from "~/components/InitialInfoSection/InititalInfoSection.vue";
-import Preview from "~/components/Preview.vue";
 import SignUpSection from "~/components/SignUp/SignUpSection.vue";
 import RecipesList from "~/components/Recipes/RecipesList.vue";
 import RecipeSearch from "~/components/Search/RecipeSearch.vue";
@@ -58,7 +57,6 @@ export default {
   layout: "fullwidth",
   components: {
     InitialInfoSection,
-    Preview,
     SignUpSection,
     RecipeSearch,
     RecipesList

@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import userRecipes from "~/mixins/userRecipes.js";
+import userRecipes from "~/mixins/user-recipes.js";
 import RecipeFullView from "~/components/Recipes/RecipeFullView/RecipeFullView.vue";
 import user from "~/mixins/user.js";
 
@@ -41,7 +41,7 @@ export default {
         instructions: [],
         categories: [],
         typeOfMeal: [],
-        freeFrom: []
+        freeFrom: [],
       }
     };
   },
@@ -66,12 +66,12 @@ export default {
       let recipeKey = this.recipeKey;
 
       if (!recipeKey) {
-        let newRecipeRef = this.$fire.database.ref("recipes");
         let recipeObj = {
           ...payload,
           ownerID: this.user.id
         };
-        newRecipeRef
+
+        this.$fire.database.ref("recipes")
           .push(recipeObj)
           .then(result => {
             console.log("Saved new recipe");
@@ -80,9 +80,10 @@ export default {
           .then(() => {
             this.getRecipe();
           });
-      } else {
-        let recipeRef = this.$fire.database.ref(`recipes/${recipeKey}`);
-        recipeRef
+      }
+      else {
+        this.$fire.database
+          .ref(`recipes/${recipeKey}`)
           .update(payload)
           .then(() => {
             console.log("Successfully set payload:", payload);

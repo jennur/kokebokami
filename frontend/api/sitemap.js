@@ -2,6 +2,8 @@
 const express = require("express");
 const app = express();
 const axios = require("axios");
+const backupPhotoURL = "https://firebasestorage.googleapis.com/v0/b/kokebokami-e788f.appspot.com/o/images%2Fglobals%2FrecipeImage%2Frecipe-backup-img.png?alt=media&token=67cb87a6-78ae-4b45-bdec-44b8e702b842";
+import generatePath from "../helpers/generatePath";
 
 app.use(express.json());
 
@@ -11,20 +13,25 @@ app.get("/", async (req, res) => {
       `https://${process.env.PROJECT_ID}.firebaseio.com/recipes.json?auth=${process.env.DATABASE_SECRET}`
     )
     .then(recipes => {
-      return Object.entries(recipes.data)
-        .filter(recipe => recipe[1].public)
-        .map(recipe => {
-          let photoURL =
-            recipe[1].photoURL ||
-            "https://firebasestorage.googleapis.com/v0/b/kokebokami-e788f.appspot.com/o/images%2Fglobals%2FrecipeImage%2Frecipe-backup-img.png?alt=media&token=67cb87a6-78ae-4b45-bdec-44b8e702b842";
+      recipes = recipes.data;
+      let xmlUrls = [];
+      for(let key in recipes){
+        let recipe = recipes[key];
+        if(recipe.public && recipe.title) {
+          let path = generatePath(recipe.title, key, true)
+          let photoURL = recipe.photoURL || backupPhotoURL;
           photoURL = photoURL.replace(/&/g, "&amp;");
-          return `<url>
-                    <loc>https://kokebokami.com/recipes/${recipe[0]}/</loc>
-                      <image:image>
-                        <image:loc>${photoURL}</image:loc>
-                      </image:image>
-                  </url> `;
-        });
+          xmlUrls.push(`
+            <url>
+              <loc>https://kokebokami.com/recipes/${path}/</loc>
+                <image:image>
+                  <image:loc>${photoURL}</image:loc>
+                </image:image>
+            </url>
+          `);
+        }
+      }
+      return xmlUrls;
     })
     .catch(error => console.log("Error generating routes:", error.message));
 

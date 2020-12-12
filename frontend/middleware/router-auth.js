@@ -41,10 +41,10 @@ function onAdminRoute(route) {
 
 function performRedirect(route, redirect, app) {
   if (
-    route.name.indexOf("login") > -1 ||
-    route.name.indexOf("sign-up") > -1 ||
-    route.name.indexOf("verify-email") > -1 ||
-    route.name.indexOf("goodbye") > -1
+    route.path.indexOf("login") > -1 ||
+    route.path.indexOf("sign-up") > -1 ||
+    route.path.indexOf("verify-email") > -1 ||
+    route.path.indexOf("goodbye") > -1
   ) {
     console.log("Redirecting to account");
     redirect(app.localePath("/account/"));

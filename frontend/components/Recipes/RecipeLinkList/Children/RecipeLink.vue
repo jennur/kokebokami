@@ -7,8 +7,8 @@
       <expand-transition :show="editMode" class="recipe-link__edit-form-wrap">
         <recipe-link-edit-form
           class="padding--large"
-          :recipeLinkID="link && link[0]"
-          :recipeLink="link && link[1]"
+          :recipeLinkID="link && link.id"
+          :recipeLink="link"
           :addingToCategory="addingToCategory"
           @update="update"
           @close-edit-mode="cancelEdit"
@@ -20,7 +20,7 @@
         @click="event => openLink(event)"
       >
         <div class="recipe-link__settings">
-          <settings-dropdown v-if="!editMode && link && link[0]">
+          <settings-dropdown v-if="!editMode && link && link.id">
             <span @click="event => toggleEditMode(event)">
               <edit-icon class="icon margin-right--medium" />
               Edit link
@@ -37,10 +37,10 @@
         <h3
           class="recipe-preview__title margin-top--large margin-bottom--medium"
         >
-          {{ link && link[1].title }}
+          {{ link && link.title }}
         </h3>
         <div class="recipe-preview__description margin-bottom--large">
-          {{ link && link[1].comment }}
+          {{ link && link.comment }}
         </div>
         <div v-if="labels" class="margin-bottom--xxlarge">
           <span
@@ -51,13 +51,13 @@
           >
         </div>
         <div class="recipe-link__published-by">
-          {{ link && link[1].hostName }}
+          {{ link && link.hostName }}
         </div>
       </div>
     </div>
     <Alert
       :alertMessage="
-        `Are you sure you want to delete this link: '${link[1].title}'? `
+        `Are you sure you want to delete this link: '${link.title}'? `
       "
       :showAlert="showAlert"
       @confirmed="deleteLink"
@@ -85,8 +85,8 @@ export default {
   },
   props: {
     link: {
-      type: Array,
-      default: () => []
+      type: Object,
+      default: () => {}
     },
     addingToCategory: {
       type: String,
@@ -102,7 +102,7 @@ export default {
   mixins: [user],
   computed: {
     labels() {
-      let labels = this.link && this.link[1].labels;
+      let labels = this.link && this.link.labels;
       return labels && labels.split(",");
     }
   },
@@ -125,14 +125,15 @@ export default {
     },
     openLink(event) {
       event && event.stopPropagation();
-      let url = this.link && this.link[1].url;
+      let url = this.link && this.link.url;
       if (url) window.open(url, "_blank");
     },
     deleteLink() {
-      let linkID = this.link && this.link[0];
-      if (linkID) {
+      let linkID = this.link && this.link.id;
+      console.log("LinkID:", linkID, this.user.id);
+      if (this.link.id && this.user.id) {
         const recipeLinkRef = this.$fire.database
-          .ref(`users/${this.user.id}/recipeLinks/${linkID}`)
+          .ref(`users/${this.user.id}/recipeLinks/${this.link.id}`)
           .remove()
           .then(res => {
             this.showAlert = false;
@@ -142,13 +143,11 @@ export default {
             this.submitSystemMessage = error.message;
             console.log("Error deleting recipe:", error.message);
           });
-      } else {
-        this.showAlert = false;
       }
     }
   },
   mounted() {
-    if (this.link && !this.link[1].url) {
+    if (this.link && !this.link.url) {
       this.editMode = true;
     }
   }
