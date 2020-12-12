@@ -13,9 +13,7 @@ export default function(context) {
         user.providerData[0].providerId === "password"
       ) {
         if (route.name.indexOf("verify-email") === -1) {
-          console.log("App.localePath:", app.localePath("/verify-email/"));
           redirect(app.localePath("/verify-email/"));
-          console.log("Redirecting to verify email");
         }
       }
       unsubscribe();

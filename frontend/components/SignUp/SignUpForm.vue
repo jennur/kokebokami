@@ -151,7 +151,6 @@ export default {
         token = await this.$recaptcha.getResponse();
         await this.$recaptcha.reset()
       } catch (error) {
-        // eslint-disable-next-line no-console
         console.log('Login error:', error)
       }
 

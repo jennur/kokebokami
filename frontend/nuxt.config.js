@@ -66,7 +66,10 @@ export default {
 
   // Global CSS
   css: ["~/assets/scss/main.scss"],
-  plugins: ["~/plugins/globalComponents.js", "~/plugins/router-auth.client.js"],
+  plugins: [
+    "~/plugins/globalComponents.js",
+    "~/plugins/router-auth.client.js"
+  ],
   vendor: ["axios", "babel-polyfill"],
   router: {
     middleware: ["router-auth", "redirect-trailing-slash"],
@@ -182,9 +185,9 @@ export default {
   },
   recaptcha: {
     hideBadge: true, // Hide badge element (v3 & v2 via size=invisible)
-    siteKey: '6LfVggMaAAAAAO3bVz1ZwzUO2RJY7xe-8-ufU8KO', // Site key for requests
+    siteKey: '6Ld7IQQaAAAAAPHtKdLGhDVq_oMRmBGjvcg1zAWr', // Site key for requests
     version: 2, // Version
-    size: 'normal' // Size: 'compact', 'normal', 'invisible' (v2)
+    size: 'invisible' // Size: 'compact', 'normal', 'invisible' (v2)
   },
   // Build configuration
   build: {}
