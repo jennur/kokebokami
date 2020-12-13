@@ -69,9 +69,6 @@ export const mutations = {
   },
   setLoginSystemMessage(state, payload) {
     state.loginSystemMessage = payload;
-  },
-  setSignupSystemMessage(state, payload) {
-    state.signupSystemMessage = payload;
   }
 };
 
@@ -85,38 +82,41 @@ export const actions = {
   SET_LOGIN_MESSAGE: ({ commit }, payload) => {
     commit("setLoginSystemMessage", payload);
   },
-  SET_SHOPPING_LIST_COUNT: function({ commit }, payload) {
-    if (!payload) {
-      let authUser = this.$fire.auth.currentUser;
-      let shoppingListsRef = this.$fire.database.ref(
-        `users/${authUser.uid}/shoppingLists`
-      );
-      shoppingListsRef.once("value", shoppingLists => {
-        if (shoppingLists.exists()) {
-          shoppingLists = Object.entries(shoppingLists.val());
-          let shoppingListCount = 0;
-          shoppingLists.forEach(list => {
-            if (list && list[1] && list[1].subLists) {
-              let subLists = Object.entries(list[1].subLists) || [];
-              subLists.forEach(subList => {
-                if (subList && subList[1] && subList[1].listItems) {
-                  shoppingListCount += subList[1].listItems.length;
+  SET_SHOPPING_LIST_COUNT: function({ commit }) {
+    let authUser = this.$fire.auth.currentUser;
+    this.$fire.database
+      .ref("shoppingLists")
+      .once("value", snapshot => {
+        if(snapshot.exists()) {
+          let shoppingLists = snapshot.val();
+          let count = 0;
+
+          for(let key in shoppingLists) {
+            let shoppingList = shoppingLists[key];
+            let owners = Object.values(shoppingList.owners);
+
+            owners.forEach(owner => {
+              if (owner.id === authUser.uid && shoppingList.subLists) {
+                console.log("Setting count");
+                let subLists = shoppingList.subLists;
+                for(let subKey in subLists) {
+                  if(subLists[subKey].listItems) {
+                    count += subLists[subKey].listItems.length;
+                  }
                 }
-              });
-            }
-          });
-          commit("setShoppingListCount", shoppingListCount);
+              }
+            });
+          }
+          commit("setShoppingListCount", count);
         }
       });
-    } else {
-      commit("setShoppingListCount", payload);
-    }
   },
 
   SET_USER: function({ commit, dispatch }) {
     try {
       let authUser = this.$fire.auth.currentUser;
       let userRef = this.$fire.database.ref(`users/${authUser.uid}`);
+
       userRef.once("value", snapshot => {
         let loggedinUser = {
           id: authUser.uid,

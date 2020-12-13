@@ -64,7 +64,7 @@
         </h2>
         <span v-if="shared" class="shopping-list__shared">
           Shared from:
-          <nuxt-link :to="`/cooks/${list.createdBy.id}/`">{{
+          <nuxt-link :to="`/cooks/${createdByCookPath}/`">{{
             list.createdBy.displayName
           }}</nuxt-link>
         </span>
@@ -143,6 +143,7 @@ import ShareBox from "./ShareBox.vue";
 import IncrementButton from "~/components/Input/IncrementButton.vue";
 import DecrementButton from "~/components/Input/DecrementButton.vue";
 import SubList from "./SubList.vue";
+import generatePath from '../../helpers/generatePath';
 
 export default {
   name: "shopping-list",
@@ -173,6 +174,10 @@ export default {
     };
   },
   computed: {
+    createdByCookPath(){
+      let createdBy = this.list.createdBy;
+      return generatePath(createdBy.displayName, createdBy.id);
+    },
     shared() {
       let createdByID = this.list.createdBy && this.list.createdBy.id;
       return createdByID && createdByID !== this.user.id;

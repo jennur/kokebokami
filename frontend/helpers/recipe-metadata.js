@@ -25,8 +25,7 @@ export default function getRecipeMetadata(recipePath){
                 return "Kokebokami user";
               });
 
-              let instructions = recipe.instructions;
-              instructions = instructions.map(instruction => {
+              let instructions = recipe.instructions && recipe.instructions.map(instruction => {
                 return {
                   "@type": "HowToStep",
                   text: instruction

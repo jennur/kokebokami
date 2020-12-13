@@ -81,19 +81,14 @@ export default {
       passwordRepeat: "",
       passwordRepeatError: "",
       termsAndConditions: false,
-      termsAndConditionsError: ""
+      termsAndConditionsError: "",
+      systemMessage: ""
     };
-  },
-  computed: {
-    systemMessage() {
-      return this.$store.state.signupSystemMessage;
-    }
   },
   methods: {
     signUp() {
-      let credentials = { email: this.email, password: this.password };
       this.$fire.auth
-        .createUserWithEmailAndPassword(credentials.email, credentials.password)
+        .createUserWithEmailAndPassword(this.email, this.password)
         .then(response => {
           response.user
             .sendEmailVerification()
@@ -104,8 +99,8 @@ export default {
               console.log("Error sending verification email:", error.message);
             });
         })
-        .catch(function(error) {
-          commit("setSignupSystemMessage", error.message);
+        .catch((error) => {
+          this.systemMessage = error.message;
           console.log(
             "Failed with error code: " + error.code + " " + error.message
           );
