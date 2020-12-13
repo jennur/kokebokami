@@ -111,7 +111,6 @@ export default {
       this.saveListItems();
     },
     saveListItems() {
-      let componentThis = this;
       let userID = this.user.id;
 
       let mainListKey = this.mainListKey;
@@ -130,8 +129,8 @@ export default {
           .update({ listItems })
           .then(() => {
             //console.log("Sublist successfully updated");
-            componentThis.editMode = false;
-            componentThis.$emit("update");
+            this.editMode = false;
+            this.$emit("update");
           })
           .catch(error =>
             console.log("Error updating subList:", error.message)
@@ -143,30 +142,12 @@ export default {
           .push({ listItems })
           .then(result => {
             console.log("Successfully added new sublist");
-            componentThis.editMode = false;
-            componentThis.$emit("update");
+            this.editMode = false;
+            this.$emit("update");
           })
           .catch(error => console.log("Error setting subList:", error.message));
-      } /* else if (!mainListKey) {
-        console.log("Adding new main list");
-        shoppingListsRef
-          .push({
-            title: mainListTitle,
-            createdBy: { id: userID, displayName: username },
-                owners: [{ id: userID, displayName: username }]
-          })
-          .then(result => {
-            shoppingListsRef
-              .child(result.key)
-              .child("subLists")
-              .push({ listItems })
-              .then(result => {
-                console.log("Successfully added new mainlist");
-                componentThis.editMode = false;
-                componentThis.$emit("update");
-              });
-          });
-      } */ else {
+      }
+      else {
         console.log("Something went wrong while trying to add/update sublist");
       }
     }

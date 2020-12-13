@@ -155,7 +155,6 @@ export default {
     categories() {
       let links = this.recipeLinks;
       let categories = [];
-      console.log("Links:", links);
       links && links.forEach(link => {
         if (link.category) {
           if (categories.indexOf(link.category) === -1)

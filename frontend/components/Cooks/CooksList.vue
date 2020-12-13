@@ -34,7 +34,6 @@ export default {
   },
   computed: {
     cooksLength() {
-      console.log("Cooks:", this.cooks);
       return this.cooks ? this.cooks.length : 0;
     },
   },
