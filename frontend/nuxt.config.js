@@ -118,8 +118,7 @@ export default {
     "@nuxtjs/firebase",
     "@nuxtjs/axios",
     "nuxt-svg-loader",
-    "nuxt-fontawesome",
-    "@nuxtjs/recaptcha"
+    "nuxt-fontawesome"
   ],
   i18n: {
     detectBrowserLanguage: {
@@ -182,12 +181,6 @@ export default {
         icons: ["fab"]
       }
     ]
-  },
-  recaptcha: {
-    hideBadge: true, // Hide badge element (v3 & v2 via size=invisible)
-    siteKey: '6Ld7IQQaAAAAAPHtKdLGhDVq_oMRmBGjvcg1zAWr', // Site key for requests
-    version: 2, // Version
-    size: 'invisible' // Size: 'compact', 'normal', 'invisible' (v2)
   },
   // Build configuration
   build: {}

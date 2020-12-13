@@ -37,8 +37,6 @@
       }}</span>
     </label>
 
-    <recaptcha class="captcha" @error="onError" @success="onSuccess" @expired="onExpired" />
-
     <label class="flex-column margin-bottom--medium">
       <span class="flex-row flex-row--nowrap">
         <input
@@ -113,15 +111,6 @@ export default {
           );
         });
     },
-    onSuccess(){
-      console.log("Captcha success")
-    },
-    onError(error){
-      console.log("Captcha error", error);
-    },
-    onExpired(){
-      console.log("Captcha expired");
-    },
     async validateForm() {
       const emailRegex = /^\S+@\S+\.\S+$/;
       let validated = 1;
@@ -146,15 +135,7 @@ export default {
         this.termsAndConditionsError = "You need to check the terms of service";
       } else this.termsAndConditionsError = "";
 
-      let token = null;
-      try {
-        token = await this.$recaptcha.getResponse();
-        await this.$recaptcha.reset()
-      } catch (error) {
-        console.log('Login error:', error)
-      }
-
-      if (validated === 1 && token) {
+      if (validated === 1) {
         this.signUp();
       }
     }
