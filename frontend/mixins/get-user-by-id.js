@@ -1,3 +1,5 @@
+import userModel from "./user-model";
+
 export default {
   data() {
     return {
@@ -5,16 +7,16 @@ export default {
       loadedProfile: false
     };
   },
+  mixins: [userModel],
   methods: {
     async getUserByID(userID) {
-      let componentThis = this;
       let hiddenProfile = false;
 
-      await componentThis.$fire.database
+      await this.$fire.database
         .ref(`users/${userID}/hiddenProfile`)
-        .once("value", hiddenStatus => {
-          if (hiddenStatus.exists()) {
-            hiddenProfile = hiddenStatus.val();
+        .once("value", snapshot => {
+          if (snapshot.exists()) {
+            hiddenProfile = snapshot.val();
           }
         });
 
@@ -26,7 +28,7 @@ export default {
         ];
 
         Promise.all(userPromises)
-          .then(function(res) {
+          .then((res) => {
             let user = { id: userID };
 
             if (res[0].exists()) {
@@ -38,10 +40,11 @@ export default {
             if (res[2].exists()) {
               user.biography = res[2].val();
             }
-            componentThis.cook = user.displayName ? user : null; // displayName is never null for existing users
+
+            this.cook = user.displayName ? this.userModel(user, userID) : null; // displayName is never null for existing users
           })
           .then(() => {
-            componentThis.loadedProfile = true;
+            this.loadedProfile = true;
           })
           .catch(error => console.log("Error getting user data:", error));
       } else {

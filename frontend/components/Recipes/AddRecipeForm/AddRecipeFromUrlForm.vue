@@ -110,7 +110,7 @@
 
 <script>
 import user from "~/mixins/user.js";
-import userRecipeLinks from "~/mixins/userRecipeLinks.js";
+import recipeLinks from "~/mixins/user-recipe-links.js";
 
 import ExpandTransition from "~/components/Transitions/Expand.vue";
 import SelectComponent from "~/components/Input/SelectComponent.vue";
@@ -134,15 +134,15 @@ export default {
       comment: ""
     };
   },
-  mixins: [user, userRecipeLinks],
+  mixins: [user, recipeLinks],
   computed: {
     categories() {
-      let links = this.userRecipeLinks;
+      let links = this.recipeLinks;
       let categories = [];
       links.forEach(link => {
-        if (link[1].category) {
-          if (categories.indexOf(link[1].category) === -1)
-            categories.push(link[1].category);
+        if (link.category) {
+          if (categories.indexOf(link.category) === -1)
+            categories.push(link.category);
         }
       });
       return categories;

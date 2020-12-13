@@ -11,6 +11,7 @@
         <br />
         If you don't receive the e-mail, please contact us.
       </p>
+      <button class="button button--small" @click="logOut">Dismiss</button>
     </div>
   </div>
 </template>
@@ -33,6 +34,12 @@ export default {
     breadcrumbs: {
       type: Array,
       default: () => [{ name: "Home", link: "/" }, { name: "Verify email" }]
+    }
+  },
+  methods: {
+    logOut(){
+      this.$store.dispatch("USER_SIGN_OUT");
+      this.$router.push(this.localePath("/"));
     }
   }
 };

@@ -36,6 +36,7 @@
         passwordRepeatError
       }}</span>
     </label>
+
     <label class="flex-column margin-bottom--medium">
       <span class="flex-row flex-row--nowrap">
         <input
@@ -110,7 +111,7 @@ export default {
           );
         });
     },
-    validateForm() {
+    async validateForm() {
       const emailRegex = /^\S+@\S+\.\S+$/;
       let validated = 1;
 

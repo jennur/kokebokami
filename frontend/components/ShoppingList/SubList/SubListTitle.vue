@@ -126,7 +126,6 @@ export default {
           );
         }
       } else {
-        console.log("Closing editMode");
         this.toggleEditMode();
       }
     }

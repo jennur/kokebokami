@@ -92,8 +92,8 @@ export default {
 
       if (recipeKey) {
         this.loading = true;
-        let categoriesRef = this.$fire.database.ref(`recipes/${recipeKey}/categories`);
-        categoriesRef
+        this.$fire.database
+          .ref(`recipes/${recipeKey}/categories`)
           .set(categories)
           .then(() => {
             console.log("Successfully updated categories");

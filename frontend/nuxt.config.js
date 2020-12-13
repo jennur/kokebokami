@@ -2,7 +2,6 @@ const getRoutes = require("./build-helpers/getRoutes");
 const redirectSSL = require("redirect-ssl");
 
 export default {
-  mode: "universal",
   generate: {
     fallback: true,
     routes() {
@@ -66,7 +65,10 @@ export default {
 
   // Global CSS
   css: ["~/assets/scss/main.scss"],
-  plugins: ["~/plugins/globalComponents.js", "~/plugins/router-auth.client.js"],
+  plugins: [
+    "~/plugins/globalComponents.js",
+    "~/plugins/router-auth.client.js"
+  ],
   vendor: ["axios", "babel-polyfill"],
   router: {
     middleware: ["router-auth", "redirect-trailing-slash"],

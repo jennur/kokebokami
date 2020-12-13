@@ -1,19 +1,19 @@
 <template>
   <ul class="cooks__result-list padding-left--xlarge">
-    <li v-for="cook in cooks" :key="cook[0]">
+    <li v-for="cook in searchResult" :key="cook.id">
       <nuxt-link
-        :to="localePath(`/cooks/${cook[0]}/`)"
+        :to="localePath(`/cooks/${cook.path}/`)"
         class="cooks__user-link"
       >
         <div
-          v-if="cook[1].photoURL"
+          v-if="cook.photoURL"
           role="img"
           class="cooks__user-photo"
-          :style="`background-image: url(${cook[1].photoURL});`"
+          :style="`background-image: url(${cook.photoURL});`"
           aria-label="User profile picture"
         />
         <span v-else class="cooks__user-photo" />
-        {{ cook[1].displayName }}
+        {{ cook.displayName }}
       </nuxt-link>
     </li>
   </ul>
@@ -28,19 +28,10 @@ export default {
     searchTerm: {
       type: String,
       default: ""
-    }
-  },
-  mixins: [allUsers],
-  computed: {
-    cooks() {
-      let searchTerm = this.searchTerm;
-      let users = this.allUsers;
-      return users.filter(user => {
-        return (
-          user[1].displayName.toLowerCase().indexOf(searchTerm.toLowerCase()) >
-          -1
-        );
-      });
+    },
+    searchResult: {
+      type: Array,
+      default: () => []
     }
   }
 };

@@ -44,8 +44,7 @@
 </template>
 <script>
 import user from "~/mixins/user.js";
-import allUsers from "~/mixins/allUsers.js";
-import connectedUsers from "~/mixins/connectedUsers.js";
+import connectedUsers from "~/mixins/followed-and-followers.js";
 
 import Tabs from "~/components/Tabs.vue";
 import CooksSearch from "~/components/Cooks/CooksSearch/CooksSearch.vue";
@@ -77,7 +76,7 @@ export default {
       showFollowers: false
     };
   },
-  mixins: [user, allUsers, connectedUsers],
+  mixins: [user, connectedUsers],
   computed: {
     breadcrumbs() {
       return [

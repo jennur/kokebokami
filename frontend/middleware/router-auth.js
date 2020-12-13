@@ -12,9 +12,9 @@ export default function(context) {
         !user.emailVerified &&
         user.providerData[0].providerId === "password"
       ) {
-        if (route.name !== "verify-email")
+        if (route.name.indexOf("verify-email") === -1) {
           redirect(app.localePath("/verify-email/"));
-        console.log("Redirecting to verify email");
+        }
       }
       unsubscribe();
     } else {
@@ -26,7 +26,6 @@ export default function(context) {
       }
     }
   });
-  if (route.name === "recipes") redirect(app.localePath("/"));
 }
 
 function onAdminRoute(route) {
@@ -41,10 +40,10 @@ function onAdminRoute(route) {
 
 function performRedirect(route, redirect, app) {
   if (
-    route.name.indexOf("login") > -1 ||
-    route.name.indexOf("sign-up") > -1 ||
-    route.name.indexOf("verify-email") > -1 ||
-    route.name.indexOf("goodbye") > -1
+    route.path.indexOf("login") > -1 ||
+    route.path.indexOf("sign-up") > -1 ||
+    route.path.indexOf("verify-email") > -1 ||
+    route.path.indexOf("goodbye") > -1
   ) {
     console.log("Redirecting to account");
     redirect(app.localePath("/account/"));

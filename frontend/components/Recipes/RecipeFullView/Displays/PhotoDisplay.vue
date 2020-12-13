@@ -78,7 +78,6 @@ export default {
       this.editMode = false;
       let recipeKey = this.recipeKey;
       if (recipeKey) {
-        console.log("Setting new image:", fileURL);
         let imageRef = this.$fire.database.ref(`recipes/${recipeKey}/photoURL`);
         imageRef
           .set(fileURL)

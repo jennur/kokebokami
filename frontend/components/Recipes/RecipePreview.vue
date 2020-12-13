@@ -1,5 +1,5 @@
 <template>
-  <nuxt-link :to="localePath(`/recipes/${recipeUrl}/`)" class="recipe-preview">
+  <nuxt-link :to="localePath(`/recipes/${recipe.path}`)" class="recipe-preview">
     <!-- Image -->
     <div
       :style="`background-image: url(${recipeImage})`"
@@ -7,7 +7,7 @@
     ></div>
 
     <span class="recipe-preview__published-by" v-if="inPublicList">
-      {{ `${$t("recipes.publishedBy")} ${recipeOwner}` }}</span
+      {{ `${$t("recipes.publishedBy")} ${author && author.displayName}` }}</span
     >
     <span class="recipe-preview__public-note" v-if="showPublicNote">{{
       $t("recipes.public")
@@ -53,6 +53,7 @@
 <script>
 import recipeBackupImg from "~/assets/graphics/icons/recipe-backup-img.svg";
 import user from "~/mixins/user.js";
+import getRecipeAuthor from "~/mixins/get-recipe-author.js";
 
 export default {
   name: "recipe-preview",
@@ -64,21 +65,12 @@ export default {
       type: Object,
       default: () => {}
     },
-    recipeID: {
-      type: String,
-      default: ""
-    },
     inPublicList: {
       type: Boolean,
       default: false
     }
   },
-  data() {
-    return {
-      recipeOwner: "Unknown"
-    };
-  },
-  mixins: [user],
+  mixins: [user, getRecipeAuthor],
   computed: {
     showPublicNote() {
       return (
@@ -93,9 +85,6 @@ export default {
       return photoURL
         ? photoURL
         : require("~/assets/graphics/icons/recipe-backup-img.png");
-    },
-    recipeUrl() {
-      return this.recipeID;
     },
     categories() {
       let allCategories = this.$store.state.allCategories.categories;
@@ -139,18 +128,8 @@ export default {
       return freeFrom.join(", ");
     }
   },
-  methods: {
-    getRecipeOwner() {
-      let displayNameRef = this.$fire.database.ref(
-        `users/${this.recipe.ownerID}/displayName`
-      );
-      displayNameRef.once("value", snapshot => {
-        if (snapshot.exists()) this.recipeOwner = snapshot.val();
-      });
-    }
-  },
-  mounted() {
-    this.getRecipeOwner();
+  mounted(){
+    this.getRecipeAuthor(this.recipe.ownerID);
   }
 };
 </script>

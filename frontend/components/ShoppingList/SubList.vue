@@ -2,10 +2,10 @@
   <section class="sub-list margin-vertical--large">
     <div class="flex-row flex-row--align-top flex-row--nowrap">
       <settings-dropdown class="margin-top--medium" v-if="subListKey">
-        <span class="system-message" @click="toggleAlert"
-          ><delete-icon tabindex="0" class="icon margin-right--medium" />Delete
-          sublist</span
-        >
+        <span class="system-message" @click="toggleAlert">
+          <delete-icon tabindex="0" class="icon margin-right--medium" />
+          Delete sublist
+        </span>
       </settings-dropdown>
       <div class="sub-list-container">
         <sub-list-title
@@ -129,20 +129,17 @@ export default {
       return `${randomList1[index1]} ${randomList2[index2]} of ${randomList3[index3]}`;
     },
     deleteSubList() {
-      let componentThis = this;
       let mainListKey = this.mainListKey;
       let subListKey = this.subListKey;
 
-      let subListRef = this.$fire.database.ref(
-        `shoppingLists/${mainListKey}/subLists/${subListKey}`
-      );
-      subListRef
+      this.$fire.database
+        .ref(`shoppingLists/${mainListKey}/subLists/${subListKey}`)
         .remove()
         .then(() => {
           console.log("Succesfully deleted sublist");
-          componentThis.editListItems = false;
-          componentThis.toggleAlert();
-          componentThis.$emit("update");
+          this.editListItems = false;
+          this.toggleAlert();
+          this.$emit("update");
         })
         .catch(error => console.log("Error deleting sublist:", error.message));
     }

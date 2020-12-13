@@ -11,14 +11,14 @@
       </h4>
     </div>
     <ol>
-      <li v-for="link in links" :key="link[0]">
+      <li v-for="link in links" :key="link.id">
         <div v-if="externalURL">
-          <a :href="link[1] && link[1].url" target="_blank">{{ link[1].title }}</a>
+          <a :href="link && link.url" target="_blank">{{ link.title }}</a>
           <new-tab-icon class="account__recipe-link-icon" />
         </div>
         <div v-else>
-          <nuxt-link :to="basePath + link[0]">{{ link[1].title }}</nuxt-link>
-          <span class="system-message" v-if="link[1].public">Public</span>
+          <nuxt-link :to="basePath + link.path">{{ link.title }}</nuxt-link>
+          <span class="system-message" v-if="link.public">Public</span>
         </div>
       </li>
     </ol>

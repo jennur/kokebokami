@@ -44,7 +44,7 @@
       <CookSilhouette v-else class="comment__user-img" />
       <component
         :is="isAnonymous ? 'span' : 'nuxt-link'"
-        :to="isAnonymous ? null : `/cooks/${commentObj.userId}/`"
+        :to="isAnonymous ? null : `/cooks/${userPath}/`"
         class="margin-left--medium"
         :class="{
           'no-link': isAnonymous
@@ -117,6 +117,7 @@ import CookSilhouette from "~/assets/graphics/icons/cook-silhouette-circle.svg";
 import SubComment from "./SubComment.vue";
 import ExpandTransition from "~/components/Transitions/Expand.vue";
 import Alert from "~/components/Alert.vue";
+import generatePath from "../../helpers/generatePath";
 
 export default {
   name: "comment",
@@ -180,6 +181,10 @@ export default {
     },
     username() {
       return this.comment[1].username;
+    },
+    userPath(){
+      let [userid, username] = [this.commentObj.userId, this.commentObj.username];
+      return generatePath(username, userid);
     },
     submitDate() {
       let date = this.comment[1].submitDate;

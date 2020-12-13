@@ -115,7 +115,7 @@
 </template>
 <script>
 import user from "~/mixins/user.js";
-import userRecipeLinks from "~/mixins/userRecipeLinks.js";
+import recipeLinks from "~/mixins/user-recipe-links.js";
 import SelectComponent from "~/components/Input/SelectComponent.vue";
 import ExpandTransition from "~/components/Transitions/Expand.vue";
 
@@ -129,10 +129,6 @@ export default {
     recipeLink: {
       type: Object,
       default: {}
-    },
-    recipeLinkID: {
-      type: String,
-      default: ""
     },
     addingToCategory: {
       type: String,
@@ -154,15 +150,15 @@ export default {
         (recipeLink && recipeLink.category) || this.addingToCategory || ""
     };
   },
-  mixins: [user, userRecipeLinks],
+  mixins: [user, recipeLinks],
   computed: {
     categories() {
-      let links = this.userRecipeLinks;
+      let links = this.recipeLinks;
       let categories = [];
-      links.forEach(link => {
-        if (link[1].category) {
-          if (categories.indexOf(link[1].category) === -1)
-            categories.push(link[1].category);
+      links && links.forEach(link => {
+        if (link.category) {
+          if (categories.indexOf(link.category) === -1)
+            categories.push(link.category);
         }
       });
       return categories;
@@ -201,9 +197,9 @@ export default {
         };
 
         try {
-          if (this.recipeLinkID) {
+          if (this.recipeLink.id) {
             const recipeLinkRef = this.$fire.database.ref(
-              `users/${this.user.id}/recipeLinks/${this.recipeLinkID}`
+              `users/${this.user.id}/recipeLinks/${this.recipeLink.id}`
             );
             recipeLinkRef
               .update(dataObject)

@@ -14,7 +14,7 @@
 
 <script>
 import user from "~/mixins/user.js";
-import publicRecipes from "~/mixins/publicRecipes.js";
+import publicRecipes from "~/mixins/public-recipes.js";
 
 import ProfileView from "~/components/ProfileView.vue";
 import RecipesList from "~/components/Recipes/RecipesList";
@@ -52,7 +52,7 @@ export default {
     currentUsersPublicRecipes() {
       let publicRecipes = this.publicRecipes;
       let currentUsersPublicRecipes = publicRecipes.filter(recipe => {
-        return recipe[1].ownerID === this.user.id;
+        return recipe.ownerID === this.user.id;
       });
 
       return currentUsersPublicRecipes;
