@@ -30,6 +30,11 @@
           Share
         </button>
       </form>
+      <expand-transition :show="!!systemMessage">
+        <div class="system-message margin-top--large">
+          {{ systemMessage }}
+        </div>
+      </expand-transition>
     </div>
   </section>
 </template>
@@ -43,6 +48,7 @@ import connectedUsers from "~/mixins/followed-and-followers.js";
 import ExpandTransition from "~/components/Transitions/Expand.vue";
 import SelectComponent from "~/components/Input/SelectComponent.vue";
 import HoverInfoBox from "~/components/HoverInfoBox";
+
 export default {
   name: "share-form",
   components: {
@@ -95,7 +101,7 @@ export default {
               let shared = false;
               owners.forEach(user => {
                 if (user.id === follower.id) {
-                  this.$emit('systemMessage', `This shopping list is already shared with ${follower.displayName} `);
+                  this.systemMessage = `This shopping list is already shared with ${follower.displayName} `;
                   shared = true;
                 }
               });
@@ -108,7 +114,7 @@ export default {
                     sharedFrom: { id: this.user.id, displayName: this.user.displayName }
                   })
                   .then(() => {
-                    this.$emit('systemMessage', `Successfully shared with ${follower.displayName}`);
+                    this.systemMessage = `Successfully shared with ${follower.displayName}`;
                     this.$emit("update");
                     if (!follower.notificationsOff || !follower.notificationsOff.shoppingLists) {
                       this.$emit('shared', follower);
@@ -119,10 +125,10 @@ export default {
           });
         } catch (error) {
           console.log("Error while sharing:", error.message);
-          this.$emit('systemMessage', "An error occured while sharing");
+          this.systemMessage = "An error occured while sharing";
         }
       } else {
-        this.$emit('systemMessage', "We were unable to find this user in the database");
+        this.systemMessage = "We were unable to find this user in the database";
       }
     }
   }

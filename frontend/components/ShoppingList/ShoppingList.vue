@@ -34,14 +34,10 @@
             :open="sharing"
             :listKey="list.key"
             :listTitle="list.title"
-            @systemMessage="message => systemMessage = message"
             @shared="follower => sendEmail(follower)"
             @close-modal="toggleShareBox"
           />
         </transition>
-        <div v-if="systemMessage" class="system-message margin-top--large">
-          {{ systemMessage }}
-        </div>
       </div>
     </div>
     <!-- Shopping list title -->
@@ -163,7 +159,6 @@ export default {
       editTitle: false,
       addingNewSubList: false,
       sharing: false,
-      systemMessage: "",
       showAlert: false
     };
   },
@@ -197,7 +192,6 @@ export default {
     },
     toggleShareBox() {
       this.sharing = !this.sharing;
-      this.systemMessage = "";
     },
     toggleEditTitle(event) {
       this.editTitle = !this.editTitle;
