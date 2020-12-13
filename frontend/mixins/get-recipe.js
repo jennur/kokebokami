@@ -18,7 +18,7 @@ export default {
   },
   async asyncData({ params }) {
     if (process.server) {
-      return await getRecipeMetadata(`${params.key}/${params.recipeid}`);
+      return await getRecipeMetadata(`${params.key}/${params.recipeid}/`);
     }
   },
   mixins: [recipeModel, userModel, getRecipeAuthor],
@@ -26,7 +26,7 @@ export default {
     getRecipeKey() {
       let keySegment = this.$route.params.key;
       let title = this.$route.params.recipeid;
-      let recipePath = `${keySegment}/${title}`;
+      let recipePath = `${keySegment}/${title}/`;
 
       this.$fire.database
         .ref("recipes")

@@ -23,7 +23,7 @@ app.get("/", async (req, res) => {
           photoURL = photoURL.replace(/&/g, "&amp;");
           xmlUrls.push(`
             <url>
-              <loc>https://kokebokami.com/recipes/${path}/</loc>
+              <loc>https://kokebokami.com/recipes/${path}</loc>
                 <image:image>
                   <image:loc>${photoURL}</image:loc>
                 </image:image>

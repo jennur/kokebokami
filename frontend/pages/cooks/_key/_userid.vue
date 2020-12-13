@@ -192,7 +192,7 @@ export default {
         .ref("users")
         .once("value", snapshot => {
           if(snapshot.exists() && snapshot.val()){
-            let userPath = `${keySegment}/${userid}`;
+            let userPath = `${keySegment}/${userid}/`;
             let users = snapshot.val();
 
             for(let key in users){
