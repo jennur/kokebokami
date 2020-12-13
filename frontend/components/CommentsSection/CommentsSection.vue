@@ -107,22 +107,23 @@ export default {
         });
     },
     submitComment(commentObj) {
-      let recipeKey = this.recipeKey;
-      let commentsRef = this.$fire.database.ref(`recipes/${recipeKey}/comments`);
-      commentsRef
-        .push(commentObj)
-        .then(() => {
-          this.submitted = true;
-          this.error = false;
-          this.updateComments++;
-          if (this.user && this.user.id !== this.recipeOwnerID) {
-            this.sendEmail(commentObj);
-          }
-        })
-        .catch(error => {
-          this.error = true;
-          console.log("Error submitting comment:", error.message);
-        });
+      if(this.recipeKey){
+        this.$fire.database
+          .ref(`recipes/${this.recipeKey}/comments`)
+          .push(commentObj)
+          .then(() => {
+            this.submitted = true;
+            this.error = false;
+            this.updateComments++;
+            if (this.user && this.user.id !== this.recipeOwnerID) {
+              this.sendEmail(commentObj);
+            }
+          })
+          .catch(error => {
+            this.error = true;
+            console.log("Error submitting comment:", error.message);
+          });
+      }
     }
   }
 };

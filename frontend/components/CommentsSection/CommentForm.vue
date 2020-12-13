@@ -105,7 +105,7 @@ export default {
       let commentObj = {
         userId: this.user.id,
         username: this.user.displayName,
-        photoURL: this.user.photoURL,
+        photoURL: this.user.photoURL && this.user.photoURL || "",
         isAnonymous: this.anonymous,
         comment: this.comment,
         submitDate,
