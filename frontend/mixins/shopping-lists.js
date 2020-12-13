@@ -1,16 +1,15 @@
 export default {
   data() {
     return {
-      userAuth: this.$fire.auth.currentUser,
-      shoppingLists: []
+      shoppingLists: [],
+      loaded: false
     };
   },
   methods: {
     getShoppingLists() {
-      if (this.userAuth) {
+      let user = this.$store.state.user;
 
-        let authID = this.userAuth.uid;
-        let username = this.$store.state.user.displayName;
+      if (user) {
         let shoppingListRef = this.$fire.database.ref(`shoppingLists`);
 
         shoppingListRef
@@ -18,44 +17,22 @@ export default {
             let userShoppingLists = [];
 
             if (snapshot.exists()) {
-              let shoppingLists = Object.entries(snapshot.val()).reverse() || [];
-              let shoppingListCount = 0;
+              let shoppingLists = snapshot.val();
 
-              shoppingLists.forEach(list => {
-                let owners = Object.values(list[1].owners);
-                owners.forEach(user => {
+              for(let key in shoppingLists) {
+                let shoppingList = shoppingLists[key];
+                let owners = Object.values(shoppingList.owners);
 
-                  if (user.id === authID) {
-                    userShoppingLists.push(list);
-
-                    if (list[1].subLists) {
-                      let subLists = Object.values(list[1].subLists) || [];
-                      subLists.forEach(subList => {
-                        if (subList && subList.listItems) {
-                          shoppingListCount += subList.listItems.length;
-                        }
-                      });
-                    }
+                owners.forEach(owner => {
+                  if (owner.id === user.id) {
+                    shoppingList.key = key;
+                    userShoppingLists.push(shoppingList);
                   }
                 });
-              });
-
-              this.$store.dispatch("SET_SHOPPING_LIST_COUNT", shoppingListCount);
-            } else {
-              shoppingListsRef
-                .push({
-                  title: "My shopping list",
-                  createdBy: { id: authID, displayName: username },
-                  owners: [{ id: authID, displayName: username }],
-                  subLists: []
-                })
-                .then(() => {
-                  shoppingListsRef.once("value", shoppingLists => {
-                    userShoppingLists = Object.entries(shoppingLists.val());
-                  });
-                });
+              }
             }
-            this.shoppingLists = userShoppingLists;
+            this.shoppingLists = userShoppingLists.reverse();
+            this.loaded = true;
           })
           .catch(error => {
             console.log("Error: Failed getting shopping list:", error.message);

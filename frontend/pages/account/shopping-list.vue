@@ -19,7 +19,7 @@
       <shopping-list
         v-for="(shoppingList, index) in shoppingLists"
         :key="`shopping-list-${index}`"
-        :list="{ ...shoppingList[1], key: shoppingList[0] }"
+        :list="shoppingList"
         @update="updateShoppingLists"
       />
     </div>
@@ -73,9 +73,6 @@ export default {
     updateShoppingLists() {
       this.addingNewShoppingList = false;
       this.getShoppingLists();
-    },
-    objectToEntries(object) {
-      return object ? Object.entries(object) : [];
     }
   }
 };
