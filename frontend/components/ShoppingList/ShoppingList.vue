@@ -28,23 +28,17 @@
     <div class="flex-row flex-row--align-center margin-bottom--large">
       <!-- Share action -->
       <div v-if="list && list.key">
-        <div v-if="!sharing">
-          <share-icon class="icon icon--blue" @click="toggleShareBox" />
-        </div>
-        <button
-          v-else
-          class="button button--small button--transparent button--transparent-red"
-          @click="toggleShareBox"
-        >
-          ✕ Close
-        </button>
-        <shareBox
-          :open="sharing"
-          :listKey="list.key"
-          @systemMessage="message => systemMessage = message"
-          @shared="follower => sendEmail(follower)"
-          class="margin-top--medium"
-        />
+        <share-icon class="icon icon--blue" @click="toggleShareBox" />
+        <transition v-if="sharing" name="pop-modal">
+          <shareBox
+            :open="sharing"
+            :listKey="list.key"
+            :listTitle="list.title"
+            @systemMessage="message => systemMessage = message"
+            @shared="follower => sendEmail(follower)"
+            @close-modal="toggleShareBox"
+          />
+        </transition>
         <div v-if="systemMessage" class="system-message margin-top--large">
           {{ systemMessage }}
         </div>

@@ -147,6 +147,13 @@ export default {
     awaitingYourApproval: "Awaiting your approval",
     deleteAlertNote: "Are you sure you want to delete this comment"
   },
+  shoppingLists: {
+    share: {
+      share: "Share",
+      withFollower: "with one of your followers",
+      shareWithFollowerNote: "The shopping list will show up among your friend's shopping lists"
+    }
+  },
   recipes: {
     publishedBy: "Published by",
     public: "Public",

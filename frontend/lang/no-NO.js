@@ -147,6 +147,13 @@ export default {
     awaitingYourApproval: "Venter på din godkjenning",
     deleteAlertNote: "Er du sikker på at du vil slette denne kommentaren"
   },
+  shoppingLists: {
+    share: {
+      share: "Del",
+      withFollower: "med en av følgerene dine",
+      shareWithFollowerNote: "Handlelisten vil dukke opp iblant din følgers handlelister"
+    }
+  },
   recipes: {
     publishedBy: "Publisert av",
     public: "Offentlig",
