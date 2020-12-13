@@ -314,7 +314,6 @@ export default {
     },
     async updateProfileImg(upload) {
       this.removeProfileImg();
-      let componentThis = this;
       var imageName = uuid.v1();
       try {
         //save image
@@ -327,19 +326,18 @@ export default {
           `images/users/${this.user.id}/profileImg/${imageName}.png`
         );
         await imageRef.put(file, metadata);
-        this.photoURL = await imageRef.getDownloadURL();
+        let photoURL = await imageRef.getDownloadURL();
+        this.photoURL = photoURL;
 
         this.$fire.database
           .ref("/users/" + this.user.id)
-          .update({
-            photoURL: componentThis.photoURL
-          })
+          .update({ photoURL })
           .then(() => {
             this.updateProfileImgSystemMessage = "";
-            componentThis.updateUserDetailsInStore();
+            this.updateUserDetailsInStore();
           })
           .then(() => {
-            componentThis.isLoading = false;
+            this.isLoading = false;
           })
           .catch(error => {
             this.removeProfileImgSystemMessage = error.message;
@@ -351,45 +349,38 @@ export default {
       }
     },
     removeProfileImg() {
-      let componentThis = this;
-      let userID = this.user.id;
       let fileName = this.photoURL;
 
-      var storageRef = this.$fire.storage.ref();
-      if (userID) {
-        var profileImgRef = storageRef.child(
-          `images/users/${userID}/profileImg`
-        );
-
-        profileImgRef
+      if (this.user.id) {
+        this.$fire.storage
+          .ref()
+          .child(`images/users/${this.user.id}/profileImg`)
           .listAll()
-          .then(function(res) {
-            res.items.forEach(function(itemRef) {
+          .then((res) =>  {
+            res.items.forEach((itemRef) => {
               itemRef.delete();
             });
           })
           .then(() => {
-            componentThis.removeProfileImageFromDb();
+            this.removeProfileImageFromDb();
           })
-          .catch(function(error) {
+          .catch((error) => {
             console.log("Error deleting files:", error.message);
-            componentThis.removeProfileImgSystemMessage =
+            this.removeProfileImgSystemMessage =
               "We're having trouble deleting your profile image. Please try again later or contact us.";
           });
       }
     },
     removeProfileImageFromDb() {
-      let componentThis = this;
-
       this.$fire.database
         .ref("/users/" + this.user.id)
         .update({
           photoURL: ""
         })
         .then(() => {
-          componentThis.removeProfileImgSystemMessage = "";
-          componentThis.photoURL = "";
-          componentThis.updateUserDetailsInStore();
+          this.removeProfileImgSystemMessage = "";
+          this.photoURL = "";
+          this.updateUserDetailsInStore();
           console.log("Successfully deleted profile img");
         })
         .catch(error => {
@@ -397,7 +388,6 @@ export default {
         });
     },
     updateUsername(value) {
-      let componentThis = this;
       if (!value) value = "User";
 
       this.$fire.database
@@ -406,8 +396,8 @@ export default {
           displayName: value
         })
         .then(() => {
-          componentThis.username = value;
-          componentThis.updateUserDetailsInStore();
+          this.username = value;
+          this.updateUserDetailsInStore();
           this.usernameSystemMessage = "";
         })
         .catch(e => {
@@ -449,17 +439,15 @@ export default {
           });
       } */
     },
-
     updateBiography(value) {
-      let componentThis = this;
       this.$fire.database
         .ref("/users/" + this.user.id)
         .update({
           biography: value
         })
         .then(() => {
-          componentThis.biography = value;
-          componentThis.updateUserDetailsInStore();
+          this.biography = value;
+          this.updateUserDetailsInStore();
           this.biographySystemMessage = "";
         })
         .catch(e => {
@@ -469,12 +457,11 @@ export default {
     },
     deleteAccount() {
       let user = this.$fire.auth.currentUser;
-      const componentThis = this;
-
-      let recipesRef = this.$fire.database.ref("recipes").orderByChild("ownerID");
 
       //Remove user's recipes
-      recipesRef
+      this.$fire.database
+        .ref("recipes")
+        .orderByChild("ownerID")
         .once("value", recipes => {
           recipes.forEach(recipe => {
             if (recipe.val().ownerID === user.uid) {
@@ -491,33 +478,35 @@ export default {
           });
         })
         .then(() => {
-          this.$fire.database
-            .ref("users/" + user.uid)
-            .remove()
-            .then(function() {
-              console.log("Success: User was removed from database");
-            })
-            .catch(function(error) {
-              console.log("Error: User remove failed:", error.message);
-              componentThis.systemMessage = error.message;
-            });
+          if(user.uid) {
+            this.$fire.database
+              .ref("users/" + user.uid)
+              .remove()
+              .then(() => {
+                console.log("Success: User was removed from database");
+              })
+              .catch((error) => {
+                console.log("Error: User remove failed:", error.message);
+                this.systemMessage = error.message;
+              });
+          }
         })
         .then(() => {
-          user
+          user && user
             .delete()
             .then(() => {
-              componentThis.systemMessage =
+              this.systemMessage =
                 "Your account was deleted successfully.";
-              componentThis.$store.dispatch("REMOVE_USER");
-              componentThis.$router.push("/goodbye/");
+              this.$store.dispatch("REMOVE_USER");
+              this.$router.push("/goodbye/");
             })
-            .catch(function(error) {
-              componentThis.systemMessage = error.message;
+            .catch((error) => {
+              this.systemMessage = error.message;
               console.log("Error: User delete failed:", error.message);
             });
         })
-        .catch(function(error) {
-          componentThis.systemMessage = error.message;
+        .catch((error) => {
+          this.systemMessage = error.message;
           console.log("Error: Recipes reference failed:", error.message);
         });
     }

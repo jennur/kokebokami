@@ -2,7 +2,6 @@ const getRoutes = require("./build-helpers/getRoutes");
 const redirectSSL = require("redirect-ssl");
 
 export default {
-  mode: "universal",
   generate: {
     fallback: true,
     routes() {
