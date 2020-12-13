@@ -78,10 +78,7 @@ export default {
             url: "https://kokebokami.com",
             logo: {
               "@type": "ImageObject",
-              url:
-                "https://firebasestorage.googleapis.com/v0/b/kokebokami-e788f.appspot.com/o/images%2Fglobals%2Fkokebokami-assets%2Fkokebokami-logo.png?alt=media&token=c6af8291-7665-4317-b2c2-436d717d3e99",
-              width: 542,
-              height: 100
+              url: "https://firebasestorage.googleapis.com/v0/b/kokebokami-e788f.appspot.com/o/images%2Fglobals%2Fkokebokami-assets%2FlogoK-round.png?alt=media&token=a018646d-0837-44cc-9a2c-01c251f5ec84"
             },
             sameAs: ["https://www.facebook.com/kokebokami"]
           }

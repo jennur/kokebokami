@@ -19,7 +19,14 @@ export default function getRecipeMetadata(recipePath){
           if(path === recipePath){
             let author = await axios
               .get(databaseUsersURL(recipe.ownerID))
-              .then(user => user.data)
+              .then(user => {
+                let cookPath = generatePath(user.data, recipe.ownerID, true);
+                return {
+                  "@type": "Person",
+                  name: user.data,
+                  url: `https://kokebokami.com/cooks/${cookPath}`
+                }
+              })
               .catch(error => {
                 console.log("Error getting user:", error.message);
                 return "Kokebokami user";
@@ -34,7 +41,7 @@ export default function getRecipeMetadata(recipePath){
               let categories = Array.isArray(recipe.categories) && recipe.categories.join(", ") || "";
               let typeOfMeal = Array.isArray(recipe.typeOfMeal) && recipe.typeOfMeal.join(", ") || "";
 
-              let recipeData = {
+              let recipeMetaData = {
                 url: `https://kokebokami.com/recipes/${path}`,
                 name: recipe.title,
                 description: recipe.description || "",
@@ -45,23 +52,39 @@ export default function getRecipeMetadata(recipePath){
               let structuredData = {
                 "@context": "https://schema.org/",
                 "@type": "Recipe",
-                ...recipeData,
+                ...recipeMetaData,
                 author,
-                recipeYield: recipe.servings || 0,
-                recipeCategory: typeOfMeal,
-                recipeIngredient: recipe.ingredients || [],
-                recipeInstructions: instructions || []
+                "recipeYield": recipe.servings || 0,
+                "recipeCategory": typeOfMeal,
+                "recipeIngredient": recipe.ingredients || [],
+                "recipeInstructions": instructions || [],
+                "isAccessibleForFree": true,
+                "mainEntityOfPage": recipeMetaData.url,
+                "totalTime": recipe.prepTime || "",
+                "publisher": {
+                  "@type": "Organization",
+                  "name": "kokebokami.com",
+                  "logo": {
+                    "@type": "ImageObject",
+                    "url": "https://firebasestorage.googleapis.com/v0/b/kokebokami-e788f.appspot.com/o/images%2Fglobals%2Fkokebokami-assets%2FlogoK-round.png?alt=media&token=a018646d-0837-44cc-9a2c-01c251f5ec84",
+                    "width": 500,
+                    "height": 500
+                  },
+                  "sameAs": ["https://www.facebook.com/kokebokami"]
+                },
+                "datePublished": recipe.datePublished || "",
+                "dateModified": recipe.dateModified || ""
               };
 
               return {
                 headData: {
-                ...metadata(recipeData),
-                script: [
-                  {
-                    type: "application/ld+json",
-                    json: structuredData
-                  }
-                ]
+                  ...metadata(recipeMetaData),
+                  script: [
+                    {
+                      type: "application/ld+json",
+                      json: structuredData
+                    }
+                  ]
                 }
               };
           }

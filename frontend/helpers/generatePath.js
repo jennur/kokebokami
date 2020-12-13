@@ -5,7 +5,7 @@ export default function generatePath(title, key, excludeQuery){
   path = encodeURIComponent(path);
 
   if(excludeQuery){
-    return `${keySegment}/${path}`;
+    return `${keySegment}/${path}/`;
   }
 
   return `${keySegment}/${path}?id=${key}`;
