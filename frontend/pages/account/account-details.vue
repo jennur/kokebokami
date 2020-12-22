@@ -42,6 +42,7 @@
             :editOption="true"
             autocompleteType="username"
             @update="value => updateUsername(value)"
+            :validate="validateUsername"
             :currentValue="username && username.length ? username : 'User'"
           />
 
@@ -387,9 +388,15 @@ export default {
           console.log(error.message);
         });
     },
+    validateUsername(value) {
+      let usernameRegex = /^[a-zA-Z\s]+$/;
+      if(!usernameRegex.test(value)) {
+        this.usernameSystemMessage = "Username can only consist of letters and spaces";
+        return false;
+      }
+      return true;
+    },
     updateUsername(value) {
-      if (!value) value = "User";
-
       this.$fire.database
         .ref("/users/" + this.user.id)
         .update({
@@ -399,6 +406,7 @@ export default {
           this.username = value;
           this.updateUserDetailsInStore();
           this.usernameSystemMessage = "";
+          this.usernameEditOpen = false;
         })
         .catch(e => {
           this.usernameSystemMessage = e.message;

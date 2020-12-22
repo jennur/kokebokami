@@ -83,7 +83,7 @@
     </form>
 
     <expand-transition :show="!!systemMessage">
-      <div class="system-message">{{ systemMessage }}</div>
+      <div class="system-message margin-top--medium">{{ systemMessage }}</div>
     </expand-transition>
     <div v-if="!editMode" class="flex-row">
       <edit-icon
@@ -150,11 +150,15 @@ export default {
     isLoading: {
       type: Boolean,
       default: false
+    },
+    validate: {
+      type: Function,
+      default: () => true
     }
   },
   data() {
     return {
-      editMode: false,
+      editMode: this.editOpen,
       inputValue: this.currentValue,
       options: {
         url: "https://httpbin.org/post",
@@ -175,8 +179,10 @@ export default {
       this.editMode = !this.editMode;
     },
     handleSave() {
-      this.toggleEditMode();
-      this.$emit("update", this.inputValue);
+      if(this.validate(this.inputValue)){
+        this.toggleEditMode();
+        this.$emit("update", this.inputValue);
+      }
     },
     handleRemoval() {
       this.showAlert = false;

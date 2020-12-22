@@ -15,7 +15,7 @@ module.exports = () => {
 
         if(recipe.public && recipe.title){
           let path = generatePath(recipe.title, key, true);
-          if(recipe.categories) {
+          /* if(recipe.categories) {
             let categories = Object.values(recipe.categories);
             categories
             .filter(category => category)
@@ -23,7 +23,7 @@ module.exports = () => {
               category = category.replace(/ /g, "-").replace(/&/g, "and").toLowerCase();
               links.push(`/recipes/${category}/${path}`);
             });
-          }
+          } */
           links.push(`/recipes/${path}`);
         }
       }

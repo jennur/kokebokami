@@ -1,30 +1,42 @@
 <template>
-  <div class="share-form">
-    <expand-transition :show="open">
+  <section class="share-form-container">
+    <div class="share-form-modal">
+      <button
+        class="button button--cancel button--cancel-dynamic flex-align-self--end"
+        @click="$emit('close-modal')"
+      >
+        ✕
+      </button>
+
+      <h4>{{`${$t("shoppingLists.share.share")} '${listTitle}' ${$t("shoppingLists.share.withFollower")}` }}</h4>
       <form class="share-form" v-on:submit.prevent>
-        <h4>Share this shopping list with one of your followers</h4>
-        <p class="margin-top--none margin-bottom--large">
-          The shopping list will show up among your friend's shopping lists.
-        </p>
-        <fieldset class="flex-row margin-bottom--medium">
+        <fieldset class="flex-row flex-row--align-center flex-row--nowrap margin-bottom--medium">
           <label class="share-form__followers">
             <select-component
-              class="share-form__select margin-top--medium margin-right--medium"
+              class="share-form__select margin-right--xlarge"
               :options="followerNames"
               defaultValue="Select a user"
               @select="option => (selected = option)"
             />
           </label>
+           <hover-info-box class="margin-left--small margin-bottom--small">
+            {{ $t("shoppingLists.share.shareWithFollowerNote") }}
+          </hover-info-box>
         </fieldset>
         <button
           @click="shareShoppingList"
-          class="button button--small"
+          class="button button--small margin-top--medium"
         >
           Share
         </button>
       </form>
-    </expand-transition>
-  </div>
+      <expand-transition :show="!!systemMessage">
+        <div class="system-message margin-top--large">
+          {{ systemMessage }}
+        </div>
+      </expand-transition>
+    </div>
+  </section>
 </template>
 <script>
 import ClickOutside from "vue-click-outside";
@@ -35,12 +47,14 @@ import connectedUsers from "~/mixins/followed-and-followers.js";
 
 import ExpandTransition from "~/components/Transitions/Expand.vue";
 import SelectComponent from "~/components/Input/SelectComponent.vue";
+import HoverInfoBox from "~/components/HoverInfoBox";
 
 export default {
   name: "share-form",
   components: {
     ExpandTransition,
-    SelectComponent
+    SelectComponent,
+    HoverInfoBox
   },
   mixins: [user, allUsers, connectedUsers],
   data() {
@@ -53,11 +67,11 @@ export default {
     };
   },
   props: {
-    open: {
-      type: Boolean,
-      default: false
-    },
     listKey: {
+      type: String,
+      default: ""
+    },
+    listTitle: {
       type: String,
       default: ""
     }
@@ -87,7 +101,7 @@ export default {
               let shared = false;
               owners.forEach(user => {
                 if (user.id === follower.id) {
-                  this.$emit('systemMessage', `This shopping list is already shared with ${follower.displayName} `);
+                  this.systemMessage = `This shopping list is already shared with ${follower.displayName} `;
                   shared = true;
                 }
               });
@@ -100,7 +114,7 @@ export default {
                     sharedFrom: { id: this.user.id, displayName: this.user.displayName }
                   })
                   .then(() => {
-                    this.$emit('systemMessage', `Successfully shared with ${follower.displayName}`);
+                    this.systemMessage = `Successfully shared with ${follower.displayName}`;
                     this.$emit("update");
                     if (!follower.notificationsOff || !follower.notificationsOff.shoppingLists) {
                       this.$emit('shared', follower);
@@ -111,10 +125,10 @@ export default {
           });
         } catch (error) {
           console.log("Error while sharing:", error.message);
-          this.$emit('systemMessage', "An error occured while sharing");
+          this.systemMessage = "An error occured while sharing";
         }
       } else {
-        this.$emit('systemMessage', "We were unable to find this user in the database");
+        this.systemMessage = "We were unable to find this user in the database";
       }
     }
   }
