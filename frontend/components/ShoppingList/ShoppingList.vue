@@ -63,7 +63,7 @@
           <nuxt-link
             v-for="(user, index) in sharedWith"
             :key="user.id"
-            :to="`/cooks/${user.id}/`"
+            :to="`/cooks/${sharedWithUrl(user)}/`"
             >{{ user.displayName }}
             {{ index !== sharedWith.length - 1 ? ", " : "" }}</nuxt-link
           >
@@ -187,6 +187,9 @@ export default {
     }
   },
   methods: {
+    sharedWithUrl(user){
+      return user && generatePath(user.displayName, user.id);
+    },
     toggleAlert() {
       this.showAlert = !this.showAlert;
     },
