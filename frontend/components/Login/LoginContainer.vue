@@ -7,10 +7,7 @@
       <facebook-login class="margin-bottom--medium" />
     </li>
     <li>
-      <kokebokami-button
-        class="margin-bottom--medium"
-        @click.native="toggleLoginModal"
-      />
+      <kokebokami-button @click.native="toggleLoginModal" />
     </li>
     <kokebokami-login :open="loginModalOpen" @toggle="toggleLoginModal" />
   </ul>
