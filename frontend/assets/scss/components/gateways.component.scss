@@ -1,12 +1,12 @@
 .gateway-link {
   min-width: 200px;
-  border: 2px solid $green;
   border-radius: $spacingMedium;
   padding: $spacingLarge;
   margin: $spacingSmall;
   text-align: center;
   transition: 0.3s;
   flex: 1 1 0;
+  background-color: $lightOrange;
 
   &--illustration {
     max-width: 150px;
@@ -17,7 +17,7 @@
   &:hover {
     text-decoration: none;
     @media screen and (min-width: $tabletWidth) {
-      background-color: rgba($green, 0.1);
+      background-color: darken($lightOrange, 2%);
       transform: scale(1.03);
     }
   }

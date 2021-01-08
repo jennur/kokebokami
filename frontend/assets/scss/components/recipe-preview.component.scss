@@ -7,6 +7,8 @@
   max-width: 100%;
   margin: $spacingMedium/2;
   min-width: 280px;
+  background-color: $lightOrange;
+
 }
 
 .recipe-link-wrap {
@@ -21,7 +23,6 @@
 
 .recipe-preview {
   align-items: center;
-  text-align: center;
 
   @media screen and (min-width: $tabletWidth) {
     min-width: 304px;
@@ -56,10 +57,12 @@
     color: $pink;
   }
 }
+
 .recipe-link {
   display: block;
   flex: 1 1 0;
   text-align: left;
+
   &__settings {
     width: 15px;
     position: absolute;
@@ -83,6 +86,7 @@
   &__edit-form-wrap {
     display: block;
     max-width: 100%;
+
     .recipe-link-edit-form {
       position: relative;
       border-radius: $spacingMedium;
@@ -92,11 +96,11 @@
       }
 
       &.recipe-preview:hover {
-        background-color: transparent;
+        background-color: $lightOrange;
         cursor: default;
       }
       &:hover {
-        background-color: transparent;
+        background-color: $lightOrange;
       }
       fieldset {
         position: relative;
@@ -138,18 +142,18 @@
 .recipe-link {
   width: 100%;
   max-width: 100%;
-  border: 2px solid $green;
   border-radius: $spacingMedium;
   position: relative;
   cursor: pointer;
   color: $blue;
   text-decoration: none;
-  transition: all 0.2s;
+  transition: all 0.3s;
+  background-color: $lightOrange;
 
   &:hover {
     text-decoration: none;
     @media screen and (min-width: $tabletWidth) {
-      background-color: rgba($green, 0.1);
+      background-color: darken($lightOrange, 2%);
     }
     a {
       text-decoration: none;

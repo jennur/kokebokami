@@ -12,33 +12,7 @@
         @logout="logOut"
       />
 
-      <div v-if="user && user.id" class="navigation-menu__icons">
-        <nuxt-link
-          :to="localePath('/account/shopping-list/')"
-          class="icon__link"
-          title="Shopping list"
-        >
-          <shopping-list-icon class="icon--shopping-list" />
-          <transition name="pop">
-            <span
-              v-show="
-                shoppingListCount && $route.path !== '/account/shopping-list/'
-              "
-              class="icon__notification"
-              >{{ shoppingListCount }}</span
-            >
-          </transition>
-        </nuxt-link>
-        <nuxt-link
-          :to="localePath('/cooks/')"
-          class="icon__link"
-          title="Discover cooks"
-        >
-          <cooks-icon class="icon--cooks" />
-        </nuxt-link>
-        <!--         <favorites-icon class="icon--favorites" />
-        -->
-      </div>
+      <shortcuts v-if="user && user.id" />
 
       <burger-menu
         :open="burgerMenuOpen"
@@ -54,16 +28,12 @@
 
 <script>
 import ClickOutside from "vue-click-outside";
-
 import Logo from "./Logo.vue";
-import ShoppingListIcon from "~/assets/graphics/icons/shopping-list-icon.svg";
-import CooksIcon from "~/assets/graphics/icons/cooks-icon.svg";
-import FavoritesIcon from "~/assets/graphics/icons/favorites-icon.svg";
-
 import user from "~/mixins/user.js";
 
 import BurgerMenu from "./BurgerMenu/BurgerMenu.vue";
 import DesktopMenu from "./DesktopMenu/DesktopMenu.vue";
+import Shortcuts from "./Shortcuts.vue";
 
 export default {
   name: "navigation",
@@ -71,9 +41,7 @@ export default {
     Logo,
     BurgerMenu,
     DesktopMenu,
-    ShoppingListIcon,
-    CooksIcon,
-    FavoritesIcon
+    Shortcuts
   },
   data() {
     return { burgerMenuOpen: false };

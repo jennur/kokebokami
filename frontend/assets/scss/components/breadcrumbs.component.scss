@@ -5,7 +5,8 @@
     text-align: left;
     list-style: none;
     font-size: $fontSizeSmall;
-    padding: 0px;
+    padding: $spacingMedium 0px;
+    margin: 0px;
 
     & li {
       display: inline-block;

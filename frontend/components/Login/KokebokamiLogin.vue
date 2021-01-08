@@ -8,6 +8,7 @@
           @click="closeModal"
           class="remove-icon kokebokami-login-modal--close"
         ></button>
+        <h3>Log in with Kokebokami</h3>
         <form class="kokebokami-login-modal-form" v-on:submit.prevent>
           <fieldset>
             <div v-if="resettingPassword" class="margin-bottom--large">

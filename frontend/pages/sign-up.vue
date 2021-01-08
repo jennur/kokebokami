@@ -1,8 +1,5 @@
 <template>
-  <div>
-    <breadcrumbs :routes="breadcrumbs" />
     <sign-up-section :darkBg="false" :signUpPage="true" />
-  </div>
 </template>
 
 <script>
@@ -10,7 +7,7 @@ import SignUpSection from "~/components/SignUp/SignUpSection.vue";
 
 export default {
   name: "sign-up",
-  head() {
+    head() {
     return {
       title: `Sign up | Kokebokami`,
       meta: [
@@ -42,14 +39,6 @@ export default {
   },
   components: {
     SignUpSection
-  },
-  computed: {
-    breadcrumbs() {
-      return [
-        { name: this.$t("navigation.home"), link: "/" },
-        { name: this.$t("signUpText") }
-      ];
-    }
   }
 };
 </script>

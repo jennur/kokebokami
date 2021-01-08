@@ -7,10 +7,10 @@
     </div>
     <div
       v-else
-      class="flex-row flex-row--justify-center flex-row--align-center flex-row--nowrap margin--auto"
+      class="flex-row flex-center-container flex-row--nowrap margin--auto"
     >
       <kokebokapen class="illustration illustration--kokebokapen" />
-      <login-container />
+      <login-container/>
     </div>
   </div>
 </template>

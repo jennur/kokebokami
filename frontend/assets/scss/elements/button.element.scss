@@ -11,12 +11,11 @@
   font-size: $fontSizeMedium;
   text-decoration: none;
   cursor: pointer;
-  transition: 0.2s;
+  transition: 0.3s;
   position: relative;
 
   &:hover {
-    background-color: $green;
-    color: $richBlack;
+    background-color: lighten($blue, 10%);
     text-decoration: none;
   }
   &--with-icon {
@@ -36,6 +35,10 @@
       border-radius: $spacingLarge;
       background-color: transparent;
       padding: $spacingMedium;
+
+      &:hover {
+        background-color: $green;
+      }
     }
   }
   &--block {
@@ -61,11 +64,10 @@
 
   &--green {
     background-color: $green;
-    color: $blue;
+    color: $richBlack;
 
     &:hover {
-      background-color: $blue;
-      color: $cream;
+      background-color: lighten($green, 10%);
     }
   }
 

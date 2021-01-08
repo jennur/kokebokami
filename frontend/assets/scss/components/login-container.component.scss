@@ -1,16 +1,21 @@
 @import url("https://fonts.googleapis.com/css?family=Roboto&display=swap");
 
 .login-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: $spacingLarge 0px;
-  width: 100%;
   max-width: 385px;
   text-align: left;
   box-sizing: border-box;
+  margin: $spacingXLarge auto;
+  padding: 0px;
+  list-style: none;
 
-  @media screen and (min-width: $tabletWidth) {
-    margin-left: $spacingXLarge;
+  li {
+    width: 100%;
+    box-sizing: border-box;
+    margin: 0px !important;
+  }
+
+  @media screen and (min-width: $desktopWidth) {
+    margin: 0px;
+    padding: 0px;
   }
 }
