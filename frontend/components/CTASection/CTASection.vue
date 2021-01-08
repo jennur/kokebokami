@@ -22,7 +22,7 @@
 
 <script>
 export default {
-  name: "initial-info-section",
+  name: "cta-section",
   props: {
     nextSection: {
       type: String,

@@ -1,7 +1,7 @@
 <template>
   <div>
     <div v-if="user && !user.id">
-      <initial-info-section />
+      <cta-section />
     </div>
 
     <div
@@ -47,7 +47,7 @@ import ClickOutside from "vue-click-outside";
 import user from "~/mixins/user.js";
 import publicRecipes from "~/mixins/public-recipes.js";
 
-import InitialInfoSection from "~/components/InitialInfoSection/InititalInfoSection.vue";
+import CtaSection from "~/components/CTASection/CTASection.vue";
 import SignUpSection from "~/components/SignUp/SignUpSection.vue";
 import RecipesList from "~/components/RecipePreview/RecipesList.vue";
 import RecipeSearch from "~/components/Search/RecipeSearch.vue";
@@ -56,7 +56,7 @@ export default {
   name: "Home",
   layout: "fullwidth",
   components: {
-    InitialInfoSection,
+    CtaSection,
     SignUpSection,
     RecipeSearch,
     RecipesList
