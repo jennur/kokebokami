@@ -63,8 +63,8 @@
 <script>
 import RecipeLink from "./Children/RecipeLink";
 import ExpandTransition from "~/components/Transitions/Expand.vue";
-import rightArrow from "~/assets/graphics/icons/right-arrow.svg";
-import downArrow from "~/assets/graphics/icons/down-arrow.svg";
+import rightArrow from "assets/graphics/icons/right-arrow.svg";
+import downArrow from "assets/graphics/icons/down-arrow.svg";
 
 export default {
   name: "recipes-link-list",

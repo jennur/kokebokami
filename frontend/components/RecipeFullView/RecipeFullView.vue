@@ -139,10 +139,10 @@
 </template>
 
 <script>
-import logo from "~/static/kokebokamilogo.png";
+import logo from "static/kokebokamilogo.png";
 import htmlToPdfMake from "html-to-pdfmake";
 import pdfMake from "pdfmake/build/pdfmake";
-import pdfFonts from "~/assets/fonts/vfs_fonts";
+import pdfFonts from "assets/fonts/vfs_fonts";
 
 import SettingsDropdown from "~/components/SettingsDropdown.vue";
 import PublicNote from "./Displays/PublicNote.vue";

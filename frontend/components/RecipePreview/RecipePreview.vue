@@ -51,7 +51,7 @@
 </template>
 
 <script>
-import recipeBackupImg from "~/assets/graphics/icons/recipe-backup-img.svg";
+import recipeBackupImg from "assets/graphics/icons/recipe-backup-img.svg";
 import user from "~/mixins/user.js";
 import getRecipeAuthor from "~/mixins/get-recipe-author.js";
 
@@ -84,7 +84,7 @@ export default {
       let photoURL = this.recipe.photoURL;
       return photoURL
         ? photoURL
-        : require("~/assets/graphics/icons/recipe-backup-img.png");
+        : require("assets/graphics/icons/recipe-backup-img.png");
     },
     categories() {
       let allCategories = this.$store.state.allCategories.categories;

@@ -69,7 +69,7 @@
 <script>
 import user from "~/mixins/user.js";
 import RecipeLinkEditForm from "./RecipeLinkEditForm.vue";
-import newTabIcon from "~/assets/graphics/icons/new-tab-icon.svg";
+import newTabIcon from "assets/graphics/icons/new-tab-icon.svg";
 import ExpandTransition from "~/components/Transitions/Expand.vue";
 import SettingsDropdown from "~/components/SettingsDropdown.vue";
 import Alert from "~/components/Alert.vue";

@@ -76,10 +76,10 @@ import userRecipes from "~/mixins/user-recipes.js";
 import userRecipeLinks from "~/mixins/user-recipe-links.js";
 
 import ExpandTransition from "~/components/Transitions/Expand.vue";
-import AddRecipeFromUrlForm from "~/components/Recipes/AddRecipeForm/AddRecipeFromUrlForm.vue";
+import AddRecipeFromUrlForm from "~/components/AddRecipeForm/AddRecipeFromUrlForm.vue";
 import Tabs from "~/components/Tabs.vue";
-import RecipesList from "~/components/Recipes/RecipesList.vue";
-import RecipeLinkList from "~/components/Recipes/RecipeLinkList/RecipeLinkList.vue";
+import RecipesList from "~/components/RecipePreview/RecipesList.vue";
+import RecipeLinkList from "~/components/RecipeLinkList/RecipeLinkList.vue";
 import RecipesFilter from "~/components/Filter/RecipesFilter.vue";
 import UserCategoriesFilter from "~/components/Filter/UserCategoriesFilter.vue";
 

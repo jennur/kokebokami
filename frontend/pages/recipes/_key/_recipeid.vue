@@ -8,6 +8,7 @@
       class="margin-bottom--large"
       :routes="breadcrumbs"
     />
+
     <div class="tablet-width margin-top--xxlarge margin--auto">
       <expand-transition :show="recipeLoaded" slower>
         <recipe-full-view
@@ -35,7 +36,7 @@ import getRecipe from "~/mixins/get-recipe.js";
 import publicRecipes from "~/mixins/public-recipes.js";
 
 import ExpandTransition from "~/components/Transitions/Expand.vue";
-import RecipeFullView from "~/components/Recipes/RecipeFullView/RecipeFullView.vue";
+import RecipeFullView from "~/components/RecipeFullView/RecipeFullView.vue";
 import CommentsSection from "~/components/CommentsSection/CommentsSection.vue";
 
 export default {

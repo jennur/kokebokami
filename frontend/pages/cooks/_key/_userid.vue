@@ -59,7 +59,7 @@ import getUserByID from "~/mixins/get-user-by-id.js";
 import publicRecipes from "~/mixins/public-recipes.js";
 
 import ProfileView from "~/components/ProfileView.vue";
-import RecipesList from "~/components/Recipes/RecipesList";
+import RecipesList from "~/components/RecipePreview/RecipesList";
 
 import generatePath from "~/helpers/generatePath";
 

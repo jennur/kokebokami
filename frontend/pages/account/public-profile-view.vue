@@ -17,7 +17,7 @@ import user from "~/mixins/user.js";
 import publicRecipes from "~/mixins/public-recipes.js";
 
 import ProfileView from "~/components/ProfileView.vue";
-import RecipesList from "~/components/Recipes/RecipesList";
+import RecipesList from "~/components/RecipePreview/RecipesList";
 
 export default {
   name: "profile",

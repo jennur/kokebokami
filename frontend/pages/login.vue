@@ -47,7 +47,6 @@ export default {
       ];
     },
     loading() {
-      console.log(this.$route);
       return this.$route.fullPath.indexOf("?loading") > -1;
     }
   }

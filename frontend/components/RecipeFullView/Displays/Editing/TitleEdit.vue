@@ -4,11 +4,7 @@
     type="text"
     v-model="updatedTitle"
     v-click-outside="handleUpdate"
-    @keydown="
-      event => {
-        event.keyCode === 13 && handleUpdate;
-      }
-    "
+    @keydown="event => { event.keyCode === 13 && handleUpdate }"
   />
 </template>
 <script>

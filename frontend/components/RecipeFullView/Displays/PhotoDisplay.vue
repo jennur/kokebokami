@@ -64,7 +64,7 @@ export default {
   },
   computed: {
     backupImage() {
-      return require("~/assets/images/recipe-backup-img.png");
+      return require("assets/images/recipe-backup-img.png");
     }
   },
   methods: {

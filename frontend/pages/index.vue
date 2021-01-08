@@ -49,7 +49,7 @@ import publicRecipes from "~/mixins/public-recipes.js";
 
 import InitialInfoSection from "~/components/InitialInfoSection/InititalInfoSection.vue";
 import SignUpSection from "~/components/SignUp/SignUpSection.vue";
-import RecipesList from "~/components/Recipes/RecipesList.vue";
+import RecipesList from "~/components/RecipePreview/RecipesList.vue";
 import RecipeSearch from "~/components/Search/RecipeSearch.vue";
 
 export default {
