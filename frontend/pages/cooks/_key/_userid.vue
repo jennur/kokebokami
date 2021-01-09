@@ -55,12 +55,12 @@
 <script>
 import cookSilhouette from "~/assets/graphics/icons/cook-silhouette-circle.svg";
 import user from "~/mixins/user.js";
-import getUserByID from "~/mixins/get-user-by-id.js";
-import publicRecipes from "~/mixins/public-recipes.js";
+import getPublicRecipes from "~/helpers/get-public-recipes.js";
 
 import ProfileView from "~/components/ProfileView.vue";
 import RecipesList from "~/components/RecipePreview/RecipesList";
 
+import getUser from "~/helpers/getUser";
 import generatePath from "~/helpers/generatePath";
 
 export default {
@@ -68,7 +68,7 @@ export default {
   components: { cookSilhouette, ProfileView, RecipesList },
   head() {
     let displayName = this.cook && this.cook.displayName;
-    let path = displayName && generatePath(displayName) || "";
+    let path = displayName && generatePath(displayName, this.cook.id) || "";
     return {
       title: `${this.userName} | Kokebokami`,
       link: [
@@ -80,9 +80,35 @@ export default {
     };
   },
   data() {
-    return { systemMessage: "", followed: null };
+    return {
+      systemMessage: "",
+      cook: null,
+      followed: null,
+      loadedProfile: false,
+      publicRecipes: [],
+      errorMessage: "",
+      loadedRecipes: false
+    };
   },
-  mixins: [user, getUserByID, publicRecipes],
+  async asyncData({app, params}) {
+    let publicRecipes = await getPublicRecipes(app);
+
+    if(process.client) {
+      let cook = await getUser(app, params);
+
+      return {
+        ...publicRecipes,
+        cook,
+        loadedProfile: true
+      };
+    }
+    return {
+      ...publicRecipes,
+      cook: null,
+      loadedProfile: false
+    }
+  },
+  mixins: [user],
   computed: {
     userName() {
       return (this.cook && this.cook.displayName) || "Unknown";
@@ -172,7 +198,7 @@ export default {
                       componentThis.followed = false;
                       componentThis.$store.dispatch("SET_USER");
                     });
-                } catch (errorr) {
+                } catch (error) {
                   console.log(error);
                 }
                 return;
@@ -183,33 +209,13 @@ export default {
       } catch (error) {
         console.log("Error while trying to unfollow user:", error.message);
       }
-    },
-    getUserID(){
-      let keySegment = this.$route.params.key;
-      let userid = this.$route.params.userid;
-
-      this.$fire.database
-        .ref("users")
-        .once("value", snapshot => {
-          if(snapshot.exists() && snapshot.val()){
-            let userPath = `${keySegment}/${userid}/`;
-            let users = snapshot.val();
-
-            for(let key in users){
-              let user = users[key];
-              let path = generatePath(user.displayName, key, true);
-              if(userPath === path) {
-                this.getUserByID(key)
-                return;
-              }
-            }
-          }
-      })
     }
   },
-  mounted() {
-    let userID = this.$route.query.id;
-    userID && this.getUserByID(userID) || this.getUserID();
+  async created() {
+    if(!this.cook) {
+      this.cook = await getUser(this, this.$route.params);
+    }
+    this.loadedProfile = true;
   }
 };
 </script>

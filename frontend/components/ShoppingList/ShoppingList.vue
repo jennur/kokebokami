@@ -54,7 +54,7 @@
         </h2>
         <span v-if="shared" class="shopping-list__shared">
           Shared from:
-          <nuxt-link :to="`/cooks/${createdByCookPath}/`">{{
+          <nuxt-link :to="`/cooks/${createdByCookPath}`">{{
             list.createdBy.displayName
           }}</nuxt-link>
         </span>
@@ -63,10 +63,11 @@
           <nuxt-link
             v-for="(user, index) in sharedWith"
             :key="user.id"
-            :to="`/cooks/${sharedWithUrl(user)}/`"
-            >{{ user.displayName }}
-            {{ index !== sharedWith.length - 1 ? ", " : "" }}</nuxt-link
-          >
+            :to="`/cooks/${sharedWithUrl(user)}`"
+            >
+            {{ user.displayName }}
+            {{ index !== sharedWith.length - 1 ? ", " : "" }}
+          </nuxt-link>
         </span>
       </div>
 

@@ -160,15 +160,18 @@ export default {
     },
     shareRecipeByEmail() {
       let email = document.getElementById("shareEmail").value;
-
+      let path = this.$route.fullPath;
       if (this.validateEmail(email)) {
         this.sharedByEmail = false;
-        let message = `<p>
-          <br>Someone shared a recipe with you:
-          <br>Check it out: <a href="https://kokebokami.com/recipes/${this.recipeKey}">'${this.recipeTitle}'</a>.
-          <br>
-          <br>Best wishes,
-          <br>Your Kokebokami team 👩‍🍳</p>`;
+        let message = `
+            <p>
+              <br>Someone shared a recipe with you:
+              <br>Check it out: <a href="https://kokebokami.com${path}">'${this.recipeTitle}'</a>.
+              <br>
+              <br>Best wishes,
+              <br>Your Kokebokami team 👩‍🍳
+            </p>
+            `;
         axios
           .post("/api/send-email", {
             email,
@@ -188,7 +191,6 @@ export default {
       }
     },
     shareRecipe() {
-      const componentThis = this;
       const selectedDisplayName = this.selected;
       const recipeKey = this.recipeKey;
       const sharesRef = this.$fire.database.ref(`recipes/${recipeKey}/sharedWith`);

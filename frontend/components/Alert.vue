@@ -7,12 +7,12 @@
           <div class="alert-box__buttons flex-row flex-row--align-center">
             <button
               class="button button--small button--red-border margin-right--large"
-              @click="$emit('cancel')"
+              @click="$emit('confirmed')"
             >
-              {{ $t("cancel") }}
-            </button>
-            <button class="button button--small" @click="$emit('confirmed')">
               {{ $t("confirm") }}
+            </button>
+            <button class="button button--small" @click="$emit('cancel')">
+              {{ $t("cancel") }}
             </button>
           </div>
         </div>

@@ -44,7 +44,7 @@
       <CookSilhouette v-else class="comment__user-img" />
       <component
         :is="isAnonymous ? 'span' : 'nuxt-link'"
-        :to="isAnonymous ? null : `/cooks/${userPath}/`"
+        :to="isAnonymous ? null : `/cooks/${userPath}`"
         class="margin-left--medium"
         :class="{
           'no-link': isAnonymous

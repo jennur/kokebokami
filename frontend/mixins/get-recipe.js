@@ -1,10 +1,6 @@
 import getRecipeAndMetadata from "~/helpers/recipe-metadata.js";
 import getRecipeOwner from "~/helpers/recipe-owner";
-import generatePath from "~/helpers/generatePath";
-import recipeModel from "../helpers/recipe-model";
-import userModel from "./user-model";
-import getRecipeAuthor from "./get-recipe-author";
-import user from "~/mixins/user";
+import recipeModel from "~/helpers/recipe-model";
 
 export default {
   data() {
@@ -64,7 +60,6 @@ export default {
       }
     }
   },
-  mixins: [userModel, getRecipeAuthor],
   methods: {
     async getRecipe(key) {
       try {
@@ -105,7 +100,7 @@ export default {
       return false;
     }
   },
-  mounted() {
+  created() {
     if(this.recipe && !this.userHasAccess(this.recipe)) {
       this.$router.push("/no-access");
     }

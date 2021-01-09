@@ -1,13 +1,6 @@
-import recipeModel from "../helpers/recipe-model";
-export default {
-  data() {
-    return {
-      publicRecipes: [],
-      errorMessage: "",
-      loaded: false
-    };
-  },
-  async asyncData({app}){
+import recipeModel from "./recipe-model";
+
+export default async function getPublicRecipes(app){
     try {
       let snapshot = await app.$fire.database
         .ref("recipes")
@@ -18,15 +11,14 @@ export default {
 
       return {
         publicRecipes: foundRecipes.reverse(),
-        loaded: true
+        loadedRecipes: true
       }
     } catch(error) {
       console.log("Error: Something failed while trying to set public recipes:", error);
       return {
         errorMessage: "Something went wrong while trying to load recipes. If the issue continues, please contact us."
       }
-    };
-  }
+    }
 };
 
 function handleRecipes(snapshot, ssr){

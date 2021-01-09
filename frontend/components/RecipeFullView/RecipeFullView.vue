@@ -244,21 +244,23 @@ export default {
           })
           .join("");
 
-      let recipeHTML = `<div style="margin: 30px;">
-      <span style="font-size:20px;color:#ff7300;text-align:right;">Kokebokami</span>
-      <h1 style="color:#063c60;margin-top: 30px; margin-bottom: 20px;">${recipe.title}</h1>
-      <p style="color:#063c60;font-size:20px;">${recipe.description}</p>
-      <span style="color:#063c60;margin-bottom:5px;margin-top:0px;"><strong>Meal type: </strong> ${typeOfMeal}</span>
-      <span style="color:#063c60;margin-bottom:5px;margin-top:0px;"><strong>Free from:</strong> ${freeFrom}</span>
-      <span style="color:#063c60;margin-bottom:5px;margin-top:0px;"><strong>Categories:</strong> ${categories}</span>
-      <h6 style="color:#063c60;margin-top: 35px; margin-bottom: 10px;">Servings:</h6>
-      <div>${servings}</div>
-      <h6 style="color:#063c60;margin-top: 35px; margin-bottom: 10px;">Ingredients</h6>
-      <ul style="margin-bottom: 15px;">${ingredients}</ul>
-      <h6 style="color:#063c60;margin-top: 25px; margin-bottom: 10px;">Instructions</h6>
-      <ol>${instructions}</ol>
-      <a style="margin-top:30px;" href="https://kokebokami.com">kokebokami.com</a>
-      </div>`;
+      let recipeHTML = `
+        <div style="margin: 30px;">
+          <span style="font-size:20px;color:#ff7300;text-align:right;">Kokebokami</span>
+          <h1 style="color:#063c60;margin-top: 30px; margin-bottom: 20px;">${recipe.title}</h1>
+          <p style="color:#063c60;font-size:20px;">${recipe.description}</p>
+          <span style="color:#063c60;margin-bottom:5px;margin-top:0px;"><strong>Meal type: </strong> ${typeOfMeal}</span>
+          <span style="color:#063c60;margin-bottom:5px;margin-top:0px;"><strong>Free from:</strong> ${freeFrom}</span>
+          <span style="color:#063c60;margin-bottom:5px;margin-top:0px;"><strong>Categories:</strong> ${categories}</span>
+          <h6 style="color:#063c60;margin-top: 35px; margin-bottom: 10px;">Servings:</h6>
+          <div>${servings}</div>
+          <h6 style="color:#063c60;margin-top: 35px; margin-bottom: 10px;">Ingredients</h6>
+          <ul style="margin-bottom: 15px;">${ingredients}</ul>
+          <h6 style="color:#063c60;margin-top: 25px; margin-bottom: 10px;">Instructions</h6>
+          <ol>${instructions}</ol>
+          <a style="margin-top:30px;" href="https://kokebokami.com">kokebokami.com</a>
+        </div>
+        `;
 
       let pdfContent = htmlToPdfMake(recipeHTML);
 
@@ -290,8 +292,8 @@ export default {
           if (snapshot.exists()) {
             let photoURL = snapshot.val();
             if (photoURL !== "") {
-              var fileRef = this.$fire.storage.refFromURL(photoURL);
-              fileRef
+              this.$fire.storage
+                .refFromURL(photoURL)
                 .delete()
                 .then(() => {
                   console.log("Successfully deleted image");
@@ -306,8 +308,8 @@ export default {
     deleteRecipe() {
       if (this.recipe.id) {
         this.deleteRecipeImageFromStorage().then(() => {
-          const recipeRef = this.$fire.database.ref(`recipes/${this.recipe.id}`);
-          recipeRef
+          this.$fire.database
+            .ref(`recipes/${this.recipe.id}`)
             .remove()
             .then(() => {
               this.$router.push("/account/my-cookbook/");

@@ -22,7 +22,7 @@
           v-click-outside="event => closeSearch(event)"
         />
         <recipes-list
-          v-if="loaded"
+          v-if="loadedRecipes"
           :recipes="visibleRecipes"
           :isPublicList="true"
           addRecipeUrl="/account/my-cookbook/add-recipe"
@@ -45,7 +45,7 @@
 import ClickOutside from "vue-click-outside";
 
 import user from "~/mixins/user.js";
-import publicRecipes from "~/mixins/public-recipes.js";
+import getPublicRecipes from "~/helpers/get-public-recipes.js";
 
 import CtaSection from "~/components/CTASection/CTASection.vue";
 import SignUpSection from "~/components/SignUp/SignUpSection.vue";
@@ -99,12 +99,18 @@ export default {
   data() {
     return {
       initialFiltered: true,
+      publicRecipes: [],
       filteredRecipes: [],
       filtered: false,
-      searchOpen: false
+      searchOpen: false,
+      errorMessage: "",
+      loadedRecipes: false
     };
   },
-  mixins: [user, publicRecipes],
+  async asyncData({app}) {
+    return await getPublicRecipes(app);
+  },
+  mixins: [user],
   computed: {
     initialRecipes() {
       let language = "English";
