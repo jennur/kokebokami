@@ -43,14 +43,14 @@
           <button
             v-if="!resettingPassword"
             @click="kokebokamiSignIn"
-            class="button button--small button--green margin-top--large"
+            class="button button-sm button--green margin-top--large"
           >
             {{ $t("loginText") }}
           </button>
           <button
             v-else
             @click="handlePasswordReset"
-            class="button button--small button--green margin-top--large"
+            class="button button-sm button--green margin-top--large"
           >
             Send
           </button>

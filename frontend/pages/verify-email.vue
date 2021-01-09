@@ -11,7 +11,7 @@
         <br />
         If you don't receive the e-mail, please contact us.
       </p>
-      <button class="button button--small" @click="logOut">Dismiss</button>
+      <button class="button button-sm" @click="logOut">Dismiss</button>
     </div>
   </div>
 </template>

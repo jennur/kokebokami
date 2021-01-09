@@ -18,7 +18,7 @@
       </li>
     </ul>
 
-    <div v-if="user && user.id" class="account-menu margin-bottom--small">
+    <div v-if="user && user.id" class="account-menu margin-bottom-sm">
       <user-image :username="user.displayName" :photoURL="user.photoURL" />
       <nuxt-link class="account-menu__button" :to="localePath('/account')">
         {{ accountMenu.title }}

@@ -87,7 +87,7 @@
         <fieldset class="container">
           <label class="flex-row flex-row--align-center flex-row--nowrap">
             <input type="checkbox" id="publicCheck" v-model="publicCheck" />
-            <span class="margin-left--small"
+            <span class="margin-left-sm"
               >Make recipe public (share with all users of Kokebokami)</span
             >
           </label>

@@ -9,7 +9,7 @@
           event.keyCode === 13 && toggleSearchForm();
         }
       "
-      class="button button--small button--green-border margin-bottom--large"
+      class="button button-sm button--green-border margin-bottom--large"
     >
       <search-icon
         class="icon icon--in-button icon-in-button-left margin-right--medium"

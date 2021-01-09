@@ -55,10 +55,10 @@
     </div>
 
     <!-- Comment -->
-    <div class="comment__comment margin-top--small">{{ commentText }}</div>
+    <div class="comment__comment margin-top-sm">{{ commentText }}</div>
     <button
       v-if="!isSubComment && !formOpen"
-      class="comment__reply-btn button button--small button--dynamic button--transparent margin-top--large"
+      class="comment__reply-btn button button-sm button--dynamic button--transparent margin-top--large"
       :class="{
         'margin-bottom--large': commentObj.subComments
       }"

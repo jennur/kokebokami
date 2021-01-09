@@ -16,7 +16,7 @@ e<template>
             @update="payload => $emit('update', payload)"
           />
           <span v-if="recipe.id" class="system-message" @click="toggleAlert">
-            <delete-icon tabindex="0" class="icon margin-right--small" />{{
+            <delete-icon tabindex="0" class="icon margin-right-sm" />{{
               $t("recipes.deleteRecipe")
             }}
           </span>

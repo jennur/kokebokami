@@ -3,7 +3,7 @@
     <div class="flex-column flex-column--align-right">
       <button
         v-if="editMode && !loading"
-        class="button button--small button--dynamic button--cancel margin-bottom--medium"
+        class="button button-sm button--dynamic button--cancel margin-bottom--medium"
         @click="toggleEditMode"
       >
         ✕ {{ $t("cancel") }}

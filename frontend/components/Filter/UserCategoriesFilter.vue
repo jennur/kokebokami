@@ -1,6 +1,6 @@
 <template>
   <section class="container margin-vertical--xlarge">
-    <h4 class="heading--blue margin-bottom--medium margin-left--small">Show categories</h4>
+    <h4 class="heading--blue margin-bottom--medium margin-left-sm">Show categories</h4>
     <form class="link-categories-filter">
       <label
         class="form__input margin-right--medium"

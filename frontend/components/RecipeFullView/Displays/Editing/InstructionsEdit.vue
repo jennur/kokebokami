@@ -4,7 +4,7 @@
       <li
         v-for="(instruction, index) in instructionsToBeUpdated"
         :key="instruction.id"
-        class="drag-el recipe__instructions-step padding-bottom--small flex-row flex-row--align-center flex-row--nowrap"
+        class="drag-el recipe__instructions-step padding-bottom-sm flex-row flex-row--align-center flex-row--nowrap"
         draggable
         @dragstart="startDrag($event, instruction, index)"
         @drop="onDrop($event, index)"
@@ -36,7 +36,7 @@
         >Add instruction</increment-button
       >
       <button
-        class="button button--dynamic-small button--round padding-vertical--small margin-top--large"
+        class="button button--dynamic-small button--round padding-vertical-sm margin-top--large"
         @click="handleSave"
       >
         Save

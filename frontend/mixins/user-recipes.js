@@ -38,8 +38,7 @@ export default {
       }
     }
   },
-  mounted() {
+  created() {
     this.getUserRecipes();
-    this.getRecipeLinks();
   }
 };

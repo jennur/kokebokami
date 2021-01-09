@@ -4,7 +4,7 @@
       <div class="flex-row flex-row--align-center flex-row--justify-center">
         <button
           @click="toggleAlert"
-          class="button button--small button--cancel margin-top--xxlarge"
+          class="button button-sm button--cancel margin-top--xxlarge"
         >
           ✕ {{ $t("cancel") }}
         </button>
@@ -20,7 +20,7 @@
         />
         <button
           @click="$emit('save')"
-          class="button button--small margin-top--xxlarge"
+          class="button button-sm margin-top--xxlarge"
         >
           Save
         </button>

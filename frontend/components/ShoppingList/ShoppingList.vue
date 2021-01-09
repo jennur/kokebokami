@@ -47,7 +47,7 @@
         class="flex-row flex-row--align-center margin-top--large"
       >
         <h2
-          class="margin-bottom--small margin-right--large"
+          class="margin-bottom-sm margin-right--large"
           @click="event => toggleEditTitle(event)"
         >
           {{ list.title }}

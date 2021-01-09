@@ -57,10 +57,10 @@
         <recipe-link-list
           class="margin-top--xxlarge"
           :hiddenCategories="hiddenCategories"
-          :links="recipeLinks"
+          :links="$store.state.recipeLinks"
           :emptyListMessage="emptyListMessage"
           @open-form="toggleRecipeForm"
-          @update="updateLinkList"
+          @update="setRecipeLinks"
         />
       </div>
     </Tabs>
@@ -159,7 +159,7 @@ export default {
       }
     },
     userCategories() {
-      let links = this.recipeLinks;
+      let links = this.$store.state.recipeLinks;
       let categories = ["No category"];
       links.forEach(link => {
         if (link.category) {
@@ -182,11 +182,8 @@ export default {
     updateHiddenCategories(hiddenCategories) {
       this.hiddenCategories = hiddenCategories;
     },
-    updateLinkList() {
-      this.getRecipeLinks();
-    },
     handleLinkSave() {
-      this.getRecipeLinks();
+      this.setRecipeLinks();
       this.activeTabIndex = 1;
       this.addRecipeFromUrl = false;
     },
@@ -208,6 +205,9 @@ export default {
       this.filteredRecipes = filteredRecipesObj.recipes;
       this.filtered = filteredRecipesObj.filtered;
     }
+  },
+  mounted() {
+    this.setRecipeLinks();
   },
   directives: {
     ClickOutside

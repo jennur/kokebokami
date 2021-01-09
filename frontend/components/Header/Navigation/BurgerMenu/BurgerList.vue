@@ -10,7 +10,7 @@
         <span>
           <h5
             v-if="menuItem.headline"
-            class="margin-top--xxlarge margin-bottom--small color--blue"
+            class="margin-top--xxlarge margin-bottom-sm color--blue"
           >
             {{ menuItem.headline }}
           </h5>
@@ -43,7 +43,7 @@
       </button>
     </li>
     <li>
-      <h5 class="margin-top--xxlarge margin-bottom--small color--blue">
+      <h5 class="margin-top--xxlarge margin-bottom-sm color--blue">
         {{ $t("navigation.footer.languageHeading") }}
       </h5>
     </li>

@@ -26,7 +26,7 @@
       <li
         v-for="(listItem, index) in updatedListItems"
         :key="`edit-list-item-${index}`"
-        class="margin-top--small"
+        class="margin-top-sm"
       >
         <input type="text" v-model="updatedListItems[index].text" />
         <decrement-button @decrement="removeListItem(index)" />
@@ -35,7 +35,7 @@
     <edit-icon
       tabindex="0"
       v-if="!editMode"
-      class="icon margin--small"
+      class="icon margin-sm"
       @click="toggleEditMode"
     />
     <div v-if="editMode" class="flex-row flex-row--align-center">

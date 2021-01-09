@@ -2,7 +2,7 @@
   <div class="recipe-link-wrap">
     <div
       class="recipe-link padding-horizontal--xlarge"
-      :class="{ 'recipe-preview--no-link': editMode }"
+      :class="{ 'recipe-link--no-link': editMode }"
     >
       <expand-transition :show="editMode" class="recipe-link__edit-form-wrap">
         <recipe-link-edit-form
@@ -35,16 +35,16 @@
         </div>
         <new-tab-icon class="recipe-link__new-tab-icon" />
         <h3
-          class="recipe-preview__title margin-top--large margin-bottom--medium"
+          class="recipe-link__title margin-top--large margin-bottom--medium"
         >
           {{ link && link.title }}
         </h3>
-        <div class="recipe-preview__description margin-bottom--large">
+        <div class="recipe-link__description margin-bottom--large">
           {{ link && link.comment }}
         </div>
         <div v-if="labels" class="margin-bottom--xxlarge">
           <span
-            class="recipe-preview__category"
+            class="recipe-link__category"
             v-for="label in labels"
             :key="`label-${label}`"
             >{{ label }}</span

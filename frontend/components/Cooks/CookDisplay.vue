@@ -17,7 +17,7 @@
       <BackupImg />
     </div>
     <div class="flex-column">
-      <h2 class="margin-bottom--small margin--none">
+      <h2 class="margin-bottom-sm margin--none">
         {{ !cook.hiddenProfile && cook.displayName || "User" }}
       </h2>
       <p class="following-cooks__biography margin--none">

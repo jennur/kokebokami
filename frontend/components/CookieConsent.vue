@@ -7,7 +7,7 @@
     <div class="flex-row-container">
       <nuxt-link :to="localePath('/cookies-policy/')">Learn more</nuxt-link>
       <button
-        class="button button--green-border button--small margin-left--large"
+        class="button button--green-border button-sm margin-left--large"
         @click="
           () => {
             this.$emit('cookieAccept');

@@ -32,10 +32,10 @@
         @submit.prevent
       >
         <div class="flex-row flex-row--align-center flex-row--nowrap">
-          <h4 class="margin-bottom--small">
+          <h4 class="margin-bottom-sm">
             {{ $t("recipes.share.shareWithFollower") }}
           </h4>
-          <hover-info-box class="margin-left--small margin-bottom--small">
+          <hover-info-box class="margin-left-sm margin-bottom-sm">
             {{ $t("recipes.share.shareWithFollowerNote") }}
           </hover-info-box>
         </div>
@@ -62,7 +62,7 @@
           <span class="simple-loading-spinner" />
         </div>
         <fieldset v-if="sharedByEmail === null">
-          <h4 class="margin-bottom--small">
+          <h4 class="margin-bottom-sm">
             {{ $t("recipes.share.shareByEmail") }}
           </h4>
           <label class="flex-column">

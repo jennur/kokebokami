@@ -1,60 +1,34 @@
 <template>
   <section class="container">
     <h3 v-if="links.length" class="color--blue">{{ $t("recipes.categories") }}</h3>
-    <div
-      class="accordion"
-      v-for="(category, index) in categories"
-      :key="`category-${category && category.title}-${index}`"
+
+    <category-accordion v-for="(category, index) in categories"
+                        :key="`category-${category.title}-${index}`"
+                        :open="accordionOpen(index)"
+                        :title="category.title"
+                        @add-link="addNewLink(index, category.title)"
+                        @toggle="toggleAccordion(index)"
     >
-      <div>
-        <div
-          class="accordion__tab margin-bottom--medium"
-          @click="toggleAccordion(index)"
-        >
-          <span class="recipe-link-list__headline margin--none">
-            <downArrow
-              v-if="accordionOpen(index)"
-              class="icon icon--small margin-right--medium"
-            />
-            <rightArrow v-else class="icon icon--small margin-right--medium" />
-            {{ category && category.title }}
-          </span>
-          <button
-            class="button--increment button--increment-small margin-left--medium"
-            @click="event => addNewLink(event, index, category.title)"
-          >
-            Add link
-          </button>
-        </div>
-        <expand-transition :show="accordionOpen(index)">
-          <div v-if="category && category.links" class="recipe-link-list">
-            <recipe-link
-              v-if="addingNew && addingToCategory === category.title"
-              :key="`recipe-link-new`"
-              :link="{}"
-              :addingToCategory="addingToCategory"
-              @update="saveNewLink"
-              @cancel="cancelNewLink"
-            />
-            <recipe-link
-              v-for="(link, index) in category.links"
-              :key="`recipe-link-${index}`"
-              :link="link"
-              @update="$emit('update')"
-            />
-          </div>
-        </expand-transition>
+      <div v-if="category && category.links" class="recipe-link-list">
+        <recipe-link
+          v-if="addingNew && addingToCategory === category.title"
+          :link="{}"
+          :addingToCategory="addingToCategory"
+          @update="saveNewLink"
+          @cancel="cancelNewLink"
+        />
+        <recipe-link
+          v-for="(link, index) in category.links"
+          :key="`recipe-link-${index}`"
+          :link="link"
+          @update="$emit('update')"
+        />
       </div>
-    </div>
-    <div
-      v-if="!links.length"
-      class="container container--center margin-bottom--xxlarge"
-    >
+    </category-accordion>
+
+    <div v-if="!links.length" class="container container--center margin-bottom--xxlarge">
       {{ emptyListMessage }}
-      <button
-        class="button button--transparent margin-top--xxlarge"
-        @click="$emit('open-form')"
-      >
+      <button class="button button--transparent margin-top--xxlarge" @click="$emit('open-form')">
         Add recipe to this list
       </button>
     </div>
@@ -62,17 +36,13 @@
 </template>
 <script>
 import RecipeLink from "./Children/RecipeLink";
-import ExpandTransition from "~/components/Transitions/Expand.vue";
-import rightArrow from "assets/graphics/icons/right-arrow.svg";
-import downArrow from "assets/graphics/icons/down-arrow.svg";
+import CategoryAccordion from "~/components/RecipeLinkList/Children/CategoryAccordion";
 
 export default {
   name: "recipes-link-list",
   components: {
-    RecipeLink,
-    ExpandTransition,
-    rightArrow,
-    downArrow
+    CategoryAccordion,
+    RecipeLink
   },
   props: {
     links: {
@@ -133,8 +103,7 @@ export default {
     accordionOpen(index) {
       return this.openAccordions.indexOf(index) > -1;
     },
-    addNewLink(event, index, categoryTitle) {
-      event && event.stopPropagation();
+    addNewLink(index, categoryTitle) {
       this.addingNew = true;
       this.addingToCategory = categoryTitle;
       let openAccordions = this.openAccordions;

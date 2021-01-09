@@ -3,7 +3,7 @@
     <div class="account__detail-title">
       <h4 class="account__detail-title">
         {{ title }}
-        <span class="margin-left--small">
+        <span class="margin-left-sm">
           {{
           links ? links.length : null
           }}

@@ -19,7 +19,7 @@
         class="comment-form__anonymous flex-row flex-row--align-center margin-vertical--large"
       >
         <input type="checkbox" v-model="anonymous" />
-        <span class="margin-left--small">{{
+        <span class="margin-left-sm">{{
           $t("comments.iWantToBeAnonymous")
         }}</span>
       </label>
@@ -34,7 +34,7 @@
       <label class="comment-form__submit-wrap margin-top--medium">
         <button
           type="submit"
-          class="button button--small"
+          class="button button-sm"
           @click.prevent="handleSubmit"
         >
           {{ $t("submit") }}
@@ -44,7 +44,7 @@
     <section v-else class="comment-form">
       <nuxt-link
         :to="localePath('/login/')"
-        class="button button--small button--green margin-right--small"
+        class="button button-sm button--green margin-right-sm"
         >{{ $t("loginText") }}</nuxt-link
       >{{ $t("comments.loginNote") }}
     </section>

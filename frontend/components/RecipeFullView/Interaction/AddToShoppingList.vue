@@ -22,7 +22,7 @@
         v-model="newListTitle"
       />
       <button
-        class="button button--small button--dynamic button--green-border padding--medium margin-left--medium"
+        class="button button-sm button--dynamic button--green-border padding--medium margin-left--medium"
         @click="addToShoppingList"
       >
         {{ $t("add") }}

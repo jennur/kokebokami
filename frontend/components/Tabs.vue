@@ -8,7 +8,7 @@
     >
       <span class="active-tab" v-if="isTablet">
         {{ activeTitle }}
-        <down-arrow class="icon icon--small" />
+        <down-arrow class="icon icon-sm" />
       </span>
       <div v-if="!isTablet || dropdownOpen" class="dropdown">
         <span

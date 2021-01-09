@@ -11,3 +11,169 @@
     color: $blue;
   }
 }
+
+.recipe-link-wrap {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  flex-basis: 100%;
+  max-width: 100%;
+  margin: $spacingMedium/2;
+  min-width: 280px;
+  background-color: $lightOrange;
+  align-items: flex-end;
+
+  @media screen and (min-width: $mobileWidth) {
+    min-width: 304px;
+    flex-grow: 0;
+    flex-basis: calc(50% - 16px);
+    width: calc(50% - 16px);
+  }
+}
+
+.recipe-link {
+  width: 100%;
+  max-width: 100%;
+  border-radius: $spacingMedium;
+  position: relative;
+  cursor: pointer;
+  color: $blue;
+  text-decoration: none;
+  transition: all 0.3s;
+  background-color: $lightOrange;
+  display: block;
+  flex: 1 1 0;
+  text-align: left;
+
+  &:hover {
+    text-decoration: none;
+    @media screen and (min-width: $tabletWidth) {
+      background-color: darken($lightOrange, 2%);
+    }
+
+    a {
+      text-decoration: none;
+    }
+  }
+  &__settings {
+    width: 15px;
+    position: absolute;
+    left: $spacingMedium;
+    top: $spacingMedium;
+    .icon {
+      transition: 0.1s;
+      &:hover {
+        width: 1.1em;
+        height: 1.1em;
+        max-height: 1.1em;
+      }
+    }
+  }
+  &__new-tab-icon {
+    width: 15px;
+    position: absolute;
+    right: $spacingMedium;
+    top: $spacingMedium;
+  }
+  &__edit-form-wrap {
+    display: block;
+    max-width: 100%;
+
+    .recipe-link-edit-form {
+      position: relative;
+      border-radius: $spacingMedium;
+
+      form {
+        border-radius: $spacingMedium;
+      }
+
+      &.recipe-preview:hover {
+        background-color: $lightOrange;
+        cursor: default;
+      }
+      &:hover {
+        background-color: $lightOrange;
+      }
+      fieldset {
+        position: relative;
+        margin-top: $spacingLarge;
+      }
+
+      &__url,
+      &__title,
+      &__labels,
+      &__comment {
+        width: 100%;
+        max-width: 100%;
+      }
+      &__category {
+        max-width: 138px;
+      }
+
+      &--required {
+        color: $pink;
+        position: absolute;
+        right: -$spacingLarge;
+        bottom: $spacingSmall;
+      }
+      &__comment {
+        min-height: 100px;
+      }
+    }
+  }
+  &__published-by {
+    display: block;
+    position: absolute;
+    bottom: $spacingSmall;
+    right: $spacingMedium;
+    font-size: $fontSizeSmall;
+  }
+
+  &--no-link {
+    cursor: default;
+
+    &:hover {
+      background-color: transparent;
+    }
+  }
+
+  &--left-aligned {
+    text-align: left;
+  }
+
+  &__title {
+    padding-top: $spacingLarge;
+    text-transform: capitalize;
+  }
+
+  &__description {
+    display: block;
+    padding-top: 0;
+    padding-bottom: $spacingMedium;
+  }
+
+  &__categories {
+    display: block;
+  }
+
+  &__category {
+    display: inline-block;
+    background-color: $orange;
+    color: $white;
+    padding: 1px $spacingMedium;
+    margin: $spacingXSmall;
+    border-radius: $spacingLarge;
+    text-transform: capitalize;
+    font-size: $fontSizeSmall;
+
+    &-note {
+      text-align: left;
+
+      & p {
+        margin: $spacingXSmall;
+        font-size: $fontSizeSmall;
+        color: $blue;
+      }
+    }
+  }
+}

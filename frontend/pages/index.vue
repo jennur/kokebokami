@@ -8,7 +8,7 @@
       class="desktop-width padding-horizontal--large margin-top--xxlarge margin--auto"
     >
       <button
-        class="search__button button button--small button--green-border margin--medium"
+        class="search__button button button-sm button--green-border margin--medium"
         @click="event => toggleSearch(event)"
       >
         {{ $t("searchText") }}

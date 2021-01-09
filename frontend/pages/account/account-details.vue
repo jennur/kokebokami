@@ -133,7 +133,7 @@
               </p>
             </h4>
             <div class="flex-row flex-row--align-center">
-              <p class="email-notifications margin-right--small">
+              <p class="email-notifications margin-right-sm">
                 {{ $t("accountDetails.profileVisibility.yourProfileIs") }}
                 <strong
                   class="email-notifications__status"
@@ -152,10 +152,10 @@
           </dt>
         </dl>
         <button
-          class="button button--small button--transparent button--transparent-red margin-top--large"
+          class="button button-sm button--transparent button--transparent-red margin-top--large"
           @click="toggleAlert"
         >
-          <delete-icon class="icon margin-right--small" />{{
+          <delete-icon class="icon margin-right-sm" />{{
             $t("accountDetails.deleteMyAccount")
           }}
         </button>

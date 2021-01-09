@@ -6,16 +6,16 @@
         v-if="language && !editMode"
         @click="event => toggleEditMode(event)"
         :class="{ editable: isRecipeOwner }"
-        class="margin-left--small"
+        class="margin-left-sm"
         >{{ language }}</span
       >
       <edit-icon
         v-if="!language && isRecipeOwner && !editMode"
-        class="icon margin-left--small"
+        class="icon margin-left-sm"
         @click="event => toggleEditMode(event)"
       />
       <language-edit
-        class="margin-left--small"
+        class="margin-left-sm"
         v-if="editMode"
         :language="language"
         @update="setLanguage"

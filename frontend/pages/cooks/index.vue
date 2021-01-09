@@ -13,7 +13,7 @@
         <div>
           <nuxt-link
             :to="localePath('/login/')"
-            class="button button--small button--green"
+            class="button button-sm button--green"
             >{{ $t("loginText") }}</nuxt-link
           >
         </div>

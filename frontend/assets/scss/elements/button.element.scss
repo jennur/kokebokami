@@ -135,7 +135,7 @@
     font-size: $fontSizeSmall;
     font-family: $bodyFont;
   }
-  &--small {
+  &-sm {
     height: 35px;
     width: max-content;
     padding: 0px $spacingXLarge;
@@ -196,6 +196,10 @@
     background-color: $green;
     cursor: pointer;
     transition: 0.2s;
+    &.blue {
+      background-color: $blue;
+      color: $cream;
+    }
 
     &:hover {
       background-color: $blue;

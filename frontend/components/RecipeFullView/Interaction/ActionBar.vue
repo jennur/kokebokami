@@ -6,14 +6,14 @@
         @click="handlePdfExport"
         title="Download as PDF"
       >
-        <download-icon class="icon icon--small" />
+        <download-icon class="icon icon-sm" />
       </button>
       <button
         @click="openShareModal"
         class="button button--with-icon-round"
         title="Share this recipe"
       >
-        <share-icon class="icon icon--small" />
+        <share-icon class="icon icon-sm" />
       </button>
     </div>
     <transition name="pop-modal" v-if="sharing">

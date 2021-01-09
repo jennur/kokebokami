@@ -3,7 +3,7 @@
     padding: 0px;
   }
 
-  &--small {
+  &-sm {
     padding: $spacingSmallMobile;
     box-sizing: border-box;
 
@@ -40,7 +40,7 @@
   }
 
   &-top {
-    &--small {
+    &-sm {
       padding-top: $spacingSmallMobile;
       box-sizing: border-box;
       @media screen and (min-width: $tabletWidth) {
@@ -85,7 +85,7 @@
     }
   }
   &-bottom {
-    &--small {
+    &-sm {
       padding-bottom: $spacingSmallMobile;
       box-sizing: border-box;
       @media screen and (min-width: $tabletWidth) {
@@ -131,7 +131,7 @@
   }
 
   &-horizontal {
-    &--small {
+    &-sm {
       padding-left: $spacingSmallMobile;
       padding-right: $spacingSmallMobile;
       box-sizing: border-box;
@@ -169,7 +169,7 @@
     }
   }
   &-vertical {
-    &--small {
+    &-sm {
       padding-top: $spacingSmallMobile;
       padding-bottom: $spacingSmallMobile;
       box-sizing: border-box;

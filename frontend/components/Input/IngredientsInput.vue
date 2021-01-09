@@ -28,7 +28,7 @@
         <span>Ingredient</span>
       </div>
       <div
-        class="flex-row flex-row--align-center flex-row--nowrap margin-bottom--small"
+        class="flex-row flex-row--align-center flex-row--nowrap margin-bottom-sm"
         v-for="number in ingredientNumbers"
         :key="number"
       >
@@ -74,7 +74,7 @@
           @increment="incrementIngredientNumber"
           >Add ingredient</increment-button
         ><button
-          class="button button--dynamic-small button--round padding-vertical--small margin-top--large"
+          class="button button--dynamic-small button--round padding-vertical-sm margin-top--large"
           @click="$emit('save', [ingredientAmounts, ingredients])"
         >
           Save

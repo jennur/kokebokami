@@ -27,7 +27,7 @@
           {{ $t("recipes.typeOfMeal") }}
         </h5>
         <label
-          class="flex-row flex-row--align-center margin-vertical--small"
+          class="flex-row flex-row--align-center margin-vertical-sm"
           v-for="(typeOfMeal, index) in typesOfMeal"
           :key="typeOfMeal"
         >
@@ -44,7 +44,7 @@
           {{ $t("recipes.categories") }}
         </h5>
         <label
-          class="flex-row flex-row--align-center margin-vertical--small"
+          class="flex-row flex-row--align-center margin-vertical-sm"
           v-for="(category, index) in categories"
           :key="category"
         >
@@ -62,7 +62,7 @@
           {{ $t("recipes.freeFrom") }}
         </h5>
         <label
-          class="flex-row flex-row--align-center margin-vertical--small"
+          class="flex-row flex-row--align-center margin-vertical-sm"
           v-for="(allergen, index) in allergens"
           :key="allergen"
         >

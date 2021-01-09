@@ -1,6 +1,6 @@
 <template>
   <div>
-    <p class="email-notifications margin-right--small">
+    <p class="email-notifications margin-right-sm">
       ...{{ setting.title }}
       <strong
         class="email-notifications__status"

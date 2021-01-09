@@ -19,13 +19,13 @@
               @select="option => (selected = option)"
             />
           </label>
-           <hover-info-box class="margin-left--small margin-bottom--small">
+           <hover-info-box class="margin-left-sm margin-bottom-sm">
             {{ $t("shoppingLists.share.shareWithFollowerNote") }}
           </hover-info-box>
         </fieldset>
         <button
           @click="shareShoppingList"
-          class="button button--small margin-top--medium"
+          class="button button-sm margin-top--medium"
         >
           Share
         </button>

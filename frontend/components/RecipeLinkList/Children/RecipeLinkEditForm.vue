@@ -98,14 +98,14 @@
           <button
             type="submit"
             name="submit"
-            class="button button--small"
+            class="button button-sm"
             @click.prevent="saveLink"
           >
             Save
           </button>
         </div>
         <expand-transition :show="!!submitSystemMessage">
-          <div class="system-message margin-top--small">
+          <div class="system-message margin-top-sm">
             {{ submitSystemMessage }}
           </div>
         </expand-transition>
@@ -115,7 +115,6 @@
 </template>
 <script>
 import user from "~/mixins/user.js";
-import recipeLinks from "~/mixins/user-recipe-links.js";
 import SelectComponent from "~/components/Input/SelectComponent.vue";
 import ExpandTransition from "~/components/Transitions/Expand.vue";
 
@@ -150,10 +149,10 @@ export default {
         (recipeLink && recipeLink.category) || this.addingToCategory || ""
     };
   },
-  mixins: [user, recipeLinks],
+  mixins: [user],
   computed: {
     categories() {
-      let links = this.recipeLinks;
+      let links = this.$store.state.recipeLinks;
       let categories = [];
       links && links.forEach(link => {
         if (link.category) {

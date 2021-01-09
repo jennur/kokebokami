@@ -8,14 +8,14 @@
       <div v-if="user && user.id" class="flex-column flex-align--end">
         <button
           @click="unfollowUser"
-          class="button button--small button--red-border margin-top--large"
+          class="button button-sm button--red-border margin-top--large"
           v-if="isFollowingUser"
         >
           {{ $t("cooks.unfollow") }} {{ cook ? cook.displayName : "" }}
         </button>
         <button
           @click="followUser"
-          class="button button--small button--green-border margin-top--large"
+          class="button button-sm button--green-border margin-top--large"
           v-else
         >
           {{ $t("cooks.follow") }} {{ cook ? cook.displayName : "" }}

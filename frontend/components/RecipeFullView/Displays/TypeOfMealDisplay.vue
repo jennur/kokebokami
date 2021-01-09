@@ -1,6 +1,6 @@
 <template>
-  <div class="recipe__category-note margin-top--small">
-    <p class="margin-top--small margin-bottom--small">
+  <div class="recipe__category-note margin-top-sm">
+    <p class="margin-top-sm margin-bottom-sm">
       <b>{{ $t("recipes.typeOfMeal") }}:</b>
       <span
         v-if="!editMode && !loading"

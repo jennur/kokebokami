@@ -28,13 +28,13 @@
         />
         <div class="flex-row">
           <button
-            class="button button--with-icon-left button--small button--cancel account__detail-warning-btn margin-top--medium margin-left--small"
+            class="button button--with-icon-left button-sm button--cancel account__detail-warning-btn margin-top--medium margin-left-sm"
           >
             <delete-icon
               tabindex="0"
               v-if="removeOption && currentValue"
               @click="toggleAlert"
-              class="icon icon--in-button icon--in-button-left margin-right--small"
+              class="icon icon--in-button icon--in-button-left margin-right-sm"
             />
             {{ $t("delete") }}
           </button>
@@ -45,7 +45,7 @@
             @cancel="toggleAlert"
           />
           <button
-            class="button button--small button--cancel account__detail-warning-btn margin-top--medium"
+            class="button button-sm button--cancel account__detail-warning-btn margin-top--medium"
             @click="toggleEditMode"
           >
             ✕ {{ $t("cancel") }}
@@ -71,9 +71,9 @@
       </fieldset>
       <fieldset>
         <div class="flex-row flex-row--nowrap margin-top--large">
-          <button @click="handleSave" class="button button--small">Save</button>
+          <button @click="handleSave" class="button button-sm">Save</button>
           <button
-            class="button button--small button--cancel"
+            class="button button-sm button--cancel"
             @click="toggleEditMode"
           >
             ✕ {{ $t("cancel") }}

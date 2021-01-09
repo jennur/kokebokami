@@ -89,7 +89,7 @@
       </fieldset>
       <fieldset class="container container--center margin-top--xxlarge">
         <button
-          class="button button--small button--cancel"
+          class="button button-sm button--cancel"
           @click.prevent="$emit('cancel')"
         >
           ✕ {{ $t("cancel") }}
@@ -98,7 +98,7 @@
           type="submit"
           name="submit"
           value="Save"
-          class="button button--small button--green margin-right--xlarge"
+          class="button button-sm button--green margin-right--xlarge"
           @click.prevent="handleFormSubmit"
         >
           Save
@@ -122,24 +122,24 @@ export default {
   },
   data() {
     let regex = /-/gi;
-
+    let title = this.getDefaultTitle();
     return {
       newCategory: false,
       selectedCategory: "",
       systemMessage: "",
       url: "",
-      title: this.getDefaultTitle(),
+      title,
       category: "",
       labels: "",
       comment: ""
     };
   },
-  mixins: [user, recipeLinks],
+  mixins: [user],
   computed: {
     categories() {
-      let links = this.recipeLinks;
+      let links = this.$store.state.recipeLinks;
       let categories = [];
-      links.forEach(link => {
+      links && links.forEach(link => {
         if (link.category) {
           if (categories.indexOf(link.category) === -1)
             categories.push(link.category);
@@ -152,8 +152,9 @@ export default {
     getDefaultTitle() {
       let url = this.url;
       if (url) {
-        let urlItems = url.split("/");
-        urlItems = urlItems.filter(item => {
+        let urlItems = url
+          .split("/")
+          .filter(item => {
           return item.length;
         });
         return urlItems.pop().replace(/-/g, " ");
@@ -175,6 +176,7 @@ export default {
 
       let urlCheck = /(?:http(s)?:\/\/)[\w.-]+(?:\.[\w.-]+)+[\w\-._~:\?#[\]@!$&'()*+,;=.]+/;
       console.log("Valid url:", urlCheck.test(url));
+
       if (urlCheck.test(url)) {
         this.systemMessage = "";
         let dataObject = {
@@ -185,8 +187,7 @@ export default {
           comment
         };
         try {
-          let userRef = this.$fire.database.ref(`users/${this.user.id}`);
-          userRef.child("recipeLinks").push(dataObject);
+          this.$fire.database.ref(`users/${this.user.id}/recipeLinks`).push(dataObject);
           this.$emit("save");
         } catch (error) {
           console.log("Error saving recipe link:", error.message);

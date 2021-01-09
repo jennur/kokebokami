@@ -1,62 +1,13 @@
+import allCategories from "~/helpers/all-categories";
+
 export function state() {
   return {
     user: null,
     shoppingListCount: 0,
     loginSystemMessage: "",
     signupSystemMessage: "",
-    allCategories: {
-      languages: [
-        "English",
-        "French",
-        "German",
-        "Hebrew",
-        "Italian",
-        "Norwegian",
-        "Polish",
-        "Spanish",
-
-        "Arabic",
-        "Dutch",
-        "Hindi",
-        "Japanese",
-        "Korean",
-        "Mandarin",
-        "Portuguese",
-        "Punjabi",
-        "Russian",
-        "Swahili",
-        "Thai",
-        "Turkish",
-        "Vietnamese"
-      ],
-      typeOfMeal: [
-        "breakfast",
-        "lunch",
-        "dinner",
-        "side dish",
-        "dessert",
-        "baking",
-        "snack",
-        "drinks"
-      ],
-      allergens: [
-        "nuts",
-        "gluten",
-        "dairy",
-        "sugar",
-        "eggs",
-        "soy",
-        "fish",
-        "celery"
-      ],
-      categories: [
-        "quick & easy",
-        "comfort food",
-        "spicy",
-        "vegetarian",
-        "vegan"
-      ]
-    }
+    allCategories,
+    recipeLinks: []
   };
 }
 
@@ -69,6 +20,9 @@ export const mutations = {
   },
   setLoginSystemMessage(state, payload) {
     state.loginSystemMessage = payload;
+  },
+  setRecipeLinks(state, payload) {
+    state.recipeLinks = payload;
   }
 };
 
@@ -78,6 +32,9 @@ export const actions = {
       context.dispatch("SET_USER");
     }
     this.$fireAuthUnsubscribe;
+  },
+  SET_RECIPE_LINKS: ({commit}, payload) => {
+    commit("setRecipeLinks", payload);
   },
   SET_LOGIN_MESSAGE: ({ commit }, payload) => {
     commit("setLoginSystemMessage", payload);

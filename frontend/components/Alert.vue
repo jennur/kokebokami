@@ -6,12 +6,12 @@
           <p>{{ alertMessage }}</p>
           <div class="alert-box__buttons flex-row flex-row--align-center">
             <button
-              class="button button--small button--red-border margin-right--large"
+              class="button button-sm button--red-border margin-right--large"
               @click="$emit('confirmed')"
             >
               {{ $t("confirm") }}
             </button>
-            <button class="button button--small" @click="$emit('cancel')">
+            <button class="button button-sm" @click="$emit('cancel')">
               {{ $t("cancel") }}
             </button>
           </div>
