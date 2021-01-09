@@ -134,10 +134,10 @@ export default {
       comment: ""
     };
   },
-  mixins: [user],
+  mixins: [user, recipeLinks],
   computed: {
     categories() {
-      let links = this.$store.state.recipeLinks;
+      let links = this.recipeLinks;
       let categories = [];
       links && links.forEach(link => {
         if (link.category) {

@@ -1,6 +1,11 @@
 export default {
+  data(){
+    return {
+      recipeLinks: []
+    }
+  },
   methods: {
-    async setRecipeLinks() {
+    async getRecipeLinks() {
       let currentUser = this.$fire.auth.currentUser;
       if (currentUser) {
         try {
@@ -20,9 +25,7 @@ export default {
               recipeLinks.push(link);
             }
           }
-          recipeLinks = recipeLinks.reverse();
-
-          await this.$store.dispatch("SET_RECIPE_LINKS", recipeLinks);
+          this.recipeLinks = recipeLinks.reverse();
 
         } catch (error) {
           console.log("Error: Failed setting recipes:", error.message);
@@ -38,5 +41,8 @@ export default {
         .replace(regex, " ");
       return title;
     },
+  },
+  async created(){
+    await this.getRecipeLinks();
   }
 };

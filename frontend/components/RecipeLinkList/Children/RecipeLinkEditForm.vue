@@ -117,7 +117,7 @@
 import user from "~/mixins/user.js";
 import SelectComponent from "~/components/Input/SelectComponent.vue";
 import ExpandTransition from "~/components/Transitions/Expand.vue";
-
+import recipeLinks from "~/mixins/user-recipe-links";
 export default {
   name: "recipe-link-edit-form",
   components: {
@@ -149,10 +149,10 @@ export default {
         (recipeLink && recipeLink.category) || this.addingToCategory || ""
     };
   },
-  mixins: [user],
+  mixins: [user, recipeLinks],
   computed: {
     categories() {
-      let links = this.$store.state.recipeLinks;
+      let links = this.recipeLinks;
       let categories = [];
       links && links.forEach(link => {
         if (link.category) {

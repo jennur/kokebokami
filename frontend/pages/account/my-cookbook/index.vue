@@ -57,10 +57,10 @@
         <recipe-link-list
           class="margin-top--xxlarge"
           :hiddenCategories="hiddenCategories"
-          :links="$store.state.recipeLinks"
+          :links="recipeLinks"
           :emptyListMessage="emptyListMessage"
           @open-form="toggleRecipeForm"
-          @update="setRecipeLinks"
+          @update="getRecipeLinks"
         />
       </div>
     </Tabs>
@@ -73,7 +73,7 @@ import ClickOutside from "vue-click-outside";
 import user from "~/mixins/user.js";
 import sharedRecipes from "~/mixins/shared-recipes.js";
 import userRecipes from "~/mixins/user-recipes.js";
-import userRecipeLinks from "~/mixins/user-recipe-links.js";
+import recipeLinks from "~/mixins/user-recipe-links.js";
 
 import ExpandTransition from "~/components/Transitions/Expand.vue";
 import AddRecipeFromUrlForm from "~/components/AddRecipeForm/AddRecipeFromUrlForm.vue";
@@ -117,7 +117,7 @@ export default {
       hiddenCategories: []
     };
   },
-  mixins: [user, userRecipes, userRecipeLinks, sharedRecipes],
+  mixins: [user, userRecipes, recipeLinks, sharedRecipes],
   computed: {
     breadcrumbs() {
       return [
@@ -159,7 +159,7 @@ export default {
       }
     },
     userCategories() {
-      let links = this.$store.state.recipeLinks;
+      let links = this.recipeLinks;
       let categories = ["No category"];
       links.forEach(link => {
         if (link.category) {
@@ -183,7 +183,7 @@ export default {
       this.hiddenCategories = hiddenCategories;
     },
     handleLinkSave() {
-      this.setRecipeLinks();
+      this.getRecipeLinks();
       this.activeTabIndex = 1;
       this.addRecipeFromUrl = false;
     },
@@ -205,9 +205,6 @@ export default {
       this.filteredRecipes = filteredRecipesObj.recipes;
       this.filtered = filteredRecipesObj.filtered;
     }
-  },
-  mounted() {
-    this.setRecipeLinks();
   },
   directives: {
     ClickOutside

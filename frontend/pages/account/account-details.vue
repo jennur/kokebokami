@@ -179,7 +179,7 @@ import user from "~/mixins/user.js";
 import connectedUsers from "~/mixins/followed-and-followers.js";
 import sharedRecipes from "~/mixins/shared-recipes.js";
 import userRecipes from "~/mixins/user-recipes.js";
-import userRecipeLinks from "~/mixins/user-recipe-links.js";
+import recipeLinks from "~/mixins/user-recipe-links.js";
 
 import AccountDetail from "~/components/Account/Displays/AccountDetail.vue";
 import AccountLinkList from "~/components/Account/Displays/AccountLinkList.vue";
@@ -229,8 +229,8 @@ export default {
     user,
     connectedUsers,
     userRecipes,
-    sharedRecipes,
-    userRecipeLinks
+    recipeLinks,
+    sharedRecipes
   ],
   computed: {
     breadcrumbs() {
@@ -251,8 +251,8 @@ export default {
     updateHiddenProfileStatus(checked) {
       let hiddenProfile = !!this.hiddenProfile;
       if (checked === hiddenProfile) {
-        var userRef = this.$fire.database.ref(`users/${this.user.id}`);
-        userRef
+        this.$fire.database
+          .ref(`users/${this.user.id}`)
           .update({ hiddenProfile: !checked })
           .then(() => {
             console.log("Successfully updated hidden profile status");
@@ -269,7 +269,8 @@ export default {
 
       if (status !== (notificationsOff && notificationsOff[type])) {
         notificationsOff[type] = status;
-        this.$fire.database.ref(`users/${this.user.id}/notificationsOff`)
+        this.$fire.database
+          .ref(`users/${this.user.id}/notificationsOff`)
           .set(notificationsOff)
           .then(() => {
             console.log(`Successfully updated ${type} notifications status`);
@@ -315,7 +316,7 @@ export default {
     },
     async updateProfileImg(upload) {
       this.removeProfileImg();
-      var imageName = uuid.v1();
+      let imageName = uuid.v1();
       try {
         //save image
         let file = upload;
@@ -350,8 +351,6 @@ export default {
       }
     },
     removeProfileImg() {
-      let fileName = this.photoURL;
-
       if (this.user.id) {
         this.$fire.storage
           .ref()

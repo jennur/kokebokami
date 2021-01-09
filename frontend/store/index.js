@@ -6,8 +6,7 @@ export function state() {
     shoppingListCount: 0,
     loginSystemMessage: "",
     signupSystemMessage: "",
-    allCategories,
-    recipeLinks: []
+    allCategories
   };
 }
 
@@ -20,9 +19,6 @@ export const mutations = {
   },
   setLoginSystemMessage(state, payload) {
     state.loginSystemMessage = payload;
-  },
-  setRecipeLinks(state, payload) {
-    state.recipeLinks = payload;
   }
 };
 
@@ -32,9 +28,6 @@ export const actions = {
       context.dispatch("SET_USER");
     }
     this.$fireAuthUnsubscribe;
-  },
-  SET_RECIPE_LINKS: ({commit}, payload) => {
-    commit("setRecipeLinks", payload);
   },
   SET_LOGIN_MESSAGE: ({ commit }, payload) => {
     commit("setLoginSystemMessage", payload);
