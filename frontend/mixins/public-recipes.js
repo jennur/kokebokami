@@ -1,4 +1,4 @@
-import recipeModel from "./recipe-model";
+import recipeModel from "../helpers/recipe-model";
 export default {
   data() {
     return {
@@ -7,51 +7,39 @@ export default {
       loaded: false
     };
   },
-  mixins: [recipeModel],
-  computed: {
-    initialRecipes() {
-      let language = "English";
-      if (this.$i18n.locale === "no") language = "Norwegian";
+  async asyncData({app}){
+    try {
+      let snapshot = await app.$fire.database
+        .ref("recipes")
+        .orderByChild("public")
+        .once("value");
 
-      return this.publicRecipes.filter(recipe => {
-        return (
-          recipe.language &&
-          recipe.language.toLowerCase() === language.toLowerCase()
-        );
-      });
-    }
-  },
-  methods: {
-    getPublicRecipes() {
-      try {
-        this.$fire.database
-          .ref("recipes")
-          .orderByChild("public")
-          .once("value", async snapshot => {
-            if (snapshot.exists()) {
-              let recipes = snapshot.val();
+      let foundRecipes = handleRecipes(snapshot, true);
 
-              for(let key in recipes) {
-                let recipe = recipes[key];
-                if(recipe.public){
-                  this.publicRecipes.push(this.recipeModel(recipe, key));
-                }
-              }
-              this.publicRecipes.reverse();
-              this.loaded = true;
-            }
-          })
-      } catch (error) {
-        console.log(
-          "Error: Something failed while trying to set public recipes:",
-          error
-        );
-        this.errorMessage =
-          "Something went wrong while trying to load recipes. If the issue continues, please contact us.";
+      return {
+        publicRecipes: foundRecipes.reverse(),
+        loaded: true
       }
-    }
-  },
-  created() {
-    this.getPublicRecipes();
+    } catch(error) {
+      console.log("Error: Something failed while trying to set public recipes:", error);
+      return {
+        errorMessage: "Something went wrong while trying to load recipes. If the issue continues, please contact us."
+      }
+    };
   }
 };
+
+function handleRecipes(snapshot, ssr){
+  let foundRecipes = [];
+  if (snapshot.val()) {
+    let recipes = snapshot.val();
+
+    for (let key in recipes) {
+      let recipe = recipes[key];
+      if (recipe.public) {
+        foundRecipes.push(recipeModel(recipe, key, ssr));
+      }
+    }
+  }
+  return foundRecipes;
+}

@@ -57,7 +57,7 @@
         </li>
       </ul>
     </div>
-    <p class="footer__copyright">© {{ year }} Kokebokami</p>
+    <p class="footer__copyright">© 2020-{{ year }} Kokebokami</p>
   </footer>
 </template>
 <script>

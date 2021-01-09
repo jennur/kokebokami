@@ -1,68 +1,94 @@
-import getRecipeMetadata from "~/helpers/recipe-metadata.js";
-import generatePath from "../helpers/generatePath";
-import recipeModel from "./recipe-model";
+import getRecipeAndMetadata from "~/helpers/recipe-metadata.js";
+import getRecipeOwner from "~/helpers/recipe-owner";
+import generatePath from "~/helpers/generatePath";
+import recipeModel from "../helpers/recipe-model";
 import userModel from "./user-model";
 import getRecipeAuthor from "./get-recipe-author";
+import user from "~/mixins/user";
 
 export default {
   data() {
     return {
-      userAuth: !!this.$fire.auth.currentUser,
+      userAuth: this.$fire.auth.currentUser,
       recipe: {},
-      cook: {},
-      recipeLoaded: false,
+      author: {},
+      loaded: false,
       errorMessage: "",
       structuredData: {},
       headData: {}
     };
   },
-  async asyncData({ params }) {
-    if (process.server) {
-      return await getRecipeMetadata(`${params.key}/${params.recipeid}/`);
+  async asyncData({ app, params }) {
+    try {
+      let recipesSnapshot = await app.$fire.database
+        .ref("recipes")
+        .once("value");
+
+      let recipePath = `${params.key}/${params.recipeid}/`;
+      let recipe = getRecipeAndMetadata(recipesSnapshot, recipePath);
+
+      let userSnapshot = recipe.content && await app.$fire.database
+        .ref(`users/${recipe.content.ownerID}/displayName`)
+        .once("value");
+
+      let author = userSnapshot && getRecipeOwner(userSnapshot, recipe.content.ownerID);
+
+      if (recipe.structuredData && author) {
+        recipe.structuredData.author = author.content.displayName;
+      }
+
+      return {
+        headData: {
+          ...recipe.metadata,
+          script: [
+            {
+              type: "application/ld+json",
+              json: recipe.structuredData
+            },
+            {
+              type: "application/ld+json",
+              json: author.structuredData
+            }
+          ]
+        },
+        recipe: recipe.content,
+        author: author.content,
+        loaded: true
+      }
+    } catch(error) {
+      console.log("Error loading recipe:", error);
+      return {
+        recipe: {},
+        author: {},
+        loaded: true
+      }
     }
   },
-  mixins: [recipeModel, userModel, getRecipeAuthor],
+  mixins: [userModel, getRecipeAuthor],
   methods: {
-    getRecipeKey() {
-      let keySegment = this.$route.params.key;
-      let title = this.$route.params.recipeid;
-      let recipePath = `${keySegment}/${title}/`;
-
-      this.$fire.database
-        .ref("recipes")
-        .once("value", snapshot => {
-          let recipes = snapshot.val();
-          for(let key in recipes){
-            if(recipePath === generatePath(recipes[key].title, key, true)) {
-              this.getRecipe(key);
-              return;
-            }
-          }
-        })
-    },
     async getRecipe(key) {
-      this.$fire.database
-        .ref(`recipes/${key}`)
-        .once("value", async snapshot => {
-          console.log("Getting recipe");
-          if (snapshot.exists()) {
-            let recipe = snapshot.val();
+      try {
+        console.log("Getting recipe");
 
-            if (this.userHasAccess(recipe)) {
-              this.recipe = this.recipeModel(recipe, key);
-              this.recipeLoaded = true;
-              return;
-            }
-          }
+        let snapshot = await this.$fire.database
+          .ref(`recipes/${key}`)
+          .once("value");
 
-          this.$router.push("/no-access");
-        })
-        .catch(error => {
-          console.log("Error: Failed getting recipe:", error.message);
-        });
+        if (snapshot.val()) {
+          let recipe = snapshot.val();
+          this.recipe = recipeModel(recipe, key);
+          this.loaded = true;
+        }
+      } catch(error) {
+        console.log("Error: Failed getting recipe:", error.message);
+      }
     },
     userHasAccess(recipe){
       if(!recipe.public){
+        if(this.userAuth && this.userAuth.uid === recipe.ownerID){
+          return true;
+        }
+
         if(!this.userAuth || (this.userAuth && !this.sharedWithUser(recipe))){
           return false;
         }
@@ -77,6 +103,11 @@ export default {
         return Object.values(recipe.sharedWith).indexOf(this.user.id) > -1;
       }
       return false;
+    }
+  },
+  mounted() {
+    if(this.recipe && !this.userHasAccess(this.recipe)) {
+      this.$router.push("/no-access");
     }
   }
 };

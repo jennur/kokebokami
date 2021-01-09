@@ -1,4 +1,4 @@
-import recipeModel from "./recipe-model";
+import recipeModel from "../helpers/recipe-model";
 
 export default {
   data() {
@@ -9,7 +9,6 @@ export default {
       loaded: false
     };
   },
-  mixins: [recipeModel],
   methods: {
     getSharedRecipes() {
       if (this.currentUser) {
@@ -25,7 +24,7 @@ export default {
                   let recipe = recipes[key];
 
                   if(recipe.sharedWith && Object.values(recipe.sharedWith).indexOf(this.currentUser.uid) > -1) {
-                    this.sharedRecipes.push(this.recipeModel(recipe, key));
+                    this.sharedRecipes.push(recipeModel(recipe, key));
                     this.loaded = true;
                   }
                 }

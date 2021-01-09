@@ -106,6 +106,17 @@ export default {
   },
   mixins: [user, publicRecipes],
   computed: {
+    initialRecipes() {
+      let language = "English";
+      if (this.$i18n.locale === "no") language = "Norwegian";
+
+      return this.publicRecipes.filter(recipe => {
+        return (
+          recipe.language &&
+          recipe.language.toLowerCase() === language.toLowerCase()
+        );
+      });
+    },
     visibleRecipes() {
       if (this.initialFiltered && this.initialRecipes)
         return this.initialRecipes;

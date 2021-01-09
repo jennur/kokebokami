@@ -1,4 +1,4 @@
-<template>
+e<template>
   <section>
     <div ref="recipe" id="recipe" class="recipe margin--auto">
       <div
@@ -159,7 +159,7 @@ import InstructionsDisplay from "./Displays/InstructionsDisplay.vue";
 import ActionBar from "./Interaction/ActionBar.vue";
 import Alert from "~/components/Alert.vue";
 import ExpandTransform from "~/components/Transitions/Expand.vue";
-import getRecipeAuthor from "~/mixins/get-recipe-author";
+// import getRecipeAuthor from "~/mixins/get-recipe-author";
 
 export default {
   name: "recipe-full-view",
@@ -181,7 +181,8 @@ export default {
   },
   props: {
     isRecipeOwner: { type: Boolean, default: false },
-    recipe: { type: Object, default: () => {} }
+    recipe: { type: Object, default: () => {} },
+    author: { type: Object, default: () => {} }
   },
   data() {
     return {
@@ -191,7 +192,6 @@ export default {
       calculatedIngredients: {}
     };
   },
-  mixins: [getRecipeAuthor],
   methods: {
     setCalculatedIngredients(ingredientsObj) {
       this.calculatedIngredients = ingredientsObj;
@@ -320,8 +320,8 @@ export default {
       }
     }
   },
-  mounted(){
-    this.getRecipeAuthor(this.recipe.ownerID);
-  }
+  // mounted(){
+  //   this.getRecipeAuthor(this.recipe.ownerID);
+  // }
 };
 </script>

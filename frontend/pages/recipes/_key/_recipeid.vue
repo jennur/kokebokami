@@ -1,26 +1,27 @@
 <template>
   <div>
-    <div class="flex-center-container" v-if="!recipeLoaded">
+    <div class="flex-center-container" v-if="!loaded">
       <span class="simple-loading-spinner" />
     </div>
     <breadcrumbs
-      v-if="recipeLoaded"
+      v-if="loaded"
       class="margin-bottom--large"
       :routes="breadcrumbs"
     />
 
     <div class="tablet-width margin-top--xxlarge margin--auto">
-      <expand-transition :show="recipeLoaded" slower>
+      <expand-transition :show="loaded" slower>
         <recipe-full-view
           class="margin-bottom--xxlarge"
           :recipe="recipe"
+          :author="author"
           :isRecipeOwner="user && user.id === recipe.ownerID"
           @update="handleUpdate"
         />
       </expand-transition>
 
       <comments-section
-        v-if="recipeLoaded"
+        v-if="loaded"
         class="tablet-width margin--auto margin-top--xxlarge"
         :recipeKey="recipe.id"
         :recipeOwnerID="recipe.ownerID"
@@ -33,7 +34,6 @@
 <script>
 import user from "~/mixins/user.js";
 import getRecipe from "~/mixins/get-recipe.js";
-import publicRecipes from "~/mixins/public-recipes.js";
 
 import ExpandTransition from "~/components/Transitions/Expand.vue";
 import RecipeFullView from "~/components/RecipeFullView/RecipeFullView.vue";
@@ -77,13 +77,8 @@ export default {
   },
   methods: {
     handleUpdate() {
-      this.getRecipe(this.recipe.id);
+     this.getRecipe(this.recipe.id);
     }
-  },
-  mounted(){
-    let recipeKey = this.$route.query.id;
-    if(recipeKey) this.getRecipe(recipeKey)
-    else this.getRecipeKey();
   }
 };
 </script>
