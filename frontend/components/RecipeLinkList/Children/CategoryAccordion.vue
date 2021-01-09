@@ -1,13 +1,13 @@
 <template>
   <div class="accordion">
-    <div class="accordion__tab margin-bottom--medium" @click="$emit('toggle')" >
-          <span class="recipe-link-list__headline margin--none">
-            <downArrow v-if="open" class="icon icon-sm margin-right--medium"/>
-            <rightArrow v-else class="icon icon-sm margin-right--medium" />
+    <div class="accordion_tab margin-bottom-md" @click="$emit('toggle')" >
+          <span class="recipe-link-list_headline margin--none">
+            <downArrow v-if="open" class="icon icon-sm margin-right-md"/>
+            <rightArrow v-else class="icon icon-sm margin-right-md" />
             {{ title }}
           </span>
 
-      <button class="button--increment button--increment-small margin-left--medium" @click="event => addNewLink(event)">
+      <button class="button--increment button--increment-small margin-left-md" @click="event => addNewLink(event)">
         Add link
       </button>
     </div>

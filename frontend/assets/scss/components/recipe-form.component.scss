@@ -12,8 +12,8 @@
 }
 
 .ingredient {
-  &__amount,
-  &__item {
+  &_amount,
+  &_item {
     padding: $spacingXSmall;
     border-bottom: 1px solid $green;
     margin-bottom: 1px;
@@ -24,11 +24,11 @@
       margin-bottom: 0px;
     }
   }
-  &__amount {
+  &_amount {
     display: inline-block;
     max-width: 55px;
   }
-  &__item {
+  &_item {
     display: inline-block;
     max-width: 130px;
   }

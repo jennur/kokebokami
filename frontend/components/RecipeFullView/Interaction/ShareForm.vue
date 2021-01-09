@@ -1,7 +1,7 @@
 <template>
   <div class="share-form-container">
     <div id="fb-root"></div>
-    <div class="share-form-modal margin-horizontal--large">
+    <div class="share-form-modal margin-horizontal-lg">
       <button
         class="button button--cancel button--cancel-dynamic flex-align-self--end"
         @click="$emit('close-modal')"
@@ -28,7 +28,7 @@
       </div>
       <form
         v-if="user && user.id"
-        class="share-form margin-vertical--large"
+        class="share-form margin-vertical-lg"
         @submit.prevent
       >
         <div class="flex-row flex-row--align-center flex-row--nowrap">
@@ -39,10 +39,10 @@
             {{ $t("recipes.share.shareWithFollowerNote") }}
           </hover-info-box>
         </div>
-        <fieldset class="flex-row margin-bottom--medium">
-          <label class="share-form__followers">
+        <fieldset class="flex-row margin-bottom-md">
+          <label class="share-form_followers">
             <select-component
-              class="share-form__select margin-top--medium margin-right--medium"
+              class="share-form_select margin-top-md margin-right-md"
               :options="followerNames"
               defaultValue="Select a user"
               @select="option => (selected = option)"
@@ -51,13 +51,13 @@
         </fieldset>
         <button
           @click="shareRecipe"
-          class="button button--xsmall margin-left--xsmall"
+          class="button button-xs margin-left-xs"
         >
           {{ $t("recipes.share.share") }}
         </button>
       </form>
 
-      <form class="share-form margin-vertical--large" @submit.prevent>
+      <form class="share-form margin-vertical-lg" @submit.prevent>
         <div v-if="sharedByEmail === false" class="flex-center-container">
           <span class="simple-loading-spinner" />
         </div>
@@ -73,14 +73,14 @@
             />
             <button
               @click="shareRecipeByEmail"
-              class="button button--xsmall margin-left--xsmall margin-top--medium"
+              class="button button-xs margin-left-xs margin-top-md"
             >
               {{ $t("recipes.share.share") }}
             </button>
           </label>
         </fieldset>
       </form>
-      <div class="system-message margin-top--large">{{ systemMessage }}</div>
+      <div class="system-message margin-top-lg">{{ systemMessage }}</div>
     </div>
   </div>
 </template>

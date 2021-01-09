@@ -10,7 +10,7 @@
           name="url"
           id="url"
           placeholder="https://example.com/recipe-url/"
-          class="recipe-link-edit-form__url"
+          class="recipe-link-edit-form_url"
         />
         <span class="recipe-link-edit-form--required">*</span>
       </fieldset>
@@ -26,7 +26,7 @@
           name="title"
           id="title"
           placeholder="My custom title"
-          class="recipe-link-edit-form__title"
+          class="recipe-link-edit-form_title"
         />
       </fieldset>
       <fieldset class="flex-column">
@@ -36,7 +36,7 @@
             ref="categorySelect"
             id="category-select"
             name="category-select"
-            class="select--green margin-right--medium margin-top--medium"
+            class="select--green margin-right-md margin-top-md"
             :options="categories"
             defaultValue="No category"
             :preSelected="selectedCategory"
@@ -44,7 +44,7 @@
           />
           <button
             v-if="!newCategory"
-            class="recipe-link-edit-form__category-btn button button--xsmall button--green button--round margin-top--medium"
+            class="recipe-link-edit-form_category-btn button button-xs button--green button--round margin-top-md"
             @click.prevent="addNewCategory"
           >
             New category
@@ -57,7 +57,7 @@
             name="category"
             id="category"
             placeholder="Category name"
-            class="recipe-link-edit-form__category margin-top--medium"
+            class="recipe-link-edit-form_category margin-top-md"
           />
         </div>
       </fieldset>
@@ -70,7 +70,7 @@
           name="labels"
           id="labels"
           placeholder="Dinner, quick, healthy"
-          class="recipe-link-edit-form__labels"
+          class="recipe-link-edit-form_labels"
         />
       </fieldset>
       <fieldset class="flex-column">
@@ -82,15 +82,15 @@
           name="comment"
           id="comment"
           placeholder="Write a note to self about the recipe .."
-          class="recipe-link-edit-form__comment"
+          class="recipe-link-edit-form_comment"
         />
       </fieldset>
       <fieldset>
         <div
-          class="flex-row flex-row--align-center flex-row--space-between margin-vertical--large"
+          class="flex-row flex-row--align-center flex-row--space-between margin-vertical-lg"
         >
           <button
-            class="button button--dynamic button--dynamic-small button--cancel margin-vertical--medium"
+            class="button button--dynamic button--dynamic-small button--cancel margin-vertical-md"
             @click.prevent="$emit('close-edit-mode')"
           >
             ✕ {{ $t("cancel") }}

@@ -1,6 +1,6 @@
 <template>
   <div role="nav" class="breadcrumbs">
-    <ul class="breadcrumbs__list">
+    <ul class="breadcrumbs_list">
       <li v-for="route in routes" :key="route.name">
         <span v-if="route.link">
           <nuxt-link :to="localePath(route.link)">{{ route.name }}</nuxt-link>

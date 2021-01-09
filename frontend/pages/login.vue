@@ -7,7 +7,7 @@
     </div>
     <div
       v-else
-      class="mobile-width flex-row flex-center-container flex-row--nowrap margin--auto"
+      class="mobile-width flex-row flex-center-container flex-row--nowrap margin-auto"
     >
       <kokebokapen class="illustration illustration--kokebokapen" />
       <login-container/>

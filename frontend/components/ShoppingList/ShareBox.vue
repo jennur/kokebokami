@@ -10,10 +10,10 @@
 
       <h4>{{`${$t("shoppingLists.share.share")} '${listTitle}' ${$t("shoppingLists.share.withFollower")}` }}</h4>
       <form class="share-form" v-on:submit.prevent>
-        <fieldset class="flex-row flex-row--align-center flex-row--nowrap margin-bottom--medium">
-          <label class="share-form__followers">
+        <fieldset class="flex-row flex-row--align-center flex-row--nowrap margin-bottom-md">
+          <label class="share-form_followers">
             <select-component
-              class="share-form__select margin-right--xlarge"
+              class="share-form_select margin-right-xl"
               :options="followerNames"
               defaultValue="Select a user"
               @select="option => (selected = option)"
@@ -25,13 +25,13 @@
         </fieldset>
         <button
           @click="shareShoppingList"
-          class="button button-sm margin-top--medium"
+          class="button button-sm margin-top-md"
         >
           Share
         </button>
       </form>
       <expand-transition :show="!!systemMessage">
-        <div class="system-message margin-top--large">
+        <div class="system-message margin-top-lg">
           {{ systemMessage }}
         </div>
       </expand-transition>

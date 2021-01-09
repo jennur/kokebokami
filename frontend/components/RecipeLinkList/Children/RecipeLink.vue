@@ -1,12 +1,12 @@
 <template>
   <div class="recipe-link-wrap">
     <div
-      class="recipe-link padding-horizontal--xlarge"
+      class="recipe-link padding-horizontal-xl"
       :class="{ 'recipe-link--no-link': editMode }"
     >
-      <expand-transition :show="editMode" class="recipe-link__edit-form-wrap">
+      <expand-transition :show="editMode" class="recipe-link_edit-form-wrap">
         <recipe-link-edit-form
-          class="padding--large"
+          class="padding-lg"
           :recipeLinkID="link && link.id"
           :recipeLink="link"
           :addingToCategory="addingToCategory"
@@ -16,41 +16,41 @@
       </expand-transition>
       <div
         v-if="!editMode"
-        class="padding-horizontal--xlarge"
+        class="padding-horizontal-xl"
         @click="event => openLink(event)"
       >
-        <div class="recipe-link__settings">
+        <div class="recipe-link_settings">
           <settings-dropdown v-if="!editMode && link && link.id">
             <span @click="event => toggleEditMode(event)">
-              <edit-icon class="icon margin-right--medium" />
+              <edit-icon class="icon margin-right-md" />
               Edit link
             </span>
             <span class="system-message" @click="event => toggleAlert(event)"
               ><delete-icon
                 tabindex="0"
-                class="icon margin-right--medium"
+                class="icon margin-right-md"
               />Delete link</span
             >
           </settings-dropdown>
         </div>
-        <new-tab-icon class="recipe-link__new-tab-icon" />
+        <new-tab-icon class="recipe-link_new-tab-icon" />
         <h3
-          class="recipe-link__title margin-top--large margin-bottom--medium"
+          class="recipe-link_title margin-top-lg margin-bottom-md"
         >
           {{ link && link.title }}
         </h3>
-        <div class="recipe-link__description margin-bottom--large">
+        <div class="recipe-link_description margin-bottom-lg">
           {{ link && link.comment }}
         </div>
-        <div v-if="labels" class="margin-bottom--xxlarge">
+        <div v-if="labels" class="margin-bottom-2xl">
           <span
-            class="recipe-link__category"
+            class="recipe-link_category"
             v-for="label in labels"
             :key="`label-${label}`"
             >{{ label }}</span
           >
         </div>
-        <div class="recipe-link__published-by">
+        <div class="recipe-link_published-by">
           {{ link && link.hostName }}
         </div>
       </div>

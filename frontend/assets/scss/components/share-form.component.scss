@@ -47,19 +47,19 @@
     }
   }
 
-  &__followers {
+  &_followers {
     width: 265px;
   }
 
-  &__email {
+  &_email {
     width: 205px;
     input {
       width: 205px;
     }
   }
-  &__select {
+  &_select {
     width: 250px;
-    .select__dropdown {
+    .select_dropdown {
       width: 260px;
       background-color: $cream;
     }

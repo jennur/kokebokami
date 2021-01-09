@@ -6,7 +6,7 @@
   box-sizing: border-box;
   margin-bottom: $spacingXXLarge;
 
-  &__headline {
+  &_headline {
     font-family: $bodyFont;
     color: $blue;
   }
@@ -55,7 +55,7 @@
       text-decoration: none;
     }
   }
-  &__settings {
+  &_settings {
     width: 15px;
     position: absolute;
     left: $spacingMedium;
@@ -69,13 +69,13 @@
       }
     }
   }
-  &__new-tab-icon {
+  &_new-tab-icon {
     width: 15px;
     position: absolute;
     right: $spacingMedium;
     top: $spacingMedium;
   }
-  &__edit-form-wrap {
+  &_edit-form-wrap {
     display: block;
     max-width: 100%;
 
@@ -99,14 +99,14 @@
         margin-top: $spacingLarge;
       }
 
-      &__url,
-      &__title,
-      &__labels,
-      &__comment {
+      &_url,
+      &_title,
+      &_labels,
+      &_comment {
         width: 100%;
         max-width: 100%;
       }
-      &__category {
+      &_category {
         max-width: 138px;
       }
 
@@ -116,12 +116,12 @@
         right: -$spacingLarge;
         bottom: $spacingSmall;
       }
-      &__comment {
+      &_comment {
         min-height: 100px;
       }
     }
   }
-  &__published-by {
+  &_published-by {
     display: block;
     position: absolute;
     bottom: $spacingSmall;
@@ -141,22 +141,22 @@
     text-align: left;
   }
 
-  &__title {
+  &_title {
     padding-top: $spacingLarge;
     text-transform: capitalize;
   }
 
-  &__description {
+  &_description {
     display: block;
     padding-top: 0;
     padding-bottom: $spacingMedium;
   }
 
-  &__categories {
+  &_categories {
     display: block;
   }
 
-  &__category {
+  &_category {
     display: inline-block;
     background-color: $orange;
     color: $white;

@@ -1,5 +1,5 @@
 .recipes-filter {
-  &__form {
+  &_form {
     display: block;
     border-radius: $spacingSmall;
 
@@ -31,12 +31,12 @@
         border-radius: $spacingSmall;
         box-sizing: border-box;
 
-        &--transparent {
+        &--trans {
           background-color: transparent;
 
           .categories-wrap {
             margin: 0px auto;
-            .select__dropdown {
+            .select_dropdown {
               background-color: $cream;
             }
           }
@@ -59,12 +59,12 @@
         margin-left: $spacingXLarge;
       }
 
-      &__title {
+      &_title {
         margin-top: $spacingMedium;
         margin-left: 4px;
       }
 
-      &__category {
+      &_category {
         display: inline-flex;
         align-items: center;
         text-transform: capitalize;

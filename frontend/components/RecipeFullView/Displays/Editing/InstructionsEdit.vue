@@ -1,18 +1,18 @@
 <template>
   <div class="instructions">
-    <ol class="drop-zone recipe__instructions">
+    <ol class="drop-zone recipe_instructions">
       <li
         v-for="(instruction, index) in instructionsToBeUpdated"
         :key="instruction.id"
-        class="drag-el recipe__instructions-step padding-bottom-sm flex-row flex-row--align-center flex-row--nowrap"
+        class="drag-el recipe_instructions-step padding-bottom-sm flex-row flex-row--align-center flex-row--nowrap"
         draggable
         @dragstart="startDrag($event, instruction, index)"
         @drop="onDrop($event, index)"
         @dragover.prevent
         @dragenter.prevent
       >
-        <span class="drag-el__button"></span>
-        <div class="drag-el__content ">
+        <span class="drag-el_button"></span>
+        <div class="drag-el_content ">
           <textarea
             class="instruction"
             type="text"
@@ -31,12 +31,12 @@
     </ol>
     <div class="flex-row flex-row--align-center">
       <increment-button
-        class="margin-top--large margin-right--large"
+        class="margin-top-lg margin-right-lg"
         @increment="addInstruction"
         >Add instruction</increment-button
       >
       <button
-        class="button button--dynamic-small button--round padding-vertical-sm margin-top--large"
+        class="button button--dynamic-small button--round padding-vertical-sm margin-top-lg"
         @click="handleSave"
       >
         Save

@@ -1,9 +1,9 @@
 <template>
   <main
-    class="mobile-width padding-horizontal--large margin--auto margin-bottom--xxlarge"
+    class="mobile-width padding-horizontal-lg margin-auto margin-bottom-2xl"
   >
     <div class="container container--center">
-      <h1 class="margin-top--xxlarge">Oh no!</h1>
+      <h1 class="margin-top-2xl">Oh no!</h1>
       <cracked-eggs class="illustration--cracked-eggs" />
       <h3>
         It looks like you don't have access to this recipe.

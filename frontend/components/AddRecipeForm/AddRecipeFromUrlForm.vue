@@ -1,9 +1,9 @@
 <template>
   <section
-    class="add-recipe-from-url padding-horizontal--large padding-vertical--xlarge"
+    class="add-recipe-from-url padding-horizontal-lg padding-vertical-xl"
   >
-    <h3 class="add-recipe-from-url__heading">Add new recipe from URL</h3>
-    <form class="form mobile-width margin--auto">
+    <h3 class="add-recipe-from-url_heading">Add new recipe from URL</h3>
+    <form class="form mobile-width margin-auto">
       <fieldset class="flex-column">
         <label for="url">Recipe URL</label>
         <input
@@ -13,7 +13,7 @@
           name="url"
           id="url"
           placeholder="https://example.com/recipe-url/"
-          class="form__url"
+          class="form_url"
         />
         <span class="form--required">*</span>
       </fieldset>
@@ -29,7 +29,7 @@
           name="title"
           id="title"
           placeholder="My custom title"
-          class="form__title"
+          class="form_title"
         />
       </fieldset>
       <fieldset class="flex-column">
@@ -39,14 +39,14 @@
             ref="categorySelect"
             id="category-select"
             name="category-select"
-            class="select--green margin-right--medium"
+            class="select--green margin-right-md"
             :options="categories"
             defaultValue="No category"
             @select="option => handleSelect(option)"
           />
           <button
             v-if="!newCategory"
-            class="form__category-btn button button--xsmall button--green button--round"
+            class="form_category-btn button button-xs button--green button--round"
             @click.prevent="addNewCategory"
           >
             New category
@@ -59,7 +59,7 @@
             name="category"
             id="category"
             placeholder="Category name"
-            class="form__category"
+            class="form_category"
           />
         </div>
       </fieldset>
@@ -72,7 +72,7 @@
           name="labels"
           id="labels"
           placeholder="Dinner, quick, healthy"
-          class="form__labels"
+          class="form_labels"
         />
       </fieldset>
       <fieldset class="flex-column">
@@ -84,10 +84,10 @@
           name="comment"
           id="comment"
           placeholder="Write a note to self about the recipe .."
-          class="form__comment"
+          class="form_comment"
         />
       </fieldset>
-      <fieldset class="container container--center margin-top--xxlarge">
+      <fieldset class="container container--center margin-top-2xl">
         <button
           class="button button-sm button--cancel"
           @click.prevent="$emit('cancel')"
@@ -98,7 +98,7 @@
           type="submit"
           name="submit"
           value="Save"
-          class="button button-sm button--green margin-right--xlarge"
+          class="button button-sm button--green margin-right-xl"
           @click.prevent="handleFormSubmit"
         >
           Save

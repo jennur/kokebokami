@@ -1,24 +1,24 @@
 <template>
-  <dt class="account__detail account__detail--flex-column">
+  <dt class="account_detail account_detail--flex-column">
     <div>
-      <h4 class="account__detail-title">
+      <h4 class="account_detail-title">
         {{ title }}
         <span v-if="visibleToPublic" class="system-message"
           >({{ $t("accountDetails.visibleToEveryone") }})</span
         >
       </h4>
 
-      <div class="account__detail-value" v-if="!editMode">
+      <div class="account_detail-value" v-if="!editMode">
         <span v-if="!isImage">{{ currentValue ? currentValue : null }}</span>
         <img
-          class="account__detail-picture"
+          class="account_detail-picture"
           v-if="isImage && !isLoading"
           :src="currentValue"
         />
         <span v-if="isLoading" class="simple-loading-spinner"></span>
       </div>
 
-      <div v-if="editMode && isImage" class="account__detail-edit">
+      <div v-if="editMode && isImage" class="account_detail-edit">
         <dropzone
           id="dropImage"
           ref="dropImage"
@@ -28,7 +28,7 @@
         />
         <div class="flex-row">
           <button
-            class="button button--with-icon-left button-sm button--cancel account__detail-warning-btn margin-top--medium margin-left-sm"
+            class="button button--with-icon-left button-sm button--cancel account_detail-warning-btn margin-top-md margin-left-sm"
           >
             <delete-icon
               tabindex="0"
@@ -45,7 +45,7 @@
             @cancel="toggleAlert"
           />
           <button
-            class="button button-sm button--cancel account__detail-warning-btn margin-top--medium"
+            class="button button-sm button--cancel account_detail-warning-btn margin-top-md"
             @click="toggleEditMode"
           >
             ✕ {{ $t("cancel") }}
@@ -56,7 +56,7 @@
     <form
       v-if="editMode && !isImage"
       v-on:submit.prevent
-      class="account__detail-edit"
+      class="account_detail-edit"
     >
       <fieldset>
         <label>
@@ -70,7 +70,7 @@
         </label>
       </fieldset>
       <fieldset>
-        <div class="flex-row flex-row--nowrap margin-top--large">
+        <div class="flex-row flex-row--nowrap margin-top-lg">
           <button @click="handleSave" class="button button-sm">Save</button>
           <button
             class="button button-sm button--cancel"
@@ -83,14 +83,14 @@
     </form>
 
     <expand-transition :show="!!systemMessage">
-      <div class="system-message margin-top--medium">{{ systemMessage }}</div>
+      <div class="system-message margin-top-md">{{ systemMessage }}</div>
     </expand-transition>
     <div v-if="!editMode" class="flex-row">
       <edit-icon
         tabindex="0"
         v-if="editOption"
         @click="toggleEditMode"
-        class="icon margin-top--large"
+        class="icon margin-top-lg"
       />
     </div>
   </dt>

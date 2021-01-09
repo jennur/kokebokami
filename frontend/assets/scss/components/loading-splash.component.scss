@@ -26,49 +26,49 @@
   }
 }
 svg g#loading-book_svg {
-  &__burger,
-  &__tomato,
-  &__tomato_slice_1,
-  &__basil_1,
-  &__sushi_1,
-  &__cookie_1,
-  &__tomato_slice_2,
-  &__basil_2,
-  &__sushi_2,
-  &__cookie_2 {
+  &_burger,
+  &_tomato,
+  &_tomato_slice_1,
+  &_basil_1,
+  &_sushi_1,
+  &_cookie_1,
+  &_tomato_slice_2,
+  &_basil_2,
+  &_sushi_2,
+  &_cookie_2 {
     animation: zoom;
     animation-duration: 2s;
     animation-iteration-count: infinite;
     animation-timing-function: ease-in-out;
   }
-  &__burger {
+  &_burger {
     animation-delay: 0s;
   }
-  &__basil_1 {
+  &_basil_1 {
     animation-delay: 0.5s;
   }
-  &__tomato {
+  &_tomato {
     animation-delay: 0s;
   }
-  &__tomato_slice_1 {
+  &_tomato_slice_1 {
     animation-delay: 0.5s;
   }
-  &__sushi_1 {
+  &_sushi_1 {
     animation-delay: 0s;
   }
-  &__sushi_2 {
+  &_sushi_2 {
     animation-delay: 0.5s;
   }
-  &__basil_2 {
+  &_basil_2 {
     animation-delay: 0s;
   }
-  &__tomato_slice_2 {
+  &_tomato_slice_2 {
     animation-delay: 0.5s;
   }
-  &__cookie_1 {
+  &_cookie_1 {
     animation-delay: 0s;
   }
-  &__cookie_2 {
+  &_cookie_2 {
     animation-delay: 0.5s;
   }
 }

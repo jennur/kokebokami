@@ -1,6 +1,6 @@
 <template>
   <form class="sign-up-form" v-on:submit.prevent>
-    <label class="flex-column margin-bottom--medium">
+    <label class="flex-column margin-bottom-md">
       {{ $t("email") }}
       <input
         class="margin-top-sm"
@@ -11,7 +11,7 @@
       />
       <span class="system-message margin-top-sm">{{ emailError }}</span>
     </label>
-    <label class="flex-column margin-bottom--medium">
+    <label class="flex-column margin-bottom-md">
       {{ $t("password") }}
       <input
         class="margin-top-sm"
@@ -22,7 +22,7 @@
       />
       <span class="system-message margin-top-sm">{{ passwordError }}</span>
     </label>
-    <label class="flex-column margin-bottom--medium">
+    <label class="flex-column margin-bottom-md">
       {{ $t("signUp.repeatPassword") }}
 
       <input
@@ -37,7 +37,7 @@
       }}</span>
     </label>
 
-    <label class="flex-column margin-bottom--medium">
+    <label class="flex-column margin-bottom-md">
       <span class="flex-row flex-row--nowrap">
         <input
           tabindex="0"

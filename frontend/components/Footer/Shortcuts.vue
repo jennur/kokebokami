@@ -1,5 +1,5 @@
 <template>
-  <ul class="footer__nav margin--large">
+  <ul class="footer_nav margin-lg">
     <li>
       <h4 class="color--blue">
         {{ $t("navigation.footer.shortcutsHeading") }}

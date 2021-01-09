@@ -4,7 +4,7 @@
       <div class="flex-row flex-row--align-center flex-row--justify-center">
         <button
           @click="toggleAlert"
-          class="button button-sm button--cancel margin-top--xxlarge"
+          class="button button-sm button--cancel margin-top-2xl"
         >
           ✕ {{ $t("cancel") }}
         </button>
@@ -20,7 +20,7 @@
         />
         <button
           @click="$emit('save')"
-          class="button button-sm margin-top--xxlarge"
+          class="button button-sm margin-top-2xl"
         >
           Save
         </button>
@@ -32,7 +32,7 @@
     </fieldset>
 
     <div
-      class="flex-center-container flex-center-container--column margin--auto"
+      class="flex-center-container flex-center-container--column margin-auto"
       v-else-if="saved && recipeKey"
     >
       <div class="system-message">{{ systemMessage }}</div>

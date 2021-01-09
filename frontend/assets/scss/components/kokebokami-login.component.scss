@@ -13,13 +13,13 @@
   color: $cream;
 
   cursor: pointer;
-  &__logo {
+  &_logo {
     width: 30px;
     height: 30px;
     margin: 7px;
     border-radius: 2px;
   }
-  &__text {
+  &_text {
     margin: 0px auto;
   }
 }

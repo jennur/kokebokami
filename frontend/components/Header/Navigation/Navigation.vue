@@ -1,11 +1,11 @@
 <template>
   <nav
-    class="navigation-menu-wrapper padding-horizontal--large margin--auto desktop-width"
+    class="navigation-menu-wrapper padding-horizontal-lg margin-auto desktop-width"
   >
     <logo />
     <div class="navigation-menu">
       <desktop-menu
-        class="navigation-menu__desktop-menu"
+        class="navigation-menu_desktop-menu"
         :accountMenu="accountMenu"
         :loginMenu="loginMenu"
         :user="user"

@@ -1,25 +1,25 @@
 <template>
-  <div class="profile margin-bottom--xxlarge">
+  <div class="profile margin-bottom-2xl">
     <div
-      class="flex-row flex-row--align-center flex-row--nowrap margin-bottom--xlarge"
+      class="flex-row flex-row--align-center flex-row--nowrap margin-bottom-xl"
     >
       <div
         v-if="user && user.photoURL"
         role="img"
-        class="profile__img margin-right--xlarge"
+        class="profile_img margin-right-xl"
         :style="`background-image: url(${user.photoURL});`"
         :aria-label="user.displayName + '´s profile picture'"
       />
-      <div v-else class="profile__img--backup margin-right--xlarge">
+      <div v-else class="profile_img--backup margin-right-xl">
         <backupImg />
       </div>
-      <div class="profile__biography mobile-width">
+      <div class="profile_biography mobile-width">
         <h1 class="margin--none">
           {{ user && user.displayName ? user.displayName : "User" }}
         </h1>
         <p
           v-if="user && user.biography"
-          class="hidden-mobile margin-top--large"
+          class="hidden-mobile margin-top-lg"
         >
           {{ user.biography }}
         </p>

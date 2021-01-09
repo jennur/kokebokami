@@ -1,16 +1,16 @@
 <template>
   <div
     id="servings"
-    class="recipe__servings-wrap flex-row flex-row--align-center margin-vertical--xxlarge"
+    class="recipe_servings-wrap flex-row flex-row--align-center margin-vertical-2xl"
   >
     <span
       v-if="!servings && !editMode && !loading"
-      class="recipe__servings-disabled-dash"
+      class="recipe_servings-disabled-dash"
       >-</span
     >
     <input
       v-if="servings && !editMode && !loading"
-      class="recipe__servings margin-right--medium"
+      class="recipe_servings margin-right-md"
       type="Number"
       min="1"
       step="1"
@@ -35,7 +35,7 @@
       tabindex="0"
       v-if="isRecipeOwner && !editMode"
       @click="toggleEditMode"
-      class="icon margin-left--medium"
+      class="icon margin-left-md"
     />
   </div>
 </template>

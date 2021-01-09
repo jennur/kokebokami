@@ -1,8 +1,8 @@
 e<template>
   <section>
-    <div ref="recipe" id="recipe" class="recipe margin--auto">
+    <div ref="recipe" id="recipe" class="recipe margin-auto">
       <div
-        class="flex-row flex-row--align-center margin-bottom--medium"
+        class="flex-row flex-row--align-center margin-bottom-md"
         :class="{
           'flex-row--space-between': isRecipeOwner,
           'flex-row--justify-right': !isRecipeOwner
@@ -24,7 +24,7 @@ e<template>
 
         <div class="flex-row flex-row--align-center">
           <language-display
-            class="margin-right--xlarge"
+            class="margin-right-xl"
             v-if="isRecipeOwner"
             :language="recipe.language"
             :isRecipeOwner="isRecipeOwner"
@@ -53,7 +53,7 @@ e<template>
         @cancel="toggleAlert"
       />
 
-      <div class="recipe__details-wrap">
+      <div class="recipe_details-wrap">
         <photo-display
           :photoURL="recipe.photoURL"
           :isRecipeOwner="isRecipeOwner"
@@ -61,7 +61,7 @@ e<template>
           @update="payload => $emit('update', payload)"
         />
 
-        <div id="recipeDetails" class="recipe__details">
+        <div id="recipeDetails" class="recipe_details">
           <type-of-meal-display
             v-if="recipe.typeOfMeal || isRecipeOwner"
             :typeOfMeal="recipe && recipe.typeOfMeal"
@@ -74,7 +74,7 @@ e<template>
             :freeFrom="recipe && recipe.freeFrom"
             :isRecipeOwner="isRecipeOwner"
             :recipeKey="recipe.id"
-            class="margin-bottom--xlarge"
+            class="margin-bottom-xl"
             @update="payload => $emit('update', payload)"
           />
 
@@ -96,13 +96,13 @@ e<template>
             :categories="recipe.categories && Object.values(recipe.categories)"
             :isRecipeOwner="isRecipeOwner"
             :recipeKey="recipe.id"
-            class="margin-bottom--xxlarge"
+            class="margin-bottom-2xl"
             @update="payload => $emit('update', payload)"
           />
 
           <div
             v-if="!isRecipeOwner"
-            class="recipe__category-note margin-bottom--large text-align--right"
+            class="recipe_category-note margin-bottom-lg text-align--right"
           >
             {{ $t("recipes.publishedBy") }}
             <nuxt-link :to="localePath(`/cooks/${author && author.path}`)">
@@ -113,10 +113,10 @@ e<template>
       </div>
 
       <div
-        class="recipe__flex-no-wrap flex-row--align-top margin-vertical--xlarge"
+        class="recipe_flex-no-wrap flex-row--align-top margin-vertical-xl"
       >
         <ingredients-display
-          class="recipe__ingredients-wrap"
+          class="recipe_ingredients-wrap"
           :ingredients="recipe.ingredients"
           :servings="recipe.servings || ''"
           :recipeTitle="recipe.title"
@@ -127,7 +127,7 @@ e<template>
         />
 
         <instructions-display
-          class="recipe__instructions-wrap"
+          class="recipe_instructions-wrap"
           :instructions="recipe.instructions"
           :isRecipeOwner="isRecipeOwner"
           :recipeKey="recipe.id"

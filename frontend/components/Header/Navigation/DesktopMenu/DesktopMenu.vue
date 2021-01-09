@@ -3,12 +3,12 @@
   <div class="desktop-menu" v-click-outside="closeDropdown">
     <ul v-if="user && !user.id" class="login-menu">
       <li>
-        <nuxt-link class="login-menu__signup-btn" :to="localePath('/sign-up')">
+        <nuxt-link class="login-menu_signup-btn" :to="localePath('/sign-up')">
           {{ $t("signUpText") }}
         </nuxt-link>
       </li>
       <li>
-        <span class="login-menu__link" @click="toggleDropdown">
+        <span class="login-menu_link" @click="toggleDropdown">
           {{ $t("loginText") }}
         </span>
 
@@ -20,7 +20,7 @@
 
     <div v-if="user && user.id" class="account-menu margin-bottom-sm">
       <user-image :username="user.displayName" :photoURL="user.photoURL" />
-      <nuxt-link class="account-menu__button" :to="localePath('/account')">
+      <nuxt-link class="account-menu_button" :to="localePath('/account')">
         {{ accountMenu.title }}
       </nuxt-link>
     </div>

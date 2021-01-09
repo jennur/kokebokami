@@ -11,20 +11,20 @@
     />
     <div>
       <div class="flex-row flex-row--align-center flex-row--nowrap">
-        <h4 class="margin-vertical--medium">{{ $t("recipes.ingredients") }}</h4>
+        <h4 class="margin-vertical-md">{{ $t("recipes.ingredients") }}</h4>
         <edit-icon
           tabindex="0"
           v-if="isRecipeOwner && !editMode"
           @click="toggleEditMode"
-          class="icon margin--medium"
+          class="icon margin-md"
         />
       </div>
-      <ul v-if="!editMode && !loading" class="recipe__ingredients">
+      <ul v-if="!editMode && !loading" class="recipe_ingredients">
         <li
           v-for="(ingredient, index) in calculatedIngredients"
           :key="`ingredient-${index}`"
         >
-          <span class="recipe__ingredients-amount">{{
+          <span class="recipe_ingredients-amount">{{
             ingredient.amount
           }}</span>
           {{ ingredient.item }}
@@ -40,14 +40,14 @@
 
     <add-to-shopping-list
       v-if="user && user.id && !editMode && ingredients.length"
-      class="margin-bottom--xxlarge"
+      class="margin-bottom-2xl"
       :recipeTitle="recipeTitle"
       :ingredients="calculatedIngredients"
     />
     <nuxt-link
       v-if="user && !user.id"
       :to="localePath('/login/')"
-      class="button button--xsmall button--round button--green padding-horizontal--large margin-bottom--xxlarge"
+      class="button button-xs button--round button--green padding-horizontal-lg margin-bottom-2xl"
       >{{ $t("recipes.loginToAddToShoppingList") }}</nuxt-link
     >
   </section>

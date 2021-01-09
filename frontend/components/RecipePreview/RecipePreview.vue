@@ -3,19 +3,19 @@
     <!-- Image -->
     <div
       :style="`background-image: url(${recipeImage})`"
-      class="recipe-preview__image"
+      class="recipe-preview_image"
     ></div>
 
-    <span class="recipe-preview__published-by" v-if="inPublicList">
+    <span class="recipe-preview_published-by" v-if="inPublicList">
       {{ `${$t("recipes.publishedBy")} ${author && author.displayName}` }}</span
     >
-    <span class="recipe-preview__public-note" v-if="showPublicNote">{{
+    <span class="recipe-preview_public-note" v-if="showPublicNote">{{
       $t("recipes.public")
     }}</span>
-    <div class="full-width padding--xlarge">
+    <div class="full-width padding-xl">
       <!-- Details -->
 
-      <div class="recipe-preview__category-note">
+      <div class="recipe-preview_category-note">
         <p v-if="typeOfMeal">
           <b>{{ $t("recipes.typeOfMeal") }}: </b>
           {{ typeOfMeal }}
@@ -27,19 +27,19 @@
       </div>
 
       <!-- Description -->
-      <h3 class="recipe-preview__title margin--none margin-bottom--medium">
+      <h3 class="recipe-preview_title margin--none margin-bottom-md">
         {{ recipe.title ? recipe.title : $t("recipes.noTitle") }}
       </h3>
-      <div class="recipe-preview__description margin-bottom--large">
+      <div class="recipe-preview_description margin-bottom-lg">
         {{
           recipe.description ? recipe.description : $t("recipes.noDescription")
         }}
       </div>
       <!-- Categories -->
       <div>
-        <div class="recipe-preview__categories">
+        <div class="recipe-preview_categories">
           <span
-            class="recipe-preview__category"
+            class="recipe-preview_category"
             v-for="category in categories"
             :key="category"
             >{{ category }}</span

@@ -1,6 +1,6 @@
 <template>
   <div class="burger-icon">
-    <span :class="'burger-icon__slice ' + (open ? 'burger-icon__slice--open' : '') " />
+    <span :class="'burger-icon_slice ' + (open ? 'burger-icon_slice--open' : '') " />
   </div>
 </template>
 <script>

@@ -19,7 +19,7 @@ select {
     outline: none;
   }
 
-  &__dropdown {
+  &_dropdown {
     background-color: $cream;
     border: 2px solid $blue;
     border-radius: $spacingSmall;
@@ -42,12 +42,12 @@ select {
   &--green {
     border: 2px solid $green;
     background-color: $cream;
-    & .select__dropdown {
+    & .select_dropdown {
       border: 2px solid $green;
       background-color: $cream;
     }
   }
-  &__selected {
+  &_selected {
     display: flex;
     justify-content: flex-start;
     align-items: center;
@@ -67,7 +67,7 @@ select {
       top: $spacingMedium;
     }
   }
-  &__option {
+  &_option {
     display: block;
     padding: $spacingSmall $spacingMedium;
 

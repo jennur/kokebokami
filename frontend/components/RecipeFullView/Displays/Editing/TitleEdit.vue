@@ -1,6 +1,6 @@
 <template>
   <input
-    class="recipe__title recipe__title--edit"
+    class="recipe_title recipe_title--edit"
     type="text"
     v-model="updatedTitle"
     v-click-outside="handleUpdate"

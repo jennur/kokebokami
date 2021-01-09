@@ -1,15 +1,15 @@
 <template>
-  <div class="tablet-width margin--auto">
+  <div class="tablet-width margin-auto">
     <breadcrumbs :routes="breadcrumbs" />
     <div class="flex-row flex-row--align-center">
       <increment-button
-        class="margin-top--xxlarge"
+        class="margin-top-2xl"
         @increment="addNewShoppingList"
       >
         New shopping list
       </increment-button>
     </div>
-    <div class="margin-vertical--xxlarge">
+    <div class="margin-vertical-2xl">
       <shopping-list
         v-if="addingNewShoppingList"
         :list="{ key: '', title: 'New shopping list', subLists: [] }"

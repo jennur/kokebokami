@@ -1,11 +1,11 @@
 <template>
-  <section class="shopping-list margin-bottom--large">
+  <section class="shopping-list margin-bottom-lg">
     <!-- Delete / Cancel action -->
 
-    <div class="shopping-list__cancel-action">
+    <div class="shopping-list_cancel-action">
       <settings-dropdown v-if="list.key" :right="true">
         <span class="system-message" @click="toggleAlert"
-          ><delete-icon tabindex="0" class="icon margin-right--medium" />Delete
+          ><delete-icon tabindex="0" class="icon margin-right-md" />Delete
           collection</span
         >
       </settings-dropdown>
@@ -25,7 +25,7 @@
       @confirmed="deleteShoppingList"
       @cancel="toggleAlert"
     />
-    <div class="flex-row flex-row--align-center margin-bottom--large">
+    <div class="flex-row flex-row--align-center margin-bottom-lg">
       <!-- Share action -->
       <div v-if="list && list.key">
         <share-icon class="icon icon--blue" @click="toggleShareBox" />
@@ -41,24 +41,24 @@
       </div>
     </div>
     <!-- Shopping list title -->
-    <div class="shopping-list__title margin-bottom--large margin-top--xxlarge">
+    <div class="shopping-list_title margin-bottom-lg margin-top-2xl">
       <div
         v-if="list.title && !editTitle"
-        class="flex-row flex-row--align-center margin-top--large"
+        class="flex-row flex-row--align-center margin-top-lg"
       >
         <h2
-          class="margin-bottom-sm margin-right--large"
+          class="margin-bottom-sm margin-right-lg"
           @click="event => toggleEditTitle(event)"
         >
           {{ list.title }}
         </h2>
-        <span v-if="shared" class="shopping-list__shared">
+        <span v-if="shared" class="shopping-list_shared">
           Shared from:
           <nuxt-link :to="`/cooks/${createdByCookPath}`">{{
             list.createdBy.displayName
           }}</nuxt-link>
         </span>
-        <span v-if="sharedWith" class="shopping-list__shared">
+        <span v-if="sharedWith" class="shopping-list_shared">
           Shared with:
           <nuxt-link
             v-for="(user, index) in sharedWith"
@@ -76,7 +76,7 @@
         <input
           type="text"
           v-model="updatedTitle"
-          class="margin-right--large"
+          class="margin-right-lg"
           v-click-outside="saveTitle"
           @keydown="
             event => {
@@ -85,7 +85,7 @@
           "
         />
         <div
-          class="flex-row flex-row--align-center flex-row--nowrap margin-top--medium"
+          class="flex-row flex-row--align-center flex-row--nowrap margin-top-md"
         ></div>
       </div>
     </div>
@@ -113,7 +113,7 @@
       class="flex-row flex-row--align-center flex-row--space-between full-width"
     >
       <increment-button
-        class="margin-vertical--large margin-right--xxlarge"
+        class="margin-vertical-lg margin-right-2xl"
         @increment="addNewSubList"
         >New sublist</increment-button
       >

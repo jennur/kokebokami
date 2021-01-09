@@ -1,7 +1,7 @@
 <template>
   <button outline fab @click="googleSignIn" class="google-btn">
     <googleLogo />
-    <span class="google-btn__text">{{ $t("loginWith") }} Google</span>
+    <span class="google-btn_text">{{ $t("loginWith") }} Google</span>
   </button>
 </template>
 <script>

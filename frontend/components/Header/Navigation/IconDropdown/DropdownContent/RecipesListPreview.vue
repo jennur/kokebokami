@@ -1,5 +1,5 @@
 <template>
-  <div class="content-dropdown__recipes-list-preview">
+  <div class="content-dropdown_recipes-list-preview">
     <ul>
       <li v-for="recipe in recipes" :key="`recipe-${recipe.title}`">
         {{ recipe.title }}

@@ -1,7 +1,7 @@
 <template>
   <section>
     <breadcrumbs :routes="breadcrumbs" />
-    <div class="system-message margin-vertical--large">
+    <div class="system-message margin-vertical-lg">
       {{ $t("accountDetails.publicProfileViewNote") }}
     </div>
     <profile-view :user="user && !user.hiddenProfile ? user : null" />

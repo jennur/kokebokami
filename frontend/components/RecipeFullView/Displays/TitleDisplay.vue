@@ -2,7 +2,7 @@
   <div>
     <h2
       v-if="!editTitle && !loading"
-      class="recipe__title margin-bottom--xlarge"
+      class="recipe_title margin-bottom-xl"
       :class="{ editable: isRecipeOwner }"
       @click="event => toggleEditTitle(event)"
     >
@@ -10,7 +10,7 @@
     </h2>
     <span v-if="loading" class="simple-loading-spinner"></span>
     <title-edit
-      class="margin-bottom--xlarge"
+      class="margin-bottom-xl"
       v-if="isRecipeOwner && editTitle"
       :title="title"
       @save="saveTitle"

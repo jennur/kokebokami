@@ -1,6 +1,6 @@
 <template>
   <section class="recipes-list-container">
-    <h3 class="recipes-list-container__headline" v-if="headline">
+    <h3 class="recipes-list-container_headline" v-if="headline">
       {{ headline }}
     </h3>
     <recipe-preview
@@ -12,8 +12,8 @@
     />
     <div v-if="!recipesLength" class="container">
       <p
-        class="margin-bottom--medium mobile-width"
-        :class="{ 'margin--auto': centerText }"
+        class="margin-bottom-md mobile-width"
+        :class="{ 'margin-auto': centerText }"
       >
         {{ emptyListMessage }}
       </p>

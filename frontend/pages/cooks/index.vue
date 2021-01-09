@@ -2,7 +2,7 @@
   <div>
     <breadcrumbs :routes="breadcrumbs" />
     <div
-      class="cooks container container--center mobile-width margin-top--xlarge margin--auto"
+      class="cooks container container--center mobile-width margin-top-xl margin-auto"
     >
       <div v-if="user && user.id">
         <h2>{{ $t("cooks.headline") }}</h2>
@@ -20,9 +20,9 @@
         <cooksSilhouettes class="illustration--cooks" />
       </div>
     </div>
-    <div v-if="user && user.id" class="margin-top--xlarge">
+    <div v-if="user && user.id" class="margin-top-xl">
       <Tabs
-        class="margin-top--xxlarge"
+        class="margin-top-2xl"
         :tabTitles="[$t('cooks.tabs.following'), $t('cooks.tabs.followers')]"
         @switchTab="index => handleTabSwitch(index)"
       >
@@ -30,13 +30,13 @@
           v-if="activeTabIndex == 0"
           :cooks="followed"
           :emptyListMessage="$t('cooks.followedEmptyListMessage')"
-          class="margin-top--large"
+          class="margin-top-lg"
         />
         <cooks-list
           v-if="activeTabIndex == 1"
           :cooks="followers"
           :emptyListMessage="$t('cooks.followersEmptyListMessage')"
-          class="margin-top--large"
+          class="margin-top-lg"
         />
       </Tabs>
     </div>

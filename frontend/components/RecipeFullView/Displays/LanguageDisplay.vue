@@ -1,5 +1,5 @@
 <template>
-  <div class="recipe__language">
+  <div class="recipe_language">
     <div class="flex-row">
       {{ $t("recipes.writtenIn") }}
       <span

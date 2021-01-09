@@ -11,17 +11,17 @@
         @dragover.prevent
         @dragenter.prevent
       >
-        <span class="drag-el__button"></span>
-        <div class="drag-el__content">
+        <span class="drag-el_button"></span>
+        <div class="drag-el_content">
           <input
-            class="ingredient__amount"
+            class="ingredient_amount"
             type="number"
             min="0"
             step=".05"
             v-model="ingredientsToBeUpdated[index].amount"
           />
           <input
-            class="ingredient__item"
+            class="ingredient_item"
             type="text"
             v-model="ingredientsToBeUpdated[index].item"
           />
@@ -38,12 +38,12 @@
     </div>
     <div class="flex-row flex-row--align-center">
       <increment-button
-        class="margin-top--large margin-right--large"
+        class="margin-top-lg margin-right-lg"
         @increment="addIngredient"
         >Add ingredient</increment-button
       >
       <button
-        class="button button--dynamic-small button--round padding-vertical-sm margin-top--large"
+        class="button button--dynamic-small button--round padding-vertical-sm margin-top-lg"
         @click="$emit('save', ingredientsToBeUpdated)"
       >
         Save

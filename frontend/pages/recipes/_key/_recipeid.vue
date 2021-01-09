@@ -5,14 +5,14 @@
     </div>
     <breadcrumbs
       v-if="loaded"
-      class="margin-bottom--large"
+      class="margin-bottom-lg"
       :routes="breadcrumbs"
     />
 
-    <div class="tablet-width margin-top--xxlarge margin--auto">
+    <div class="tablet-width margin-top-2xl margin-auto">
       <expand-transition :show="loaded" slower>
         <recipe-full-view
-          class="margin-bottom--xxlarge"
+          class="margin-bottom-2xl"
           :recipe="recipe"
           :author="author"
           :isRecipeOwner="user && user.id === recipe.ownerID"
@@ -22,7 +22,7 @@
 
       <comments-section
         v-if="loaded"
-        class="tablet-width margin--auto margin-top--xxlarge"
+        class="tablet-width margin-auto margin-top-2xl"
         :recipeKey="recipe.id"
         :recipeOwnerID="recipe.ownerID"
         :recipeTitle="recipe.title"

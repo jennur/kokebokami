@@ -1,6 +1,6 @@
 <template>
   <textarea
-    class="recipe__description recipe__description--edit"
+    class="recipe_description recipe_description--edit"
     type="text"
     v-model="updatedDescription"
     v-click-outside="handleUpdate"

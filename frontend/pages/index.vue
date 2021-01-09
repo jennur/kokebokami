@@ -5,10 +5,10 @@
     </div>
 
     <div
-      class="desktop-width padding-horizontal--large margin-top--xxlarge margin--auto"
+      class="desktop-width padding-horizontal-lg margin-top-2xl margin-auto"
     >
       <button
-        class="search__button button button-sm button--green-border margin--medium"
+        class="search_button button button-sm button--green-border margin-md"
         @click="event => toggleSearch(event)"
       >
         {{ $t("searchText") }}
@@ -28,14 +28,14 @@
           addRecipeUrl="/account/my-cookbook/add-recipe"
         />
         <div v-else class="container">
-          <span class="simple-loading-spinner margin--auto" />
+          <span class="simple-loading-spinner margin-auto" />
         </div>
       </div>
     </div>
     <sign-up-section
       v-if="user && !user.id"
       id="signUp"
-      class="container--full-height container--dark padding-top--xxxlarge"
+      class="container--full-height container--dark padding-top-3xl"
       :darkBg="true"
     />
   </div>

@@ -4,9 +4,9 @@
       <transition name="pop-modal">
         <div v-if="showAlertBox" class="alert-box">
           <p>{{ alertMessage }}</p>
-          <div class="alert-box__buttons flex-row flex-row--align-center">
+          <div class="alert-box_buttons flex-row flex-row--align-center">
             <button
-              class="button button-sm button--red-border margin-right--large"
+              class="button button-sm button--red-border margin-right-lg"
               @click="$emit('confirmed')"
             >
               {{ $t("confirm") }}

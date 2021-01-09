@@ -2,22 +2,22 @@
   <div>
     <div
       v-if="!editMode && !loading"
-      class="recipe__categories margin-top--large"
+      class="recipe_categories margin-top-lg"
     >
       <span
-        class="recipe__category margin-right--large"
+        class="recipe_category margin-right-lg"
         v-for="(category, index) in categories"
         :class="{ editable: isRecipeOwner, edit: beforeEdit === index }"
         :key="`category-${index}`"
         ><span @click="toggleEditClass(index)">{{ categoryNames[index] }}</span>
         <edit-icon
           tabindex="0"
-          class="icon recipe__category-edit-icon"
+          class="icon recipe_category-edit-icon"
           @click="event => toggleEditMode(event)"
       /></span>
       <button
         v-if="!categories.length"
-        class="button button--xsmall button--round"
+        class="button button-xs button--round"
         @click="event => toggleEditMode(event)"
       >
         {{ $t("recipes.addCategory") }}

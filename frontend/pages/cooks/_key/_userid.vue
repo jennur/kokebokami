@@ -8,24 +8,24 @@
       <div v-if="user && user.id" class="flex-column flex-align--end">
         <button
           @click="unfollowUser"
-          class="button button-sm button--red-border margin-top--large"
+          class="button button-sm button--red-border margin-top-lg"
           v-if="isFollowingUser"
         >
           {{ $t("cooks.unfollow") }} {{ cook ? cook.displayName : "" }}
         </button>
         <button
           @click="followUser"
-          class="button button-sm button--green-border margin-top--large"
+          class="button button-sm button--green-border margin-top-lg"
           v-else
         >
           {{ $t("cooks.follow") }} {{ cook ? cook.displayName : "" }}
         </button>
-        <span class="system-message margin-top--medium">{{
+        <span class="system-message margin-top-md">{{
           systemMessage
         }}</span>
       </div>
 
-      <profile-view class="margin-top--medium" :user="cook" />
+      <profile-view class="margin-top-md" :user="cook" />
       <h3>{{ $t("cooks.checkOutMyRecipes") }}</h3>
       <recipes-list
         :recipes="cooksPublicRecipes"
@@ -36,7 +36,7 @@
     </div>
     <div
       v-if="loadedProfile && !cook"
-      class="container container--center margin--auto margin-bottom--xlarge"
+      class="container container--center margin-auto margin-bottom-xl"
     >
       <cookSilhouette class="illustration--cook-bubble" />
       <h3>

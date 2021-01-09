@@ -2,7 +2,7 @@
   <div>
     <div id="actionBar" class="flex-row">
       <button
-        class="button button--with-icon-round margin-bottom--large margin-right--large"
+        class="button button--with-icon-round margin-bottom-lg margin-right-lg"
         @click="handlePdfExport"
         title="Download as PDF"
       >

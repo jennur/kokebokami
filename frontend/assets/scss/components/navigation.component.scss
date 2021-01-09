@@ -11,7 +11,7 @@
     margin: 0px;
     line-height: 22px;
 
-    &__link {
+    &_link {
       color: $orange;
       font-size: 18px;
       cursor: pointer;
@@ -51,7 +51,7 @@
         margin: 0px $spacingLarge;
       }
     }
-    &__link {
+    &_link {
       color: $richBlack;
       text-decoration: none;
       position: relative;
@@ -82,8 +82,8 @@
       margin-bottom: 2px;
       color: $gray;
     }
-    &__signup-btn,
-    &__signup-btn.active-link {
+    &_signup-btn,
+    &_signup-btn.active-link {
       display: inline-block;
       background-color: rgba($green, 1);
       color: $blue;

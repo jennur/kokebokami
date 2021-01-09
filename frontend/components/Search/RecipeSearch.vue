@@ -1,6 +1,6 @@
 <template>
   <section class="search" :class="{ 'search--sticky': scrolled }">
-    <form class="search__form" @submit.prevent>
+    <form class="search_form" @submit.prevent>
       <fieldset>
         <label class="search-field">
           <search-icon class="search-icon" />
@@ -13,7 +13,7 @@
         </label>
       </fieldset>
       <fieldset>
-        <h5 class="categories__title">{{ $t("recipes.language") }}</h5>
+        <h5 class="categories_title">{{ $t("recipes.language") }}</h5>
         <select-component
           id="language"
           :options="languages"
@@ -23,7 +23,7 @@
         />
       </fieldset>
       <fieldset class="flex-column">
-        <h5 class="margin-bottom--medium color--blue">
+        <h5 class="margin-bottom-md color--blue">
           {{ $t("recipes.typeOfMeal") }}
         </h5>
         <label
@@ -40,7 +40,7 @@
         </label>
       </fieldset>
       <fieldset class="flex-column">
-        <h5 class="margin-bottom--medium color--blue">
+        <h5 class="margin-bottom-md color--blue">
           {{ $t("recipes.categories") }}
         </h5>
         <label
@@ -58,7 +58,7 @@
       </fieldset>
 
       <fieldset class="flex-column">
-        <h5 class="margin-bottom--medium color--blue">
+        <h5 class="margin-bottom-md color--blue">
           {{ $t("recipes.freeFrom") }}
         </h5>
         <label

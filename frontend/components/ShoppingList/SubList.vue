@@ -1,9 +1,9 @@
 <template>
-  <section class="sub-list margin-vertical--large">
+  <section class="sub-list margin-vertical-lg">
     <div class="flex-row flex-row--align-top flex-row--nowrap">
-      <settings-dropdown class="margin-top--medium" v-if="subListKey">
+      <settings-dropdown class="margin-top-md" v-if="subListKey">
         <span class="system-message" @click="toggleAlert">
-          <delete-icon tabindex="0" class="icon margin-right--medium" />
+          <delete-icon tabindex="0" class="icon margin-right-md" />
           Delete sublist
         </span>
       </settings-dropdown>

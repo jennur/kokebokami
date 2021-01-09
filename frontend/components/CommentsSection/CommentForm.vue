@@ -5,18 +5,18 @@
         <span class="simple-loading-spinner"></span>
         <div
           v-if="!anonymous && user.photoURL"
-          class="comment__user-img"
+          class="comment_user-img"
           role="img"
           :aria-label="`${user.displayName}'s profile image`"
           :style="`background-image: url(${user.photoURL});`"
         ></div>
-        <CookSilhouette v-else class="comment__user-img" />
-        <span class="margin-left--medium">{{
+        <CookSilhouette v-else class="comment_user-img" />
+        <span class="margin-left-md">{{
           anonymous ? $t("anonymous") : user.displayName
         }}</span>
       </div>
       <label
-        class="comment-form__anonymous flex-row flex-row--align-center margin-vertical--large"
+        class="comment-form_anonymous flex-row flex-row--align-center margin-vertical-lg"
       >
         <input type="checkbox" v-model="anonymous" />
         <span class="margin-left-sm">{{
@@ -25,13 +25,13 @@
       </label>
       <label>
         <textarea
-          class="comment-form__comment"
+          class="comment-form_comment"
           :placeholder="`${$t('comments.yourComment')}...`"
           tabindex="0"
           v-model="comment"
         ></textarea>
       </label>
-      <label class="comment-form__submit-wrap margin-top--medium">
+      <label class="comment-form_submit-wrap margin-top-md">
         <button
           type="submit"
           class="button button-sm"
@@ -52,7 +52,7 @@
     <transition name="fade">
       <div
         v-if="submitted && !isRecipeOwner"
-        class="comment-form__success padding-vertical--medium padding-horizontal--large margin-vertical--large"
+        class="comment-form_success padding-vertical-md padding-horizontal-lg margin-vertical-lg"
       >
         🎉{{ $t("comments.awaitingApproval") }}
       </div>
@@ -60,7 +60,7 @@
     <transition name="fade">
       <div
         v-if="error"
-        class="comment-form__error padding-vertical--medium padding-horizontal--large margin-vertical--large"
+        class="comment-form_error padding-vertical-md padding-horizontal-lg margin-vertical-lg"
       >
         🌧{{ $t("comments.errorSubmitting") }}
       </div>

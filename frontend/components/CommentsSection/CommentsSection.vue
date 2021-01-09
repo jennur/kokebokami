@@ -1,12 +1,12 @@
 <template>
-  <div class="comments-section margin-bottom--xxlarge">
-    <div class="comments-section__headline">
-      <h3 class="margin-top--xxlarge margin-bottom--medium">
+  <div class="comments-section margin-bottom-2xl">
+    <div class="comments-section_headline">
+      <h3 class="margin-top-2xl margin-bottom-md">
         {{ $t("comments.headline") }}
       </h3>
     </div>
     <comment-form
-      class="margin-bottom--xlarge"
+      class="margin-bottom-xl"
       @addComment="commentObj => submitComment(commentObj)"
       :isRecipeOwner="user && user.id === recipeOwnerID"
       :submitted="submitted"

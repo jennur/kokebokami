@@ -1,8 +1,8 @@
 <template>
   <div>
     <breadcrumbs :routes="breadcrumbs" />
-    <div class="account container tablet-width padding-horizontal--large">
-      <h1 class="margin-top--xxlarge margin-bottom--large">
+    <div class="account container tablet-width padding-horizontal-lg">
+      <h1 class="margin-top-2xl margin-bottom-lg">
         {{ $t("accountDetails.headline") }}
       </h1>
       <nuxt-link :to="localePath('/account/public-profile-view/')">
@@ -10,7 +10,7 @@
         <right-arrow class="icon icon--blue" />
       </nuxt-link>
       <div>
-        <h3 class="margin-top--xxlarge">
+        <h3 class="margin-top-2xl">
           {{ $t("accountDetails.personalData") }}
         </h3>
         <dl class="flex-row">
@@ -94,8 +94,8 @@
           <h3 class="full-width">
             {{ $t("accountDetails.emailNotifications.headline") }}
           </h3>
-          <dt class="full-width account__detail account__detail--flex-column">
-            <h4 class="account__detail-title">
+          <dt class="full-width account_detail account_detail--flex-column">
+            <h4 class="account_detail-title">
               {{ $t("accountDetails.emailNotifications.infoNote") }}
             </h4>
             <p>{{ $t("accountDetails.notifyMe") }}...</p>
@@ -126,8 +126,8 @@
           <h3 class="full-width">
             {{ $t("accountDetails.profileVisibility.headline") }}
           </h3>
-          <dt class="full-width account__detail account__detail--flex-column">
-            <h4 class="account__detail-title">
+          <dt class="full-width account_detail account_detail--flex-column">
+            <h4 class="account_detail-title">
               <p>
                 {{ $t("accountDetails.profileVisibility.infoNote") }}
               </p>
@@ -136,7 +136,7 @@
               <p class="email-notifications margin-right-sm">
                 {{ $t("accountDetails.profileVisibility.yourProfileIs") }}
                 <strong
-                  class="email-notifications__status"
+                  class="email-notifications_status"
                   :class="{
                     'color--pink': user.hiddenProfile,
                     'color--blue': !user.hiddenProfile
@@ -152,7 +152,7 @@
           </dt>
         </dl>
         <button
-          class="button button-sm button--transparent button--transparent-red margin-top--large"
+          class="button button-sm button--trans button--trans-red margin-top-lg"
           @click="toggleAlert"
         >
           <delete-icon class="icon margin-right-sm" />{{

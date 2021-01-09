@@ -1,15 +1,15 @@
 <template>
-  <div class="navigation-menu__icons">
+  <div class="navigation-menu_icons">
         <nuxt-link
           :to="localePath('/account/shopping-list/')"
-          class="icon__link"
+          class="icon_link"
           title="Shopping list"
         >
           <shopping-list-icon class="icon--shopping-list" />
           <transition name="pop">
             <span
               v-show="$store.state.shoppingListCount && $route.path !== '/account/shopping-list/'"
-              class="icon__notification"
+              class="icon_notification"
             >
               {{ $store.state.shoppingListCount }}</span
             >
@@ -17,7 +17,7 @@
         </nuxt-link>
         <nuxt-link
           :to="localePath('/cooks/')"
-          class="icon__link"
+          class="icon_link"
           title="Discover cooks"
         >
           <cooks-icon class="icon--cooks" />

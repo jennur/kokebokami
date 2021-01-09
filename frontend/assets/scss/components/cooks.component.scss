@@ -1,5 +1,5 @@
 .cooks {
-  &__search {
+  &_search {
     text-align: left;
     max-width: 350px;
     width: 100%;
@@ -15,7 +15,7 @@
     }
   }
 
-  &__user-icon {
+  &_user-icon {
     width: 25px;
     height: 25px;
     position: absolute;
@@ -23,7 +23,7 @@
     left: $spacingSmall;
   }
 
-  &__result-list {
+  &_result-list {
     max-width: 350px;
     width: inherit;
     background-color: $cream;
@@ -39,7 +39,7 @@
     box-shadow: 0px $spacingMedium $spacingMedium rgba(0, 0, 0, 0.25);
     z-index: 999;
   }
-  &__user-link {
+  &_user-link {
     display: inline-flex;
     align-items: center;
     width: 100%;
@@ -50,7 +50,7 @@
       background-color: rgba($green, 0.2);
     }
   }
-  &__user-photo {
+  &_user-photo {
     display: block;
     width: 30px;
     height: 30px;

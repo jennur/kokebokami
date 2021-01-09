@@ -1,21 +1,21 @@
 <template>
   <div>
     <div class="flex-row flex-row--align-center flex-row--nowrap">
-      <h4 class="margin-vertical--medium">{{ $t("recipes.instructions") }}</h4>
+      <h4 class="margin-vertical-md">{{ $t("recipes.instructions") }}</h4>
       <edit-icon
         tabindex="0"
         v-if="isRecipeOwner && !editMode"
-        class="icon margin--medium"
+        class="icon margin-md"
         @click="toggleEditMode"
       />
     </div>
     <ol
       v-if="instructions.length && !editMode && !loading"
-      class="recipe__instructions"
+      class="recipe_instructions"
     >
       <li
         tabindex="-1"
-        class="recipe__instructions-step"
+        class="recipe_instructions-step"
         v-for="(step, index) in instructions"
         :key="`instruction-${index}`"
       >

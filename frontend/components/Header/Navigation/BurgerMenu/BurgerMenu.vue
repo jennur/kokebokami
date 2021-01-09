@@ -2,7 +2,7 @@
   <div class="burger-menu">
     <burger-icon @click.native="$emit('toggle-menu')" :open="open" />
     <transition name="burger-list-slide">
-      <div v-if="open" class="burger-menu__list-container">
+      <div v-if="open" class="burger-menu_list-container">
         <burger-list
           :menuItems="menuItems"
           :user="user"

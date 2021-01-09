@@ -2,7 +2,7 @@
   <div>
     <div
       v-if="!editDescription && !loading"
-      class="recipe__description"
+      class="recipe_description"
       :class="{ editable: isRecipeOwner }"
       @click="event => toggleEditDescription(event)"
     >

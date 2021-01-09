@@ -3,7 +3,7 @@
     <p class="email-notifications margin-right-sm">
       ...{{ setting.title }}
       <strong
-        class="email-notifications__status"
+        class="email-notifications_status"
         :class="{
           'color--pink': !setting.status,
           'color--blue': setting.status

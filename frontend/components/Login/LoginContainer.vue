@@ -1,10 +1,10 @@
 <template>
   <ul class="login-container">
     <li>
-      <google-login class="margin-bottom--medium" />
+      <google-login class="margin-bottom-md" />
     </li>
     <li>
-      <facebook-login class="margin-bottom--medium" />
+      <facebook-login class="margin-bottom-md" />
     </li>
     <li>
       <kokebokami-button @click.native="toggleLoginModal" />

@@ -1,10 +1,10 @@
 <template>
-  <div class="recipe__category-note margin-top-sm">
+  <div class="recipe_category-note margin-top-sm">
     <p class="margin-top-sm margin-bottom-sm">
       <b>{{ $t("recipes.typeOfMeal") }}:</b>
       <span
         v-if="!editMode && !loading"
-        class="recipe__type-of-meal"
+        class="recipe_type-of-meal"
         :class="{ editable: isRecipeOwner }"
         @click="event => toggleEditMode(event)"
         >{{ typeOfMealList }}</span

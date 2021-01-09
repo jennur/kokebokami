@@ -6,7 +6,7 @@
     </div>
     <div v-show="!loginError">
       <loadingBook class="illustration--loading-book" />
-      <h2 class="margin-top--large">Logging you in ...</h2>
+      <h2 class="margin-top-lg">Logging you in ...</h2>
     </div>
   </section>
 </template>

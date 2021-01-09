@@ -2,7 +2,7 @@
   <div>
     <header-component class="margin--none"/>
     <div class="container--dark">
-      <main class="tablet-width margin--auto padding-horizontal--large">
+      <main class="tablet-width margin-auto padding-horizontal-lg">
         <nuxt />
       </main>
     </div>

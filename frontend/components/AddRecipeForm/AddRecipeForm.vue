@@ -1,6 +1,6 @@
 <template>
-  <section class="margin--auto margin-top--xlarge">
-    <div v-if="editMode" class="text-align--right margin-bottom--medium">
+  <section class="margin-auto margin-top-xl">
+    <div v-if="editMode" class="text-align--right margin-bottom-md">
       <delete-icon tabindex="0" @click="toggleAlert" class="icon" />
     </div>
     <Alert
@@ -15,12 +15,12 @@
       <div>
         <div
           v-if="!imageLoaded"
-          class="simple-loading-spinner margin--auto"
+          class="simple-loading-spinner margin-auto"
         ></div>
         <div
           v-if="photoURL"
           :style="`background-image: url(${photoURL})`"
-          class="add-recipe-form__image"
+          class="add-recipe-form_image"
         ></div>
         <image-input
           id="dropImage"
@@ -30,7 +30,7 @@
         <div class="text-align--right">
           <button
             v-if="photoURL"
-            class="button button--transparent button--transparent-red"
+            class="button button--trans button--trans-red"
             @click="removePhotoURL"
           >
             ✕ Remove image
@@ -38,11 +38,11 @@
         </div>
         <span
           v-if="imageSystemMessage"
-          class="system-message margin-vertical--large"
+          class="system-message margin-vertical-lg"
           >{{ imageSystemMessage }}</span
         >
       </div>
-      <div class="recipes-filter__form">
+      <div class="recipes-filter_form">
         <category-filter
           :transparent="true"
           :existingCategories="{ language, typeOfMeal, categories, freeFrom }"
@@ -53,17 +53,17 @@
         />
       </div>
 
-      <div class="mobile-width margin-top--xlarge margin--auto">
+      <div class="mobile-width margin-top-xl margin-auto">
         <!-- TITLE / DESCRIPTION -->
         <fieldset class="flex-column">
           <title-input
             id="recipeTitle"
-            class="margin-bottom--medium"
+            class="margin-bottom-md"
             :existingTitle="title"
           />
           <description-input
             id="recipeDescription"
-            class="margin-bottom--medium"
+            class="margin-bottom-md"
             :existingDescription="description"
           />
         </fieldset>
@@ -202,13 +202,13 @@ export default {
       const recipeDescription = document.querySelector(
         "#recipeDescription textarea"
       );
-      const servings = document.querySelector(".add-recipe-form__servings");
+      const servings = document.querySelector(".add-recipe-form_servings");
 
       let ingredientAmounts = document.querySelectorAll(
-        "#ingredientList .add-recipe-form__amount"
+        "#ingredientList .add-recipe-form_amount"
       );
       let ingredientItems = document.querySelectorAll(
-        "#ingredientList .add-recipe-form__ingredient"
+        "#ingredientList .add-recipe-form_ingredient"
       );
 
       let ingredientList = [];

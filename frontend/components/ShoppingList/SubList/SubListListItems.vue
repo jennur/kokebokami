@@ -1,11 +1,11 @@
 <template>
   <div>
-    <ul v-if="!editMode && listItems" class="sub-list__items">
+    <ul v-if="!editMode && listItems" class="sub-list_items">
       <li
         v-for="(item, index) in listItems"
         :key="`list-item-${index}`"
         :data-list-item="`list-item-${index}`"
-        class="margin-vertical--medium"
+        class="margin-vertical-md"
       >
         <label
           :class="{
@@ -22,7 +22,7 @@
         </label>
       </li>
     </ul>
-    <ul v-if="editMode" class="sub-list__items">
+    <ul v-if="editMode" class="sub-list_items">
       <li
         v-for="(listItem, index) in updatedListItems"
         :key="`edit-list-item-${index}`"
@@ -40,13 +40,13 @@
     />
     <div v-if="editMode" class="flex-row flex-row--align-center">
       <increment-button
-        class="margin-right--medium margin-vertical--large"
+        class="margin-right-md margin-vertical-lg"
         @increment="addNewListItem"
         >Add item</increment-button
       >
       <button
         v-if="listItems.length"
-        class="button button--xsmall button--dynamic button--cancel margin-left--medium margin-vertical--large"
+        class="button button-xs button--dynamic button--cancel margin-left-md margin-vertical-lg"
         @click="saveListItems"
       >
         ✕ Close

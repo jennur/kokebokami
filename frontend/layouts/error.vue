@@ -1,9 +1,9 @@
 <template>
   <main
-    class="mobile-width padding-horizontal--large margin--auto margin-bottom--xxlarge"
+    class="mobile-width padding-horizontal-lg margin-auto margin-bottom-2xl"
   >
     <div v-if="error.statusCode === 404" class="container container--center">
-      <h1 class="margin-top--xxlarge">404 Whoops!</h1>
+      <h1 class="margin-top-2xl">404 Whoops!</h1>
       <cracked-eggs class="illustration--cracked-eggs" />
       <h3>
         It looks like you're trying to access a page that does not exist, or

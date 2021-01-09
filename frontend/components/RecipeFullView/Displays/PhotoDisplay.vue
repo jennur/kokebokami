@@ -1,9 +1,9 @@
 <template>
-  <div class="recipe__image-wrap">
+  <div class="recipe_image-wrap">
     <div class="flex-column flex-column--align-right">
       <button
         v-if="editMode && !loading"
-        class="button button-sm button--dynamic button--cancel margin-bottom--medium"
+        class="button button-sm button--dynamic button--cancel margin-bottom-md"
         @click="toggleEditMode"
       >
         ✕ {{ $t("cancel") }}
@@ -11,17 +11,17 @@
     </div>
     <div
       v-if="!loading"
-      class="recipe__image"
+      class="recipe_image"
       :style="`background-image: url(${photoURL || backupImage})`"
     >
       <edit-icon
         tabindex="0"
         v-if="isRecipeOwner && !editMode"
-        class="icon recipe__image-edit-btn"
+        class="icon recipe_image-edit-btn"
         @click="toggleEditMode"
       />
       <photo-edit
-        class="recipe__image--edit"
+        class="recipe_image--edit"
         v-if="editMode && !loading"
         :photoURL="photoURL"
         :recipeKey="recipeKey"

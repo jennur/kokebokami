@@ -1,7 +1,7 @@
 <template>
-  <section class="padding--xlarge">
+  <section class="padding-xl">
     <div class="container container--center">
-      <h2 class="margin-top--xlarge">
+      <h2 class="margin-top-xl">
         {{
           signUpPage ? $t("signUp.headingSignUp") : $t("signUp.headingIndex")
         }}
@@ -9,10 +9,10 @@
     </div>
     <div class="sign-up-section">
       <sign-in-with-provider
-        class="flex-row__half sign-in-with-provider margin-top--xxlarge"
+        class="flex-row_half sign-in-with-provider margin-top-2xl"
       />
       <sign-up-form
-        class="flex-row__half margin-top--xxlarge"
+        class="flex-row_half margin-top-2xl"
         :class="{
           'dark-bg': darkBg,
           'sign-up-form--green': !darkBg

@@ -1,6 +1,6 @@
 <template>
   <fieldset class="categories">
-    <h4 class="categories__title">Recipe language</h4>
+    <h4 class="categories_title">Recipe language</h4>
     <select-component
       id="language"
       :options="languages"

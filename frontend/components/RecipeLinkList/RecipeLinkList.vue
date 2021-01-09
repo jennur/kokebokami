@@ -26,9 +26,9 @@
       </div>
     </category-accordion>
 
-    <div v-if="!links.length" class="container container--center margin-bottom--xxlarge">
+    <div v-if="!links.length" class="container container--center margin-bottom-2xl">
       {{ emptyListMessage }}
-      <button class="button button--transparent margin-top--xxlarge" @click="$emit('open-form')">
+      <button class="button button--trans margin-top-2xl" @click="$emit('open-form')">
         Add recipe to this list
       </button>
     </div>

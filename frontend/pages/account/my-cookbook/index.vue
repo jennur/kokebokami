@@ -1,14 +1,14 @@
 <template>
   <div class="container container--center">
     <breadcrumbs :routes="breadcrumbs" />
-    <h1 class="margin-bottom--large">{{ headlineText }}</h1>
+    <h1 class="margin-bottom-lg">{{ headlineText }}</h1>
     <div
       v-click-outside="closeDropdown"
       class="container container--center add-recipe"
     >
       <button
         v-if="!addRecipeFromUrl"
-        class="button button--large button--round margin--auto margin-vertical--xlarge"
+        class="button button-lg button--round margin-auto margin-vertical-xl"
         @click="toggleDropdown"
       >
         {{ $t("navigation.addRecipe") }}
@@ -17,10 +17,10 @@
         <div v-if="dropdown" class="add-recipe-dropdown">
           <nuxt-link
             :to="localePath('/account/my-cookbook/add-recipe/')"
-            class="add-recipe-dropdown__link"
+            class="add-recipe-dropdown_link"
             >{{ $t("navigation.addPersonalRecipe") }}</nuxt-link
           >
-          <button @click="toggleRecipeForm" class="add-recipe-dropdown__link">
+          <button @click="toggleRecipeForm" class="add-recipe-dropdown_link">
             {{ $t("navigation.addRecipeLink") }}
           </button>
         </div>
@@ -36,7 +36,7 @@
 
     <!-- Recipes list -->
     <Tabs
-      class="margin-top--xlarge"
+      class="margin-top-xl"
       :tabTitles="[
         $t('myCookbook.tabs.myRecipes'),
         $t('myCookbook.tabs.myRecipeLinks'),
@@ -47,7 +47,7 @@
     >
       <recipes-list
         v-if="activeTabIndex === 0 || activeTabIndex === 2"
-        class="margin-top--large padding-bottom--large"
+        class="margin-top-lg padding-bottom-lg"
         :recipes="visibleRecipes"
         :isPublicList="activeTabIndex === 2"
         :emptyListMessage="emptyListMessage"
@@ -55,7 +55,7 @@
       />
       <div v-if="activeTabIndex === 1">
         <recipe-link-list
-          class="margin-top--xxlarge"
+          class="margin-top-2xl"
           :hiddenCategories="hiddenCategories"
           :links="recipeLinks"
           :emptyListMessage="emptyListMessage"

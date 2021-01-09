@@ -1,9 +1,9 @@
 <template>
-  <fieldset id="instructionList" class="flex-column margin-vertical--xxlarge">
+  <fieldset id="instructionList" class="flex-column margin-vertical-2xl">
     <h4>Instructions</h4>
-    <ol class="add-recipe-form__instructions">
+    <ol class="add-recipe-form_instructions">
       <li
-        class="margin-bottom--medium"
+        class="margin-bottom-md"
         v-for="number in instructionNumbers"
         :key="number"
       >
@@ -11,7 +11,7 @@
           <label>
             <textarea
               :id="'instruction' + number"
-              class="add-recipe-form__instruction"
+              class="add-recipe-form_instruction"
               placeholder="Explain what to do"
               v-model="instructions[number]"
             />
@@ -25,8 +25,8 @@
     </ol>
     <increment-button
       :class="
-        `margin-top--large ${
-          instructionNumbers.length ? 'margin-left--xxlarge' : ''
+        `margin-top-lg ${
+          instructionNumbers.length ? 'margin-left-2xl' : ''
         }`
       "
       @increment="incrementInstructionNumber"

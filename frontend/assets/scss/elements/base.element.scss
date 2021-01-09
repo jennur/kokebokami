@@ -23,6 +23,7 @@ body {
   min-height: 100vh;
   color: $richBlack;
 }
+
 #__nuxt {
   background-color: $cream;
 }
@@ -52,10 +53,10 @@ body {
 }
 
 .font-size {
-  &--medium {
+  &-md {
     font-size: $fontSizeMedium;
   }
-  &--large {
+  &-lg {
     font-size: $fontSizeLarge;
   }
 }
