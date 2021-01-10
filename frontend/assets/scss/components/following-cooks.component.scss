@@ -3,21 +3,22 @@
     display: inline-flex;
     flex-direction: row;
     align-items: center;
-    border: 2px solid $green;
     border-radius: $spacingSmall;
     width: 100%;
     flex-basis: 100%;
     padding: $spacingLarge;
     margin: $spacingMedium/2;
-    transition: all 0.2s;
+    transition: all 0.3s;
+    background-color: $lightOrange;
+
     @media screen and (min-width: $mobileWidth) {
       flex-basis: calc(50% - 54px);
       flex-grow: 0;
     }
     &:hover {
-      background-color: rgba($green, 0.2);
       color: $blue;
       text-decoration: none;
+      background-color: darken($lightOrange, 2%);
     }
   }
   &_img {

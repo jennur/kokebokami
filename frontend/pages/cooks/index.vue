@@ -1,25 +1,25 @@
 <template>
   <div>
     <breadcrumbs :routes="breadcrumbs" />
-    <div
-      class="cooks container container--center mobile-width margin-top-xl margin-auto"
-    >
+    <div class="cooks container container--center mobile-width margin-top-xl margin-auto">
       <div v-if="user && user.id">
         <h2>{{ $t("cooks.headline") }}</h2>
         <cooks-search />
       </div>
+
       <div v-else class="container container--center">
         <h2>{{ $t("cooks.loginHeadline") }}</h2>
         <div>
-          <nuxt-link
-            :to="localePath('/login/')"
-            class="button button-sm button--green"
-            >{{ $t("loginText") }}</nuxt-link
+          <button class="button button-sm button--green"
+                  @click="$store.dispatch('SHOW_LOGIN_MODAL', {open: true, headline: 'Log in to discover cooks'})"
           >
+            {{ $t("loginText") }}
+          </button>
         </div>
         <cooksSilhouettes class="illustration--cooks" />
       </div>
     </div>
+
     <div v-if="user && user.id" class="margin-top-xl">
       <Tabs
         class="margin-top-2xl"
@@ -88,17 +88,8 @@ export default {
   methods: {
     handleTabSwitch(index) {
       this.activeTabIndex = index;
-    },
-    toggleCooks(event) {
-      if (event.target.id === "followers-tab" && !this.showFollowers) {
-        this.showFollowers = !this.showFollowers;
-        this.showFollowedCooks = !this.showFollowedCooks;
-      } else if (
-        event.target.id === "following-tab" &&
-        !this.showFollowedCooks
-      ) {
-        this.showFollowers = !this.showFollowers;
-        this.showFollowedCooks = !this.showFollowedCooks;
+      if(!this.followed.length && !this.followers.length) {
+        this.getFollowersAndFollowed();
       }
     }
   }

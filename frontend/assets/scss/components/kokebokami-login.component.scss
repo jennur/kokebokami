@@ -65,6 +65,14 @@
     }
   }
 
+  .link {
+    display: inline-block;
+    border-bottom: none;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
   &-signup {
     color: $cream;
 

@@ -1,4 +1,3 @@
-import user from "./user";
 import userModel from "../helpers/user-model";
 
 export default {
@@ -8,11 +7,10 @@ export default {
       followers: [],
     }
   },
-  mixins: [user],
   methods: {
     getFollowersAndFollowed(){
-      let currentUser = this.user;
-      if (currentUser.id) {
+      let currentUser = this.$store.state.user;
+      if (currentUser) {
         try {
           this.$fire.database
           .ref("users")
@@ -30,7 +28,7 @@ export default {
                   }
                   //If following ...
                   if(currentUser.following){
-                    if(Object.values(currentUser.following).indexOf(key) > -1) {
+                    if(Object.values(currentUser.following).indexOf(key) > -1) {
                       this.followed.push(userModel(user, key))
                     }
                   }

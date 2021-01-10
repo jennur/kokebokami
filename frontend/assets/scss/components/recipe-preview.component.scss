@@ -5,7 +5,7 @@
   flex-basis: 100%;
   width: 100%;
   max-width: 100%;
-  margin: $spacingMedium/2;
+  margin: $spacingSmall;
   background-color: $lightOrange;
   align-items: center;
   border-radius: $spacingMedium;
@@ -55,9 +55,8 @@
 
   }
   @media screen and (min-width: $tabletWidth) {
-    margin: $spacingMedium/3;
-    flex-basis: calc(33% - 4px);
-    width: calc(33% - 4px);
+    flex-basis: calc(33% - 8px);
+    width: calc(33% - 8px);
   }
 
   &:hover {
