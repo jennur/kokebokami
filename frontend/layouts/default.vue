@@ -1,7 +1,7 @@
 <template>
   <div>
     <header-component />
-    <main class="tablet-width margin--auto padding-horizontal--large">
+    <main class="tablet-width margin-auto padding-horizontal-lg">
       <nuxt />
     </main>
     <footer-component />

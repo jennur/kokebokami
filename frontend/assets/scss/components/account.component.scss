@@ -1,5 +1,5 @@
 .account {
-  &__detail {
+  &_detail {
     display: inline-block;
     position: relative;
     flex-grow: 1;
@@ -66,7 +66,7 @@
       width: auto;
     }
   }
-  &__recipe-link-icon {
+  &_recipe-link-icon {
     width: 13px;
     height: 13px;
   }

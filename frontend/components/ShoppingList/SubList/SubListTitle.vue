@@ -1,5 +1,5 @@
 <template>
-  <div class="sub-list__title">
+  <div class="sub-list_title">
     <h3
       v-if="!editMode && title"
       class="heading--blue margin--none"

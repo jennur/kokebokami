@@ -30,7 +30,7 @@
       transform: rotate(45deg);
     }
 
-    &__link {
+    &_link {
       display: block;
       border: 0px;
       background-color: transparent;
@@ -62,7 +62,7 @@
   #dropImage {
     margin: $spacingMedium auto;
   }
-  &__image {
+  &_image {
     display: block;
     width: 100%;
     height: 260px;
@@ -85,45 +85,45 @@
     border: 1px solid $green;
     border-radius: $spacingSmall;
   }
-  &__ingredient-wrap {
+  &_ingredient-wrap {
     width: 265px;
   }
-  &__ingredient-heading {
+  &_ingredient-heading {
     font-size: $fontSizeSmall;
     font-family: $bodyFont;
     width: 275px;
   }
-  &__servings,
-  &__amount {
+  &_servings,
+  &_amount {
     display: block;
     padding: $spacingMediumMobile 0px;
     width: 60px;
     padding-left: $spacingMedium;
   }
-  &__title,
-  &__ingredient,
-  &__description,
-  &__instruction {
+  &_title,
+  &_ingredient,
+  &_description,
+  &_instruction {
     display: block;
     padding: $spacingMediumMobile;
     caret-color: $green;
     width: 100%;
   }
 
-  &__headline {
+  &_headline {
     font-family: $bodyFont;
     text-align: left;
     font-size: $fontSizeSmall;
   }
 
-  &__title {
+  &_title {
     font-family: $headingFont;
     font-size: $fontSizeXXLargeMobile;
     @media screen and (min-width: $tabletWidth) {
       font-size: $fontSizeXXLarge;
     }
   }
-  &__description {
+  &_description {
     width: 100%;
     height: 150px;
     resize: none;
@@ -136,14 +136,14 @@
     }
   }
 
-  &__ingredients {
+  &_ingredients {
     margin-bottom: $spacingMedium;
   }
 
-  &__ingredient {
+  &_ingredient {
     width: 200px;
   }
-  &__instructions {
+  &_instructions {
     padding-left: $spacingSmall;
     list-style: none;
     counter-reset: a;
@@ -184,7 +184,7 @@
     }
   }
 
-  &__instruction {
+  &_instruction {
     width: 100%;
     height: 120px;
     font-family: $bodyFont;

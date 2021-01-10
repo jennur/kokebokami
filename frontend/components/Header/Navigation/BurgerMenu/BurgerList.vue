@@ -1,5 +1,5 @@
 <template>
-  <ul class="burger-menu__list">
+  <ul class="burger-menu_list">
     <li v-for="menuItem in menuItems" :key="menuItem.title">
       <div class="flex-row flex-row--nowrap flex-row--align-center">
         <user-image
@@ -10,13 +10,13 @@
         <span>
           <h5
             v-if="menuItem.headline"
-            class="margin-top--xxlarge margin-bottom--small color--blue"
+            class="margin-top-2xl margin-bottom-sm color--blue"
           >
             {{ menuItem.headline }}
           </h5>
           <nuxt-link
             v-if="!menuItem.noLink"
-            class="burger-menu__link"
+            class="burger-menu_link"
             :to="menuItem.path"
             @click.native="$emit('close-menu')"
             >{{ menuItem.title }}</nuxt-link
@@ -25,11 +25,11 @@
       </div>
       <ul
         v-if="menuItem.subLinks"
-        class="burger-menu__sub-list margin-top--medium margin-bottom--large"
+        class="burger-menu_sub-list margin-top-md margin-bottom-lg"
       >
         <li v-for="link in menuItem.subLinks" :key="link.title">
           <nuxt-link
-            class="burger-menu__link"
+            class="burger-menu_link"
             :to="link.path"
             @click.native="$emit('close-menu')"
             >{{ link.title }}</nuxt-link
@@ -43,17 +43,17 @@
       </button>
     </li>
     <li>
-      <h5 class="margin-top--xxlarge margin-bottom--small color--blue">
+      <h5 class="margin-top-2xl margin-bottom-sm color--blue">
         {{ $t("navigation.footer.languageHeading") }}
       </h5>
     </li>
     <li>
-      <nuxt-link class="burger-menu__link" :to="switchLocalePath('en')"
+      <nuxt-link class="burger-menu_link" :to="switchLocalePath('en')"
         >English</nuxt-link
       >
     </li>
     <li>
-      <nuxt-link class="burger-menu__link" :to="switchLocalePath('no')"
+      <nuxt-link class="burger-menu_link" :to="switchLocalePath('no')"
         >Norsk (beta)</nuxt-link
       >
     </li>

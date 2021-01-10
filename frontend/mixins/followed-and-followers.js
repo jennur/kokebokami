@@ -1,5 +1,4 @@
-import user from "./user";
-import userModel from "./user-model";
+import userModel from "../helpers/user-model";
 
 export default {
   data() {
@@ -8,11 +7,10 @@ export default {
       followers: [],
     }
   },
-  mixins: [user, userModel],
   methods: {
     getFollowersAndFollowed(){
-      let currentUser = this.user;
-      if (currentUser.id) {
+      let currentUser = this.$store.state.user;
+      if (currentUser) {
         try {
           this.$fire.database
           .ref("users")
@@ -25,13 +23,13 @@ export default {
                   //If followed ...
                   if(user.following) {
                     if(Object.values(user.following).indexOf(currentUser.id) > -1) {
-                      this.followers.push(this.userModel(user, key))
+                      this.followers.push(userModel(user, key))
                     }
                   }
                   //If following ...
                   if(currentUser.following){
-                    if(Object.values(currentUser.following).indexOf(key) > -1) {
-                      this.followed.push(this.userModel(user, key))
+                    if(Object.values(currentUser.following).indexOf(key) > -1) {
+                      this.followed.push(userModel(user, key))
                     }
                   }
               }

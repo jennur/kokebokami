@@ -4,6 +4,7 @@
     role="listbox"
     tabindex="0"
     class="select"
+    :class="{'select--naked': naked}"
     @click="open = !open"
     @keydown="
       event => {
@@ -11,8 +12,8 @@
       }
     "
   >
-    <span class="select__selected">{{ selected }}</span>
-    <div v-if="open" class="select__dropdown">
+    <span class="select_selected">{{ selected }}</span>
+    <div v-if="open" class="select_dropdown">
       <span
         v-if="defaultValue !== 'none'"
         tabindex="0"
@@ -20,8 +21,8 @@
         :aria-label="defaultValue"
         :aria-selected="selected === defaultValue"
         :class="
-          `select__option ${
-            selected === defaultValue ? 'select__option--selected' : ''
+          `select_option ${
+            selected === defaultValue ? 'select_option--selected' : ''
           }`
         "
         @click="() => handleOption(defaultValue)"
@@ -38,8 +39,8 @@
         :aria-label="option"
         :aria-selected="selected === option"
         :class="
-          `select__option ${
-            selected === option ? 'select__option--selected' : ''
+          `select_option ${
+            selected === option ? 'select_option--selected' : ''
           }`
         "
         :key="`display-option-${index}`"
@@ -68,6 +69,10 @@ export default {
     id: {
       type: String,
       default: "select"
+    },
+    naked: {
+      type: Boolean,
+      default: false
     },
     options: {
       type: Array,

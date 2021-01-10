@@ -8,7 +8,7 @@
   border-left: 0px;
   border-top: 0px;
   border-right: 0px;
-  border-bottom: 1px solid $green;
+  border-bottom: 1px solid $orange;
   border-radius: 0px;
   position: relative;
   box-shadow: none;
@@ -18,7 +18,6 @@
     display: inline-block;
     position: relative;
     border-radius: $spacingSmall $spacingSmall 0px 0px;
-    border: 1px solid rgba($green, 0.7);
     margin: 0px 0px 0px $spacingXLarge;
     padding: $spacingMedium $spacingXLarge;
     text-align: center;
@@ -32,9 +31,8 @@
       display: inline-block !important;
       order: -1;
       background-color: $cream;
-      font-weight: bold;
       order: auto;
-      border: 1px solid $green;
+      border: 1px solid $orange;
       border-bottom: 1px solid $cream;
       margin-bottom: -1px;
     }

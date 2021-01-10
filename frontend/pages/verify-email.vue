@@ -3,7 +3,7 @@
     <breadcrumbs :routes="breadcrumbs" />
 
     <div class="flex-center-container flex-center-container--column">
-      <h2 class="margin-bottom--large">One last step!</h2>
+      <h2 class="margin-bottom-lg">One last step!</h2>
       <p>
         To create your account, we need you to verify your e-mail address.
         Please login to your e-mail and click the verification link.
@@ -11,7 +11,7 @@
         <br />
         If you don't receive the e-mail, please contact us.
       </p>
-      <button class="button button--small" @click="logOut">Dismiss</button>
+      <button class="button button-sm" @click="logOut">Dismiss</button>
     </div>
   </div>
 </template>

@@ -51,7 +51,9 @@ export default {
     tabs: {
       myRecipes: "Mine oppskrifter",
       myRecipeLinks: "Mine oppskrifts-lenker",
-      recipesSharedWithMe: "Oppskrifter delt med meg"
+      recipesSharedWithMe: "Oppskrifter delt med meg",
+      myFavorites: "Mine favoritter"
+
     }
   },
   accountDetails: {
@@ -217,7 +219,13 @@ export default {
         "kosemat",
         "sterk",
         "vegetarisk",
-        "vegansk"
+        "vegansk",
+        "jul",
+        "nyttår",
+        "påske",
+        "hanukkah",
+        "thanksgiving",
+        "feiring"
       ]
     },
     serving: "Porsjon",
@@ -236,6 +244,7 @@ export default {
       share: "Del",
       shareWithFollower: "Del med en av dine følgere",
       shareWithFollowerNote: `Oppskriften vil dukke opp under din følgers´ 'Oppskrifter delt med meg'-fane i hans/hennes kokebok.`,
+      iWantToEnterEmail: "Jeg vil skrive inn e-post adresse",
       shareByEmail: "Del på e-post",
       shareOnFb: "Del på Facebook"
     }

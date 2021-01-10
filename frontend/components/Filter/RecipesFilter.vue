@@ -9,16 +9,16 @@
           event.keyCode === 13 && toggleSearchForm();
         }
       "
-      class="button button--small button--green-border margin-bottom--large"
+      class="button button-sm button--green-border margin-bottom-lg"
     >
       <search-icon
-        class="icon icon--in-button icon-in-button-left margin-right--medium"
+        class="icon icon--in-button icon-in-button-left margin-right-md"
         v-if="!search"
       />
       {{ search ? "Exit search" : "Search" }}
     </span>
     <expand-transition :show="search">
-      <form class="recipes-filter__form" v-on:submit.prevent>
+      <form class="recipes-filter_form" v-on:submit.prevent>
         <search-form :recipes="recipes" @filterOnSearchTerm="setSearchTerm" />
         <category-filter
           @setLanguage="setLanguage"

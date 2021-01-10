@@ -2,7 +2,7 @@
   display: block;
   width: 100%;
   background-color: rgba($green, 0.1);
-  &__heading {
+  &_heading {
     font-family: $headingFont;
     color: $blue;
   }
@@ -20,12 +20,12 @@
     }
     .select {
       width: 195px;
-      &__dropdown {
+      &_dropdown {
         width: 205px;
       }
     }
 
-    &__category {
+    &_category {
       width: 100%;
       max-width: 170px;
       &-btn {
@@ -59,7 +59,7 @@
       height: 80px;
       font-family: $bodyFont;
     }
-    &__url {
+    &_url {
       width: 100%;
       max-width: 100%;
       position: relative;
@@ -70,7 +70,7 @@
       right: -$spacingLarge;
       bottom: $spacingSmall;
     }
-    &__category {
+    &_category {
       margin-top: $spacingSmall;
       @media screen and(min-width: $mobileWidth) {
         margin-top: 0px;

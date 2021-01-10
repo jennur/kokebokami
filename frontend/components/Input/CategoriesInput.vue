@@ -1,9 +1,9 @@
 <template>
   <fieldset id="categories" class="categories">
-    <h4 class="categories__title margin-bottom--medium">Categories</h4>
+    <h4 class="categories_title margin-bottom-md">Categories</h4>
 
     <label
-      class="categories__category margin-right--large"
+      class="categories_category margin-right-lg"
       v-for="category in categories"
       :key="category"
     >

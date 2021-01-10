@@ -23,7 +23,7 @@ input[type="checkbox"] {
   border-radius: $spacingSmall;
   margin-top: $spacingSmall;
   margin-right: $spacingSmall;
-  width: $spacingLarge;
+  min-width: $spacingLarge;
   height: $spacingLarge;
   position: relative;
   background-color: transparent;

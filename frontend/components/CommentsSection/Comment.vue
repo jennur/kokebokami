@@ -3,7 +3,7 @@
     <delete-icon
       tabindex="0"
       v-if="isRecipeOwner || commentObj.isMyComment"
-      class="comment__delete-btn icon"
+      class="comment_delete-btn icon"
       @click="confirmDelete"
     />
     <Alert
@@ -15,16 +15,16 @@
     <!-- Approval -->
     <div
       v-if="!commentObj.approved"
-      class="comment__approval margin-bottom--large"
+      class="comment_approval margin-bottom-lg"
       @click="approveComment"
     >
       <span
-        class="comment__approval-text padding-vertical--medium margin-right--large"
+        class="comment_approval-text padding-vertical-md margin-right-lg"
         >{{ $t("comments.awaitingYourApproval") }}</span
       >
-      <span class="comment__approval-btn-wrap padding-vertical--medium">
+      <span class="comment_approval-btn-wrap padding-vertical-md">
         <button
-          class="comment__approval-btn button button--dynamic button--round"
+          class="comment_approval-btn button button--dynamic button--round"
         >
           {{ $t("approve") }}
         </button>
@@ -35,32 +35,32 @@
     <div class="flex-row flex-row--align-center">
       <div
         v-if="commentObj.photoURL"
-        class="comment__user-img"
+        class="comment_user-img"
         role="img"
         :aria-label="`${username}'s profile image`"
         :style="`background-image: url(${commentObj.photoURL});`"
       ></div>
 
-      <CookSilhouette v-else class="comment__user-img" />
+      <CookSilhouette v-else class="comment_user-img" />
       <component
         :is="isAnonymous ? 'span' : 'nuxt-link'"
-        :to="isAnonymous ? null : `/cooks/${userPath}/`"
-        class="margin-left--medium"
+        :to="isAnonymous ? null : `/cooks/${userPath}`"
+        class="margin-left-md"
         :class="{
           'no-link': isAnonymous
         }"
         >{{ username }}</component
       >
-      <span class="comment__date margin-left--medium">{{ submitDate }}</span>
+      <span class="comment_date margin-left-md">{{ submitDate }}</span>
     </div>
 
     <!-- Comment -->
-    <div class="comment__comment margin-top--small">{{ commentText }}</div>
+    <div class="comment_comment margin-top-sm">{{ commentText }}</div>
     <button
       v-if="!isSubComment && !formOpen"
-      class="comment__reply-btn button button--small button--dynamic button--transparent margin-top--large"
+      class="comment_reply-btn button button-sm button--dynamic button--trans margin-top-lg"
       :class="{
-        'margin-bottom--large': commentObj.subComments
+        'margin-bottom-lg': commentObj.subComments
       }"
       @click="openCommentForm"
     >
@@ -70,7 +70,7 @@
     <!-- Subcomments -->
     <expand-transition :show="formOpen">
       <comment-form
-        class="sub-comments-form margin-top--large"
+        class="sub-comments-form margin-top-lg"
         :isRecipeOwner="isRecipeOwner"
         @addComment="subCommentObj => submitSubComment(subCommentObj)"
       />
@@ -78,7 +78,7 @@
     <transition name="fade">
       <div
         v-if="submitted && !isRecipeOwner"
-        class="sub-comments-form__success padding-vertical--medium padding-horizontal--large margin-vertical--large"
+        class="sub-comments-form_success padding-vertical-md padding-horizontal-lg margin-vertical-lg"
       >
         🎉{{ $t("comments.awaitingApproval") }}
       </div>
@@ -86,12 +86,12 @@
     <transition name="fade">
       <div
         v-if="error"
-        class="sub-comments-form__error padding-vertical--medium padding-horizontal--large margin-vertical--large"
+        class="sub-comments-form_error padding-vertical-md padding-horizontal-lg margin-vertical-lg"
       >
         🌧{{ $t("comments.errorSubmitting") }}
       </div>
     </transition>
-    <div v-if="subComments.length" class="comment__sub-comments">
+    <div v-if="subComments.length" class="comment_sub-comments">
       <sub-comment
         v-for="subComment in subComments"
         :key="subComment[0]"
@@ -103,7 +103,7 @@
       />
       <button
         v-if="cutOffSubComments.length"
-        class="button button--transparent margin-top--large"
+        class="button button--trans margin-top-lg"
         @click="loadMoreSubComments"
       >
         {{ $t("loadMore") }}

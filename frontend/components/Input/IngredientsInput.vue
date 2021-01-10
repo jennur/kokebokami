@@ -1,11 +1,11 @@
 <template>
   <div>
     <!-- <label
-      class="flex-row flex-row--align-center flex-row--nowrap margin-top--xxlarge"
+      class="flex-row flex-row--align-center flex-row--nowrap margin-top-2xl"
     >
       <h4 class="margin--none">Number of servings:</h4>
       <input
-        class="add-recipe-form__servings margin-left--medium"
+        class="add-recipe-form_servings margin-left-md"
         type="number"
         id="servings-amount"
         placeholder="4"
@@ -16,28 +16,28 @@
     </label> -->
     <fieldset
       id="ingredientList"
-      class="add-recipe-form__ingredients flex-column margin-top--xxlarge"
+      class="add-recipe-form_ingredients flex-column margin-top-2xl"
     >
       <h4>Ingredients</h4>
 
       <div
         v-if="ingredientNumbers.length"
-        class="add-recipe-form__ingredient-heading flex-row flex-row--space-between flex-row--nowrap margin-bottom--medium"
+        class="add-recipe-form_ingredient-heading flex-row flex-row--space-between flex-row--nowrap margin-bottom-md"
       >
         <span>Amount</span>
         <span>Ingredient</span>
       </div>
       <div
-        class="flex-row flex-row--align-center flex-row--nowrap margin-bottom--small"
+        class="flex-row flex-row--align-center flex-row--nowrap margin-bottom-sm"
         v-for="number in ingredientNumbers"
         :key="number"
       >
         <div
-          class="add-recipe-form__ingredient-wrap flex-row flex-row--space-between flex-row--nowrap"
+          class="add-recipe-form_ingredient-wrap flex-row flex-row--space-between flex-row--nowrap"
         >
           <label>
             <input
-              class="add-recipe-form__amount"
+              class="add-recipe-form_amount"
               type="number"
               :id="`ingredient-amount-${number}`"
               :placeholder="(number % 2 && '3') || (number % 3 && '100') || '2'"
@@ -48,7 +48,7 @@
           </label>
           <label>
             <input
-              class="add-recipe-form__ingredient"
+              class="add-recipe-form_ingredient"
               type="text"
               :placeholder="
                 (number % 2 && 'dl milk') || (number % 3 && 'g sugar') || 'eggs'
@@ -70,11 +70,11 @@
       </div>
       <div class="flex-row flex-row--align-center">
         <increment-button
-          class="margin-top--large margin-right--large"
+          class="margin-top-lg margin-right-lg"
           @increment="incrementIngredientNumber"
           >Add ingredient</increment-button
         ><button
-          class="button button--dynamic-small button--round padding-vertical--small margin-top--large"
+          class="button button--dynamic-small button--round padding-vertical-sm margin-top-lg"
           @click="$emit('save', [ingredientAmounts, ingredients])"
         >
           Save

@@ -1,61 +1,17 @@
+import allCategories from "~/helpers/all-categories";
+
 export function state() {
   return {
+    showLoadingSplash: false,
     user: null,
     shoppingListCount: 0,
     loginSystemMessage: "",
     signupSystemMessage: "",
-    allCategories: {
-      languages: [
-        "English",
-        "French",
-        "German",
-        "Hebrew",
-        "Italian",
-        "Norwegian",
-        "Polish",
-        "Spanish",
-
-        "Arabic",
-        "Dutch",
-        "Hindi",
-        "Japanese",
-        "Korean",
-        "Mandarin",
-        "Portuguese",
-        "Punjabi",
-        "Russian",
-        "Swahili",
-        "Thai",
-        "Turkish",
-        "Vietnamese"
-      ],
-      typeOfMeal: [
-        "breakfast",
-        "lunch",
-        "dinner",
-        "side dish",
-        "dessert",
-        "baking",
-        "snack",
-        "drinks"
-      ],
-      allergens: [
-        "nuts",
-        "gluten",
-        "dairy",
-        "sugar",
-        "eggs",
-        "soy",
-        "fish",
-        "celery"
-      ],
-      categories: [
-        "quick & easy",
-        "comfort food",
-        "spicy",
-        "vegetarian",
-        "vegan"
-      ]
+    allCategories,
+    showUsernameModal: false,
+    loginModal: {
+      open: false,
+      headline: null
     }
   };
 }
@@ -69,13 +25,37 @@ export const mutations = {
   },
   setLoginSystemMessage(state, payload) {
     state.loginSystemMessage = payload;
+  },
+  showUsernameModal(state, payload) {
+    state.showUsernameModal = payload;
+  },
+  updateUsername(state, payload) {
+    state.user.displayName = payload;
+    state.showUsernameModal = false;
+  },
+  updateUserFavorites(state, payload) {
+    state.user.favorites = payload;
+  },
+  showLoginModal(state, payload) {
+    state.loginModal.open = payload.open;
+    state.loginModal.headline = payload.headline;
+  },
+  showLoadingSplash(state, payload) {
+    state.showLoadingSplash = payload;
   }
 };
 
 export const actions = {
+  SHOW_LOGIN_MODAL: ({commit}, payload) => {
+    commit("showLoginModal", payload);
+  },
+  SHOW_LOADING_SPLASH: ({commit}, payload) => {
+    commit("showLoadingSplash", payload);
+  },
   ON_AUTH_STATE_CHANGED: function(context, { authUser, claims }) {
     if (authUser) {
       context.dispatch("SET_USER");
+      context.dispatch("SHOW_LOADING_SPLASH", false);
     }
     this.$fireAuthUnsubscribe;
   },
@@ -111,7 +91,23 @@ export const actions = {
         }
       });
   },
+  UPDATE_USERNAME: function({commit}, payload) {
+    commit("updateUsername", payload);
+  },
+  UPDATE_USER_FAVORITES: function({commit}) {
+    let authUser = this.$fire.auth.currentUser;
 
+    this.$fire.database
+      .ref(`users/${authUser.uid}/favorites`)
+      .once("value", snapshot => {
+        if(snapshot.exists()){
+          commit("updateUserFavorites", snapshot.val());
+        } else {
+          commit("updateUserFavorites", null);
+        }
+      })
+      .catch(error => console.log("Error updating user favorites", error));
+  },
   SET_USER: function({ commit, dispatch }) {
     try {
       let authUser = this.$fire.auth.currentUser;
@@ -123,6 +119,9 @@ export const actions = {
           emailVerified: authUser.emailVerified
         };
         if (snapshot.exists()) {
+          if(snapshot.val().displayName === "User") {
+            commit("showUsernameModal", true);
+          }
           loggedinUser = {
             ...loggedinUser,
             photoURL: snapshot.val().photoURL,
@@ -131,6 +130,7 @@ export const actions = {
             biography: snapshot.val().biography,
             following: snapshot.val().following,
             hiddenProfile: snapshot.val().hiddenProfile,
+            favorites: snapshot.val().favorites,
             notificationsOff: snapshot.val().notificationsOff || {
               recipes: false,
               shoppingLists: false,
@@ -149,7 +149,11 @@ export const actions = {
             }
             // No more details available upon first login
           };
-          userRef.set(databaseUser);
+
+          if(authUser.emailVerified) {
+            commit("showUsernameModal", true);
+            userRef.set(databaseUser);
+          }
 
           loggedinUser = {
             ...loggedinUser,

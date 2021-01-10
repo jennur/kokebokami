@@ -11,8 +11,8 @@
       }
     "
   >
-    <span class="select__selected">{{ title }}</span>
-    <div v-if="open" class="select__dropdown">
+    <span class="select_selected">{{ title }}</span>
+    <div v-if="open" class="select_dropdown">
       <span
         tabindex="0"
         role="option"
@@ -20,8 +20,8 @@
         :aria-label="option"
         :aria-selected="selected.indexOf(option) > -1"
         :class="
-          `select__option ${
-            selected.indexOf(option) > -1 ? 'select__option--selected' : ''
+          `select_option ${
+            selected.indexOf(option) > -1 ? 'select_option--selected' : ''
           }`
         "
         :key="`display-option-${index}`"

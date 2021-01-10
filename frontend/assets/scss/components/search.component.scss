@@ -26,7 +26,7 @@
     }
   }
 
-  &__button {
+  &_button {
     @media screen and (min-width: $mobileWidth) {
       display: none;
     }
@@ -45,7 +45,7 @@
     }
   }
 
-  &__form {
+  &_form {
     overflow-y: scroll;
     label {
       text-transform: capitalize;

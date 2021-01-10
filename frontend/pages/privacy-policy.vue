@@ -2,7 +2,7 @@
   <div>
     <breadcrumbs :routes="breadcrumbs" />
 
-    <section class="mobile-width margin--auto">
+    <section class="mobile-width margin-auto">
       <h1 class="article-heading">Privacy Policy</h1>
 
       <p>Effective date: November 08, 2019</p>

@@ -1,0 +1,43 @@
+.username-selector {
+
+  h3 {
+    text-align: center;
+  }
+
+  &-form {
+    display: block;
+    margin: 0 auto;
+    text-align: center;
+
+    & fieldset {
+      max-width: 300px;
+      margin: 0 auto;
+    }
+    & label {
+      display: flex;
+      flex-direction: column;
+      text-align: left;
+      margin-bottom: $spacingMedium;
+      color: $cream;
+    }
+
+    & input {
+      width: 100%;
+      box-sizing: border-box;
+      margin-top: $spacingSmall;
+      padding: $spacingSmall;
+      border: 2px solid $green;
+      border-radius: $spacingSmall;
+      background-color: transparent;
+      font-size: $fontSizeMedium;
+      caret-color: $green;
+      color: $green;
+
+      &:focus {
+        outline: none;
+        border: 2px solid $green;
+      }
+    }
+  }
+}
+

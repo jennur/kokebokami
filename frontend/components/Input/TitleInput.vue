@@ -1,7 +1,7 @@
 <template>
   <label>
     <input
-      class="add-recipe-form__title"
+      class="add-recipe-form_title"
       type="text"
       placeholder="Give your recipe a title"
       v-model="title"

@@ -1,26 +1,29 @@
 <template>
   <div>
-    <div class="flex-center-container" v-if="!recipeLoaded">
+    <div id="fb-root"></div>
+    <div class="flex-center-container" v-if="!loaded">
       <span class="simple-loading-spinner" />
     </div>
     <breadcrumbs
-      v-if="recipeLoaded"
-      class="margin-bottom--large"
+      v-if="loaded"
+      class="margin-bottom-lg"
       :routes="breadcrumbs"
     />
-    <div class="tablet-width margin-top--xxlarge margin--auto">
-      <expand-transition :show="recipeLoaded" slower>
+
+    <div class="tablet-width margin-top-2xl margin-auto">
+      <expand-transition :show="loaded" slower>
         <recipe-full-view
-          class="margin-bottom--xxlarge"
+          class="margin-bottom-2xl"
           :recipe="recipe"
+          :author="author"
           :isRecipeOwner="user && user.id === recipe.ownerID"
           @update="handleUpdate"
         />
       </expand-transition>
 
       <comments-section
-        v-if="recipeLoaded"
-        class="tablet-width margin--auto margin-top--xxlarge"
+        v-if="loaded"
+        class="tablet-width margin-auto margin-top-2xl"
         :recipeKey="recipe.id"
         :recipeOwnerID="recipe.ownerID"
         :recipeTitle="recipe.title"
@@ -30,12 +33,12 @@
 </template>
 
 <script>
+import fbSharePlugin from "~/helpers/fbSharePlugin.js";
 import user from "~/mixins/user.js";
 import getRecipe from "~/mixins/get-recipe.js";
-import publicRecipes from "~/mixins/public-recipes.js";
 
 import ExpandTransition from "~/components/Transitions/Expand.vue";
-import RecipeFullView from "~/components/Recipes/RecipeFullView/RecipeFullView.vue";
+import RecipeFullView from "~/components/RecipeFullView/RecipeFullView.vue";
 import CommentsSection from "~/components/CommentsSection/CommentsSection.vue";
 
 export default {
@@ -76,13 +79,11 @@ export default {
   },
   methods: {
     handleUpdate() {
-      this.getRecipe(this.recipe.id);
+     this.getRecipe(this.recipe.id);
     }
   },
   mounted(){
-    let recipeKey = this.$route.query.id;
-    if(recipeKey) this.getRecipe(recipeKey)
-    else this.getRecipeKey();
+    fbSharePlugin();
   }
 };
 </script>

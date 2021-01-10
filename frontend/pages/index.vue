@@ -1,41 +1,27 @@
 <template>
   <div>
     <div v-if="user && !user.id">
-      <initial-info-section />
+      <cta-section />
     </div>
 
-    <div
-      class="desktop-width padding-horizontal--large margin-top--xxlarge margin--auto"
-    >
-      <button
-        class="search__button button button--small button--green-border margin--medium"
-        @click="event => toggleSearch(event)"
-      >
-        {{ $t("searchText") }}
-      </button>
+    <div class="desktop-width padding-horizontal-lg margin-top-2xl margin-auto">
+      <main-filter :recipes="publicRecipes" @filter="setVisibleRecipes" />
       <div class="flex-row flex-row--nowrap">
-        <recipe-search
-          :class="{ 'search--open': searchOpen }"
-          :recipes="publicRecipes"
-          :initialRecipes="initialRecipes"
-          @search="setVisibleRecipes"
-          v-click-outside="event => closeSearch(event)"
-        />
         <recipes-list
-          v-if="loaded"
+          v-if="loadedRecipes"
           :recipes="visibleRecipes"
           :isPublicList="true"
           addRecipeUrl="/account/my-cookbook/add-recipe"
         />
         <div v-else class="container">
-          <span class="simple-loading-spinner margin--auto" />
+          <span class="simple-loading-spinner margin-auto" />
         </div>
       </div>
     </div>
     <sign-up-section
       v-if="user && !user.id"
       id="signUp"
-      class="container--full-height container--blue padding-top--xxxlarge"
+      class="container--full-height container--dark padding-top-3xl"
       :darkBg="true"
     />
   </div>
@@ -45,18 +31,20 @@
 import ClickOutside from "vue-click-outside";
 
 import user from "~/mixins/user.js";
-import publicRecipes from "~/mixins/public-recipes.js";
+import getPublicRecipes from "~/helpers/get-public-recipes.js";
 
-import InitialInfoSection from "~/components/InitialInfoSection/InititalInfoSection.vue";
+import CtaSection from "~/components/CTASection/CTASection.vue";
 import SignUpSection from "~/components/SignUp/SignUpSection.vue";
-import RecipesList from "~/components/Recipes/RecipesList.vue";
+import RecipesList from "~/components/RecipePreview/RecipesList.vue";
 import RecipeSearch from "~/components/Search/RecipeSearch.vue";
+import MainFilter from "~/components/Filter/MainFilter";
 
 export default {
   name: "Home",
   layout: "fullwidth",
   components: {
-    InitialInfoSection,
+    MainFilter,
+    CtaSection,
     SignUpSection,
     RecipeSearch,
     RecipesList
@@ -99,13 +87,30 @@ export default {
   data() {
     return {
       initialFiltered: true,
+      publicRecipes: [],
       filteredRecipes: [],
       filtered: false,
-      searchOpen: false
+      searchOpen: false,
+      errorMessage: "",
+      loadedRecipes: false
     };
   },
-  mixins: [user, publicRecipes],
+  async asyncData({app}) {
+    return await getPublicRecipes(app);
+  },
+  mixins: [user],
   computed: {
+    initialRecipes() {
+      let language = "English";
+      if (this.$i18n.locale === "no") language = "Norwegian";
+
+      return this.publicRecipes.filter(recipe => {
+        return (
+          recipe.language &&
+          recipe.language.toLowerCase() === language.toLowerCase()
+        );
+      });
+    },
     visibleRecipes() {
       if (this.initialFiltered && this.initialRecipes)
         return this.initialRecipes;

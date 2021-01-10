@@ -1,11 +1,11 @@
 <template>
   <button class="kokebokami-login-btn">
     <img
-      class="kokebokami-login-btn__logo"
+      class="kokebokami-login-btn_logo"
       src="/icon.png"
       alt="kokebokami logo"
     />
-    <span class="kokebokami-login-btn__text"
+    <span class="kokebokami-login-btn_text"
       >{{ $t("loginWith") }} Kokebokami</span
     >
   </button>

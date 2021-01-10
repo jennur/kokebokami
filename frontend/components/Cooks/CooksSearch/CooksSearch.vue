@@ -1,7 +1,7 @@
 <template>
-  <div v-click-outside="closeDropdown" class="cooks__search margin--auto">
+  <div v-click-outside="closeDropdown" class="cooks_search margin-auto">
     <label>
-      <userIcon class="cooks__user-icon" />
+      <userIcon class="cooks_user-icon" />
       <input
         type="text"
         :placeholder="$t('cooks.search')"

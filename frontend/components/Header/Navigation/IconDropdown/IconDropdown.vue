@@ -1,5 +1,5 @@
 <template>
-  <div class="navigation__content-dropdown">
+  <div class="navigation_content-dropdown">
     <shopping-list-preview
       v-if="contentType === 'shoppingList'"
       :listItems="content"

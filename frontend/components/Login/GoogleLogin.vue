@@ -1,7 +1,7 @@
 <template>
   <button outline fab @click="googleSignIn" class="google-btn">
     <googleLogo />
-    <span class="google-btn__text">{{ $t("loginWith") }} Google</span>
+    <span class="google-btn_text">{{ $t("loginWith") }} Google</span>
   </button>
 </template>
 <script>
@@ -15,7 +15,7 @@ export default {
   },
   methods: {
     googleSignIn() {
-      this.$router.push(this.localePath("/login?loading"));
+      this.$store.dispatch("SHOW_LOADING_SPLASH", true);
       const GoogleProvider = new this.$fireModule.auth.GoogleAuthProvider();
       this.$fire.auth.signInWithRedirect(GoogleProvider);
     }

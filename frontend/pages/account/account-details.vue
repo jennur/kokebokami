@@ -1,8 +1,8 @@
 <template>
   <div>
     <breadcrumbs :routes="breadcrumbs" />
-    <div class="account container tablet-width padding-horizontal--large">
-      <h1 class="margin-top--xxlarge margin-bottom--large">
+    <div class="account container tablet-width padding-horizontal-lg">
+      <h1 class="margin-top-2xl margin-bottom-lg">
         {{ $t("accountDetails.headline") }}
       </h1>
       <nuxt-link :to="localePath('/account/public-profile-view/')">
@@ -10,7 +10,7 @@
         <right-arrow class="icon icon--blue" />
       </nuxt-link>
       <div>
-        <h3 class="margin-top--xxlarge">
+        <h3 class="margin-top-2xl">
           {{ $t("accountDetails.personalData") }}
         </h3>
         <dl class="flex-row">
@@ -94,8 +94,8 @@
           <h3 class="full-width">
             {{ $t("accountDetails.emailNotifications.headline") }}
           </h3>
-          <dt class="full-width account__detail account__detail--flex-column">
-            <h4 class="account__detail-title">
+          <dt class="full-width account_detail account_detail--flex-column">
+            <h4 class="account_detail-title">
               {{ $t("accountDetails.emailNotifications.infoNote") }}
             </h4>
             <p>{{ $t("accountDetails.notifyMe") }}...</p>
@@ -126,17 +126,17 @@
           <h3 class="full-width">
             {{ $t("accountDetails.profileVisibility.headline") }}
           </h3>
-          <dt class="full-width account__detail account__detail--flex-column">
-            <h4 class="account__detail-title">
+          <dt class="full-width account_detail account_detail--flex-column">
+            <h4 class="account_detail-title">
               <p>
                 {{ $t("accountDetails.profileVisibility.infoNote") }}
               </p>
             </h4>
             <div class="flex-row flex-row--align-center">
-              <p class="email-notifications margin-right--small">
+              <p class="email-notifications margin-right-sm">
                 {{ $t("accountDetails.profileVisibility.yourProfileIs") }}
                 <strong
-                  class="email-notifications__status"
+                  class="email-notifications_status"
                   :class="{
                     'color--pink': user.hiddenProfile,
                     'color--blue': !user.hiddenProfile
@@ -152,10 +152,10 @@
           </dt>
         </dl>
         <button
-          class="button button--small button--transparent button--transparent-red margin-top--large"
+          class="button button-sm button--trans button--trans-red margin-top-lg"
           @click="toggleAlert"
         >
-          <delete-icon class="icon margin-right--small" />{{
+          <delete-icon class="icon margin-right-sm" />{{
             $t("accountDetails.deleteMyAccount")
           }}
         </button>
@@ -179,7 +179,8 @@ import user from "~/mixins/user.js";
 import connectedUsers from "~/mixins/followed-and-followers.js";
 import sharedRecipes from "~/mixins/shared-recipes.js";
 import userRecipes from "~/mixins/user-recipes.js";
-import userRecipeLinks from "~/mixins/user-recipe-links.js";
+import recipeLinks from "~/mixins/user-recipe-links.js";
+import validateUsername from "~/mixins/validate-username.js";
 
 import AccountDetail from "~/components/Account/Displays/AccountDetail.vue";
 import AccountLinkList from "~/components/Account/Displays/AccountLinkList.vue";
@@ -229,8 +230,9 @@ export default {
     user,
     connectedUsers,
     userRecipes,
+    recipeLinks,
     sharedRecipes,
-    userRecipeLinks
+    validateUsername
   ],
   computed: {
     breadcrumbs() {
@@ -251,8 +253,8 @@ export default {
     updateHiddenProfileStatus(checked) {
       let hiddenProfile = !!this.hiddenProfile;
       if (checked === hiddenProfile) {
-        var userRef = this.$fire.database.ref(`users/${this.user.id}`);
-        userRef
+        this.$fire.database
+          .ref(`users/${this.user.id}`)
           .update({ hiddenProfile: !checked })
           .then(() => {
             console.log("Successfully updated hidden profile status");
@@ -269,7 +271,8 @@ export default {
 
       if (status !== (notificationsOff && notificationsOff[type])) {
         notificationsOff[type] = status;
-        this.$fire.database.ref(`users/${this.user.id}/notificationsOff`)
+        this.$fire.database
+          .ref(`users/${this.user.id}/notificationsOff`)
           .set(notificationsOff)
           .then(() => {
             console.log(`Successfully updated ${type} notifications status`);
@@ -315,7 +318,7 @@ export default {
     },
     async updateProfileImg(upload) {
       this.removeProfileImg();
-      var imageName = uuid.v1();
+      let imageName = uuid.v1();
       try {
         //save image
         let file = upload;
@@ -350,8 +353,6 @@ export default {
       }
     },
     removeProfileImg() {
-      let fileName = this.photoURL;
-
       if (this.user.id) {
         this.$fire.storage
           .ref()
@@ -387,14 +388,6 @@ export default {
         .catch(error => {
           console.log(error.message);
         });
-    },
-    validateUsername(value) {
-      let usernameRegex = /^[a-zA-Z\s]+$/;
-      if(!usernameRegex.test(value)) {
-        this.usernameSystemMessage = "Username can only consist of letters and spaces";
-        return false;
-      }
-      return true;
     },
     updateUsername(value) {
       this.$fire.database

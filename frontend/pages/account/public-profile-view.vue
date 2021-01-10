@@ -1,7 +1,7 @@
 <template>
   <section>
     <breadcrumbs :routes="breadcrumbs" />
-    <div class="system-message margin-vertical--large">
+    <div class="system-message margin-vertical-lg">
       {{ $t("accountDetails.publicProfileViewNote") }}
     </div>
     <profile-view :user="user && !user.hiddenProfile ? user : null" />
@@ -14,10 +14,10 @@
 
 <script>
 import user from "~/mixins/user.js";
-import publicRecipes from "~/mixins/public-recipes.js";
+import publicRecipes from "~/helpers/get-public-recipes.js";
 
 import ProfileView from "~/components/ProfileView.vue";
-import RecipesList from "~/components/Recipes/RecipesList";
+import RecipesList from "~/components/RecipePreview/RecipesList";
 
 export default {
   name: "profile",
@@ -33,7 +33,15 @@ export default {
     };
   },
   components: { ProfileView, RecipesList },
-  mixins: [user, publicRecipes],
+  data(){
+    return {
+      publicRecipes: []
+    }
+  },
+  async asyncData({app}){
+    return await publicRecipes(app)
+  },
+  mixins: [user],
   computed: {
     breadcrumbs() {
       return [
@@ -50,8 +58,7 @@ export default {
       ];
     },
     currentUsersPublicRecipes() {
-      let publicRecipes = this.publicRecipes;
-      let currentUsersPublicRecipes = publicRecipes.filter(recipe => {
+      let currentUsersPublicRecipes = this.publicRecipes.filter(recipe => {
         return recipe.ownerID === this.user.id;
       });
 

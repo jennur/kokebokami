@@ -51,7 +51,8 @@ export default {
     tabs: {
       myRecipes: "My personal recipes",
       myRecipeLinks: "My recipe links",
-      recipesSharedWithMe: "Recipes shared with me"
+      recipesSharedWithMe: "Recipes shared with me",
+      myFavorites: "My favorites"
     }
   },
   accountDetails: {
@@ -217,7 +218,13 @@ export default {
         "comfort food",
         "spicy",
         "vegetarian",
-        "vegan"
+        "vegan",
+        "christmas",
+        "new years",
+        "easter",
+        "hanukkah",
+        "thanksgiving",
+        "celebration"
       ]
     },
     serving: "Serving",
@@ -237,6 +244,7 @@ export default {
       shareWithFollower: "Share with one of your followers",
       shareWithFollowerNote: `The recipe will show up under your friend's 'Recipes shared with me'
       tab in his/hers cookbook.`,
+      iWantToEnterEmail: "I want to enter an e-mail address",
       shareByEmail: "Share by e-mail",
       shareOnFb: "Share on Facebook"
     }

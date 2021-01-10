@@ -1,8 +1,8 @@
 <template>
   <fieldset id="typeOfMeal" class="categories">
-    <h4 class="categories__title margin-bottom--medium">Type of meal</h4>
+    <h4 class="categories_title margin-bottom-md">Type of meal</h4>
     <label
-      class="categories__category margin-right--large"
+      class="categories_category margin-right-lg"
       v-for="typeOfMeal in allTypesOfMeal"
       :key="typeOfMeal"
     >

@@ -1,6 +1,6 @@
 <template>
   <section>
-    <div class="flex-row following-cooks margin-bottom--xxlarge">
+    <div class="flex-row following-cooks margin-bottom-2xl">
       <cook-display
         v-for="cook in cooks"
         :key="cook.id"
@@ -11,7 +11,7 @@
       />
     </div>
     <div v-if="!cooksLength" class="container container--center">
-      <p class="margin--auto margin-bottom--xlarge mobile-width">{{emptyListMessage}}</p>
+      <p class="margin-auto margin-bottom-xl mobile-width">{{emptyListMessage}}</p>
     </div>
   </section>
 </template>

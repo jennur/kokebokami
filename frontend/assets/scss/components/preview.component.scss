@@ -3,10 +3,10 @@
     position: relative;
     min-height: 100vh;
   }
-  &__description {
+  &_description {
     max-width: 300px;
   }
-  &__iphone {
+  &_iphone {
     width: 200px;
     border: 8px solid black;
     border-radius: $spacingXLarge;

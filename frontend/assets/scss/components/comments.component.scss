@@ -1,7 +1,7 @@
 .comments-section {
   width: 100%;
 
-  &__headline {
+  &_headline {
     border-bottom: 1px solid $green;
     color: $blue;
   }
@@ -27,20 +27,20 @@
   label {
     max-width: 400px;
   }
-  .comment__user-img {
+  .comment_user-img {
     z-index: 5;
     g circle {
       fill: mix($lightOrange, $orange, 70%);
       opacity: 1;
     }
   }
-  &__anonymous {
+  &_anonymous {
     font-size: $fontSizeSmall;
     @media screen and (min-width: $mobileWidth) {
       font-size: $fontSizeMedium;
     }
   }
-  &__comment {
+  &_comment {
     width: 100%;
     max-width: 400px;
     height: auto;
@@ -49,18 +49,18 @@
     border-radius: $spacingSmall;
     padding: $spacingMedium;
   }
-  &__submit-wrap {
+  &_submit-wrap {
     display: block;
     width: 100%;
     max-width: 400px;
     text-align: right;
   }
-  &__success {
+  &_success {
     background-color: rgba($green, 0.08);
     border-radius: $spacingMedium;
     color: $blue;
   }
-  &__error {
+  &_error {
     background-color: rgba($pink, 0.08);
     border-radius: $spacingMedium;
     color: $richBlack;
@@ -73,16 +73,16 @@
   &:first-child {
     border-top: 1px solid $green;
   }
-  &__date {
+  &_date {
     font-size: $fontSizeSmall;
     color: $orange;
   }
-  &__delete-btn {
+  &_delete-btn {
     position: absolute;
     top: $spacingMedium;
     right: $spacingMedium;
   }
-  &__approval {
+  &_approval {
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -115,7 +115,7 @@
     }
   }
 
-  &__user-img {
+  &_user-img {
     display: block;
     width: $spacingXLarge;
     height: $spacingXLarge;
@@ -138,12 +138,12 @@
   span.no-link {
     color: $richBlack;
   }
-  &__comment,
-  &__reply-btn,
+  &_comment,
+  &_reply-btn,
   .sub-comments-form,
-  .sub-comments-form__success,
-  .sub-comments-form__error,
-  &__sub-comments {
+  .sub-comments-form_success,
+  .sub-comments-form_error,
+  &_sub-comments {
     margin-left: $spacingXLarge + $spacingMediumMobile;
     @media screen and (min-width: $mobileWidth) {
       margin-left: $spacingXXLarge + $spacingMediumMobile;
@@ -160,17 +160,17 @@
     }
 
     &,
-    &__success,
-    &__error {
+    &_success,
+    &_error {
       max-width: 500px;
       box-sizing: border-box;
     }
-    &__success {
+    &_success {
       background-color: rgba($green, 0.08);
       border-radius: $spacingMedium;
       color: $blue;
     }
-    &__error {
+    &_error {
       background-color: rgba($pink, 0.08);
       border-radius: $spacingMedium;
       color: $richBlack;

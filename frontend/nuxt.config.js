@@ -120,6 +120,7 @@ export default {
     "nuxt-fontawesome"
   ],
   i18n: {
+    vueI18nLoader: true,
     detectBrowserLanguage: {
       useCookie: true,
       cookieKey: "i18n_redirected",

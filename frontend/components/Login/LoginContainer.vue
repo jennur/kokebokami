@@ -1,17 +1,17 @@
 <template>
-  <section class="login-container">
-    <!--     <h2 class="margin-bottom--xlarge">{{ $t("login.headingText") }}</h2>
- -->
-    <!-- Social Media login -->
-    <google-login class="margin-bottom--medium" />
-    <facebook-login class="margin-bottom--medium" />
-    <!-- Kokebokami login -->
-    <kokebokami-button
-      class="margin-bottom--medium"
-      @click.native="toggleLoginModal"
-    />
-    <kokebokami-login :open="loginModalOpen" @toggle="toggleLoginModal" />
-  </section>
+  <ul class="login-container">
+    <li>
+      <google-login class="margin-bottom-md" />
+    </li>
+    <li>
+      <facebook-login class="margin-bottom-md" />
+    </li>
+    <li>
+      <kokebokami-button @click.native="toggleLoginModal" />
+    </li>
+
+    <kokebokami-login :open="loginModalOpen" @toggle="toggleLoginModal" @logged-in="$emit('update')" />
+  </ul>
 </template>
 
 <script>

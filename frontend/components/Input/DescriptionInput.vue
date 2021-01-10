@@ -1,7 +1,7 @@
 <template>
   <label>
     <textarea
-      class="add-recipe-form__description"
+      class="add-recipe-form_description"
       placeholder="Say something about the recipe."
       name="description"
       v-model="description"

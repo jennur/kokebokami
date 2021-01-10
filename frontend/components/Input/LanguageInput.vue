@@ -1,12 +1,13 @@
 <template>
-  <fieldset class="categories">
-    <h4 class="categories__title">Recipe language</h4>
+  <fieldset class="language-input">
+<!--    <h4 class="categories_title">Recipe language</h4>-->
     <select-component
       id="language"
+      :naked="naked"
       :options="languages"
       :preSelected="existingLanguage"
       defaultValue="All languages"
-      @select="language => handleLanguage(language)"
+      @select="language => $emit('selected', language)"
     />
   </fieldset>
 </template>
@@ -21,21 +22,15 @@ export default {
     existingLanguage: {
       type: String,
       default: ""
+    },
+    naked: {
+      type: Boolean,
+      default: false
     }
   },
   computed: {
     languages() {
-      let allCategoryObjects = this.$store.state.allCategories;
-      return Object.values(
-        allCategoryObjects.filter(object => {
-          return object.languages;
-        })[0]
-      )[0];
-    }
-  },
-  methods: {
-    handleLanguage(language) {
-      this.$emit("update", language);
+      return this.$store.state.allCategories.languages;
     }
   }
 };

@@ -1,7 +1,7 @@
 <template>
   <fieldset
     class="categories-container"
-    :class="{ 'categories-container--transparent': transparent }"
+    :class="{ 'categories-container--trans': transparent }"
   >
     <div class="categories-wrap">
       <language-input :existingLanguage="language" @update="handleLanguage" />

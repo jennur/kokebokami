@@ -4,7 +4,7 @@
 
     <foodclouds class="illustration illustration--food-clouds" />
 
-    <div class="mobile-width margin--auto">
+    <div class="mobile-width margin-auto">
       <h2>Make your cookbook go cloudy</h2>
       <p>
         «Kokeboka mi» is Norwegian and means «my cookbook». There is something

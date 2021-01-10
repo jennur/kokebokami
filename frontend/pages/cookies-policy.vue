@@ -1,7 +1,7 @@
 <template>
   <div>
     <breadcrumbs :routes="breadcrumbs" />
-    <section class="mobile-width margin--auto margin-top--large">
+    <section class="mobile-width margin-auto margin-top-lg">
       <h1 class="article-heading">Cookies Policy</h1>
 
       <p>Last updated: October 23, 2019</p>

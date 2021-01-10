@@ -1,46 +1,36 @@
 <template>
-  <section class="share-form-container">
-    <div class="share-form-modal">
-      <button
-        class="button button--cancel button--cancel-dynamic flex-align-self--end"
-        @click="$emit('close-modal')"
-      >
-        ✕
-      </button>
+  <modal-box :open="open" :dark-bg="false" @close="$emit('close-modal')">
+    <h4>{{`${$t("shoppingLists.share.share")} '${listTitle}' ${$t("shoppingLists.share.withFollower")}` }}</h4>
 
-      <h4>{{`${$t("shoppingLists.share.share")} '${listTitle}' ${$t("shoppingLists.share.withFollower")}` }}</h4>
-      <form class="share-form" v-on:submit.prevent>
-        <fieldset class="flex-row flex-row--align-center flex-row--nowrap margin-bottom--medium">
-          <label class="share-form__followers">
-            <select-component
-              class="share-form__select margin-right--xlarge"
-              :options="followerNames"
-              defaultValue="Select a user"
-              @select="option => (selected = option)"
-            />
-          </label>
-           <hover-info-box class="margin-left--small margin-bottom--small">
-            {{ $t("shoppingLists.share.shareWithFollowerNote") }}
-          </hover-info-box>
-        </fieldset>
-        <button
-          @click="shareShoppingList"
-          class="button button--small margin-top--medium"
-        >
-          Share
-        </button>
-      </form>
-      <expand-transition :show="!!systemMessage">
-        <div class="system-message margin-top--large">
-          {{ systemMessage }}
-        </div>
-      </expand-transition>
-    </div>
-  </section>
+    <form class="share-form" v-on:submit.prevent>
+      <fieldset class="flex-row flex-row--align-center flex-row--nowrap margin-bottom-md">
+        <label class="share-form_followers">
+          <select-component
+            class="share-form_select margin-right-xl"
+            :options="followerNames"
+            defaultValue="Select a user"
+            @select="option => (selected = option)"
+          />
+        </label>
+
+         <hover-info-box class="margin-left-sm margin-bottom-sm">
+          {{ $t("shoppingLists.share.shareWithFollowerNote") }}
+        </hover-info-box>
+      </fieldset>
+
+      <button @click="shareShoppingList" class="button button-sm margin-top-md">
+        Share
+      </button>
+    </form>
+
+    <expand-transition :show="!!systemMessage">
+      <div class="system-message margin-top-lg">
+        {{ systemMessage }}
+      </div>
+    </expand-transition>
+  </modal-box>
 </template>
 <script>
-import ClickOutside from "vue-click-outside";
-
 import allUsers from "~/mixins/allUsers.js";
 import user from "~/mixins/user.js";
 import connectedUsers from "~/mixins/followed-and-followers.js";
@@ -48,10 +38,12 @@ import connectedUsers from "~/mixins/followed-and-followers.js";
 import ExpandTransition from "~/components/Transitions/Expand.vue";
 import SelectComponent from "~/components/Input/SelectComponent.vue";
 import HoverInfoBox from "~/components/HoverInfoBox";
+import ModalBox from "~/components/ModalBox";
 
 export default {
   name: "share-form",
   components: {
+    ModalBox,
     ExpandTransition,
     SelectComponent,
     HoverInfoBox
@@ -67,6 +59,10 @@ export default {
     };
   },
   props: {
+    open: {
+      type: Boolean,
+      default: false
+    },
     listKey: {
       type: String,
       default: ""

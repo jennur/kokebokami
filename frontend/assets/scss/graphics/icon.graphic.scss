@@ -4,7 +4,7 @@
   max-height: 1em;
   cursor: pointer;
 
-  &--small {
+  &-sm {
     width: 0.7em;
     min-width: 0.7em;
     max-height: 0.7em;
@@ -39,13 +39,13 @@
   }
 }
 
-.icon__link {
+.icon_link {
   position: relative;
   display: inline-block;
   &:hover {
     margin: 0px;
   }
-  .icon__notification {
+  .icon_notification {
     display: flex;
     justify-content: center;
     align-items: center;

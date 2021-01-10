@@ -6,7 +6,7 @@
     </div>
     <div
       v-if="!loading && !comments.length"
-      class="comments--empty margin-vertical--xxlarge"
+      class="comments--empty margin-vertical-2xl"
     >
       {{ $t("comments.noCommentsNote") }}
     </div>
@@ -19,7 +19,7 @@
         :comment="comment"
         :isSubComment="false"
         :isRecipeOwner="isRecipeOwner"
-        class="padding-vertical--large"
+        class="padding-vertical-lg"
         @update="getComments"
         @subCommentSubmitted="commentObj => $emit('send-email', commentObj)"
       />
@@ -27,7 +27,7 @@
 
     <button
       v-if="cutOffComments.length"
-      class="comments__load-more-btn button button--transparent margin-top--large"
+      class="comments_load-more-btn button button--trans margin-top-lg"
       @click="loadMoreComments"
     >
       {{ $t("loadMore") }}

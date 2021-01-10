@@ -1,52 +1,52 @@
 <template>
   <form class="sign-up-form" v-on:submit.prevent>
-    <label class="flex-column margin-bottom--medium">
+    <label class="flex-column margin-bottom-md">
       {{ $t("email") }}
       <input
-        class="margin-top--small"
+        class="margin-top-sm"
         id="email"
         type="email"
         autocomplete="email"
         v-model="email"
       />
-      <span class="system-message margin-top--small">{{ emailError }}</span>
+      <span class="system-message margin-top-sm">{{ emailError }}</span>
     </label>
-    <label class="flex-column margin-bottom--medium">
+    <label class="flex-column margin-bottom-md">
       {{ $t("password") }}
       <input
-        class="margin-top--small"
+        class="margin-top-sm"
         id="password"
         type="password"
         autocomplete="new-password"
         v-model="password"
       />
-      <span class="system-message margin-top--small">{{ passwordError }}</span>
+      <span class="system-message margin-top-sm">{{ passwordError }}</span>
     </label>
-    <label class="flex-column margin-bottom--medium">
+    <label class="flex-column margin-bottom-md">
       {{ $t("signUp.repeatPassword") }}
 
       <input
-        class="margin-top--small"
+        class="margin-top-sm"
         id="password-repeated"
         type="password"
         autocomplete="new-password"
         v-model="passwordRepeat"
       />
-      <span class="system-message margin-top--small">{{
+      <span class="system-message margin-top-sm">{{
         passwordRepeatError
       }}</span>
     </label>
 
-    <label class="flex-column margin-bottom--medium">
+    <label class="flex-column margin-bottom-md">
       <span class="flex-row flex-row--nowrap">
         <input
           tabindex="0"
-          class="margin-top--small"
+          class="margin-top-sm"
           id="terms-and-conditions"
           type="checkbox"
           v-model="termsAndConditions"
         />
-        <span class="sign-up-form_terms padding-horizontal--small">
+        <span class="sign-up-form_terms padding-horizontal-sm">
           {{ $t("signUp.iAgreeTo") }}
           <nuxt-link :to="localePath('/terms-and-conditions/')"
             >Terms and Conditions</nuxt-link
@@ -57,15 +57,15 @@
           >
         </span>
       </span>
-      <span class="system-message margin-top--small">{{
+      <span class="system-message margin-top-sm">{{
         termsAndConditionsError
       }}</span>
     </label>
-    <div class="flex-column margin-top--small">
-      <button @click="validateForm" class="button button--small button--green">
+    <div class="flex-column margin-top-sm">
+      <button @click="validateForm" class="button button-sm button--green">
         {{ $t("signUpText") }}
       </button>
-      <span class="system-message margin-top--small">{{ systemMessage }}</span>
+      <span class="system-message margin-top-sm">{{ systemMessage }}</span>
     </div>
   </form>
 </template>

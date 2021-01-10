@@ -11,8 +11,7 @@
 </template>
 
 <script>
-import userRecipes from "~/mixins/user-recipes.js";
-import RecipeFullView from "~/components/Recipes/RecipeFullView/RecipeFullView.vue";
+import RecipeFullView from "~/components/RecipeFullView/RecipeFullView.vue";
 import user from "~/mixins/user.js";
 
 export default {

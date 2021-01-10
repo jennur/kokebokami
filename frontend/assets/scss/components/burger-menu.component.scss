@@ -11,7 +11,7 @@
   cursor: pointer;
   z-index: 999;
 
-  &__slice {
+  &_slice {
     display: block;
     position: absolute;
     top: $spacingXLarge/2 - $spacingSmall/2;
@@ -58,7 +58,7 @@
 }
 
 .burger-menu {
-  &__list-container {
+  &_list-container {
     display: flex;
     justify-content: center;
     position: fixed;
@@ -73,7 +73,7 @@
     z-index: 100;
   }
 
-  &__list {
+  &_list {
     display: block;
     position: relative;
     top: 80px;
@@ -88,13 +88,13 @@
         display: flex;
         align-items: center;
       }
-      .burger-menu__sub-list {
+      .burger-menu_sub-list {
         padding-left: $spacingLarge;
       }
     }
   }
 
-  &__link {
+  &_link {
     color: $blue;
     text-decoration: none;
     margin-bottom: 2px;

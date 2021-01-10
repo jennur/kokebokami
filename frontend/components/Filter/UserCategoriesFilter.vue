@@ -1,9 +1,9 @@
 <template>
-  <section class="container margin-vertical--xlarge">
-    <h4 class="heading--blue margin-bottom--medium margin-left--small">Show categories</h4>
+  <section class="container margin-vertical-xl">
+    <h4 class="heading--blue margin-bottom-md margin-left-sm">Show categories</h4>
     <form class="link-categories-filter">
       <label
-        class="form__input margin-right--medium"
+        class="form_input margin-right-md"
         v-for="category in categories"
         :key="`category-${category}`"
       >

@@ -1,10 +1,10 @@
 <template>
   <div>
-    <p class="margin-bottom--xlarge">
+    <p class="margin-bottom-xl">
       {{ $t("signUp.soMeLoginText") }}
     </p>
-    <google-login class="margin-bottom--medium" />
-    <facebook-login class="margin-bottom--medium" />
+    <google-login class="margin-bottom-md" />
+    <facebook-login class="margin-bottom-md" />
   </div>
 </template>
 

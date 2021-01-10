@@ -1,7 +1,7 @@
 <template>
   <footer class="footer">
-    <div class="footer__columns">
-      <ul class="footer__nav margin--large">
+    <div class="footer_columns">
+      <ul class="footer_nav margin-lg">
         <li>
           <h4 class="color--blue">
             {{ $t("navigation.footer.languageHeading") }}
@@ -12,7 +12,7 @@
 
       <shortcuts />
 
-      <ul class="footer__nav margin--large">
+      <ul class="footer_nav margin-lg">
         <li>
           <h4 class="color--blue">
             {{ $t("navigation.footer.aboutHeading") }}
@@ -35,7 +35,7 @@
         </li>
       </ul>
 
-      <ul class="footer__nav margin--large">
+      <ul class="footer_nav margin-lg">
         <li>
           <h4 class="color--blue">
             {{ $t("navigation.footer.contactHeading") }}
@@ -47,7 +47,7 @@
               :icon="['fab', 'facebook-square']"
               style="font-size: 25px; margin-right: 10px;"
             />
-            <span class="social-media__text">{{
+            <span class="social-media_text">{{
               $t("navigation.footer.facebookLikeText")
             }}</span>
           </a>
@@ -57,7 +57,7 @@
         </li>
       </ul>
     </div>
-    <p class="footer__copyright">© {{ year }} Kokebokami</p>
+    <p class="footer_copyright">© 2020-{{ year }} Kokebokami</p>
   </footer>
 </template>
 <script>

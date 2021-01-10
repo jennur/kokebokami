@@ -4,16 +4,16 @@
   padding: $spacingLarge;
   position: relative;
 
-  &__shared {
+  &_shared {
     font-size: $fontSizeSmall;
     color: $blue;
   }
-  &__cancel-action {
+  &_cancel-action {
     position: absolute;
     top: $spacingLarge;
     right: $spacingLarge;
   }
-  &__title {
+  &_title {
     h2 {
       transition: 0.1s;
       &:hover {
@@ -30,7 +30,7 @@
     }
   }
 
-  &__share-icon {
+  &_share-icon {
     width: 10px;
     padding: $spacingMedium;
     border-radius: $spacingMedium;
@@ -59,7 +59,7 @@
       width: 90%;
     }
 
-    &__title {
+    &_title {
       display: inline-block;
       width: 100%;
 
@@ -93,7 +93,7 @@
         }
       }
     }
-    &__items {
+    &_items {
       min-width: 250px;
       list-style: none;
       padding-left: 0px;

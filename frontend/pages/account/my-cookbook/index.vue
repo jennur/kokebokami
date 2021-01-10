@@ -1,14 +1,14 @@
 <template>
   <div class="container container--center">
     <breadcrumbs :routes="breadcrumbs" />
-    <h1 class="margin-bottom--large">{{ headlineText }}</h1>
+    <h1 class="margin-bottom-lg">{{ headlineText }}</h1>
     <div
       v-click-outside="closeDropdown"
       class="container container--center add-recipe"
     >
       <button
         v-if="!addRecipeFromUrl"
-        class="button button--large button--round margin--auto margin-vertical--xlarge"
+        class="button button-lg button--round margin-auto margin-vertical-xl"
         @click="toggleDropdown"
       >
         {{ $t("navigation.addRecipe") }}
@@ -17,10 +17,10 @@
         <div v-if="dropdown" class="add-recipe-dropdown">
           <nuxt-link
             :to="localePath('/account/my-cookbook/add-recipe/')"
-            class="add-recipe-dropdown__link"
+            class="add-recipe-dropdown_link"
             >{{ $t("navigation.addPersonalRecipe") }}</nuxt-link
           >
-          <button @click="toggleRecipeForm" class="add-recipe-dropdown__link">
+          <button @click="toggleRecipeForm" class="add-recipe-dropdown_link">
             {{ $t("navigation.addRecipeLink") }}
           </button>
         </div>
@@ -36,18 +36,18 @@
 
     <!-- Recipes list -->
     <Tabs
-      class="margin-top--xlarge"
+      class="margin-top-xl"
       :tabTitles="[
         $t('myCookbook.tabs.myRecipes'),
         $t('myCookbook.tabs.myRecipeLinks'),
-        $t('myCookbook.tabs.recipesSharedWithMe')
+        $t('myCookbook.tabs.myFavorites')
       ]"
       :activeTabIndexControl="activeTabIndex"
       @switchTab="index => handleTabSwitch(index)"
     >
       <recipes-list
         v-if="activeTabIndex === 0 || activeTabIndex === 2"
-        class="margin-top--large padding-bottom--large"
+        class="margin-top-lg padding-bottom-lg"
         :recipes="visibleRecipes"
         :isPublicList="activeTabIndex === 2"
         :emptyListMessage="emptyListMessage"
@@ -55,12 +55,12 @@
       />
       <div v-if="activeTabIndex === 1">
         <recipe-link-list
-          class="margin-top--xxlarge"
+          class="margin-top-2xl"
           :hiddenCategories="hiddenCategories"
           :links="recipeLinks"
           :emptyListMessage="emptyListMessage"
           @open-form="toggleRecipeForm"
-          @update="updateLinkList"
+          @update="getRecipeLinks"
         />
       </div>
     </Tabs>
@@ -71,15 +71,15 @@
 import ClickOutside from "vue-click-outside";
 
 import user from "~/mixins/user.js";
-import sharedRecipes from "~/mixins/shared-recipes.js";
+import favoriteRecipes from "~/mixins/user-favorites.js";
 import userRecipes from "~/mixins/user-recipes.js";
-import userRecipeLinks from "~/mixins/user-recipe-links.js";
+import recipeLinks from "~/mixins/user-recipe-links.js";
 
 import ExpandTransition from "~/components/Transitions/Expand.vue";
-import AddRecipeFromUrlForm from "~/components/Recipes/AddRecipeForm/AddRecipeFromUrlForm.vue";
+import AddRecipeFromUrlForm from "~/components/AddRecipeForm/AddRecipeFromUrlForm.vue";
 import Tabs from "~/components/Tabs.vue";
-import RecipesList from "~/components/Recipes/RecipesList.vue";
-import RecipeLinkList from "~/components/Recipes/RecipeLinkList/RecipeLinkList.vue";
+import RecipesList from "~/components/RecipePreview/RecipesList.vue";
+import RecipeLinkList from "~/components/RecipeLinkList/RecipeLinkList.vue";
 import RecipesFilter from "~/components/Filter/RecipesFilter.vue";
 import UserCategoriesFilter from "~/components/Filter/UserCategoriesFilter.vue";
 
@@ -108,16 +108,13 @@ export default {
   data() {
     return {
       addingRecipe: false,
-      filteredRecipes: [],
-      filtered: false,
-      filteredKind: "",
       activeTabIndex: 0,
       dropdown: false,
       addRecipeFromUrl: false,
       hiddenCategories: []
     };
   },
-  mixins: [user, userRecipes, userRecipeLinks, sharedRecipes],
+  mixins: [user, userRecipes, recipeLinks, favoriteRecipes],
   computed: {
     breadcrumbs() {
       return [
@@ -135,7 +132,7 @@ export default {
       else if (this.activeTabIndex === 1)
         return "You didnt add any recipes to this list yet. 🤷🏼‍♀️ The recipes you add from URL will appear in this list.";
       else if (this.activeTabIndex === 2)
-        return "Nobody shared any recipes with you yet 🤷🏾‍♂️";
+        return "You didn't add any favorites yet! 🤷🏾‍♂️";
     },
     firstName() {
       let firstName = null;
@@ -151,12 +148,8 @@ export default {
       else return "My kokebok";
     },
     visibleRecipes() {
-      if (!this.filtered) {
-        if (this.activeTabIndex === 0) return this.userRecipes;
-        if (this.activeTabIndex === 2) return this.sharedRecipes;
-      } else {
-        return this.filteredRecipes;
-      }
+      if (this.activeTabIndex === 0) return this.userRecipes;
+      if (this.activeTabIndex === 2) return this.favoriteRecipes;
     },
     userCategories() {
       let links = this.recipeLinks;
@@ -170,20 +163,10 @@ export default {
       categories.push(categories.shift());
       return categories;
     },
-    recipesToBeFiltered() {
-      if (this.activeTabIndex === 0) {
-        return this.userRecipes;
-      } else if (this.activeTabIndex === 2) {
-        return this.sharedRecipes;
-      }
-    }
   },
   methods: {
     updateHiddenCategories(hiddenCategories) {
       this.hiddenCategories = hiddenCategories;
-    },
-    updateLinkList() {
-      this.getRecipeLinks();
     },
     handleLinkSave() {
       this.getRecipeLinks();
@@ -202,11 +185,6 @@ export default {
     },
     handleTabSwitch(index) {
       this.activeTabIndex = index;
-      this.filtered = false;
-    },
-    setVisibleRecipes(filteredRecipesObj) {
-      this.filteredRecipes = filteredRecipesObj.recipes;
-      this.filtered = filteredRecipesObj.filtered;
     }
   },
   directives: {

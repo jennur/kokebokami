@@ -1,29 +1,29 @@
 .margin {
-  &--auto {
+  &-auto {
     margin: auto;
   }
   &--none {
     margin: 0px;
   }
-  &--small {
+  &-sm {
     margin: $spacingSmallMobile;
     @media screen and (min-width: $tabletWidth) {
       margin: $spacingSmallMobile;
     }
   }
-  &--medium {
+  &-md {
     margin: $spacingMediumMobile;
     @media screen and (min-width: $tabletWidth) {
       margin: $spacingMedium;
     }
   }
-  &--large {
+  &-lg {
     margin: $spacingLargeMobile;
     @media screen and (min-width: $tabletWidth) {
       margin: $spacingLarge;
     }
   }
-  &--xlarge {
+  &-xl {
     margin: $spacingXLargeMobile;
     @media screen and (min-width: $tabletWidth) {
       margin: $spacingXLarge;
@@ -38,35 +38,35 @@
         margin-top: 0px;
       }
     }
-    &--small {
+    &-sm {
       margin-top: $spacingSmallMobile;
 
       @media screen and (min-width: $tabletWidth) {
         margin-top: $spacingSmall;
       }
     }
-    &--medium {
+    &-md {
       margin-top: $spacingMediumMobile;
 
       @media screen and (min-width: $tabletWidth) {
         margin-top: $spacingMedium;
       }
     }
-    &--large {
+    &-lg {
       margin-top: $spacingLargeMobile;
 
       @media screen and (min-width: $tabletWidth) {
         margin-top: $spacingLarge;
       }
     }
-    &--xlarge {
+    &-xl {
       margin-top: $spacingXLargeMobile;
 
       @media screen and (min-width: $tabletWidth) {
         margin-top: $spacingXLarge;
       }
     }
-    &--xxlarge {
+    &-2xl {
       margin-top: $spacingXXLargeMobile;
 
       @media screen and (min-width: $tabletWidth) {
@@ -76,35 +76,35 @@
   }
 
   &-bottom {
-    &--small {
+    &-sm {
       margin-bottom: $spacingSmallMobile;
 
       @media screen and (min-width: $tabletWidth) {
         margin-bottom: $spacingSmall;
       }
     }
-    &--medium {
+    &-md {
       margin-bottom: $spacingMediumMobile;
 
       @media screen and (min-width: $tabletWidth) {
         margin-bottom: $spacingMedium;
       }
     }
-    &--large {
+    &-lg {
       margin-bottom: $spacingLargeMobile;
 
       @media screen and (min-width: $tabletWidth) {
         margin-bottom: $spacingLarge;
       }
     }
-    &--xlarge {
+    &-xl {
       margin-bottom: $spacingXLargeMobile;
 
       @media screen and (min-width: $tabletWidth) {
         margin-bottom: $spacingXLarge;
       }
     }
-    &--xxlarge {
+    &-2xl {
       margin-bottom: $spacingXXLargeMobile;
 
       @media screen and (min-width: $tabletWidth) {
@@ -114,42 +114,42 @@
   }
 
   &-left {
-    &--xsmall {
+    &-xs {
       margin-left: $spacingSmallMobile;
 
       @media screen and (min-width: $tabletWidth) {
         margin-left: $spacingXSmall;
       }
     }
-    &--small {
+    &-sm {
       margin-left: $spacingSmallMobile;
 
       @media screen and (min-width: $tabletWidth) {
         margin-left: $spacingSmall;
       }
     }
-    &--medium {
+    &-md {
       margin-left: $spacingMediumMobile;
 
       @media screen and (min-width: $tabletWidth) {
         margin-left: $spacingMedium;
       }
     }
-    &--large {
+    &-lg {
       margin-left: $spacingLargeMobile;
 
       @media screen and (min-width: $tabletWidth) {
         margin-left: $spacingLarge;
       }
     }
-    &--xlarge {
+    &-xl {
       margin-left: $spacingXLargeMobile;
 
       @media screen and (min-width: $tabletWidth) {
         margin-left: $spacingXLarge;
       }
     }
-    &--xxlarge {
+    &-2xl {
       margin-left: $spacingXXLargeMobile;
 
       @media screen and (min-width: $tabletWidth) {
@@ -159,21 +159,21 @@
   }
 
   &-right {
-    &--small {
+    &-sm {
       margin-right: $spacingSmallMobile;
 
       @media screen and (min-width: $tabletWidth) {
         margin-right: $spacingSmall;
       }
     }
-    &--medium {
+    &-md {
       margin-right: $spacingMediumMobile;
 
       @media screen and (min-width: $tabletWidth) {
         margin-right: $spacingMedium;
       }
     }
-    &--large {
+    &-lg {
       margin-right: $spacingLargeMobile;
 
       @media screen and (min-width: $tabletWidth) {
@@ -181,7 +181,7 @@
       }
     }
 
-    &--xlarge {
+    &-xl {
       margin-right: $spacingXLargeMobile;
 
       @media screen and (min-width: $tabletWidth) {
@@ -189,7 +189,7 @@
       }
     }
 
-    &--xxlarge {
+    &-2xl {
       margin-right: $spacingXXLargeMobile;
 
       @media screen and (min-width: $tabletWidth) {
@@ -199,7 +199,7 @@
   }
 
   &-horizontal {
-    &--small {
+    &-sm {
       margin-right: $spacingSmallMobile;
       margin-left: $spacingSmallMobile;
 
@@ -208,7 +208,7 @@
         margin-left: $spacingSmall;
       }
     }
-    &--medium {
+    &-md {
       margin-right: $spacingMediumMobile;
       margin-left: $spacingMediumMobile;
 
@@ -217,7 +217,7 @@
         margin-left: $spacingMedium;
       }
     }
-    &--large {
+    &-lg {
       margin-right: $spacingLargeMobile;
       margin-left: $spacingLargeMobile;
 
@@ -226,7 +226,7 @@
         margin-left: $spacingLarge;
       }
     }
-    &--xlarge {
+    &-xl {
       margin-right: $spacingXLargeMobile;
       margin-left: $spacingXLargeMobile;
 
@@ -237,7 +237,7 @@
     }
   }
   &-vertical {
-    &--small {
+    &-sm {
       margin-top: $spacingSmallMobile;
       margin-bottom: $spacingSmallMobile;
 
@@ -246,7 +246,7 @@
         margin-bottom: $spacingSmall;
       }
     }
-    &--medium {
+    &-md {
       margin-top: $spacingMediumMobile;
       margin-bottom: $spacingMediumMobile;
 
@@ -255,7 +255,7 @@
         margin-bottom: $spacingMedium;
       }
     }
-    &--large {
+    &-lg {
       margin-top: $spacingLargeMobile;
       margin-bottom: $spacingLargeMobile;
 
@@ -264,7 +264,7 @@
         margin-bottom: $spacingLarge;
       }
     }
-    &--xlarge {
+    &-xl {
       margin-top: $spacingXLargeMobile;
       margin-bottom: $spacingXLargeMobile;
 
@@ -273,7 +273,7 @@
         margin-bottom: $spacingXLarge;
       }
     }
-    &--xxlarge {
+    &-2xl {
       margin-top: $spacingXXLargeMobile;
       margin-bottom: $spacingXXLargeMobile;
 

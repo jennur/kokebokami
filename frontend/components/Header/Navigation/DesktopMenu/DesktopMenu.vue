@@ -3,32 +3,26 @@
   <div class="desktop-menu" v-click-outside="closeDropdown">
     <ul v-if="user && !user.id" class="login-menu">
       <li>
-        <nuxt-link
-          class="login-menu__signup-btn"
-          :to="localePath('/sign-up')"
-          >{{ $t("signUpText") }}</nuxt-link
-        >
+        <nuxt-link class="login-menu_signup-btn" :to="localePath('/sign-up')">
+          {{ $t("signUpText") }}
+        </nuxt-link>
       </li>
       <li>
-        <nuxt-link class="login-menu__link" :to="localePath('/login')">
-          {{ $t("loginText") }}</nuxt-link
-        >
+        <span class="login-menu_link" @click="toggleDropdown">
+          {{ $t("loginText") }}
+        </span>
+
+        <transition name="pop-dropdown">
+          <login-menu v-if="open" />
+        </transition>
       </li>
     </ul>
-    <div v-if="user && user.id" class="account-menu margin-bottom--small">
+
+    <div v-if="user && user.id" class="account-menu margin-bottom-sm">
       <user-image :username="user.displayName" :photoURL="user.photoURL" />
-      <!-- Link -->
-      <nuxt-link class="account-menu__button" :to="localePath('/account')">{{
-        accountMenu.title
-      }}</nuxt-link>
-      <!-- <transition name="pop-dropdown">
-        <dropdown-menu
-          v-if="open"
-          :links="accountMenu.subLinks"
-          @logout="$emit('logout')"
-          @close="closeDropdown"
-        />
-      </transition>-->
+      <nuxt-link class="account-menu_button" :to="localePath('/account')">
+        {{ accountMenu.title }}
+      </nuxt-link>
     </div>
   </div>
 </template>
@@ -36,13 +30,13 @@
 import ClickOutside from "vue-click-outside";
 
 import UserImage from "../UserImage.vue";
-import DropdownMenu from "./DropdownMenu.vue";
+import LoginMenu from "./LoginMenu.vue";
 
 export default {
   name: "desktop-menu",
   components: {
     UserImage,
-    DropdownMenu
+    LoginMenu
   },
   props: {
     accountMenu: {

@@ -3,7 +3,7 @@
     padding: 0px;
   }
 
-  &--small {
+  &-sm {
     padding: $spacingSmallMobile;
     box-sizing: border-box;
 
@@ -12,7 +12,7 @@
     }
   }
 
-  &--medium {
+  &-md {
     padding: $spacingMediumMobile;
     box-sizing: border-box;
 
@@ -21,7 +21,7 @@
     }
   }
 
-  &--large {
+  &-lg {
     padding: $spacingLargeMobile;
     box-sizing: border-box;
 
@@ -30,7 +30,7 @@
     }
   }
 
-  &--xlarge {
+  &-xl {
     padding: $spacingXLargeMobile;
     box-sizing: border-box;
 
@@ -40,28 +40,28 @@
   }
 
   &-top {
-    &--small {
+    &-sm {
       padding-top: $spacingSmallMobile;
       box-sizing: border-box;
       @media screen and (min-width: $tabletWidth) {
         padding-top: $spacingSmall;
       }
     }
-    &--medium {
+    &-md {
       padding-top: $spacingMediumMobile;
       box-sizing: border-box;
       @media screen and (min-width: $tabletWidth) {
         padding-top: $spacingMedium;
       }
     }
-    &--large {
+    &-lg {
       padding-top: $spacingLargeMobile;
       box-sizing: border-box;
       @media screen and (min-width: $tabletWidth) {
         padding-top: $spacingLarge;
       }
     }
-    &--xlarge {
+    &-xl {
       padding-top: $spacingXLargeMobile;
       box-sizing: border-box;
       @media screen and (min-width: $tabletWidth) {
@@ -69,14 +69,14 @@
       }
     }
 
-    &--xxlarge {
+    &-2xl {
       padding-top: $spacingXXLargeMobile;
       box-sizing: border-box;
       @media screen and (min-width: $tabletWidth) {
         padding-top: $spacingXXLarge;
       }
     }
-    &--xxxlarge {
+    &-3xl {
       padding-top: $spacingXXXLargeMobile;
       box-sizing: border-box;
       @media screen and (min-width: $tabletWidth) {
@@ -85,28 +85,28 @@
     }
   }
   &-bottom {
-    &--small {
+    &-sm {
       padding-bottom: $spacingSmallMobile;
       box-sizing: border-box;
       @media screen and (min-width: $tabletWidth) {
         padding-bottom: $spacingSmall;
       }
     }
-    &--medium {
+    &-md {
       padding-bottom: $spacingMediumMobile;
       box-sizing: border-box;
       @media screen and (min-width: $tabletWidth) {
         padding-bottom: $spacingMedium;
       }
     }
-    &--large {
+    &-lg {
       padding-bottom: $spacingLargeMobile;
       box-sizing: border-box;
       @media screen and (min-width: $tabletWidth) {
         padding-bottom: $spacingLarge;
       }
     }
-    &--xlarge {
+    &-xl {
       padding-bottom: $spacingXLargeMobile;
       box-sizing: border-box;
       @media screen and (min-width: $tabletWidth) {
@@ -114,14 +114,14 @@
       }
     }
 
-    &--xxlarge {
+    &-2xl {
       padding-bottom: $spacingXXLargeMobile;
       box-sizing: border-box;
       @media screen and (min-width: $tabletWidth) {
         padding-bottom: $spacingXXLarge;
       }
     }
-    &--xxxlarge {
+    &-3xl {
       padding-bottom: $spacingXXXLargeMobile;
       box-sizing: border-box;
       @media screen and (min-width: $tabletWidth) {
@@ -131,7 +131,7 @@
   }
 
   &-horizontal {
-    &--small {
+    &-sm {
       padding-left: $spacingSmallMobile;
       padding-right: $spacingSmallMobile;
       box-sizing: border-box;
@@ -140,7 +140,7 @@
         padding-right: $spacingSmall;
       }
     }
-    &--medium {
+    &-md {
       padding-left: $spacingMediumMobile;
       padding-right: $spacingMediumMobile;
       box-sizing: border-box;
@@ -149,7 +149,7 @@
         padding-right: $spacingMedium;
       }
     }
-    &--large {
+    &-lg {
       padding-left: $spacingLargeMobile;
       padding-right: $spacingLargeMobile;
       box-sizing: border-box;
@@ -158,7 +158,7 @@
         padding-right: $spacingLarge;
       }
     }
-    &--xlarge {
+    &-xl {
       padding-left: $spacingXLargeMobile;
       padding-right: $spacingXLargeMobile;
       box-sizing: border-box;
@@ -169,7 +169,7 @@
     }
   }
   &-vertical {
-    &--small {
+    &-sm {
       padding-top: $spacingSmallMobile;
       padding-bottom: $spacingSmallMobile;
       box-sizing: border-box;
@@ -178,7 +178,7 @@
         padding-bottom: $spacingSmall;
       }
     }
-    &--medium {
+    &-md {
       padding-top: $spacingMediumMobile;
       padding-bottom: $spacingMediumMobile;
       box-sizing: border-box;
@@ -187,7 +187,7 @@
         padding-bottom: $spacingMedium;
       }
     }
-    &--large {
+    &-lg {
       padding-top: $spacingLargeMobile;
       padding-bottom: $spacingLargeMobile;
       box-sizing: border-box;
@@ -196,7 +196,7 @@
         padding-bottom: $spacingLarge;
       }
     }
-    &--xlarge {
+    &-xl {
       padding-top: $spacingXLargeMobile;
       padding-bottom: $spacingXLargeMobile;
       box-sizing: border-box;
@@ -206,7 +206,7 @@
       }
     }
 
-    &--xxlarge {
+    &-2xl {
       padding-top: $spacingXXLargeMobile;
       padding-bottom: $spacingXXLargeMobile;
       box-sizing: border-box;
@@ -216,7 +216,7 @@
       }
     }
 
-    &--xxxlarge {
+    &-3xl {
       padding-top: $spacingXXXLargeMobile;
       padding-bottom: $spacingXXXLargeMobile;
       box-sizing: border-box;

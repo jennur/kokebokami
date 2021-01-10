@@ -1,5 +1,4 @@
-import generatePath from "../helpers/generatePath";
-import recipeModel from "./recipe-model";
+import recipeModel from "../helpers/recipe-model";
 
 export default {
   data() {
@@ -10,7 +9,6 @@ export default {
       loaded: false
     };
   },
-  mixins: [recipeModel],
   methods: {
     getUserRecipes() {
       if (this.currentUser) {
@@ -25,7 +23,7 @@ export default {
                 let recipe = recipes[key];
 
                 if(recipe.ownerID === this.currentUser.uid) {
-                  userRecipes.push(this.recipeModel(recipe, key))
+                  userRecipes.push(recipeModel(recipe, key))
                 }
               }
               this.userRecipes = userRecipes.reverse();
@@ -40,8 +38,7 @@ export default {
       }
     }
   },
-  mounted() {
+  created() {
     this.getUserRecipes();
-    this.getRecipeLinks();
   }
 };

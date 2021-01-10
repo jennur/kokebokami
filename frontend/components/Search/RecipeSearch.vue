@@ -1,6 +1,6 @@
 <template>
   <section class="search" :class="{ 'search--sticky': scrolled }">
-    <form class="search__form" @submit.prevent>
+    <form class="search_form" @submit.prevent>
       <fieldset>
         <label class="search-field">
           <search-icon class="search-icon" />
@@ -13,7 +13,7 @@
         </label>
       </fieldset>
       <fieldset>
-        <h5 class="categories__title">{{ $t("recipes.language") }}</h5>
+        <h5 class="categories_title">{{ $t("recipes.language") }}</h5>
         <select-component
           id="language"
           :options="languages"
@@ -23,11 +23,11 @@
         />
       </fieldset>
       <fieldset class="flex-column">
-        <h5 class="margin-bottom--medium color--blue">
+        <h5 class="margin-bottom-md color--blue">
           {{ $t("recipes.typeOfMeal") }}
         </h5>
         <label
-          class="flex-row flex-row--align-center margin-vertical--small"
+          class="flex-row flex-row--align-center margin-vertical-sm"
           v-for="(typeOfMeal, index) in typesOfMeal"
           :key="typeOfMeal"
         >
@@ -40,11 +40,11 @@
         </label>
       </fieldset>
       <fieldset class="flex-column">
-        <h5 class="margin-bottom--medium color--blue">
+        <h5 class="margin-bottom-md color--blue">
           {{ $t("recipes.categories") }}
         </h5>
         <label
-          class="flex-row flex-row--align-center margin-vertical--small"
+          class="flex-row flex-row--align-center margin-vertical-sm"
           v-for="(category, index) in categories"
           :key="category"
         >
@@ -58,11 +58,11 @@
       </fieldset>
 
       <fieldset class="flex-column">
-        <h5 class="margin-bottom--medium color--blue">
+        <h5 class="margin-bottom-md color--blue">
           {{ $t("recipes.freeFrom") }}
         </h5>
         <label
-          class="flex-row flex-row--align-center margin-vertical--small"
+          class="flex-row flex-row--align-center margin-vertical-sm"
           v-for="(allergen, index) in allergens"
           :key="allergen"
         >
