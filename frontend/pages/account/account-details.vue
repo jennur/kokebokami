@@ -180,6 +180,7 @@ import connectedUsers from "~/mixins/followed-and-followers.js";
 import sharedRecipes from "~/mixins/shared-recipes.js";
 import userRecipes from "~/mixins/user-recipes.js";
 import recipeLinks from "~/mixins/user-recipe-links.js";
+import validateUsername from "~/mixins/validate-username.js";
 
 import AccountDetail from "~/components/Account/Displays/AccountDetail.vue";
 import AccountLinkList from "~/components/Account/Displays/AccountLinkList.vue";
@@ -230,7 +231,8 @@ export default {
     connectedUsers,
     userRecipes,
     recipeLinks,
-    sharedRecipes
+    sharedRecipes,
+    validateUsername
   ],
   computed: {
     breadcrumbs() {
@@ -386,14 +388,6 @@ export default {
         .catch(error => {
           console.log(error.message);
         });
-    },
-    validateUsername(value) {
-      let usernameRegex = /^[a-zA-Z\s]+$/;
-      if(!usernameRegex.test(value)) {
-        this.usernameSystemMessage = "Username can only consist of letters and spaces";
-        return false;
-      }
-      return true;
     },
     updateUsername(value) {
       this.$fire.database

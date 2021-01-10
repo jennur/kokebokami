@@ -30,9 +30,9 @@
             </button>
           </fieldset>
 
-          <expand-transition :show="!!systemMessage">
+          <expand-transition :show="!!usernameSystemMessage">
             <div class="system-message system-message--dark-bg margin-top-lg">
-              {{ systemMessage }}
+              {{ usernameSystemMessage }}
             </div>
           </expand-transition>
         </form>
@@ -43,6 +43,7 @@
 
 <script>
 import user from "~/mixins/user.js";
+import validateUsername from "~/mixins/validate-username";
 import ExpandTransition from "~/components/Transitions/Expand.vue";
 
 export default {
@@ -59,26 +60,18 @@ export default {
   data() {
     return {
       username: "",
-      systemMessage: ""
+      usernameSystemMessage: ""
     }
   },
-  mixins: [user],
+  mixins: [user, validateUsername],
   methods: {
-    validateUsername(username) {
-      let usernameRegex = /^[a-zA-Z\s]+$/;
-      if(!usernameRegex.test(username)) {
-        this.systemMessage = "Username can only consist of letters and spaces";
-        return false;
-      }
-      return true;
-    },
     setUsernameInStore(username){
       this.$store.dispatch("UPDATE_USERNAME", username);
     },
-    updateUsername() {
+    async updateUsername() {
       let username = this.username;
-
-      if(this.validateUsername(username) && this.user.id) {
+      let valid = await this.validateUsername(username);
+      if(valid && this.user.id) {
         this.$fire.database
           .ref("/users/" + this.user.id)
           .update({
@@ -86,10 +79,10 @@ export default {
           })
           .then(() => {
             this.setUsernameInStore(username);
-            this.systemMessage = "";
+            this.usernameSystemMessage = "";
           })
           .catch(e => {
-            this.systemMessage = e.message;
+            this.usernameSystemMessage = e.message;
             console.log(e);
           });
       }

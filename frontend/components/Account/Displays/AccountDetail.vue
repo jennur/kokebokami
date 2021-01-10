@@ -178,8 +178,10 @@ export default {
     toggleEditMode() {
       this.editMode = !this.editMode;
     },
-    handleSave() {
-      if(this.validate(this.inputValue)){
+    async handleSave() {
+      let valid = await this.validate(this.inputValue);
+      console.log("Valid:", valid);
+      if(valid){
         this.toggleEditMode();
         this.$emit("update", this.inputValue);
       }
