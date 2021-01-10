@@ -1,78 +1,74 @@
 <template>
-  <section class="kokebokami-login" :class="{'kokebokami-login--open': open}">
-    <transition name="pop-modal">
-      <div v-if="open" class="kokebokami-login-modal margin-horizontal-md">
-        <button @click="closeModal" class="remove-icon kokebokami-login-modal--close"></button>
+  <modal-box :open="open" @close="closeModal" class="kokebokami-login">
+    <h3>Log in with Kokebokami</h3>
 
-        <h3>Log in with Kokebokami</h3>
+    <form class="kokebokami-login-form" v-on:submit.prevent>
+      <fieldset>
+        <div v-if="resettingPassword" class="margin-bottom-lg">
+          {{ $t("login.newPasswordText") }}
+        </div>
 
-        <form class="kokebokami-login-modal-form" v-on:submit.prevent>
-          <fieldset>
-            <div v-if="resettingPassword" class="margin-bottom-lg">
-              {{ $t("login.newPasswordText") }}
-            </div>
+        <label>
+          {{ $t("email") }}
+          <input type="text" autocomplete="email" v-model="email" required />
+        </label>
 
-            <label>
-              {{ $t("email") }}
-              <input type="text" autocomplete="email" v-model="email" required />
-            </label>
+        <label v-if="!resettingPassword">
+          {{ $t("password") }}
+          <input type="password" autocomplete="password" v-model="password" required/>
+        </label>
+      </fieldset>
 
-            <label v-if="!resettingPassword">
-              {{ $t("password") }}
-              <input type="password" autocomplete="password" v-model="password" required/>
-            </label>
-          </fieldset>
+      <expand-transition :show="!!loginSystemMessage">
+        <div class="system-message system-message--dark-bg margin-top-lg">
+          {{ loginSystemMessage }}
+        </div>
+      </expand-transition>
 
-          <expand-transition :show="!!loginSystemMessage">
-            <div class="system-message system-message--dark-bg margin-top-lg">
-              {{ loginSystemMessage }}
-            </div>
-          </expand-transition>
+      <button v-if="!resettingPassword" @click="kokebokamiSignIn" class="button button-sm button--green margin-top-lg">
+        <span v-if="loggingIn" class="simple-loading-spinner"></span>
+        <span v-else>{{ $t("loginText") }}</span>
+      </button>
 
-          <button v-if="!resettingPassword" @click="kokebokamiSignIn" class="button button-sm button--green margin-top-lg">
-            <span v-if="loggingIn" class="simple-loading-spinner"></span>
-            <span v-else>{{ $t("loginText") }}</span>
-          </button>
+      <button v-else @click="handlePasswordReset" class="button button-sm button--green margin-top-lg">
+        Send
+      </button>
 
-          <button v-else @click="handlePasswordReset" class="button button-sm button--green margin-top-lg">
-            Send
-          </button>
+      <expand-transition :show="!!resetEmailMessage">
+        <div class="system-message system-message--dark-bg margin-top-lg">
+          {{ resetEmailMessage }}
+          <span
+            v-if="successReset"
+            class="link--orange-underline"
+            @click="closePasswordReset"
+            >{{ $t("login.withNewPassword") }}</span
+          >
+        </div>
+      </expand-transition>
 
-          <expand-transition :show="!!resetEmailMessage">
-            <div class="system-message system-message--dark-bg margin-top-lg">
-              {{ resetEmailMessage }}
-              <span
-                v-if="successReset"
-                class="link--orange-underline"
-                @click="closePasswordReset"
-                >{{ $t("login.withNewPassword") }}</span
-              >
-            </div>
-          </expand-transition>
+      <expand-transition :show="!resettingPassword">
+        <div v-if="!resettingPassword" class="link color--green margin-top-lg" @click="openPasswordReset">
+          {{ $t("login.forgottenPassword") }}
+        </div>
+      </expand-transition>
 
-          <expand-transition :show="!resettingPassword">
-            <div v-if="!resettingPassword" class="link color--green margin-top-lg" @click="openPasswordReset">
-              {{ $t("login.forgottenPassword") }}
-            </div>
-          </expand-transition>
-
-          <div class="kokebokami-login-modal-signup margin-top-lg">
-            {{ $t("login.noAccount") }}?
-            <nuxt-link :to="localePath('/sign-up/')">
-              {{$t("signUpText") }}
-            </nuxt-link>
-          </div>
-        </form>
+      <div class="kokebokami-login-signup margin-top-lg">
+        {{ $t("login.noAccount") }}?
+        <nuxt-link :to="localePath('/sign-up/')">
+          {{$t("signUpText") }}
+        </nuxt-link>
       </div>
-    </transition>
-  </section>
+    </form>
+  </modal-box>
 </template>
 <script>
 import ExpandTransition from "~/components/Transitions/Expand.vue";
+import ModalBox from "~/components/ModalBox";
 
 export default {
   name: "kokebokami-login",
   components: {
+    ModalBox,
     ExpandTransition
   },
   data() {
@@ -131,6 +127,7 @@ export default {
           .then(() => {
             console.log("Logging in with firebase");
             this.loggingIn = false;
+            this.$store.dispatch('SHOW_LOGIN_MODAL', {open: false, headline: null})
             this.$emit("logged-in");
           })
           .catch(error => {

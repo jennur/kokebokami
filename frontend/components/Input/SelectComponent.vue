@@ -4,6 +4,7 @@
     role="listbox"
     tabindex="0"
     class="select"
+    :class="{'select--naked': naked}"
     @click="open = !open"
     @keydown="
       event => {
@@ -68,6 +69,10 @@ export default {
     id: {
       type: String,
       default: "select"
+    },
+    naked: {
+      type: Boolean,
+      default: false
     },
     options: {
       type: Array,

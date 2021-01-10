@@ -2,7 +2,14 @@
   <nav
     class="navigation-menu-wrapper padding-horizontal-lg margin-auto desktop-width"
   >
-    <logo />
+    <div class="flex-row flex-row--align-center">
+      <logo />
+      <ul class="navigation-menu_language-selector">
+        <li><nuxt-link :to="switchLocalePath('no')" title="Norsk">NO</nuxt-link></li>
+        <li><nuxt-link :to="switchLocalePath('en')" title="English">EN</nuxt-link></li>
+      </ul>
+    </div>
+
     <div class="navigation-menu">
       <desktop-menu
         class="navigation-menu_desktop-menu"

@@ -13,42 +13,40 @@
 }
 </i18n>
 <template>
-  <section class="username-selector" :class="{'username-selector--open': open}">
-    <transition name="pop-modal">
-      <div v-if="open" class="username-selector-modal margin-horizontal-md">
-        <h3>{{$t("welcome")}}</h3>
-        <form class="username-selector-modal-form" v-on:submit.prevent>
-          <fieldset>
+  <modal-box :open="open" :close-option="false" class="username-selector">
+      <h3>{{$t("welcome")}}</h3>
+      <form class="username-selector-form" v-on:submit.prevent>
+        <fieldset>
 
-            <label>
-              {{ $t("pickUsername") }}
-              <input type="text" v-model="username" required />
-            </label>
+          <label>
+            {{ $t("pickUsername") }}
+            <input type="text" v-model="username" required />
+          </label>
 
-            <button class="button button-sm button--green" @click="updateUsername">
-              {{$t("done")}}
-            </button>
-          </fieldset>
+          <button class="button button-sm button--green" @click="updateUsername">
+            {{$t("done")}}
+          </button>
+        </fieldset>
 
-          <expand-transition :show="!!usernameSystemMessage">
-            <div class="system-message system-message--dark-bg margin-top-lg">
-              {{ usernameSystemMessage }}
-            </div>
-          </expand-transition>
-        </form>
-      </div>
-    </transition>
-  </section>
+        <expand-transition :show="!!usernameSystemMessage">
+          <div class="system-message system-message--dark-bg margin-top-lg">
+            {{ usernameSystemMessage }}
+          </div>
+        </expand-transition>
+      </form>
+  </modal-box>
 </template>
 
 <script>
 import user from "~/mixins/user.js";
 import validateUsername from "~/mixins/validate-username";
 import ExpandTransition from "~/components/Transitions/Expand.vue";
+import ModalBox from "~/components/ModalBox";
 
 export default {
   name: "username-modal",
   components: {
+    ModalBox,
     ExpandTransition
   },
   props: {

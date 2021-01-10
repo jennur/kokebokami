@@ -4,23 +4,9 @@
       <cta-section />
     </div>
 
-    <div
-      class="desktop-width padding-horizontal-lg margin-top-2xl margin-auto"
-    >
-      <button
-        class="search_button button button-sm button--green-border margin-md"
-        @click="event => toggleSearch(event)"
-      >
-        {{ $t("searchText") }}
-      </button>
+    <div class="desktop-width padding-horizontal-lg margin-top-2xl margin-auto">
+      <main-filter :recipes="publicRecipes" @filter="setVisibleRecipes" />
       <div class="flex-row flex-row--nowrap">
-        <recipe-search
-          :class="{ 'search--open': searchOpen }"
-          :recipes="publicRecipes"
-          :initialRecipes="initialRecipes"
-          @search="setVisibleRecipes"
-          v-click-outside="event => closeSearch(event)"
-        />
         <recipes-list
           v-if="loadedRecipes"
           :recipes="visibleRecipes"
@@ -51,11 +37,13 @@ import CtaSection from "~/components/CTASection/CTASection.vue";
 import SignUpSection from "~/components/SignUp/SignUpSection.vue";
 import RecipesList from "~/components/RecipePreview/RecipesList.vue";
 import RecipeSearch from "~/components/Search/RecipeSearch.vue";
+import MainFilter from "~/components/Filter/MainFilter";
 
 export default {
   name: "Home",
   layout: "fullwidth",
   components: {
+    MainFilter,
     CtaSection,
     SignUpSection,
     RecipeSearch,

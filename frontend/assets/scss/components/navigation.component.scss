@@ -8,6 +8,7 @@
   transition: all 0.3s;
 
   .logo {
+    display: block;
     margin: 0px;
     line-height: 22px;
 
@@ -37,6 +38,30 @@
   align-items: center;
   height: inherit;
 
+  &_language-selector {
+    display: block;
+    padding: 0px;
+    margin: 0px 0px 0px $spacingMedium;
+    list-style: none;
+    height: 17px;
+    @media screen and (min-width: $tabletWidth) {
+      height: 10px;
+    }
+    li {
+      display: inline-block;
+
+      a {
+        font-size: $fontSizeSmall;
+        line-height: $fontSizeSmall;
+        color: $orange;
+
+        &.active-link {
+          color: gray;
+          pointer-events: none;
+        }
+      }
+    }
+  }
   .login-menu {
     padding: 0px;
     height: inherit;

@@ -48,6 +48,12 @@ module.exports = {
     "comfort food",
     "spicy",
     "vegetarian",
-    "vegan"
+    "vegan",
+    "christmas",
+    "new years",
+    "easter",
+    "hanukkah",
+    "thanksgiving",
+    "celebration"
   ]
 }

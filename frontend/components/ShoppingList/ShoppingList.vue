@@ -1,63 +1,58 @@
 <template>
   <section class="shopping-list margin-bottom-lg">
-    <!-- Delete / Cancel action -->
 
+    <!-- Share action -->
+    <div class="flex-row flex-row--align-center margin-bottom-lg">
+      <div v-if="list && list.key">
+        <share-icon class="icon icon--blue" @click="toggleShareBox" />
+
+        <shareBox
+          :open="sharing"
+          :listKey="list.key"
+          :listTitle="list.title"
+          @shared="follower => sendEmail(follower)"
+          @close-modal="toggleShareBox"
+        />
+      </div>
+    </div>
+
+    <!-- Delete / Cancel action -->
     <div class="shopping-list_cancel-action">
       <settings-dropdown v-if="list.key" :right="true">
-        <span class="system-message" @click="toggleAlert"
-          ><delete-icon tabindex="0" class="icon margin-right-md" />Delete
-          collection</span
-        >
+        <span class="system-message" @click="toggleAlert">
+          <delete-icon tabindex="0" class="icon margin-right-md" />
+          Delete collection
+        </span>
       </settings-dropdown>
-      <button
-        v-if="!list.key"
-        class="button button--dynamic button--cancel"
-        @click="$emit('cancel')"
-      >
+
+      <button v-if="!list.key" class="button button--dynamic button--cancel" @click="$emit('cancel')">
         ✕
       </button>
     </div>
+
     <Alert
-      :alertMessage="
-        `Are you sure you want to delete this shopping list: '${list.title}'?`
-      "
+      :alertMessage="`Are you sure you want to delete this shopping list: '${list.title}'?`"
       :showAlert="showAlert"
       @confirmed="deleteShoppingList"
       @cancel="toggleAlert"
     />
-    <div class="flex-row flex-row--align-center margin-bottom-lg">
-      <!-- Share action -->
-      <div v-if="list && list.key">
-        <share-icon class="icon icon--blue" @click="toggleShareBox" />
-        <transition v-if="sharing" name="pop-modal">
-          <shareBox
-            :open="sharing"
-            :listKey="list.key"
-            :listTitle="list.title"
-            @shared="follower => sendEmail(follower)"
-            @close-modal="toggleShareBox"
-          />
-        </transition>
-      </div>
-    </div>
+
     <!-- Shopping list title -->
     <div class="shopping-list_title margin-bottom-lg margin-top-2xl">
-      <div
-        v-if="list.title && !editTitle"
-        class="flex-row flex-row--align-center margin-top-lg"
-      >
-        <h2
-          class="margin-bottom-sm margin-right-lg"
-          @click="event => toggleEditTitle(event)"
-        >
+      <div v-if="list.title && !editTitle" class="flex-row flex-row--align-center margin-top-lg">
+        <h2 class="margin-bottom-sm margin-right-lg" @click="event => toggleEditTitle(event)">
           {{ list.title }}
         </h2>
+
+        <!--   Shared-from list     -->
         <span v-if="shared" class="shopping-list_shared">
           Shared from:
-          <nuxt-link :to="`/cooks/${createdByCookPath}`">{{
-            list.createdBy.displayName
-          }}</nuxt-link>
+          <nuxt-link :to="`/cooks/${createdByCookPath}`">
+            {{ list.createdBy.displayName }}
+          </nuxt-link>
         </span>
+
+        <!--   Shared-with list     -->
         <span v-if="sharedWith" class="shopping-list_shared">
           Shared with:
           <nuxt-link
@@ -78,17 +73,11 @@
           v-model="updatedTitle"
           class="margin-right-lg"
           v-click-outside="saveTitle"
-          @keydown="
-            event => {
-              event.keyCode === 13 && saveTitle();
-            }
-          "
+          @keydown="event => { event.keyCode === 13 && saveTitle() }"
         />
-        <div
-          class="flex-row flex-row--align-center flex-row--nowrap margin-top-md"
-        ></div>
       </div>
     </div>
+
     <!-- Sublists -->
     <div class="flex-row">
       <sub-list
@@ -109,14 +98,11 @@
         @update="updateSubLists"
       />
     </div>
-    <div
-      class="flex-row flex-row--align-center flex-row--space-between full-width"
-    >
-      <increment-button
-        class="margin-vertical-lg margin-right-2xl"
-        @increment="addNewSubList"
-        >New sublist</increment-button
-      >
+
+    <div class="flex-row flex-row--align-center flex-row--space-between full-width">
+      <increment-button class="margin-vertical-lg margin-right-2xl" @increment="addNewSubList">
+        New sublist
+      </increment-button>
     </div>
   </section>
 </template>
@@ -134,7 +120,9 @@ import ShareBox from "./ShareBox.vue";
 import IncrementButton from "~/components/Input/IncrementButton.vue";
 import DecrementButton from "~/components/Input/DecrementButton.vue";
 import SubList from "./SubList.vue";
-import generatePath from '../../helpers/generatePath';
+
+import generatePath from '~/helpers/generatePath';
+import { shoppingListTemplate } from "~/helpers/email-templates.js";
 
 export default {
   name: "shopping-list",
@@ -221,25 +209,22 @@ export default {
               console.log("Title update failed:", error.message);
             });
         } else {
-          let shoppingListRef = this.$fire.database.ref(`shoppingLists`);
-
-          shoppingListRef.once("value", snapshot => {
-            let currentUserObj = { id: this.user.id, displayName: this.user.displayName };
-            shoppingListRef
-              .push({
-                title,
-                createdBy: currentUserObj,
-                owners: [currentUserObj]
-              })
-              .then(mainListObject => {
-                console.log("New main list added");
-                this.toggleEditTitle();
-                this.$emit("update");
-              })
-              .catch(error => {
-                console.log("Title update failed:", error.message);
-              });
-          });
+          let currentUserObj = { id: this.user.id, displayName: this.user.displayName };
+          this.$fire.database
+            .ref(`shoppingLists`)
+            .push({
+              title,
+              createdBy: currentUserObj,
+              owners: [currentUserObj]
+            })
+            .then(() => {
+              console.log("New main list added");
+              this.toggleEditTitle();
+              this.$emit("update");
+            })
+            .catch(error => {
+              console.log("Title update failed while adding new shopping list:", error.message);
+            });
         }
       } else {
         this.toggleEditTitle();
@@ -253,22 +238,14 @@ export default {
       this.$emit("update");
     },
     sendEmail(receiver) {
-      let message = `<p>Hi ${receiver.displayName},
-          <br>
-          <br>You just received a shopping list from ${this.user.displayName}.
-          <br>'${this.list.title}' is now available among your shopping list.
-          <br>
-          <br>Login to <a href="https://kokebokami.com">Kokebokami</a> to check it out!
-          <br>
-          <br>Best wishes,
-          <br>Your Kokebokami team 👩‍🍳</p>`;
-      axios
-        .post("/api/send-email", {
-          receiverID: receiver.id,
-          subject: `${this.user.displayName} just shared a shopping list with you 📝`,
-          message
-        })
-        .catch(error => console.log("Error:", error));
+      let sender = this.user.displayName;
+      let message = shoppingListTemplate(receiver.displayName, sender, this.list.title);
+      axios.post("/api/send-email", {
+              receiverID: receiver.id,
+              subject: `${sender} just shared a shopping list with you 📝`,
+              message
+            })
+            .catch(error => console.log("Error:", error));
     },
     deleteShoppingList() {
       let mainListRef = this.$fire.database.ref(`shoppingLists/${this.list.key}`);
@@ -299,7 +276,9 @@ export default {
             });
 
             owners = Object.fromEntries(owners);
-            mainListRef.update({ owners }).then(() => {
+            mainListRef
+              .update({ owners })
+              .then(() => {
               this.toggleAlert();
               this.$emit("update");
             });

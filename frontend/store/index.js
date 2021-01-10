@@ -7,7 +7,11 @@ export function state() {
     loginSystemMessage: "",
     signupSystemMessage: "",
     allCategories,
-    showUsernameModal: false
+    showUsernameModal: false,
+    loginModal: {
+      open: false,
+      headline: null
+    }
   };
 }
 
@@ -27,10 +31,20 @@ export const mutations = {
   updateUsername(state, payload) {
     state.user.displayName = payload;
     state.showUsernameModal = false;
+  },
+  updateUserFavorites(state, payload) {
+    state.user.favorites = payload;
+  },
+  showLoginModal(state, payload) {
+    state.loginModal.open = payload.open;
+    state.loginModal.headline = payload.headline;
   }
 };
 
 export const actions = {
+  SHOW_LOGIN_MODAL: ({commit}, payload) => {
+    commit("showLoginModal", payload);
+  },
   ON_AUTH_STATE_CHANGED: function(context, { authUser, claims }) {
     if (authUser) {
       context.dispatch("SET_USER");
@@ -72,6 +86,20 @@ export const actions = {
   UPDATE_USERNAME: function({commit}, payload) {
     commit("updateUsername", payload);
   },
+  UPDATE_USER_FAVORITES: function({commit}) {
+    let authUser = this.$fire.auth.currentUser;
+
+    this.$fire.database
+      .ref(`users/${authUser.uid}/favorites`)
+      .once("value", snapshot => {
+        if(snapshot.exists()){
+          commit("updateUserFavorites", snapshot.val());
+        } else {
+          commit("updateUserFavorites", null);
+        }
+      })
+      .catch(error => console.log("Error updating user favorites", error));
+  },
   SET_USER: function({ commit, dispatch }) {
     try {
       let authUser = this.$fire.auth.currentUser;
@@ -94,6 +122,7 @@ export const actions = {
             biography: snapshot.val().biography,
             following: snapshot.val().following,
             hiddenProfile: snapshot.val().hiddenProfile,
+            favorites: snapshot.val().favorites,
             notificationsOff: snapshot.val().notificationsOff || {
               recipes: false,
               shoppingLists: false,

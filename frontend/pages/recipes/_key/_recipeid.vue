@@ -1,5 +1,6 @@
 <template>
   <div>
+    <div id="fb-root"></div>
     <div class="flex-center-container" v-if="!loaded">
       <span class="simple-loading-spinner" />
     </div>
@@ -32,6 +33,7 @@
 </template>
 
 <script>
+import fbSharePlugin from "~/helpers/fbSharePlugin.js";
 import user from "~/mixins/user.js";
 import getRecipe from "~/mixins/get-recipe.js";
 
@@ -79,6 +81,9 @@ export default {
     handleUpdate() {
      this.getRecipe(this.recipe.id);
     }
+  },
+  mounted(){
+    fbSharePlugin();
   }
 };
 </script>

@@ -10,3 +10,19 @@ a {
 .dark-bg a {
   color: $green;
 }
+
+.link {
+  display: inline;
+  border-bottom: 2px solid $green;
+  text-decoration: none;
+  cursor: pointer;
+
+  &:hover {
+    border-bottom: none;
+    text-decoration: none;
+  }
+  &.small-text {
+    font-size: $fontSizeSmall;
+    height: $fontSizeLarge;
+  }
+}

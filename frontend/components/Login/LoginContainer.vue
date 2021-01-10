@@ -9,8 +9,8 @@
     <li>
       <kokebokami-button @click.native="toggleLoginModal" />
     </li>
-    <kokebokami-login :open="loginModalOpen" @toggle="toggleLoginModal" @logged-in="$emit('update')" />
 
+    <kokebokami-login :open="loginModalOpen" @toggle="toggleLoginModal" @logged-in="$emit('update')" />
   </ul>
 </template>
 

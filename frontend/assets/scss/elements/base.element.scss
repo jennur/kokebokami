@@ -40,18 +40,6 @@ body {
   }
 }
 
-.link {
-  &:hover {
-    text-decoration: underline;
-    cursor: pointer;
-  }
-  &--orange-underline {
-    cursor: pointer;
-    text-decoration: none;
-    border-bottom: 1px solid $orange;
-  }
-}
-
 .font-size {
   &-md {
     font-size: $fontSizeMedium;

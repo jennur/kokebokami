@@ -1,6 +1,8 @@
 <template>
   <div>
     <div id="actionBar" class="flex-row">
+
+      <!--   PDF download   -->
       <button
         class="button button--with-icon-round margin-bottom-lg margin-right-lg"
         @click="handlePdfExport"
@@ -8,24 +10,34 @@
       >
         <download-icon class="icon icon-sm" />
       </button>
+
+      <!--   Email share   -->
       <button
         @click="openShareModal"
-        class="button button--with-icon-round"
+        class="button button--with-icon-round margin-bottom-lg margin-right-lg"
         title="Share this recipe"
       >
-        <share-icon class="icon icon-sm" />
+        <email-icon class="icon icon-md" />
       </button>
+
+      <!--   Facebook share   -->
+      <a v-if="recipePublic"
+         class="button button--with-icon-round"
+         target="_blank"
+         :href="`https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fkokebokami.com%2Frecipes%2F${recipeKey}%2F&amp;src=sdkpreparse`"
+      >
+        <fa :icon="['fab', 'facebook-f']" style="font-size: 20px; color: black;" class="icon icon-sm"/>
+      </a>
     </div>
-    <transition name="pop-modal" v-if="sharing">
-      <share-form
-        :recipeKey="recipeKey"
-        :recipeOwnerID="recipeOwnerID"
-        :recipeTitle="recipeTitle"
-        :recipeDescription="recipeDescription"
-        :recipePublic="recipePublic"
-        @close-modal="closeShareModal"
-      />
-    </transition>
+
+    <share-form
+      :open="sharing"
+      :recipeKey="recipeKey"
+      :recipeOwnerID="recipeOwnerID"
+      :recipeTitle="recipeTitle"
+      :recipeDescription="recipeDescription"
+      @close-modal="closeShareModal"
+    />
   </div>
 </template>
 <script>

@@ -4,19 +4,32 @@
     <div :class="`header ${scrollDown ? '' : 'header--open'}`">
       <navigation @toggle-menu="handleMenu" />
     </div>
+
     <username-modal :open="$store.state.showUsernameModal" />
+
+    <modal-box :open="$store.state.loginModal.open"
+               @close="$store.dispatch('SHOW_LOGIN_MODAL', {open: false, headline: null})"
+               class="login-modal"
+    >
+      <h3>{{$store.state.loginModal.headline}}</h3>
+      <login-container class="margin-auto" />
+    </modal-box>
   </header>
 </template>
 
 <script>
 import Navigation from "./Navigation/Navigation.vue";
 import UsernameModal from "~/components/Login/UsernameModal";
+import ModalBox from "~/components/ModalBox";
+import LoginContainer from "~/components/Login/LoginContainer";
 
 export default {
   name: "header-component",
   components: {
     Navigation,
-    UsernameModal
+    UsernameModal,
+    ModalBox,
+    LoginContainer
   },
   data() {
     return { previousScrollValue: 0, scrollDown: false, menuOpen: false };
