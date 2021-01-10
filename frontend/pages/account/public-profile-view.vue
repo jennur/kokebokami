@@ -33,7 +33,15 @@ export default {
     };
   },
   components: { ProfileView, RecipesList },
-  mixins: [user, publicRecipes],
+  data(){
+    return {
+      publicRecipes: []
+    }
+  },
+  async asyncData({app}){
+    return await publicRecipes(app)
+  },
+  mixins: [user],
   computed: {
     breadcrumbs() {
       return [
@@ -50,8 +58,7 @@ export default {
       ];
     },
     currentUsersPublicRecipes() {
-      let publicRecipes = this.publicRecipes;
-      let currentUsersPublicRecipes = publicRecipes.filter(recipe => {
+      let currentUsersPublicRecipes = this.publicRecipes.filter(recipe => {
         return recipe.ownerID === this.user.id;
       });
 

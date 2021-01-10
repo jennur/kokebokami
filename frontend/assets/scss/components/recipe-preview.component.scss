@@ -21,7 +21,8 @@
     right: $spacingLarge;
     width: 25px;
     height: 25px;
-    cursor: default;
+    cursor: pointer;
+
     .icon {
       width: 100%;
       cursor: default;
@@ -114,6 +115,7 @@
     background-size: cover;
     border-radius: ($spacingMedium - 2px) ($spacingMedium - 2px) 0px 0px;
     background-position: 50%;
+    cursor: default;
   }
   svg.recipe-preview_image {
     height: auto;

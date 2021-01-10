@@ -15,7 +15,7 @@ export default {
   },
   methods: {
     googleSignIn() {
-      this.$router.push(this.localePath("/login?loading"));
+      this.$store.dispatch("SHOW_LOADING_SPLASH", true);
       const GoogleProvider = new this.$fireModule.auth.GoogleAuthProvider();
       this.$fire.auth.signInWithRedirect(GoogleProvider);
     }

@@ -39,17 +39,11 @@
     </div>
 
     <add-to-shopping-list
-      v-if="user && user.id && !editMode && ingredients.length"
+      v-if="!editMode && ingredients.length"
       class="margin-bottom-2xl"
       :recipeTitle="recipeTitle"
       :ingredients="calculatedIngredients"
     />
-    <nuxt-link
-      v-if="user && !user.id"
-      :to="localePath('/login/')"
-      class="button button-xs button--round button--green padding-horizontal-lg margin-bottom-2xl"
-      >{{ $t("recipes.loginToAddToShoppingList") }}</nuxt-link
-    >
   </section>
 </template>
 

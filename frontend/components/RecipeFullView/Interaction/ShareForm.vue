@@ -31,7 +31,7 @@
       </form>
 
       <!--  Share by email  -->
-      <expand-transition :show="useEmail">
+      <expand-transition :show="useEmail || !this.user.id">
         <form class="share-form margin-vertical-lg" @submit.prevent>
           <div v-if="sharedByEmail === false" class="flex-center-container">
             <span class="simple-loading-spinner" />

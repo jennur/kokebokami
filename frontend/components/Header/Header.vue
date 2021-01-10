@@ -5,6 +5,7 @@
       <navigation @toggle-menu="handleMenu" />
     </div>
 
+    <loading-splash v-if="$store.state.showLoadingSplash" />
     <username-modal :open="$store.state.showUsernameModal" />
 
     <modal-box :open="$store.state.loginModal.open"
@@ -22,10 +23,12 @@ import Navigation from "./Navigation/Navigation.vue";
 import UsernameModal from "~/components/Login/UsernameModal";
 import ModalBox from "~/components/ModalBox";
 import LoginContainer from "~/components/Login/LoginContainer";
+import LoadingSplash from "~/components/Login/LoadingSplash";
 
 export default {
   name: "header-component",
   components: {
+    LoadingSplash,
     Navigation,
     UsernameModal,
     ModalBox,

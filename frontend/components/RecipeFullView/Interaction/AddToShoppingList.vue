@@ -1,38 +1,46 @@
 <template>
   <div class="add-to-shopping-list">
-    <button
-      v-if="!addingToShoppingList && !addedToShoppingList"
-      class="button--increment"
-      @click="openSelect"
-    >
-      {{ $t("recipes.addToShoppingList") }}
-    </button>
-    <div v-if="addingToShoppingList" class="flex-row flex-row--align-center">
-      <select-component
-        v-if="!addNewShoppingList"
-        :options="options"
-        @select="handleSelect"
-        :preSelected="options[0]"
-        defaultValue="none"
-      />
-      <input
-        v-else
-        type="text"
-        placeholder="New list title"
-        v-model="newListTitle"
-      />
+    <div v-if="user && user.id">
       <button
-        class="button button-sm button--dynamic button--green-border padding-md margin-left-md"
-        @click="addToShoppingList"
+        v-if="!addingToShoppingList && !addedToShoppingList"
+        class="button--increment"
+        @click="openSelect"
       >
-        {{ $t("add") }}
+        {{ $t("recipes.addToShoppingList") }}
       </button>
+      <div v-if="addingToShoppingList" class="flex-row flex-row--align-center">
+        <select-component
+          v-if="!addNewShoppingList"
+          :options="options"
+          @select="handleSelect"
+          :preSelected="options[0]"
+          defaultValue="none"
+        />
+        <input
+          v-else
+          type="text"
+          placeholder="New list title"
+          v-model="newListTitle"
+        />
+        <button
+          class="button button-sm button--dynamic button--green-border padding-md margin-left-md"
+          @click="addToShoppingList"
+        >
+          {{ $t("add") }}
+        </button>
+      </div>
+      <span
+        v-if="!addingToShoppingList && addedToShoppingList"
+        class="button--checked"
+        >{{ $t("recipes.addedToShoppingList") }}</span
+      >
     </div>
-    <span
-      v-if="!addingToShoppingList && addedToShoppingList"
-      class="button--checked"
-      >{{ $t("recipes.addedToShoppingList") }}</span
+    <button v-else
+            class="button button-xs button--round button--green padding-horizontal-lg margin-bottom-2xl"
+            @click="$store.dispatch('SHOW_LOGIN_MODAL', {open: true, headline: 'Log in to add to shopping list'})"
     >
+      {{ $t("recipes.loginToAddToShoppingList") }}
+    </button>
   </div>
 </template>
 

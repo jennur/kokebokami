@@ -41,27 +41,25 @@
         </button>
       </label>
     </form>
+
     <section v-else class="comment-form">
-      <nuxt-link
-        :to="localePath('/login/')"
+      <button
         class="button button-sm button--green margin-right-sm"
-        >{{ $t("loginText") }}</nuxt-link
-      >{{ $t("comments.loginNote") }}
+        @click="$store.dispatch('SHOW_LOGIN_MODAL', {open: true, headline: 'Log in to comment on this recipe'})"
+      >
+        {{ $t("loginText") }}
+      </button>
+      {{ $t("comments.loginNote") }}
     </section>
 
     <transition name="fade">
-      <div
-        v-if="submitted && !isRecipeOwner"
-        class="comment-form_success padding-vertical-md padding-horizontal-lg margin-vertical-lg"
-      >
+      <div v-if="submitted && !isRecipeOwner" class="comment-form_success padding-vertical-md padding-horizontal-lg margin-vertical-lg">
         🎉{{ $t("comments.awaitingApproval") }}
       </div>
     </transition>
+
     <transition name="fade">
-      <div
-        v-if="error"
-        class="comment-form_error padding-vertical-md padding-horizontal-lg margin-vertical-lg"
-      >
+      <div v-if="error" class="comment-form_error padding-vertical-md padding-horizontal-lg margin-vertical-lg">
         🌧{{ $t("comments.errorSubmitting") }}
       </div>
     </transition>

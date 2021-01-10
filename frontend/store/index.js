@@ -2,6 +2,7 @@ import allCategories from "~/helpers/all-categories";
 
 export function state() {
   return {
+    showLoadingSplash: false,
     user: null,
     shoppingListCount: 0,
     loginSystemMessage: "",
@@ -38,6 +39,9 @@ export const mutations = {
   showLoginModal(state, payload) {
     state.loginModal.open = payload.open;
     state.loginModal.headline = payload.headline;
+  },
+  showLoadingSplash(state, payload) {
+    state.showLoadingSplash = payload;
   }
 };
 
@@ -45,9 +49,13 @@ export const actions = {
   SHOW_LOGIN_MODAL: ({commit}, payload) => {
     commit("showLoginModal", payload);
   },
+  SHOW_LOADING_SPLASH: ({commit}, payload) => {
+    commit("showLoadingSplash", payload);
+  },
   ON_AUTH_STATE_CHANGED: function(context, { authUser, claims }) {
     if (authUser) {
       context.dispatch("SET_USER");
+      context.dispatch("SHOW_LOADING_SPLASH", false);
     }
     this.$fireAuthUnsubscribe;
   },

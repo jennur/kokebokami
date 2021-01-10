@@ -70,8 +70,7 @@ export default {
           let isTypeOfMeal = true;
           let isInLanguage = true;
 
-          if(!recipe.typeOfMeal) isTypeOfMeal = false;
-          if (recipe.typeOfMeal && typeOfMeal) isTypeOfMeal = recipe.typeOfMeal.indexOf(typeOfMeal) > -1;
+          if (typeOfMeal) isTypeOfMeal = recipe.typeOfMeal && recipe.typeOfMeal.indexOf(typeOfMeal) > -1;
 
           if(lang) isInLanguage = recipe.language && recipe.language === lang;
 
