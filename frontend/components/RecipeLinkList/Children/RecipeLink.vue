@@ -130,10 +130,9 @@ export default {
     },
     deleteLink() {
       let linkID = this.link && this.link.id;
-      console.log("LinkID:", linkID, this.user.id);
-      if (this.link.id && this.user.id) {
-        const recipeLinkRef = this.$fire.database
-          .ref(`users/${this.user.id}/recipeLinks/${this.link.id}`)
+      if (linkID && this.user && this.user.id) {
+        this.$fire.database
+          .ref(`users/${this.user.id}/recipeLinks/${linkID}`)
           .remove()
           .then(res => {
             this.showAlert = false;
