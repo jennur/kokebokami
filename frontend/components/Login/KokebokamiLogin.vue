@@ -1,63 +1,45 @@
 <template>
-  <section
-    :class="'kokebokami-login ' + (open ? 'kokebokami-login--open' : '')"
-  >
+  <section :class="'kokebokami-login ' + (open ? 'kokebokami-login--open' : '')">
     <transition name="pop-modal">
       <div v-if="open" class="kokebokami-login-modal margin-horizontal-md">
-        <button
-          @click="closeModal"
-          class="remove-icon kokebokami-login-modal--close"
-        ></button>
+        <button @click="closeModal" class="remove-icon kokebokami-login-modal--close"></button>
+
         <h3>Log in with Kokebokami</h3>
+
         <form class="kokebokami-login-modal-form" v-on:submit.prevent>
           <fieldset>
             <div v-if="resettingPassword" class="margin-bottom-lg">
               {{ $t("login.newPasswordText") }}
             </div>
+
             <label>
               {{ $t("email") }}
-              <input
-                type="text"
-                autocomplete="email"
-                v-model="email"
-                required
-              />
+              <input type="text" autocomplete="email" v-model="email" required />
             </label>
+
             <label v-if="!resettingPassword">
               {{ $t("password") }}
-              <input
-                type="password"
-                autocomplete="password"
-                v-model="password"
-                required
-              />
+              <input type="password" autocomplete="password" v-model="password" required/>
             </label>
           </fieldset>
+
           <expand-transition :show="!!loginSystemMessage">
-            <div
-              class="system-message system-message--dark-bg margin-top-lg"
-            >
+            <div class="system-message system-message--dark-bg margin-top-lg">
               {{ loginSystemMessage }}
             </div>
           </expand-transition>
-          <button
-            v-if="!resettingPassword"
-            @click="kokebokamiSignIn"
-            class="button button-sm button--green margin-top-lg"
-          >
-            {{ $t("loginText") }}
+
+          <button v-if="!resettingPassword" @click="kokebokamiSignIn" class="button button-sm button--green margin-top-lg">
+            <span v-if="loggingIn" class="simple-loading-spinner"></span>
+            <span v-else>{{ $t("loginText") }}</span>
           </button>
-          <button
-            v-else
-            @click="handlePasswordReset"
-            class="button button-sm button--green margin-top-lg"
-          >
+
+          <button v-else @click="handlePasswordReset" class="button button-sm button--green margin-top-lg">
             Send
           </button>
+
           <expand-transition :show="!!resetEmailMessage">
-            <div
-              class="system-message system-message--dark-bg margin-top-lg"
-            >
+            <div class="system-message system-message--dark-bg margin-top-lg">
               {{ resetEmailMessage }}
               <span
                 v-if="successReset"
@@ -67,20 +49,18 @@
               >
             </div>
           </expand-transition>
+
           <expand-transition :show="!resettingPassword">
-            <div
-              v-if="!resettingPassword"
-              class="link color--green margin-top-lg"
-              @click="openPasswordReset"
-            >
+            <div v-if="!resettingPassword" class="link color--green margin-top-lg" @click="openPasswordReset">
               {{ $t("login.forgottenPassword") }}
             </div>
           </expand-transition>
+
           <div class="kokebokami-login-modal-signup margin-top-lg">
             {{ $t("login.noAccount") }}?
-            <nuxt-link :to="localePath('/sign-up/')">{{
-              $t("signUpText")
-            }}</nuxt-link>
+            <nuxt-link :to="localePath('/sign-up/')">
+              {{$t("signUpText") }}
+            </nuxt-link>
           </div>
         </form>
       </div>
@@ -102,7 +82,8 @@ export default {
       email: "",
       password: "",
       resettingPassword: false,
-      successReset: false
+      successReset: false,
+      loggingIn: false
     };
   },
   props: {
@@ -128,30 +109,33 @@ export default {
     },
     handlePasswordReset() {
       let email = this.email;
-      var componentThis = this;
       this.$fire.auth
         .sendPasswordResetEmail(email)
-        .then(function() {
+        .then(() => {
           // Email sent.
-          componentThis.resetEmailMessage =
-            "A reset link was sent to your email.";
+          this.resetEmailMessage = "A reset link was sent to your email.";
           console.log("Email sent");
-          componentThis.successReset = true;
+          this.successReset = true;
         })
-        .catch(function(error) {
+        .catch((error) => {
           // An error happened.
-          componentThis.resetEmailMessage = error.message;
+          this.resetEmailMessage = error.message;
           console.log("Error", error.message);
         });
     },
     kokebokamiSignIn() {
-      const componentThis = this;
+      this.loggingIn = true;
       try {
         this.$fire.auth
           .signInWithEmailAndPassword(this.email, this.password)
-          .then(() => console.log("Logging in with firebase"))
+          .then(() => {
+            console.log("Logging in with firebase");
+            this.loggingIn = false;
+            this.$emit("logged-in");
+          })
           .catch(error => {
-            componentThis.loginSystemMessage = error.message;
+            this.loginSystemMessage = error.message;
+            this.loggingIn = false;
           });
       } catch (error) {
         console.log("Error signing in:", error.message);

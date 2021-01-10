@@ -4,6 +4,7 @@ export default function userModel(user, key) {
   let hidden = user.hiddenProfile;
 
   return {
+    hidden,
     id: key,
     title: user.displayName,
     displayName: user.displayName,

@@ -3,69 +3,56 @@
     <div v-if="!loadedProfile" class="flex-center-container">
       <span class="simple-loading-spinner" />
     </div>
-    <div v-if="loadedProfile && cook">
-      <breadcrumbs :routes="breadcrumbs" />
-      <div v-if="user && user.id" class="flex-column flex-align--end">
-        <button
-          @click="unfollowUser"
-          class="button button-sm button--red-border margin-top-lg"
-          v-if="isFollowingUser"
-        >
-          {{ $t("cooks.unfollow") }} {{ cook ? cook.displayName : "" }}
-        </button>
-        <button
-          @click="followUser"
-          class="button button-sm button--green-border margin-top-lg"
-          v-else
-        >
-          {{ $t("cooks.follow") }} {{ cook ? cook.displayName : "" }}
-        </button>
-        <span class="system-message margin-top-md">{{
-          systemMessage
-        }}</span>
+
+    <div v-if="loadedProfile">
+      <div v-if="user && user.id && cook && !cook.hidden">
+
+        <breadcrumbs :routes="breadcrumbs" />
+
+        <div class="flex-column flex-align--end">
+          <button v-if="isFollowingUser" @click="unfollowUser" class="button button-sm button--red-border margin-top-lg">
+            {{ $t("cooks.unfollow") }} {{ cook ? cook.displayName : "" }}
+          </button>
+
+          <button v-else @click="followUser" class="button button-sm button--green-border margin-top-lg">
+            {{ $t("cooks.follow") }} {{ cook ? cook.displayName : "" }}
+          </button>
+
+          <span class="system-message margin-top-md">
+            {{ systemMessage }}
+          </span>
+        </div>
+
+        <profile-view class="margin-top-md" :user="cook" />
+
+        <h3>{{ $t("cooks.checkOutMyRecipes") }}</h3>
+        <recipes-list :recipes="cooksPublicRecipes" :emptyListMessage="`${userName} ${$t('cooks.didNotAddAnyPublicRecipes')}`"/>
+
       </div>
 
-      <profile-view class="margin-top-md" :user="cook" />
-      <h3>{{ $t("cooks.checkOutMyRecipes") }}</h3>
-      <recipes-list
-        :recipes="cooksPublicRecipes"
-        :emptyListMessage="
-          `${userName} ${$t('cooks.didNotAddAnyPublicRecipes')}`
-        "
-      />
-    </div>
-    <div
-      v-if="loadedProfile && !cook"
-      class="container container--center margin-auto margin-bottom-xl"
-    >
-      <cookSilhouette class="illustration--cook-bubble" />
-      <h3>
-        Hmmm...
-      </h3>
-      <p>
-        The profile you're trying to access seems to be hidden or not existing
-      </p>
-      <nuxt-link v-if="user && user.id" to="/cooks/"
-        >Discover other cooks ➔</nuxt-link
-      >
-      <nuxt-link v-else to="/login/">Log in to discover cooks ➔</nuxt-link>
+      <cook-hidden v-else :hidden="cook && cook.hidden" @update="getUser"/>
     </div>
   </section>
 </template>
+
 <script>
-import cookSilhouette from "~/assets/graphics/icons/cook-silhouette-circle.svg";
 import user from "~/mixins/user.js";
 import getPublicRecipes from "~/helpers/get-public-recipes.js";
 
 import ProfileView from "~/components/ProfileView.vue";
 import RecipesList from "~/components/RecipePreview/RecipesList";
+import CookHidden from "~/components/Cooks/CookHidden.vue";
 
-import getUser from "~/helpers/getUser";
 import generatePath from "~/helpers/generatePath";
+import userModel from "~/helpers/user-model";
 
 export default {
   name: "public-profile",
-  components: { cookSilhouette, ProfileView, RecipesList },
+  components: {
+    ProfileView,
+    RecipesList,
+    CookHidden
+  },
   head() {
     let displayName = this.cook && this.cook.displayName;
     let path = displayName && generatePath(displayName, this.cook.id) || "";
@@ -82,7 +69,7 @@ export default {
   data() {
     return {
       systemMessage: "",
-      cook: null,
+      cook: {},
       followed: null,
       loadedProfile: false,
       publicRecipes: [],
@@ -90,22 +77,10 @@ export default {
       loadedRecipes: false
     };
   },
-  async asyncData({app, params}) {
-    let publicRecipes = await getPublicRecipes(app);
-
-    if(process.client) {
-      let cook = await getUser(app, params);
-
-      return {
-        ...publicRecipes,
-        cook,
-        loadedProfile: true
-      };
-    }
+  async asyncData({app}) {
+    let recipes = await getPublicRecipes(app);
     return {
-      ...publicRecipes,
-      cook: null,
-      loadedProfile: false
+      publicRecipes: recipes.publicRecipes
     }
   },
   mixins: [user],
@@ -124,57 +99,78 @@ export default {
     },
     cooksPublicRecipes() {
       let publicRecipes = this.publicRecipes;
-      let cooksPublicRecipes = [];
       if (this.cook && publicRecipes) {
-        cooksPublicRecipes = publicRecipes.filter(recipe => {
+        return publicRecipes.filter(recipe => {
           return recipe.ownerID === this.cook.id;
         });
       }
-      return cooksPublicRecipes;
+      return [];
     },
     isFollowingUser() {
       if (this.followed !== null) return this.followed;
       else {
         if (this.user && this.user.following && this.cook.id) {
-          return (
-            Object.values(this.user.following).indexOf(this.cook.id) > -1
-          );
+          return Object.values(this.user.following).indexOf(this.cook.id) > -1;
         }
       }
     }
   },
   methods: {
+    getUser(){
+      let params = this.$route.params;
+      console.log("Getting user");
+      this.$fire.database
+        .ref("users")
+        .once("value", snapshot => {
+          if (snapshot.exists() && snapshot.val()) {
+            let userPath = `${params.key}/${params.userid}/`;
+            let users = snapshot.val();
+
+            for (let key in users) {
+              let user = users[key];
+              let path = generatePath(user.displayName, key, true);
+              if (userPath === path) {
+                this.cook = userModel(user, key);
+              }
+            }
+          }
+        }).then(() => {
+          this.loadedProfile = true;
+        }).catch(error => {
+          console.log("Unable to get user:", error);
+          this.loadedProfile = true;
+        })
+    },
     followUser() {
-      let componentThis = this;
       try {
-        let currentUserRef = this.$fire.database.ref(
-          `users/${this.user.id}/following`
-        );
+        let currentUserRef = this.$fire.database.ref(`users/${this.user.id}/following`);
+
         currentUserRef.once("value", async snapshot => {
           let followingAlready = false;
+
           if (snapshot.exists()) {
+            console.log("Snapshot.val:", snapshot.val());
             snapshot.forEach(value => {
-              if (value.val() === componentThis.cook.id) {
+              if (value.val() === this.cook.id) {
                 followingAlready = true;
                 return;
               }
             });
 
             if (followingAlready) {
-              componentThis.systemMessage =
-                "You're already following " + componentThis.cook.displayName;
+              this.systemMessage = "You're already following " + this.cook.displayName;
             }
           }
           if (!followingAlready) {
             currentUserRef
-              .push(componentThis.cook.id)
+              .push(this.cook.id)
               .then(() => {
-                componentThis.followed = true;
-                componentThis.$store.dispatch("SET_USER");
+                this.followed = true;
+                this.$store.dispatch("SET_USER");
               })
               .catch(error => {
                 console.log(error);
-                componentThis.systemMessage = error.message;
+                this.systemMessage = error.message;
               });
           }
         });
@@ -183,25 +179,23 @@ export default {
       }
     },
     unfollowUser() {
-      let componentThis = this;
       try {
         let userRef = this.$fire.database.ref(`users/${this.user.id}/following`);
+
         userRef.once("value", snapshot => {
           if (snapshot.exists()) {
             snapshot.forEach(value => {
-              if (value.val() === componentThis.cook.id) {
-                try {
-                  userRef
-                    .child(value.key)
-                    .remove()
-                    .then(() => {
-                      componentThis.followed = false;
-                      componentThis.$store.dispatch("SET_USER");
-                    });
-                } catch (error) {
-                  console.log(error);
-                }
-                return;
+              if (value.val() === this.cook.id) {
+                userRef
+                  .child(value.key)
+                  .remove()
+                  .then(() => {
+                    this.followed = false;
+                    this.$store.dispatch("SET_USER");
+                  })
+                  .catch(error => {
+                    console.log(error);
+                  });
               }
             });
           }
@@ -211,11 +205,9 @@ export default {
       }
     }
   },
-  async created() {
-    if(!this.cook) {
-      this.cook = await getUser(this, this.$route.params);
-    }
-    this.loadedProfile = true;
+  created() {
+    if(this.$fire.auth.currentUser) this.getUser();
+    else this.loadedProfile = true;
   }
 };
 </script>
