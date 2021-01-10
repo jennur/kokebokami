@@ -180,7 +180,6 @@ export default {
     },
     async handleSave() {
       let valid = await this.validate(this.inputValue);
-      console.log("Valid:", valid);
       if(valid){
         this.toggleEditMode();
         this.$emit("update", this.inputValue);
