@@ -51,7 +51,9 @@ export default {
     tabs: {
       myRecipes: "Mine oppskrifter",
       myRecipeLinks: "Mine oppskrifts-lenker",
-      recipesSharedWithMe: "Oppskrifter delt med meg"
+      recipesSharedWithMe: "Oppskrifter delt med meg",
+      myFavorites: "Mine favoritter"
+
     }
   },
   accountDetails: {

@@ -40,7 +40,7 @@
       :tabTitles="[
         $t('myCookbook.tabs.myRecipes'),
         $t('myCookbook.tabs.myRecipeLinks'),
-        $t('myCookbook.tabs.recipesSharedWithMe')
+        $t('myCookbook.tabs.myFavorites')
       ]"
       :activeTabIndexControl="activeTabIndex"
       @switchTab="index => handleTabSwitch(index)"
@@ -71,7 +71,7 @@
 import ClickOutside from "vue-click-outside";
 
 import user from "~/mixins/user.js";
-import sharedRecipes from "~/mixins/shared-recipes.js";
+import favoriteRecipes from "~/mixins/user-favorites.js";
 import userRecipes from "~/mixins/user-recipes.js";
 import recipeLinks from "~/mixins/user-recipe-links.js";
 
@@ -108,16 +108,13 @@ export default {
   data() {
     return {
       addingRecipe: false,
-      filteredRecipes: [],
-      filtered: false,
-      filteredKind: "",
       activeTabIndex: 0,
       dropdown: false,
       addRecipeFromUrl: false,
       hiddenCategories: []
     };
   },
-  mixins: [user, userRecipes, recipeLinks, sharedRecipes],
+  mixins: [user, userRecipes, recipeLinks, favoriteRecipes],
   computed: {
     breadcrumbs() {
       return [
@@ -135,7 +132,7 @@ export default {
       else if (this.activeTabIndex === 1)
         return "You didnt add any recipes to this list yet. 🤷🏼‍♀️ The recipes you add from URL will appear in this list.";
       else if (this.activeTabIndex === 2)
-        return "Nobody shared any recipes with you yet 🤷🏾‍♂️";
+        return "You didn't add any favorites yet! 🤷🏾‍♂️";
     },
     firstName() {
       let firstName = null;
@@ -151,12 +148,8 @@ export default {
       else return "My kokebok";
     },
     visibleRecipes() {
-      if (!this.filtered) {
-        if (this.activeTabIndex === 0) return this.userRecipes;
-        if (this.activeTabIndex === 2) return this.sharedRecipes;
-      } else {
-        return this.filteredRecipes;
-      }
+      if (this.activeTabIndex === 0) return this.userRecipes;
+      if (this.activeTabIndex === 2) return this.favoriteRecipes;
     },
     userCategories() {
       let links = this.recipeLinks;
@@ -170,13 +163,6 @@ export default {
       categories.push(categories.shift());
       return categories;
     },
-    recipesToBeFiltered() {
-      if (this.activeTabIndex === 0) {
-        return this.userRecipes;
-      } else if (this.activeTabIndex === 2) {
-        return this.sharedRecipes;
-      }
-    }
   },
   methods: {
     updateHiddenCategories(hiddenCategories) {
@@ -199,11 +185,6 @@ export default {
     },
     handleTabSwitch(index) {
       this.activeTabIndex = index;
-      this.filtered = false;
-    },
-    setVisibleRecipes(filteredRecipesObj) {
-      this.filteredRecipes = filteredRecipesObj.recipes;
-      this.filtered = filteredRecipesObj.filtered;
     }
   },
   directives: {

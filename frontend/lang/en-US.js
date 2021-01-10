@@ -51,7 +51,8 @@ export default {
     tabs: {
       myRecipes: "My personal recipes",
       myRecipeLinks: "My recipe links",
-      recipesSharedWithMe: "Recipes shared with me"
+      recipesSharedWithMe: "Recipes shared with me",
+      myFavorites: "My favorites"
     }
   },
   accountDetails: {

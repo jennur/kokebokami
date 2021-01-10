@@ -166,9 +166,19 @@ export default {
         .then(() => {
           this.$store.dispatch("UPDATE_USER_FAVORITES");
           console.log("Successfully added to favorites");
-          // this.$fire.database
-          //   .ref(`recipes/${this.recipe.id}/favoriteCount`)
-          //   .once("value", snapshot => {})
+
+          this.$fire.database
+            .ref(`recipes/${this.recipe.id}/favoritesCount`)
+            .once("value", snapshot => {
+              let count = 1;
+              if(snapshot.exists()){
+                count = snapshot.val();
+                count += 1;
+              }
+              this.$fire.database
+                .ref(`recipes/${this.recipe.id}`)
+                .update({ favoritesCount: count });
+            })
         })
         .catch(error => console.log("Error saving to favorites:", error));
     },
@@ -179,6 +189,19 @@ export default {
         .then(() => {
           this.$store.dispatch("UPDATE_USER_FAVORITES");
           console.log("Successfully removed from favorites");
+
+          this.$fire.database
+            .ref(`recipes/${this.recipe.id}/favoritesCount`)
+            .once("value", snapshot => {
+              if(snapshot.exists()){
+                let count = snapshot.val();
+                count -= 1;
+
+                this.$fire.database
+                  .ref(`recipes/${this.recipe.id}`)
+                  .update({ favoritesCount: count });
+              }
+            })
         })
         .catch(error => console.log("Error removing from favorites:", error));
     }
