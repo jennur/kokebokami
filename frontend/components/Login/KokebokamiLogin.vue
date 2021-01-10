@@ -1,5 +1,5 @@
 <template>
-  <section :class="'kokebokami-login ' + (open ? 'kokebokami-login--open' : '')">
+  <section class="kokebokami-login" :class="{'kokebokami-login--open': open}">
     <transition name="pop-modal">
       <div v-if="open" class="kokebokami-login-modal margin-horizontal-md">
         <button @click="closeModal" class="remove-icon kokebokami-login-modal--close"></button>
@@ -68,8 +68,8 @@
   </section>
 </template>
 <script>
-import user from "~/mixins/user.js";
 import ExpandTransition from "~/components/Transitions/Expand.vue";
+
 export default {
   name: "kokebokami-login",
   components: {

@@ -6,7 +6,8 @@ export function state() {
     shoppingListCount: 0,
     loginSystemMessage: "",
     signupSystemMessage: "",
-    allCategories
+    allCategories,
+    showUsernameModal: false
   };
 }
 
@@ -19,6 +20,13 @@ export const mutations = {
   },
   setLoginSystemMessage(state, payload) {
     state.loginSystemMessage = payload;
+  },
+  showUsernameModal(state, payload) {
+    state.showUsernameModal = payload;
+  },
+  updateUsername(state, payload) {
+    state.user.displayName = payload;
+    state.showUsernameModal = false;
   }
 };
 
@@ -61,7 +69,9 @@ export const actions = {
         }
       });
   },
-
+  UPDATE_USERNAME: function({commit}, payload) {
+    commit("updateUsername", payload);
+  },
   SET_USER: function({ commit, dispatch }) {
     try {
       let authUser = this.$fire.auth.currentUser;
@@ -73,6 +83,9 @@ export const actions = {
           emailVerified: authUser.emailVerified
         };
         if (snapshot.exists()) {
+          if(snapshot.val().displayName === "User") {
+            commit("showUsernameModal", true);
+          }
           loggedinUser = {
             ...loggedinUser,
             photoURL: snapshot.val().photoURL,
@@ -99,7 +112,11 @@ export const actions = {
             }
             // No more details available upon first login
           };
-          userRef.set(databaseUser);
+
+          if(authUser.emailVerified) {
+            commit("showUsernameModal", true);
+            userRef.set(databaseUser);
+          }
 
           loggedinUser = {
             ...loggedinUser,

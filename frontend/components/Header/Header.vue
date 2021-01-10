@@ -4,16 +4,19 @@
     <div :class="`header ${scrollDown ? '' : 'header--open'}`">
       <navigation @toggle-menu="handleMenu" />
     </div>
+    <username-modal :open="$store.state.showUsernameModal" />
   </header>
 </template>
 
 <script>
 import Navigation from "./Navigation/Navigation.vue";
+import UsernameModal from "~/components/Login/UsernameModal";
 
 export default {
   name: "header-component",
   components: {
-    Navigation
+    Navigation,
+    UsernameModal
   },
   data() {
     return { previousScrollValue: 0, scrollDown: false, menuOpen: false };
