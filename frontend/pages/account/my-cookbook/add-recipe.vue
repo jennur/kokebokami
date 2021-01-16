@@ -67,17 +67,17 @@ export default {
     }
   },
   methods: {
-    saveRecipe(payload) {
+    saveRecipe(recipeObj) {
       let recipeKey = this.recipeKey;
-      let date = Date.now();
+      let date = new Date;
+      date = date.toISOString();
 
       if (!recipeKey) {
-        let recipeObj = {
-          ...payload,
-          createdAt: date,
+        recipeObj = {
+          ...recipeObj,
+          datePublished: date,
           ownerID: this.user.id
         };
-
         this.$fire.database.ref("recipes")
           .push(recipeObj)
           .then(result => {
@@ -91,9 +91,9 @@ export default {
       else {
         this.$fire.database
           .ref(`recipes/${recipeKey}`)
-          .update(payload)
+          .update(recipeObj)
           .then(() => {
-            console.log("Successfully set payload:", payload);
+            console.log("Successfully updated recipe:", recipeObj);
           })
           .then(() => {
             this.getRecipe();

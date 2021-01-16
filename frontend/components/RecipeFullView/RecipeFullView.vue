@@ -112,9 +112,18 @@ e<template>
         </div>
       </div>
 
-      <div
-        class="recipe_flex-no-wrap flex-row--align-top margin-vertical-xl"
-      >
+      <div v-if="recipe.datePublished" class="recipe_dates margin-top-xl">
+        <div>
+          <span class="label">Published:</span>
+          {{recipe.datePublished}}
+        </div>
+        <div v-if="recipe.dateModified">
+          <span class="label">Updated:</span>
+          {{recipe.dateModified}}
+        </div>
+      </div>
+
+      <div class="recipe_flex-no-wrap flex-row--align-top margin-vertical-xl">
         <ingredients-display
           class="recipe_ingredients-wrap"
           :ingredients="recipe.ingredients"
