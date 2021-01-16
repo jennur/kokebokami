@@ -126,7 +126,6 @@ export default {
       cookieKey: "i18n_redirected",
       alwaysRedirect: true
     },
-
     objectNotation: true,
     baseUrl: "https://kokebokami.com",
     locales: [

@@ -1,42 +1,38 @@
 <template>
-  <div
-    id="servings"
-    class="recipe_servings-wrap flex-row flex-row--align-center margin-vertical-2xl"
-  >
-    <span
-      v-if="!servings && !editMode && !loading"
-      class="recipe_servings-disabled-dash"
-      >-</span
-    >
-    <input
-      v-if="servings && !editMode && !loading"
-      class="recipe_servings margin-right-md"
-      type="Number"
-      min="1"
-      step="1"
-      v-model="updatedServings"
-      @change="$emit('update-servings', updatedServings)"
-      :disabled="!servings"
-    />
+  <div id="servings" class="recipe_servings-wrap margin-vertical-lg">
+    <div class="flex-row flex-row--align-center">
+      <h4
+        class="margin--none margin-top-sm margin-bottom-sm"
+        :class="{ disabled: !servings && !editMode }"
+      >
+        {{ $t("recipes.servings") }}
+        <span v-if="!servings && !editMode && !loading">
+          🤷🏾‍♂️
+        </span>
+      </h4>
+
+      <edit-icon
+        tabindex="0"
+        v-if="isRecipeOwner && !editMode"
+        @click="toggleEditMode"
+        class="icon margin-left-md"
+      />
+    </div>
+
+    <div v-if="servings && !editMode && !loading" class="recipe_servings-w-btns">
+      <button class="servings-btn" @click="decrement">-</button>
+      <span class="recipe_servings">{{updatedServings}}</span>
+      <button class="servings-btn" @click="increment">+</button>
+    </div>
+
     <span v-if="loading" class="simple-loading-spinner"></span>
-    <h4
-      class="margin--none margin-top-sm margin-bottom-sm"
-      :class="{ disabled: !servings && !editMode }"
-    >
-      {{ servingsTitle }}
-    </h4>
+
     <servings-edit
       v-if="editMode"
       :servings="defaultServings"
       @save="saveServings"
     />
 
-    <edit-icon
-      tabindex="0"
-      v-if="isRecipeOwner && !editMode"
-      @click="toggleEditMode"
-      class="icon margin-left-md"
-    />
   </div>
 </template>
 
@@ -90,6 +86,16 @@ export default {
   methods: {
     toggleEditMode() {
       this.editMode = !this.editMode;
+    },
+    decrement(){
+      if(this.updatedServings > 1) {
+        this.updatedServings--;
+        this.$emit('update-servings', this.updatedServings);
+      }
+    },
+    increment(){
+      this.updatedServings++;
+      this.$emit('update-servings', this.updatedServings);
     },
     saveServings(servings) {
       this.editMode = false;

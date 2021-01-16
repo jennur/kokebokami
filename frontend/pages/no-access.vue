@@ -21,6 +21,13 @@ export default {
   name: "no-access",
   head() {
     return {
+      title: "Kokebokami",
+      meta: [
+        {
+          name: "robots" ,
+          content: "noindex"
+        }
+      ],
       link: [
         {
           rel: "canonical",

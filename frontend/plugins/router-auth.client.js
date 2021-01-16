@@ -11,6 +11,4 @@ export default function(context) {
     console.log("Redirect error:", error.message);
     context.store.dispatch("SET_LOGIN_MESSAGE", error.message);
   });
-  //console.log("i18n", context);
-  //context.store.state.allCategories = context.app.$i18n.allCategories;
 }

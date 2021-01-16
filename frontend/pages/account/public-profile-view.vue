@@ -24,6 +24,12 @@ export default {
   head() {
     return {
       title: `Profile preview | Kokebokami`,
+      meta: [
+        {
+          name: "robots" ,
+          content: "noindex"
+        }
+      ],
       link: [
         {
           rel: "canonical",

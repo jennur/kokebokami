@@ -507,6 +507,12 @@ export default {
   head() {
     return {
       title: `Privacy Policy | Kokebokami`,
+      meta: [
+        {
+          name: "robots" ,
+          content: "noindex"
+        }
+      ],
       link: [
         {
           rel: "canonical",

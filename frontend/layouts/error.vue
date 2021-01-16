@@ -30,6 +30,17 @@ export default {
   components: {
     crackedEggs
   },
+  head() {
+    return {
+      title: `${this.error.statusCode || 500} | Kokebokami`,
+      meta: [
+        {
+          name: "robots" ,
+          content: "noindex"
+        }
+      ]
+    }
+  },
   props: ["error"],
   layout: "default"
 };

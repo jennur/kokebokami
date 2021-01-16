@@ -1,4 +1,4 @@
-import getRecipeAndMetadata from "~/helpers/recipe-metadata.js";
+import getRecipeAndMetadata from "~/helpers/get-recipe-and-metadata.js";
 import getRecipeOwner from "~/helpers/recipe-owner";
 import recipeModel from "~/helpers/recipe-model";
 

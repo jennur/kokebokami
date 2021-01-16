@@ -40,6 +40,12 @@ export default {
   head() {
     return {
       title: `Shopping list | Kokebokami`,
+      meta: [
+        {
+          name: "robots" ,
+          content: "noindex"
+        }
+      ],
       link: [
         {
           rel: "canonical",

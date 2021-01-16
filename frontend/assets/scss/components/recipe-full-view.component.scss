@@ -4,6 +4,7 @@
   h4 {
     color: $blue;
   }
+
   &_language {
     color: $blue;
     font-size: $fontSizeSmall;
@@ -16,6 +17,7 @@
       }
     }
   }
+
   &_image {
     &--edit {
       opacity: 0.8;
@@ -43,6 +45,7 @@
     background-size: cover;
     background-repeat: no-repeat;
     background-position: 50%;
+
     &-edit-btn {
       position: absolute;
       top: $spacingMedium;
@@ -52,6 +55,7 @@
       border-radius: $spacingSmall;
     }
   }
+
   &_details {
     &-wrap {
       display: block;
@@ -70,6 +74,7 @@
     padding: $spacingLarge;
     border-radius: 0px 0px $spacingMedium $spacingMedium;
     margin: 0px auto;
+
     @media screen and (min-width: 800px) {
       width: 50%;
       order: 0;
@@ -81,14 +86,17 @@
       width: 100%;
     }
   }
+
   &_title {
     font-family: $headingFont;
     font-size: $fontSizeXXLargeMobile;
     width: max-content;
     max-width: 100%;
+
     @media screen and (min-width: $tabletWidth) {
       font-size: $fontSizeXXLarge;
     }
+
     &.editable {
       cursor: default;
       &:hover {
@@ -96,12 +104,14 @@
         border-radius: $spacingSmall;
       }
     }
+
     &--edit {
       &:hover {
         background-color: transparent;
       }
     }
   }
+
   &_description {
     font-size: $fontSizeLargeMobile;
     margin-bottom: $spacingXXLarge;
@@ -128,19 +138,17 @@
       }
     }
   }
+
   &_servings {
-    width: 50px;
-    //border: 1px solid $green;
-    //border-radius: $spacingSmall;
+    display: inline-block;
+    min-width: 40px;
     border: none;
     position: relative;
-    &:focus {
-      border: 1px solid $green;
-    }
-    &:disabled {
-      border-color: lightgray;
-      position: relative;
-    }
+    font-size: $fontSizeLarge;
+    font-weight: bold;
+    color: $blue;
+    text-align: center;
+
     &-wrap {
       position: relative;
       max-width: 235px;
@@ -148,14 +156,49 @@
         color: lightgray;
       }
     }
-    &-disabled-dash {
-      position: absolute;
-      left: $spacingLarge;
-      top: 50%;
-      transform: translateY(-50%);
-      color: lightgray;
+
+    &-w-btns {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+
+      .servings-btn {
+        width: 20px;
+        height: 20px;
+        border-radius: 3px;
+        background-color: $green;
+        border: none;
+        outline: none;
+        cursor: pointer;
+        font-size: $fontSizeMedium;
+        line-height: 5px;
+        transition: 0.3s;
+
+        &:hover, &:focus {
+          background-color: lighten($green, 10%);
+        }
+      }
     }
   }
+
+  &_dates {
+    display: block;
+    width: 100%;
+    font-size: $fontSizeSmall;
+    color: gray;
+
+    @media screen and (min-width: $mobileWidth) {
+      margin-left: $spacingLarge;
+    }
+
+    span.label {
+      font-weight: bold;
+    }
+    div:not(:first-child) {
+      margin-top: $spacingSmall;
+    }
+  }
+
   &_flex-no-wrap {
     @media screen and (min-width: $mobileWidth) {
       display: flex;
@@ -165,6 +208,7 @@
       margin-right: $spacingLarge;
     }
   }
+
   &_ingredients-wrap {
     width: 100%;
     @media screen and (min-width: $mobileWidth) {
@@ -173,6 +217,7 @@
       margin-right: $spacingXLarge;
     }
   }
+
   &_instructions-wrap {
     width: 100%;
     @media screen and (min-width: $mobileWidth) {
@@ -184,6 +229,7 @@
       margin-top: 114px;
     }
   }
+
   &_ingredients {
     padding: 0px;
     margin-bottom: $spacingXXLarge;
@@ -198,6 +244,7 @@
       margin-bottom: $spacingMedium;
     }
   }
+
   .add-to-shopping-list {
     .select {
       width: 180px;
@@ -245,7 +292,7 @@
         z-index: 0;
       }
       &:focus {
-        font-weight: medium;
+        font-weight: normal;
         outline: none;
         background-color: rgba($green, 0.1);
       }

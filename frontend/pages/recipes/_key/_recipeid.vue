@@ -79,6 +79,19 @@ export default {
   },
   methods: {
     handleUpdate() {
+      let date = new Date;
+      date = date.toISOString();
+
+      if(!this.recipe.datePublished) {
+        this.$fire.database
+          .ref(`recipes/${this.recipe.id}/datePublished`)
+          .set(date)
+      } else {
+        this.$fire.database
+          .ref(`recipes/${this.recipe.id}/dateModified`)
+          .set(date)
+      }
+
      this.getRecipe(this.recipe.id);
     }
   },
