@@ -6,6 +6,9 @@
         :class="{ disabled: !servings && !editMode }"
       >
         {{ $t("recipes.servings") }}
+        <span v-if="!servings && !editMode && !loading">
+          🤷🏾‍♂️
+        </span>
       </h4>
 
       <edit-icon
@@ -15,11 +18,6 @@
         class="icon margin-left-md"
       />
     </div>
-
-
-    <span v-if="!servings && !editMode && !loading" class="recipe_servings-disabled-dash">
-      - 🤷🏾‍♂️
-    </span>
 
     <div v-if="servings && !editMode && !loading" class="recipe_servings-w-btns">
       <button class="servings-btn" @click="decrement">-</button>
