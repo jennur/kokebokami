@@ -18,6 +18,12 @@ export default {
   head() {
     return {
       title: `Goodbye | Kokebokami`,
+      meta: [
+        {
+          name: "robots" ,
+          content: "noindex"
+        }
+      ],
       link: [
         {
           rel: "canonical",

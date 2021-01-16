@@ -7,7 +7,7 @@ export default function(context) {
         user.providerData[0].providerId === "facebook.com"
         // Facebook users´ e-mail addresses are NOT automatically verified (Google users´ are)
       ) {
-        performRedirect(route, redirect, app);
+        performAdminRedirect(route, redirect, app);
       } else if (
         !user.emailVerified &&
         user.providerData[0].providerId === "password"
@@ -38,7 +38,7 @@ function onAdminRoute(route) {
   }
 }
 
-function performRedirect(route, redirect, app) {
+function performAdminRedirect(route, redirect, app) {
   if (
     route.path.indexOf("login") > -1 ||
     route.path.indexOf("sign-up") > -1 ||

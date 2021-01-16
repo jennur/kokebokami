@@ -169,6 +169,12 @@ export default {
   head() {
     return {
       title: `Terms and conditions | Kokebokami`,
+      meta: [
+        {
+          name: "robots" ,
+          content: "noindex"
+        }
+      ],
       link: [
         {
           rel: "canonical",

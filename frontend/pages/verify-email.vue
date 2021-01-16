@@ -22,6 +22,12 @@ export default {
   head() {
     return {
       title: `Verify email | Kokebokami`,
+      meta: [
+        {
+          name: "robots" ,
+          content: "noindex"
+        }
+      ],
       link: [
         {
           rel: "canonical",

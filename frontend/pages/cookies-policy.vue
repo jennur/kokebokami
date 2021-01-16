@@ -189,6 +189,12 @@ export default {
   head() {
     return {
       title: `Cookies policy | Kokebokami`,
+      meta: [
+        {
+          name: "robots" ,
+          content: "noindex"
+        }
+      ],
       link: [
         {
           rel: "canonical",

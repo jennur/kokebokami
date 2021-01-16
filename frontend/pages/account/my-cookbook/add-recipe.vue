@@ -19,6 +19,12 @@ export default {
   head() {
     return {
       title: `Add new recipe | Kokebokami`,
+      meta: [
+        {
+          name: "robots" ,
+          content: "noindex"
+        }
+      ],
       link: [
         {
           rel: "canonical",
@@ -63,10 +69,12 @@ export default {
   methods: {
     saveRecipe(payload) {
       let recipeKey = this.recipeKey;
+      let date = Date.now();
 
       if (!recipeKey) {
         let recipeObj = {
           ...payload,
+          createdAt: date,
           ownerID: this.user.id
         };
 
