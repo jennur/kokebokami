@@ -17,9 +17,8 @@
     "@nuxtjs/firebase": "^7.1.1",
     "@nuxtjs/google-gtag": "^1.0.4",
     "@nuxtjs/pwa": "^3.0.0-beta.20",
-    "@sanity/client": "^0.142.6",
     "@sendgrid/mail": "^7.4.0",
-    "axios": "^0.19.0",
+    "axios": "^0.21.1",
     "babel-plugin-module-resolver": "^4.0.0",
     "babel-plugin-transform-runtime": "^6.23.0",
     "babel-preset-es2015": "^6.24.1",
@@ -35,7 +34,7 @@
     "googleapis": "^66.0.0",
     "html-to-pdfmake": "^2.0.1",
     "node-fetch": "^2.6.0",
-    "nuxt": "^2.12.2",
+    "nuxt": "^2.15.7",
     "nuxt-dropzone": "^1.0.4",
     "nuxt-fontawesome": "^0.4.0",
     "nuxt-i18n": "^6.12.2",
@@ -46,13 +45,13 @@
     "vue-click-outside": "^1.0.7",
     "vue-social-sharing": "^3.0.0-beta.11",
     "vuex": "^3.1.2",
-    "ws": "^7.3.0"
+    "ws": "^7.5.3"
   },
   "devDependencies": {
     "@nuxtjs/google-analytics": "^2.2.1",
     "babel-preset-env": "^1.7.0",
-    "node-sass": "^4.13.1",
+    "node-sass": "^6.0.1",
     "sass": "^1.23.0",
-    "sass-loader": "^8.0.0"
+    "sass-loader": "^10.1.1"
   }
 }

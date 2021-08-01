@@ -18,7 +18,7 @@
   flex-grow: 1;
   flex-basis: 100%;
   max-width: 100%;
-  margin: $spacingMedium/2;
+  margin: math.div($spacingMedium, 2);
   min-width: 280px;
   background-color: $lightOrange;
   align-items: flex-end;
