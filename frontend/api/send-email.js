@@ -47,7 +47,7 @@ async function sendEmail(data) {
   }
   try {
     await sgMail.send(msg)
-    console.log("Message sent");
+    console.log("Message sent to", receiverEmail);
     return { status: 200, message: "mail accepted for delivery" };
   } catch (error) {
     console.log("Error in sgMail:", error.message);

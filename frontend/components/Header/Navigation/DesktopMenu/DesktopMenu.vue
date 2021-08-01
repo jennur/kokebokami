@@ -8,7 +8,11 @@
         </nuxt-link>
       </li>
       <li>
-        <span class="login-menu_link" @click="toggleDropdown">
+        <span class="login-menu_link" 
+              tabindex="0" 
+              @keydown="event => event.keyCode === 13 && toggleDropdown()" 
+              @click="toggleDropdown"
+              >
           {{ $t("loginText") }}
         </span>
 
