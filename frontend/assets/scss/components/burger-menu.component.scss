@@ -14,7 +14,7 @@
   &_slice {
     display: block;
     position: absolute;
-    top: $spacingXLarge/2 - $spacingSmall/2;
+    top: math.div($spacingXLarge,2) - math.div($spacingSmall,2);
     width: 100%;
     height: $spacingSmall;
     background-color: $blue;
