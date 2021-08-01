@@ -38,7 +38,7 @@ export default {
     headingIndex: "Registrer deg for å opprette din egen kokebok",
     headingSignUp: "Registrer deg for å lagre oppskriftene dine",
     soMeLoginText:
-      "Hvis du har en Google eller Facebook-konto, trenger du ikke å registrere deg - bare logg inn direkte.",
+      "Hvis du har en Google-konto, trenger du ikke å registrere deg - bare logg inn direkte.",
     repeatPassword: "Repeter passord",
     iAgreeTo: "Jeg godtar"
   },

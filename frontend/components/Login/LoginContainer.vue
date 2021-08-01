@@ -1,13 +1,10 @@
 <template>
   <ul class="login-container">
     <li>
-      <google-login class="margin-bottom-md" />
+      <google-login class="margin-bottom-md" tabindex="0" />
     </li>
     <li>
-      <facebook-login class="margin-bottom-md" />
-    </li>
-    <li>
-      <kokebokami-button @click.native="toggleLoginModal" />
+      <kokebokami-button @click.native="toggleLoginModal" tabindex="0" />
     </li>
 
     <kokebokami-login :open="loginModalOpen" @toggle="toggleLoginModal" @logged-in="$emit('update')" />

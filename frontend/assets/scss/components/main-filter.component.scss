@@ -5,4 +5,14 @@
   align-items: center;
   padding: $spacingLarge 0px;
 
+  .recipe-lang-select-wrap {
+    display: flex;
+    align-items: center;
+
+    .label {
+      color: $blue;
+      font-size: $fontSizeSmall;
+    }
+  }
+
 }

@@ -4,11 +4,13 @@
                  :values="$store.state.allCategories.typeOfMeal"
                  @selected="setTypeOfMeal"
     />
-    <language-input :existing-language="defaultLanguage"
-                    :naked="true"
-                    class="margin-top-lg"
-                    @selected="setLanguage"
-    />
+    <div class="recipe-lang-select-wrap margin-top-xl">
+      <span class="label">Recipe language:</span>
+      <language-input :existing-language="defaultLanguage"
+                      :naked="true"
+                      @selected="setLanguage"
+      />
+    </div>
   </section>
 </template>
 

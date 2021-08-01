@@ -38,7 +38,7 @@ export default {
     headingIndex: "Sign up to start building your own cookbook",
     headingSignUp: "Sign up to start adding your recipes",
     soMeLoginText:
-      "If you have a Google or Facebook account, there is no need to sign up - just login directly.",
+      "If you have a Google account, there is no need to sign up - just login directly.",
     repeatPassword: "Repeat password",
     iAgreeTo: "I agree to the"
   },
