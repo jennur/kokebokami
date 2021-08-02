@@ -8,7 +8,7 @@
     >
       <button
         v-if="!addRecipeFromUrl"
-        class="button button-lg button--round margin-auto margin-vertical-xl"
+        class="button button-lg button--round margin-auto margin-v-xl"
         @click="toggleDropdown"
       >
         {{ $t("navigation.addRecipe") }}

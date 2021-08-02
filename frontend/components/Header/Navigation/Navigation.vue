@@ -1,6 +1,6 @@
 <template>
   <nav
-    class="navigation-menu-wrapper padding-horizontal-lg margin-auto desktop-width"
+    class="navigation-menu-wrapper padding-h-lg margin-auto desktop-width"
   >
     <div class="flex-row flex-row--align-center">
       <logo />

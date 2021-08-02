@@ -9,7 +9,7 @@
         New shopping list
       </increment-button>
     </div>
-    <div class="margin-vertical-2xl">
+    <div class="margin-v-2xl">
       <shopping-list
         v-if="addingNewShoppingList"
         :list="{ key: '', title: 'New shopping list', subLists: [] }"

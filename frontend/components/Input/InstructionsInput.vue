@@ -1,5 +1,5 @@
 <template>
-  <fieldset id="instructionList" class="flex-column margin-vertical-2xl">
+  <fieldset id="instructionList" class="flex-column margin-v-2xl">
     <h4>Instructions</h4>
     <ol class="add-recipe-form_instructions">
       <li

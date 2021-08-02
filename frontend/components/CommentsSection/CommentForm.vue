@@ -16,7 +16,7 @@
         }}</span>
       </div>
       <label
-        class="comment-form_anonymous flex-row flex-row--align-center margin-vertical-lg"
+        class="comment-form_anonymous flex-row flex-row--align-center margin-v-lg"
       >
         <input type="checkbox" v-model="anonymous" />
         <span class="margin-left-sm">{{
@@ -53,13 +53,13 @@
     </section>
 
     <transition name="fade">
-      <div v-if="submitted && !isRecipeOwner" class="comment-form_success padding-vertical-md padding-horizontal-lg margin-vertical-lg">
+      <div v-if="submitted && !isRecipeOwner" class="comment-form_success padding-v-md padding-h-lg margin-v-lg">
         🎉{{ $t("comments.awaitingApproval") }}
       </div>
     </transition>
 
     <transition name="fade">
-      <div v-if="error" class="comment-form_error padding-vertical-md padding-horizontal-lg margin-vertical-lg">
+      <div v-if="error" class="comment-form_error padding-v-md padding-h-lg margin-v-lg">
         🌧{{ $t("comments.errorSubmitting") }}
       </div>
     </transition>

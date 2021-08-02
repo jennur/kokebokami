@@ -1,7 +1,7 @@
 <template>
   <div class="servings">
     <input type="number" min="0" step="1" v-model="updatedServings" /><button
-      class="button button--dynamic-small button--round padding-vertical-sm margin-horizontal-lg"
+      class="button button--dynamic-small button--round padding-v-sm margin-h-lg"
       @click="$emit('save', updatedServings)"
     >
       Save default value

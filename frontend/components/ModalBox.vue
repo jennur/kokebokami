@@ -1,7 +1,7 @@
 <template>
   <section class="modal" :class="{'modal--open': open}">
     <transition name="pop-modal">
-      <div v-if="open" class="modal-box margin-horizontal-md" :class="{'bright-bg': !darkBg}">
+      <div v-if="open" class="modal-box margin-h-md" :class="{'bright-bg': !darkBg}">
         <button v-if="closeOption" @click="$emit('close')" class="remove-icon modal--close"></button>
 
         <slot></slot>

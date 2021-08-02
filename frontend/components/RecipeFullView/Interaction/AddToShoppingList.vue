@@ -36,7 +36,7 @@
       >
     </div>
     <button v-else
-            class="button button-xs button--round button--green padding-horizontal-lg margin-bottom-2xl"
+            class="button button-xs button--round button--green padding-h-lg margin-bottom-2xl"
             @click="$store.dispatch('SHOW_LOGIN_MODAL', {open: true, headline: 'Log in to add to shopping list'})"
     >
       {{ $t("recipes.loginToAddToShoppingList") }}

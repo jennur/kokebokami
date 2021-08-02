@@ -27,6 +27,7 @@ export default {
   off: "OFF",
   open: "Open",
   closed: "Closed",
+  save: "Save",
   login: {
     headingText: "Login to kokeboka di",
     forgottenPassword: "I forgot my password",

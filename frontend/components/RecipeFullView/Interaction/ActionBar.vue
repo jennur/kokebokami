@@ -4,7 +4,7 @@
 
       <!--   PDF download   -->
       <button
-        class="button button--with-icon-round margin-bottom-lg margin-right-lg"
+        class="button button--w-icon-round margin-bottom-lg margin-right-lg"
         @click="handlePdfExport"
         title="Download as PDF"
       >
@@ -14,7 +14,7 @@
       <!--   Email share   -->
       <button
         @click="openShareModal"
-        class="button button--with-icon-round margin-bottom-lg margin-right-lg"
+        class="button button--w-icon-round margin-bottom-lg margin-right-lg"
         title="Share this recipe"
       >
         <email-icon class="icon icon-md" />
@@ -22,7 +22,7 @@
 
       <!--   Facebook share   -->
       <a v-if="recipePublic"
-         class="button button--with-icon-round"
+         class="button button--w-icon-round"
          target="_blank"
          :href="`https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fkokebokami.com%2Frecipes%2F${recipeKey}%2F&amp;src=sdkpreparse`"
       >

@@ -1,5 +1,5 @@
 <template>
-  <section class="container margin-vertical-xl">
+  <section class="container margin-v-xl">
     <h4 class="heading--blue margin-bottom-md margin-left-sm">Show categories</h4>
     <form class="link-categories-filter">
       <label

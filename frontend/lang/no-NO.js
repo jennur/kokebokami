@@ -26,6 +26,7 @@ export default {
   off: "AV",
   open: "Åpen",
   closed: "Lukket",
+  save: "Lagre",
   login: {
     headingText: "Login to kokeboka di",
     forgottenPassword: "Jeg har glemt passordet mitt",

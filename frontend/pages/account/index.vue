@@ -2,7 +2,7 @@
   <div>
     <breadcrumbs :routes="breadcrumbs" />
 
-    <div class="flex-row margin-vertical-2xl">
+    <div class="flex-row margin-v-2xl">
       <gateway-link
         v-for="(gateway, index) in gateways"
         :key="`gateway-link-${index}`"
@@ -10,7 +10,7 @@
       />
     </div>
     <div
-      class="full-width flex-column flex-column--align-right margin-vertical-lg"
+      class="full-width flex-column flex-column--align-right margin-v-lg"
     >
       <button class="logout-button" @click="logOut">{{ $t("logout") }}</button>
     </div>

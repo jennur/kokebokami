@@ -19,10 +19,10 @@
       @click="approveComment"
     >
       <span
-        class="comment_approval-text padding-vertical-md margin-right-lg"
+        class="comment_approval-text padding-v-md margin-right-lg"
         >{{ $t("comments.awaitingYourApproval") }}</span
       >
-      <span class="comment_approval-btn-wrap padding-vertical-md">
+      <span class="comment_approval-btn-wrap padding-v-md">
         <button
           class="comment_approval-btn button button--dynamic button--round"
         >
@@ -78,7 +78,7 @@
     <transition name="fade">
       <div
         v-if="submitted && !isRecipeOwner"
-        class="sub-comments-form_success padding-vertical-md padding-horizontal-lg margin-vertical-lg"
+        class="sub-comments-form_success padding-v-md padding-h-lg margin-v-lg"
       >
         🎉{{ $t("comments.awaitingApproval") }}
       </div>
@@ -86,7 +86,7 @@
     <transition name="fade">
       <div
         v-if="error"
-        class="sub-comments-form_error padding-vertical-md padding-horizontal-lg margin-vertical-lg"
+        class="sub-comments-form_error padding-v-md padding-h-lg margin-v-lg"
       >
         🌧{{ $t("comments.errorSubmitting") }}
       </div>

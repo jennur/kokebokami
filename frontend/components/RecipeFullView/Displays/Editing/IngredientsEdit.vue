@@ -43,7 +43,7 @@
         >Add ingredient</increment-button
       >
       <button
-        class="button button--dynamic-small button--round padding-vertical-sm margin-top-lg"
+        class="button button--dynamic-small button--round padding-v-sm margin-top-lg"
         @click="$emit('save', ingredientsToBeUpdated)"
       >
         Save

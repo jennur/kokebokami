@@ -1,7 +1,7 @@
 <template>
   <div>
     <breadcrumbs :routes="breadcrumbs" />
-    <div class="account container tablet-width padding-horizontal-lg">
+    <div class="account container tablet-width padding-h-lg">
       <h1 class="margin-top-2xl margin-bottom-lg">
         {{ $t("accountDetails.headline") }}
       </h1>
