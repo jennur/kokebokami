@@ -1,7 +1,7 @@
 <template>
   <section>
     <servings-display
-      :servings="updatedServings"
+      :servings="updatedServings.toString()"
       :defaultServings="servings"
       @update-servings="setServings"
       :isRecipeOwner="isRecipeOwner"
