@@ -23,14 +23,22 @@
         <li
           v-for="(ingredient, index) in calculatedIngredients"
           :key="`ingredient-${index}`"
+          @click="handleCheck(index)"
         >
-          <span class="recipe_ingredients-amount">{{
-            ingredient.amount
-          }}</span>
-          {{ ingredient.item }}
+          <span class="check-circle" 
+                :class="checkedIngredients.indexOf(index) > -1 && 'check-circle--checked'"
+          ></span>
+          <div class="ingredient">
+            <span class="amount">
+              {{ ingredient.amount }}
+            </span>
+            {{ ingredient.item }}
+          </div>
         </li>
       </ul>
+
       <span v-if="loading" class="simple-loading-spinner"></span>
+
       <ingredients-edit
         v-if="editMode"
         :ingredients="convertedIngredients"
@@ -89,7 +97,8 @@ export default {
       amounts: [],
       editMode: false,
       loading: false,
-      updated: 0
+      updated: 0,
+      checkedIngredients: []
     };
   },
   watch: {
@@ -123,6 +132,15 @@ export default {
     }
   },
   methods: {
+    handleCheck(ingredientIndex) {
+      let indexInArray = this.checkedIngredients.indexOf(ingredientIndex);
+      if(indexInArray > -1) {
+        this.checkedIngredients.splice(indexInArray,1);
+      }
+      else {
+        this.checkedIngredients.push(ingredientIndex);
+      }
+    },
     setServings(number) {
       this.updatedServings = number;
     },
