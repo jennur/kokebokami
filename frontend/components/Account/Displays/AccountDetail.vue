@@ -71,7 +71,9 @@
       </fieldset>
       <fieldset>
         <div class="flex-row flex-row--nowrap margin-top-lg">
-          <button @click="handleSave" class="button button--round button-sm">Save</button>
+          <button @click="handleSave" class="button button--round button-sm">
+            {{ $t("save") }}
+          </button>
           <button
             class="button button-sm button--cancel"
             @click="toggleEditMode"
