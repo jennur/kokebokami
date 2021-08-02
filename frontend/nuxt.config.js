@@ -2,6 +2,7 @@ const getRoutes = require("./build-helpers/getRoutes");
 const redirectSSL = require("redirect-ssl");
 
 export default {
+  target: 'static',
   generate: {
     fallback: true,
     routes() {
@@ -169,7 +170,8 @@ export default {
       },
       database: true,
       storage: true
-    }
+    },
+    terminateDatabasesAfterGenerate: true
   },
   pwa: {},
   fontawesome: {
