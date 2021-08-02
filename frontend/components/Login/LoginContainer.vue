@@ -13,7 +13,6 @@
 
 <script>
 import GoogleLogin from "./GoogleLogin.vue";
-import FacebookLogin from "./FacebookLogin.vue";
 import KokebokamiButton from "./KokebokamiButton.vue";
 import KokebokamiLogin from "./KokebokamiLogin.vue";
 
@@ -23,7 +22,6 @@ export default {
   name: "login-container",
   components: {
     GoogleLogin,
-    FacebookLogin,
     KokebokamiButton,
     KokebokamiLogin
   },

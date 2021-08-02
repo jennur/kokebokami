@@ -2,22 +2,17 @@ export default function(context) {
   let { redirect, route, app } = context;
   let unsubscribe = app.$fire.auth.onAuthStateChanged(user => {
     if (user) {
-      if (
-        user.emailVerified ||
-        user.providerData[0].providerId === "facebook.com"
-        // Facebook users´ e-mail addresses are NOT automatically verified (Google users´ are)
-      ) {
+      if (user.emailVerified) {
         performAdminRedirect(route, redirect, app);
-      } else if (
-        !user.emailVerified &&
-        user.providerData[0].providerId === "password"
-      ) {
+      } 
+      else {
         if (route.name.indexOf("verify-email") === -1) {
           redirect(app.localePath("/verify-email/"));
         }
       }
       unsubscribe();
-    } else {
+    } 
+    else {
       if (onAdminRoute(route)) {
         console.log(
           "Redirecting to login, unauthenticated user on admin route"
