@@ -11,7 +11,7 @@
     />
     <div>
       <div class="flex-row flex-row--align-center flex-row--nowrap">
-        <h4 class="margin-vertical-md">{{ $t("recipes.ingredients") }}</h4>
+        <h4 class="margin-v-md">{{ $t("recipes.ingredients") }}</h4>
         <edit-icon
           tabindex="0"
           v-if="isRecipeOwner && !editMode"

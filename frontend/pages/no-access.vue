@@ -1,6 +1,6 @@
 <template>
   <main
-    class="mobile-width padding-horizontal-lg margin-auto margin-bottom-2xl"
+    class="mobile-width padding-h-lg margin-auto margin-bottom-2xl"
   >
     <div class="container container--center">
       <h1 class="margin-top-2xl">Oh no!</h1>

@@ -1,6 +1,6 @@
 <template>
   <section
-    class="add-recipe-from-url padding-horizontal-lg padding-vertical-xl"
+    class="add-recipe-from-url padding-h-lg padding-v-xl"
   >
     <h3 class="add-recipe-from-url_heading">Add new recipe from URL</h3>
     <form class="form mobile-width margin-auto">

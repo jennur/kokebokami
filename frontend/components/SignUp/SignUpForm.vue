@@ -46,7 +46,7 @@
           type="checkbox"
           v-model="termsAndConditions"
         />
-        <span class="sign-up-form_terms padding-horizontal-sm">
+        <span class="sign-up-form_terms padding-h-sm">
           {{ $t("signUp.iAgreeTo") }}
           <nuxt-link :to="localePath('/terms-and-conditions/')"
             >Terms and Conditions</nuxt-link

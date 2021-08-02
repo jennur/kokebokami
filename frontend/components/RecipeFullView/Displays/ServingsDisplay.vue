@@ -1,5 +1,5 @@
 <template>
-  <div id="servings" class="recipe_servings-wrap margin-vertical-lg">
+  <div id="servings" class="recipe_servings-wrap margin-v-lg">
     <div class="flex-row flex-row--align-center">
       <h4
         class="margin--none margin-top-sm margin-bottom-sm"

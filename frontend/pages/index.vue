@@ -4,7 +4,7 @@
       <cta-section />
     </div>
 
-    <div class="desktop-width padding-horizontal-lg margin-top-2xl margin-auto">
+    <div class="desktop-width padding-h-lg margin-top-2xl margin-auto">
       <main-filter :recipes="publicRecipes" @filter="setVisibleRecipes" />
       <div class="flex-row flex-row--nowrap">
         <recipes-list

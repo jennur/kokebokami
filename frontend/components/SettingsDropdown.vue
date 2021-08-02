@@ -2,7 +2,7 @@
   <div class="settings-dropdown" :class="{ 'settings-dropdown--right': right }">
     <settings-icon
       tabindex="0"
-      class="icon margin-horizontal-md"
+      class="icon margin-h-md"
       @click="event => toggleDropdown(event)"
     />
     <transition name="pop-settings-dropdown">

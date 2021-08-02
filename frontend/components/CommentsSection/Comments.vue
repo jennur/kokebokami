@@ -6,7 +6,7 @@
     </div>
     <div
       v-if="!loading && !comments.length"
-      class="comments--empty margin-vertical-2xl"
+      class="comments--empty margin-v-2xl"
     >
       {{ $t("comments.noCommentsNote") }}
     </div>
@@ -19,7 +19,7 @@
         :comment="comment"
         :isSubComment="false"
         :isRecipeOwner="isRecipeOwner"
-        class="padding-vertical-lg"
+        class="padding-v-lg"
         @update="getComments"
         @subCommentSubmitted="commentObj => $emit('send-email', commentObj)"
       />

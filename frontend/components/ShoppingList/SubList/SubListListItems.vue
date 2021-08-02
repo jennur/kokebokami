@@ -5,7 +5,7 @@
         v-for="(item, index) in listItems"
         :key="`list-item-${index}`"
         :data-list-item="`list-item-${index}`"
-        class="margin-vertical-md"
+        class="margin-v-md"
       >
         <label
           :class="{
@@ -32,24 +32,27 @@
         <decrement-button @decrement="removeListItem(index)" />
       </li>
     </ul>
-    <edit-icon
-      tabindex="0"
-      v-if="!editMode"
-      class="icon margin-sm"
-      @click="toggleEditMode"
-    />
+    <button v-if="!editMode"
+            @click="toggleEditMode" 
+            class="button button-xs button--green-border button--round"
+            tabindex="0"
+    >
+      Edit list
+      <edit-icon class="icon margin-left-sm"/>
+    </button>
+    
     <div v-if="editMode" class="flex-row flex-row--align-center">
       <increment-button
-        class="margin-right-md margin-vertical-lg"
+        class="margin-right-md margin-v-lg"
         @increment="addNewListItem"
         >Add item</increment-button
       >
       <button
         v-if="listItems.length"
-        class="button button-xs button--dynamic button--cancel margin-left-md margin-vertical-lg"
+        class="button button-xs button--round padding-h-lg margin-v-lg"
         @click="saveListItems"
       >
-        ✕ Close
+        Save
       </button>
     </div>
   </div>

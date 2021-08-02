@@ -1,5 +1,5 @@
 <template>
-  <section class="sub-list margin-vertical-lg">
+  <section class="sub-list margin-v-lg">
     <div class="flex-row flex-row--align-top flex-row--nowrap">
       <settings-dropdown class="margin-top-md" v-if="subListKey">
         <span class="system-message" @click="toggleAlert">

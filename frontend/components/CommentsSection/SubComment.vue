@@ -5,7 +5,7 @@
     :comment="subComment"
     :isSubComment="true"
     :isRecipeOwner="isRecipeOwner"
-    class="sub-comment padding-vertical-lg"
+    class="sub-comment padding-v-lg"
     @update="$emit('update')"
   />
 </template>

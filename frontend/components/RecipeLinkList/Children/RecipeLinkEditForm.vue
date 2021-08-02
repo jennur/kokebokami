@@ -87,10 +87,10 @@
       </fieldset>
       <fieldset>
         <div
-          class="flex-row flex-row--align-center flex-row--space-between margin-vertical-lg"
+          class="flex-row flex-row--align-center flex-row--space-between margin-v-lg"
         >
           <button
-            class="button button--dynamic button--dynamic-small button--cancel margin-vertical-md"
+            class="button button--dynamic button--dynamic-small button--cancel margin-v-md"
             @click.prevent="$emit('close-edit-mode')"
           >
             ✕ {{ $t("cancel") }}

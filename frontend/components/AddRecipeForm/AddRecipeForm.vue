@@ -38,7 +38,7 @@
         </div>
         <span
           v-if="imageSystemMessage"
-          class="system-message margin-vertical-lg"
+          class="system-message margin-v-lg"
           >{{ imageSystemMessage }}</span
         >
       </div>

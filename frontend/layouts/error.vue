@@ -1,6 +1,6 @@
 <template>
   <main
-    class="mobile-width padding-horizontal-lg margin-auto margin-bottom-2xl"
+    class="mobile-width padding-h-lg margin-auto margin-bottom-2xl"
   >
     <div v-if="error.statusCode === 404" class="container container--center">
       <h1 class="margin-top-2xl">404 Whoops!</h1>

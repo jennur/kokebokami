@@ -1,7 +1,7 @@
 <template>
   <div class="recipe-link-wrap">
     <div
-      class="recipe-link padding-horizontal-xl"
+      class="recipe-link padding-h-xl"
       :class="{ 'recipe-link--no-link': editMode }"
     >
       <expand-transition :show="editMode" class="recipe-link_edit-form-wrap">
@@ -16,7 +16,7 @@
       </expand-transition>
       <div
         v-if="!editMode"
-        class="padding-horizontal-xl"
+        class="padding-h-xl"
         @click="event => openLink(event)"
       >
         <div class="recipe-link_settings">

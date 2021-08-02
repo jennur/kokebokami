@@ -100,7 +100,7 @@
     </div>
 
     <div class="flex-row flex-row--align-center flex-row--space-between full-width">
-      <increment-button class="margin-vertical-lg margin-right-2xl" @increment="addNewSubList">
+      <increment-button class="margin-v-lg margin-right-2xl" @increment="addNewSubList">
         New sublist
       </increment-button>
     </div>

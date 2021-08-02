@@ -2,7 +2,7 @@
   <modal-box :dark-bg="false" :open="open" @close="$emit('close-modal')">
       <h3>{{ $t("recipes.share.share") }} '{{ recipeTitle }}'</h3>
 
-      <form v-if="user && user.id" class="share-form margin-vertical-lg" @submit.prevent >
+      <form v-if="user && user.id" class="share-form margin-v-lg" @submit.prevent >
         <div class="flex-row flex-row--align-center flex-row--nowrap">
           <h4 class="margin-bottom-sm">
             {{ $t("recipes.share.shareWithFollower") }}
@@ -32,7 +32,7 @@
 
       <!--  Share by email  -->
       <expand-transition :show="useEmail || !this.user.id">
-        <form class="share-form margin-vertical-lg" @submit.prevent>
+        <form class="share-form margin-v-lg" @submit.prevent>
           <div v-if="sharedByEmail === false" class="flex-center-container">
             <span class="simple-loading-spinner" />
           </div>

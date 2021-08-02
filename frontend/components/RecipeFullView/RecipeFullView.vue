@@ -123,7 +123,7 @@ e<template>
         </div>
       </div>
 
-      <div class="recipe_flex-no-wrap flex-row--align-top margin-vertical-xl">
+      <div class="recipe_flex-no-wrap flex-row--align-top margin-v-xl">
         <ingredients-display
           class="recipe_ingredients-wrap"
           :ingredients="recipe.ingredients"
