@@ -72,7 +72,7 @@ export default {
   ],
   vendor: ["axios", "babel-polyfill"],
   router: {
-    middleware: ["router-auth", "redirect-trailing-slash"],
+    middleware: ["router-auth"],//, "redirect-trailing-slash"],
     linkExactActiveClass: "active-link",
     linkActiveClass: null
   },
