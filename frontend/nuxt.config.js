@@ -2,6 +2,7 @@ const getRoutes = require("./build-helpers/getRoutes");
 const redirectSSL = require("redirect-ssl");
 
 export default {
+  target: 'static',
   generate: {
     fallback: true,
     routes() {
@@ -71,7 +72,7 @@ export default {
   ],
   vendor: ["axios", "babel-polyfill"],
   router: {
-    middleware: ["router-auth", "redirect-trailing-slash"],
+    middleware: ["router-auth"],//, "redirect-trailing-slash"],
     linkExactActiveClass: "active-link",
     linkActiveClass: null
   },
@@ -169,7 +170,8 @@ export default {
       },
       database: true,
       storage: true
-    }
+    },
+    terminateDatabasesAfterGenerate: true
   },
   pwa: {},
   fontawesome: {
