@@ -28,7 +28,7 @@
     "core-js": "^2.6.11",
     "express": "^4.17.1",
     "fibers": "^4.0.1",
-    "firebase": "^7.21.0",
+    "firebase": "^8.9.0",
     "firebase-admin": "^9.4.1",
     "font-awesome": "^4.7.0",
     "googleapis": "^66.0.0",
