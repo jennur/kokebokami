@@ -2,7 +2,7 @@ const getRoutes = require("./build-helpers/getRoutes");
 const redirectSSL = require("redirect-ssl");
 
 export default {
-  target: 'static',
+  target: 'server',
   generate: {
     fallback: true,
     routes() {
