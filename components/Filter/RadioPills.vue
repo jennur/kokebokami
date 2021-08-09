@@ -1,7 +1,7 @@
 <template>
   <div class="radio-pills-wrap">
     <div class="radio-pills">
-      <span v-for="(value, index) in values" :key="`pill-${value}`" class="radio-pills_pill" :class="value === checkedValue ? 'selected' : ''">
+      <span tabindex="0" v-for="(value, index) in values" :key="`pill-${value}`" class="radio-pills_pill" :class="value === checkedValue ? 'selected' : ''">
         <label>
           <input type="radio" :value="value" :checked="value === checkedValue" @click="setValue(value)"/>
             {{pills[index]}}

@@ -1,9 +1,14 @@
 <template>
-  <section class="main-filter">
-    <radio-pills :pills="$t('recipes.allCategories.typeOfMeal')"
-                 :values="$store.state.allCategories.typeOfMeal"
-                 @selected="setTypeOfMeal"
-    />
+  <section class="filter-section">
+    <div class="filter">
+      <radio-pills  class="filter-pills"
+                    :pills="$t('recipes.allCategories.typeOfMeal')"
+                    :values="$store.state.allCategories.typeOfMeal"
+                    @selected="setTypeOfMeal"
+      />
+      <search class="search-field" @filterOnSearchTerm="searchTerm => setSearchTerm(searchTerm)"/>
+    </div>
+
     <div class="recipe-lang-select-wrap margin-top-xl">
       <span class="label">Recipe language:</span>
       <language-input :existing-language="defaultLanguage"
@@ -15,14 +20,16 @@
 </template>
 
 <script>
-import RadioPills from "~/components/Input/RadioPills";
+import RadioPills from "./RadioPills";
 import LanguageInput from "~/components/Input/LanguageInput";
+import Search from "./Search.vue";
 
 export default {
-  name: "main-filter",
+  name: "filter-section",
   components: {
     LanguageInput,
-    RadioPills
+    RadioPills,
+    Search
   },
   props: {
     recipes: {
@@ -37,7 +44,8 @@ export default {
   data() {
     return {
       language: null,
-      typeOfMeal: null
+      typeOfMeal: null,
+      searchTerm: null
     }
   },
   computed: {
@@ -60,23 +68,29 @@ export default {
       else this.language = lang;
       this.filterRecipes();
     },
+    setSearchTerm(value) {
+      this.searchTerm = value;
+      this.filterRecipes();
+    },
     filterRecipes(){
       let recipes = this.recipes;
       let typeOfMeal = this.typeOfMeal;
       let lang = this.language;
+      let searchTerm = this.searchTerm && this.searchTerm.toLowerCase();
 
-      if(!typeOfMeal && !lang) {
+      if(!typeOfMeal && !lang && !searchTerm) {
         this.$emit('filter', {recipes, filtered: true});
       } else {
         recipes = recipes.filter(recipe => {
           let isTypeOfMeal = true;
           let isInLanguage = true;
-
-          if (typeOfMeal) isTypeOfMeal = recipe.typeOfMeal && recipe.typeOfMeal.indexOf(typeOfMeal) > -1;
-
+          let hasSearchTerm = true;
+          
+          if(typeOfMeal) isTypeOfMeal = recipe.typeOfMeal && recipe.typeOfMeal.indexOf(typeOfMeal) > -1;
           if(lang) isInLanguage = recipe.language && recipe.language === lang;
+          if(searchTerm) hasSearchTerm = recipe.title.toLowerCase().indexOf(searchTerm) > -1 || recipe.description.toLowerCase().indexOf(searchTerm) > -1;
 
-          return isTypeOfMeal && isInLanguage;
+          return isTypeOfMeal && isInLanguage && hasSearchTerm;
         })
         this.$emit('filter', {recipes, filtered: true});
       }

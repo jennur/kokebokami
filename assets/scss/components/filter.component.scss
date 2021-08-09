@@ -1,0 +1,46 @@
+
+.filter-section {
+  display: block;
+  padding: $spacingLarge 0px;
+  width: 100%;
+
+  .filter {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-start;
+
+    @media screen and (min-width: $tabletWidth) {
+      flex-wrap: nowrap;
+      justify-content: center;
+    }
+
+    .filter-pills {
+      order: 1;
+      @media screen and (min-width: $tabletWidth) {
+        order: 0;
+      }
+    }
+
+    .search-field {
+      order: 0;
+      margin-bottom: $spacingLarge;
+
+      @media screen and (min-width: $tabletWidth) {
+        order: 1;
+        margin-bottom: 0px;
+      }
+    }
+  }
+  .recipe-lang-select-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .label {
+      color: $blue;
+      font-size: $fontSizeSmall;
+    }
+  }
+
+}

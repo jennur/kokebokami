@@ -80,8 +80,6 @@ import AddRecipeFromUrlForm from "~/components/AddRecipeForm/AddRecipeFromUrlFor
 import Tabs from "~/components/Tabs.vue";
 import RecipesList from "~/components/RecipePreview/RecipesList.vue";
 import RecipeLinkList from "~/components/RecipeLinkList/RecipeLinkList.vue";
-import RecipesFilter from "~/components/Filter/RecipesFilter.vue";
-import UserCategoriesFilter from "~/components/Filter/UserCategoriesFilter.vue";
 
 export default {
   name: "my-cookbook",
@@ -107,9 +105,7 @@ export default {
     AddRecipeFromUrlForm,
     Tabs,
     RecipesList,
-    RecipeLinkList,
-    RecipesFilter,
-    UserCategoriesFilter
+    RecipeLinkList
   },
   data() {
     return {
