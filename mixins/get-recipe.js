@@ -30,7 +30,7 @@ export default {
       let author = userSnapshot && getRecipeOwner(userSnapshot, recipe.content.ownerID);
 
       if (recipe.structuredData && author) {
-        recipe.structuredData.author = author.content.displayName;
+        recipe.structuredData.author = author.structuredData;
       }
 
       return {
@@ -40,10 +40,6 @@ export default {
             {
               type: "application/ld+json",
               json: recipe.structuredData
-            },
-            {
-              type: "application/ld+json",
-              json: author.structuredData
             }
           ]
         },

@@ -11,34 +11,81 @@ export default function getRecipeAndMetadata(snapshot, recipePath){
     let path = generatePath(title, key, true);
 
     if(path === recipePath){
-      let instructions = recipe.instructions && recipe.instructions.map(instruction => {
+
+      // Format instructions
+      let instructions = recipe.instructions && recipe.instructions.map((instruction, index) => {
         return {
           "@type": "HowToStep",
-          text: instruction
+          name: `Step ${index + 1}`,
+          text: instruction,
+          url: `https://kokebokami.com/recipes/${path}#step${index + 1}`
         };
       });
+
+      // Find suitable diets
+      let suitableDiets = [];
+      Array.isArray(recipe.freeFrom) && recipe.freeFrom.forEach(allergen => {
+        if(allergen === 'gluten') suitableDiets.push('https://schema.org/GlutenFreeDiet');
+        if(allergen === 'dairy') suitableDiets.push('https://schema.org/LowLactoseDiet');
+        if(allergen === 'sugar') suitableDiets.push('https://schema.org/DiabeticDiet');
+      })
+
+      Array.isArray(recipe.categories) && recipe.categories.forEach(category => {
+        if(category === 'vegetarian') suitableDiets.push('https://schema.org/VegetarianDiet');
+        if(category === 'vegan') suitableDiets.push('https://schema.org/VeganDiet');
+      })
+
+      // Format categories
       let categories = Array.isArray(recipe.categories) && recipe.categories.join(", ") || "";
       let typeOfMeal = Array.isArray(recipe.typeOfMeal) && recipe.typeOfMeal.join(", ") || "";
 
+      //Get general metadata
       let recipeMetaData = {
         url: `https://kokebokami.com/recipes/${path}`,
         name: recipe.title,
-        description: recipe.description || "",
-        keywords: categories || [],
+        description: recipe.description,
+        keywords: categories,
         image: [ recipe.photoURL || backupImg ]
       }
 
+      // Get comments count
+      let commentsCount = 0;
+
+      recipe.comments && Object.entries(recipe.comments).forEach(comment => {
+        commentsCount++;
+        if(comment[1].subComments) {
+          commentsCount += Object.entries(comment[1].subComments).length;
+        }
+      })
+
+      // Complete structured data
       let structuredData = {
         "@context": "https://schema.org/",
         "@type": "Recipe",
         ...recipeMetaData,
-        "recipeYield": recipe.servings || 0,
+        "prepTime": recipe.prepTime,
+        "cookTime": recipe.cookTime,
+        "totalTime": recipe.prepTime,
+        "datePublished": recipe.datePublished,
+        "dateModified": recipe.dateModified,
+        "recipeYield": recipe.servings,
         "recipeCategory": typeOfMeal,
-        "recipeIngredient": recipe.ingredients || [],
-        "recipeInstructions": instructions || [],
+        "recipeCuisine": recipe.cuisine,
+        "recipeIngredient": recipe.ingredients,
+        "recipeInstructions": instructions,
+        "interactionStatistic": {
+          "@type": "InteractionCounter",
+          "interactionType": "https://schema.org/Comment",
+          "userInteractionCount": commentsCount
+        },
+        "aggregateRating": {
+          "@type": "AggregateRating",
+          "ratingValue": recipe.ratingValue,
+          "ratingCount": recipe.ratingCount
+        },
+        "suitableForDiet": suitableDiets,
         "isAccessibleForFree": true,
         "mainEntityOfPage": recipeMetaData.url,
-        "totalTime": recipe.prepTime || "",
         "publisher": {
           "@type": "Organization",
           "name": "kokebokami.com",
@@ -49,9 +96,7 @@ export default function getRecipeAndMetadata(snapshot, recipePath){
             "height": 500
           },
           "sameAs": ["https://www.facebook.com/kokebokami"]
-        },
-        "datePublished": recipe.datePublished || "",
-        "dateModified": recipe.dateModified || ""
+        }
       };
 
       return {
@@ -122,20 +167,3 @@ const metadata = (values) => {
       ]
   }
 }
-
-
-
-// let author = await axios
-//   .get(databaseUsersURL(recipe.ownerID))
-//   .then(user => {
-//     let cookPath = generatePath(user.data, recipe.ownerID, true);
-//     return {
-//       "@type": "Person",
-//       name: user.data,
-//       url: `https://kokebokami.com/cooks/${cookPath}`
-//     }
-//   })
-//   .catch(error => {
-//     console.log("Error getting user:", error.message);
-//     return "Kokebokami user";
-//   });

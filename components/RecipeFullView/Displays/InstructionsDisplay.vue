@@ -14,10 +14,11 @@
       class="recipe_instructions"
     >
       <li
-        tabindex="-1"
+        tabindex="0"
         class="recipe_instructions-step"
         v-for="(step, index) in instructions"
         :key="`instruction-${index}`"
+        :id="`step${index + 1}`"
       >
         {{ step }}
       </li>
