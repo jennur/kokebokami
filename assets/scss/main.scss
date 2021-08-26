@@ -5,6 +5,7 @@
 @import "./settings/variables.settings.scss";
 
 /* Flex */
+@import "./flex/flex.flex.scss";
 @import "./flex/flex-align.flex.scss";
 @import "./flex/flex-order.flex.scss";
 
@@ -39,6 +40,7 @@
 @import "./components/comments.component.scss";
 @import "./components/desktop-menu.component.scss";
 @import "./components/drop-zone.component.scss";
+@import "./components/filter.component.scss";
 @import "./components/footer.component.scss";
 @import "./components/following-cooks.component.scss";
 @import "./components/gateways.component.scss";
@@ -48,7 +50,6 @@
 @import "./components/link-categories-filter.component.scss";
 @import "./components/loading-splash.component.scss";
 @import "./components/login-container.component.scss";
-@import "./components/main-filter.component.scss";
 @import "./components/modal-box.component.scss";
 @import "./components/navigation.component.scss";
 @import "./components/preview.component.scss";

@@ -5,7 +5,7 @@
     </div>
 
     <div class="desktop-width padding-h-lg margin-top-2xl margin-auto">
-      <main-filter :recipes="publicRecipes" @filter="setVisibleRecipes" />
+      <filter-section :recipes="publicRecipes" @filter="setVisibleRecipes" />
       <div class="flex-row flex-row--nowrap">
         <recipes-list
           v-if="loadedRecipes"
@@ -37,13 +37,13 @@ import CtaSection from "~/components/CTASection/CTASection.vue";
 import SignUpSection from "~/components/SignUp/SignUpSection.vue";
 import RecipesList from "~/components/RecipePreview/RecipesList.vue";
 import RecipeSearch from "~/components/Search/RecipeSearch.vue";
-import MainFilter from "~/components/Filter/MainFilter";
+import FilterSection from "~/components/Filter/FilterSection";
 
 export default {
   name: "Home",
   layout: "fullwidth",
   components: {
-    MainFilter,
+    FilterSection,
     CtaSection,
     SignUpSection,
     RecipeSearch,

@@ -1,0 +1,39 @@
+.filter-section {
+  display: block;
+  padding: $spacingLarge 0px;
+  width: 100%;
+
+  .filter {
+    display: block;
+    margin-top: $spacingLarge;
+    padding: $spacingLarge;
+    background-color: rgba($lightBlue,0.1);
+
+    & > div:not(:first-child) {
+      margin-top: $spacingXLarge;
+    }
+    @media screen and (min-width: $tabletWidth) {
+      display: flex;
+      flex-direction: row;
+
+      & > div {
+        &:not(:first-child) {
+          margin-top: 0px;
+          margin-left: $spacingLarge;
+        }
+      }
+      
+    }
+  }
+  .recipe-lang-select-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .label {
+      color: $blue;
+      font-size: $fontSizeSmall;
+    }
+  }
+
+}

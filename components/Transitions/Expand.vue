@@ -5,7 +5,7 @@
     @after-enter="afterEnter"
     @leave="leave"
   >
-    <div v-if="show">
+    <div v-show="show">
       <slot />
     </div>
   </transition>

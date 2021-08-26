@@ -1,77 +1,29 @@
-.search {
-  display: block;
-  position: fixed;
-  top: 0px;
-  left: -300px;
-  bottom: 0px;
-  z-index: 9999;
-  width: 200px;
-  background-color: $cream;
-  padding: $spacingMedium;
-  box-shadow: 3px 0px 10px rgba(0, 0, 0, 0.2);
-  transition: transform 0.3s;
-  transform: translateX(-300px);
+label.search-field {
+  display: inline-block;
+  position: relative;
+  top: 0;
+  width: 250px;
+  border: none;
+  border-bottom: 2px solid $blue;
+  height: 22px + 2 * $spacingMedium;
+  cursor: text;
+  border-radius: 0px;
 
-  @media screen and (min-width: $mobileWidth) {
-    display: block;
-    position: relative;
-    padding: 0px;
-    width: 300px;
-    transform: translateX(0px);
-    box-shadow: none;
-    left: 0px;
-    z-index: 1;
-    &--sticky {
-      position: fixed;
-    }
+  input[type=text] {
+    width: inherit;
+    height: inherit;
+    position: absolute;
+    border: none;
+    padding: $spacingMedium;
+    cursor: text;
   }
 
-  &_button {
-    @media screen and (min-width: $mobileWidth) {
-      display: none;
-    }
-  }
-
-  &--open {
-    display: block;
-    overflow-y: scroll;
-    top: 0px;
-    left: -300px;
-    transform: translateX(300px);
-    @media screen and (min-width: $mobileWidth) {
-      top: 0px;
-      left: 0px;
-      transform: translateX(0px);
-    }
-  }
-
-  &_form {
-    overflow-y: scroll;
-    label {
-      text-transform: capitalize;
-      &:hover {
-        background-color: $lightOrange;
-      }
-    }
-
-    & .search-field {
-      position: relative;
-
-      & input {
-        padding: $spacingSmall;
-        padding-left: $spacingXLarge;
-        width: 90%;
-        max-width: 350px;
-        background-color: transparent;
-      }
-    }
-
-    & .search-icon {
-      width: 17px;
-      height: 17px;
-      position: absolute;
-      top: 3px;
-      left: $spacingSmall;
-    }
+  .search-icon {
+    position: absolute;
+    right: $spacingMedium;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 22px;
+    width: 22px;
   }
 }

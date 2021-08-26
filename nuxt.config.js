@@ -1,14 +1,14 @@
-const getRoutes = require("./build-helpers/getRoutes");
+// const getRoutes = require("./build-helpers/getRoutes");
 const redirectSSL = require("redirect-ssl");
 
 export default {
   target: 'server',
-  generate: {
-    fallback: true,
-    routes() {
-      return getRoutes();
-    }
-  },
+  // generate: {
+  //   fallback: true,
+  //   routes() {
+  //     return getRoutes();
+  //   }
+  // },
 
   // Headers of the page
   head: {
@@ -25,7 +25,7 @@ export default {
         hid: "keywords",
         name: "keywords",
         content:
-          "save, manage, online, recipes, cookbook, shopping lists, share, friends, family, private"
+          "save recipes, manage recipes, online recipes, recipes, online cookbook, shopping lists, share recipes"
       },
       {
         hid: "title",
@@ -81,13 +81,7 @@ export default {
   babel: {
     presets: ["es2015", "stage-0"],
     plugins: [
-      [
-        "transform-runtime",
-        {
-          polyfill: true,
-          regenerator: true
-        }
-      ]
+      [ "transform-runtime", { polyfill: true, regenerator: true } ]
     ]
   },
   buildModules: [
@@ -102,7 +96,8 @@ export default {
       {
         id: "UA-108483738-5"
       }
-    ]
+    ],
+    '@nuxtjs/fontawesome'
   ],
   serverMiddleware: [
     redirectSSL.create({
@@ -117,8 +112,7 @@ export default {
     "nuxt-i18n",
     "@nuxtjs/firebase",
     "@nuxtjs/axios",
-    "nuxt-svg-loader",
-    "nuxt-fontawesome"
+    "nuxt-svg-loader"
   ],
   i18n: {
     vueI18nLoader: true,
@@ -176,13 +170,17 @@ export default {
   pwa: {},
   fontawesome: {
     component: "fa",
-    imports: [
-      {
-        set: "@fortawesome/free-brands-svg-icons",
-        icons: ["fab"]
-      }
-    ]
+    icons: {
+      solid: ['faSlidersH'],
+      brands: ['faFacebookSquare', 'faFacebookF']
+    }
   },
   // Build configuration
-  build: {}
+  build: {
+    babel: {
+      plugins: [
+        ['@babel/plugin-proposal-private-property-in-object', { loose: true }]
+      ],
+      }
+  }
 };

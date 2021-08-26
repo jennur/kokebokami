@@ -1,24 +1,25 @@
-
-.radio-pills-wrap {
-  width: 100%;
-  max-width: 100%;
-  overflow-x: scroll;
-}
 .radio-pills {
-  display: block;
-  width: max-content;
-  margin: 0px auto;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 100%;
 
   &_pill {
-    display: inline-block;
+    display: block;
     min-width: max-content;
+    max-width: max-content;
     padding: $spacingSmall $spacingMedium;
     border: 2px solid $blue;
     border-radius: $spacingXLarge;
     color: $blue;
     text-transform: capitalize;
     cursor: pointer;
+    margin-bottom: $spacingMedium;
 
+
+    @media screen and (min-width: $tabletWidth) {
+      padding: $spacingXSmall $spacingMedium;
+    }
     &:not(:last-child) {
       margin-right: $spacingMedium;
     }
@@ -27,15 +28,10 @@
       background-color: $blue;
       color: $cream;
     }
-    label {
-      width: 100%;
-      position: relative;
-      cursor: pointer;
 
-      input {
-        position: absolute;
-        opacity: 0;
-      }
+    input {
+      position: absolute;
+      opacity: 0;
     }
   }
 }
