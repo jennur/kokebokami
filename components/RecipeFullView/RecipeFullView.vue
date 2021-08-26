@@ -1,4 +1,4 @@
-e<template>
+<template>
   <section>
     <div ref="recipe" id="recipe" class="recipe margin-auto">
       <div

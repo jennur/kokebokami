@@ -1,13 +1,21 @@
 <template>
-  <div class="radio-pills-wrap">
-    <div class="radio-pills">
-      <span tabindex="0" v-for="(value, index) in values" :key="`pill-${value}`" class="radio-pills_pill" :class="value === checkedValue ? 'selected' : ''">
-        <label>
-          <input type="radio" :value="value" :checked="value === checkedValue" @click="setValue(value)"/>
-            {{pills[index]}}
-        </label>
-      </span>
-    </div>
+  <div class="radio-pills">
+    <label  v-for="(value, index) in values" 
+            :key="`pill-${value}`" 
+            class="radio-pills_pill" 
+            :class="value === checkedValue ? 'selected' : ''"
+            tabindex="0"
+            @keydown="event => event.keyCode === 13 && setValue(value)"
+    >
+      <input  type="radio"
+              :value="value"
+              :checked="value === checkedValue"
+              @click="setValue(value)"
+              tabindex="-1"
+
+      />
+        {{pills[index]}}
+    </label>
   </div>
 </template>
 

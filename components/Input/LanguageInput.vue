@@ -1,6 +1,5 @@
 <template>
   <fieldset class="language-input">
-<!--    <h4 class="categories_title">Recipe language</h4>-->
     <select-component
       id="language"
       :naked="naked"

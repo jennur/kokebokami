@@ -76,6 +76,14 @@
   }
 
   &-bottom {
+    &--none {
+      margin-bottom: 0px;
+
+      @media screen and (min-width: $tabletWidth) {
+        margin-bottom: 0px;
+      }
+    }
+
     &-sm {
       margin-bottom: $spacingSmallMobile;
 
