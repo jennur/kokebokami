@@ -26,8 +26,23 @@ function isSameDay(ISODate1, ISODate2){
 function getDateString(ISODateString){
   let milliseconds = Date.parse(ISODateString);
   let date = new Date(milliseconds);
-  let CETDate = date + 3600000; // + 1hr
-  CETDate = new Date(CETDate);
-  return `${CETDate.toLocaleDateString()} ${CETDate.toLocaleTimeString()}`;
-
+  date = new Date(date);
+  let time = date.toLocaleTimeString('en-GB', { timeZone: 'UTC', timeZoneName: 'short', hour: '2-digit', minute: '2-digit' })
+  return `${date.toLocaleDateString()} ${time}`;
 }
+
+// function createCommentObj(comment) {
+//   comment = {
+//     ...comment[1],
+//     key: comment[0]
+//   };
+//   let submitDate = comment.submitDate.replace(/"/g, "");
+//   let dateString = getDateString(submitDate);
+//   comment.submitDate = dateString;
+
+//   if (comment.isAnonymous) {
+//     comment.username = "Anonymous";
+//     comment.photoURL = "";
+//   }
+//   return comment;
+// }

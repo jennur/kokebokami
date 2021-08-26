@@ -98,6 +98,10 @@
     text-transform: capitalize;
     font-size: $fontSizeSmall;
 
+    &:first-child {
+      margin-left: 0px;
+    }
+
     &-note {
       text-align: left;
 
