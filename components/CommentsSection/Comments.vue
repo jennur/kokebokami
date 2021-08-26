@@ -36,6 +36,7 @@
 </template>
 
 <script>
+import getDateString from "~/helpers/get-date-string";
 import user from "~/mixins/user.js";
 import Comment from "./Comment.vue";
 import ExpandTransition from "~/components/Transitions/Expand.vue";
@@ -89,25 +90,13 @@ export default {
             comments = Object.entries(comments.val());
             comments = comments.map(comment => {
               //Handle comment
-              if (comment[1].userId === componentThis.user.id) {
-                comment[1].isMyComment = true;
-              }
-              if (comment[1].isAnonymous) {
-                comment[1].username = "Anonymous";
-                comment[1].photoURL = "";
-              }
+              comment[1] = this.createCommentObj(comment[1]);
 
               //Handle subcomments
               if (comment[1].subComments) {
                 let subComments = Object.entries(comment[1].subComments);
                 comment[1].subComments = subComments.map(subComment => {
-                  if (subComment[1].userId === componentThis.user.id) {
-                    subComment[1].isMyComment = true;
-                  }
-                  if (subComment[1].isAnonymous) {
-                    subComment[1].username = this.$t("anonymous");
-                    subComment[1].photoURL = "";
-                  }
+                  subComment[1] = this.createCommentObj(subComment[1]);
                   return subComment;
                 });
               }
@@ -131,6 +120,18 @@ export default {
           componentThis.loading = false;
           console.log("Error loading comments:", error.message);
         });
+    },
+    createCommentObj(comment) {
+      comment.isMyComment = comment.userId === this.user.id;
+
+      if (comment.isAnonymous) {
+        comment.username = this.$t("anonymous");
+        comment.photoURL = "";
+      }
+
+      let submitDate = comment.submitDate.replace(/"/g, '');
+      comment.submitDate = getDateString(submitDate);
+      return comment;
     }
   },
   mounted() {

@@ -10,7 +10,7 @@ export default function getRecipeOwner(snapshot, recipeOwnerID){
   if(snapshot.val()) {
     let displayName = snapshot.val();
     authorData.displayName = displayName || "unknown";
-    authorData.path = generatePath(displayName, recipeOwnerID, true);
+    authorData.path = generatePath(displayName, recipeOwnerID);
   }
   return {
     content: authorData,

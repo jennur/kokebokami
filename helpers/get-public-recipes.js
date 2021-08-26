@@ -7,7 +7,7 @@ export default async function getPublicRecipes(app){
         .orderByChild("public")
         .once("value");
 
-      let foundRecipes = handleRecipes(snapshot, true);
+      let foundRecipes = handleRecipes(snapshot);
 
       return {
         publicRecipes: foundRecipes.reverse(),
@@ -21,7 +21,7 @@ export default async function getPublicRecipes(app){
     }
 };
 
-function handleRecipes(snapshot, ssr){
+function handleRecipes(snapshot){
   let foundRecipes = [];
   if (snapshot.val()) {
     let recipes = snapshot.val();
@@ -29,7 +29,7 @@ function handleRecipes(snapshot, ssr){
     for (let key in recipes) {
       let recipe = recipes[key];
       if (recipe.public) {
-        foundRecipes.push(recipeModel(recipe, key, ssr));
+        foundRecipes.push(recipeModel(recipe, key));
       }
     }
   }

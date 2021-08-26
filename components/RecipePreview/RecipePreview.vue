@@ -34,8 +34,8 @@
         {{ recipe.title ? recipe.title : $t("recipes.noTitle") }}
       </h3>
 
-      <div class="recipe-preview_description margin-bottom-lg">
-        {{ recipe.description ? recipe.description : $t("recipes.noDescription") }}
+      <div v-if="recipe.description" class="recipe-preview_description margin-bottom-lg">
+        {{ recipe.description }}
       </div>
 
       <!-- Categories -->

@@ -37,7 +37,7 @@
         v-if="commentObj.photoURL"
         class="comment_user-img"
         role="img"
-        :aria-label="`${username}'s profile image`"
+        :aria-label="`${commentObj.username}'s profile image`"
         :style="`background-image: url(${commentObj.photoURL});`"
       ></div>
 
@@ -49,13 +49,13 @@
         :class="{
           'no-link': isAnonymous
         }"
-        >{{ username }}</component
+        >{{ commentObj.username }}</component
       >
-      <span class="comment_date margin-left-md">{{ submitDate }}</span>
+      <span class="comment_date margin-left-md">{{ commentObj.submitDate }}</span>
     </div>
 
     <!-- Comment -->
-    <div class="comment_comment margin-top-sm">{{ commentText }}</div>
+    <div class="comment_comment margin-top-sm">{{ commentObj.comment }}</div>
     <button
       v-if="!isSubComment && !formOpen"
       class="comment_reply-btn button button-sm button--dynamic button--trans margin-top-lg"
@@ -172,75 +172,15 @@ export default {
     commentObj() {
       return this.comment[1];
     },
-    commentText() {
-      return this.comment[1].comment;
-    },
-
     isAnonymous() {
       return this.comment[1].isAnonymous;
-    },
-    username() {
-      return this.comment[1].username;
     },
     userPath(){
       let [userid, username] = [this.commentObj.userId, this.commentObj.username];
       return generatePath(username, userid);
-    },
-    submitDate() {
-      let date = this.comment[1].submitDate;
-      let dateString = date.replace(/[A-Z\"]/g, " ");
-      let formattedDate = dateString.substring(0, dateString.length - 9);
-      let year = formattedDate.slice(0, 5);
-      let month = formattedDate.slice(6, 8);
-      let day = formattedDate.slice(9, 11);
-      let time = formattedDate.slice(12, 17);
-      month = this.getMonthString(month);
-      return `${day} ${month} ${year} ${time}`;
     }
   },
   methods: {
-    getMonthString(num) {
-      let month = "";
-      switch (num) {
-        case "01":
-          month = "Jan";
-          break;
-        case "02":
-          month = "Feb";
-          break;
-        case "03":
-          month = "Mar";
-          break;
-        case "04":
-          month = "Apr";
-          break;
-        case "05":
-          month = "May";
-          break;
-        case "06":
-          month = "Jun";
-          break;
-        case "07":
-          month = "Jul";
-          break;
-        case "08":
-          month = "Aug";
-          break;
-        case "09":
-          month = "Sep";
-          break;
-        case "10":
-          month = "Oct";
-          break;
-        case "11":
-          month = "Nov";
-          break;
-        case "12":
-          month = "Dec";
-          break;
-      }
-      return month;
-    },
     loadMoreSubComments() {
       let subComments = this.subComments;
       let cutOffSubComments = this.cutOffSubComments;
@@ -251,18 +191,13 @@ export default {
       if (!this.isSubComment) {
         let subComments = this.commentObj.subComments || [];
         if (subComments.length > 2) {
-          this.cutOffSubComments = subComments.splice(
-            2,
-            subComments.length - 1
-          );
+          this.cutOffSubComments = subComments.splice(2, subComments.length - 1);
         }
         this.subComments = subComments;
       }
     },
     confirmDelete() {
-      this.alertMessage = `${this.$t("comments.deleteAlertNote")} '${
-        this.commentObj.comment
-      }'?`;
+      this.alertMessage = `${this.$t("comments.deleteAlertNote")} '${this.commentObj.comment}'?`;
       this.showAlert = true;
     },
     closeAlert() {
