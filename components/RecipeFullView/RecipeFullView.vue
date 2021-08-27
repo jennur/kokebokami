@@ -18,18 +18,12 @@
             }}
           </span>
         </settings-dropdown>
-        <rating :rating="recipe.rating" :recipeKey="recipe.id" :show-total-votes="true" />
+        <rating v-if="recipe.id" :rating="recipe.rating" :recipeKey="recipe.id" :show-total-votes="true" />
+        <add-to-favorites v-if="recipe.id" :recipe-key="recipe.id" :favorites-count="recipe.favoritesCount" :show-count="true"/>
       </div>
 
         <div class="flex-row flex-row--align-center">
-          <language-display
-            class="margin-right-xl"
-            v-if="isRecipeOwner"
-            :language="recipe.language"
-            :isRecipeOwner="isRecipeOwner"
-            :recipeKey="recipe.id"
-            @update="payload => $emit('update', payload)"
-          />
+
           <action-bar
             v-if="recipe.id"
             :isRecipeOwner="isRecipeOwner"
@@ -61,6 +55,14 @@
         />
 
         <div id="recipeDetails" class="recipe_details">
+          <language-display
+            class="margin-right-xl"
+            v-if="isRecipeOwner"
+            :language="recipe.language"
+            :isRecipeOwner="isRecipeOwner"
+            :recipeKey="recipe.id"
+            @update="payload => $emit('update', payload)"
+          />
           <type-of-meal-display
             v-if="recipe.typeOfMeal || isRecipeOwner"
             :typeOfMeal="recipe && recipe.typeOfMeal"
@@ -167,6 +169,7 @@ import InstructionsDisplay from "./Displays/InstructionsDisplay.vue";
 import ActionBar from "./Interaction/ActionBar.vue";
 import Alert from "~/components/Alert.vue";
 import ExpandTransform from "~/components/Transitions/Expand.vue";
+import AddToFavorites from './Interaction/AddToFavorites.vue';
 
 
 export default {
@@ -186,7 +189,8 @@ export default {
     IngredientsDisplay,
     InstructionsDisplay,
     ExpandTransform,
-    Alert
+    Alert,
+    AddToFavorites
   },
   props: {
     isRecipeOwner: { type: Boolean, default: false },

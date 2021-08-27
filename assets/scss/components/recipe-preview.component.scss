@@ -14,39 +14,16 @@
   color: $blue;
   text-decoration: none;
   transition: all 0.3s;
+  text-align: left;
 
-  &_favorite-icon {
+  .favorite-icon {
+    display: block;
     position: absolute;
     top: $spacingMedium + 5px;
     right: $spacingLarge;
     width: 25px;
     height: 25px;
-    cursor: pointer;
-
-    .icon {
-      width: 100%;
-      cursor: default;
-      cursor: pointer;
-
-      path {
-        stroke: $blue;
-        fill: none;
-        transition: 0.3s;
-      }
-    }
-
-    &:hover {
-      .icon path {
-        fill: $blue;
-        stroke: $blue
-      }
-    }
-
-    &.selected {
-      .icon path {
-        fill: $blue;
-      }
-    }
+    padding: 0px;
   }
 
   @media screen and (min-width: $mobileWidth) {
@@ -76,6 +53,7 @@
   }
 
   .rating-wrapper {
+    text-align: center;
     padding: $spacingMedium 0px 0px 0px;
   }
 
