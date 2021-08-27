@@ -1,57 +1,72 @@
 <template>
-  <section>
-    <servings-display
-      :servings="updatedServings.toString()"
-      :defaultServings="servings"
-      @update-servings="setServings"
-      :isRecipeOwner="isRecipeOwner"
-      :recipeKey="recipeKey"
-      @update="payload => $emit('update', payload)"
-      :key="updated"
-    />
-    <div>
-      <div class="flex-row flex-row--align-center flex-row--nowrap">
-        <h4 class="margin-v-md">{{ $t("recipes.ingredients") }}</h4>
-        <edit-icon
-          tabindex="0"
-          v-if="isRecipeOwner && !editMode"
-          @click="toggleEditMode"
-          class="icon margin-md"
+  <section  class="ingredients-section" 
+            :class="{open}"
+            v-click-outside="event => closeSideBar(event)"
+  
+  >
+    <button tabindex="0" 
+            class="button button-sm ingredients-button" 
+            :class="{open}"
+            @click="open = !open"
+            @keydown="event => event.keyCode === 13 && (open =!open)"
+    >
+            Ingredients
+    </button>
+
+      <div class="ingredients">
+        <servings-display
+          :servings="updatedServings.toString()"
+          :defaultServings="servings"
+          @update-servings="setServings"
+          :isRecipeOwner="isRecipeOwner"
+          :recipeKey="recipeKey"
+          @update="payload => $emit('update', payload)"
+          :key="updated"
+        />
+        <div>
+          <div class="flex-row flex-row--align-center flex-row--nowrap">
+            <h3 class="margin-v-md">{{ $t("recipes.ingredients") }}</h3>
+            <edit-icon
+              tabindex="0"
+              v-if="isRecipeOwner && !editMode"
+              @click="toggleEditMode"
+              class="icon margin-md"
+            />
+          </div>
+          <ul v-if="!editMode && !loading" class="recipe_ingredients">
+            <li
+              v-for="(ingredient, index) in calculatedIngredients"
+              :key="`ingredient-${index}`"
+              @click="handleCheck(index)"
+            >
+              <span class="check-circle" 
+                    :class="checkedIngredients.indexOf(index) > -1 && 'check-circle--checked'"
+              ></span>
+              <div class="ingredient">
+                <span class="amount">
+                  {{ ingredient.amount }}
+                </span>
+                {{ ingredient.item }}
+              </div>
+            </li>
+          </ul>
+
+          <span v-if="loading" class="simple-loading-spinner"></span>
+
+          <ingredients-edit
+            v-if="editMode"
+            :ingredients="convertedIngredients"
+            @save="saveIngredients"
+          />
+        </div>
+
+        <add-to-shopping-list
+          v-if="!editMode && ingredients.length"
+          class="margin-bottom-2xl"
+          :recipeTitle="recipeTitle"
+          :ingredients="calculatedIngredients"
         />
       </div>
-      <ul v-if="!editMode && !loading" class="recipe_ingredients">
-        <li
-          v-for="(ingredient, index) in calculatedIngredients"
-          :key="`ingredient-${index}`"
-          @click="handleCheck(index)"
-        >
-          <span class="check-circle" 
-                :class="checkedIngredients.indexOf(index) > -1 && 'check-circle--checked'"
-          ></span>
-          <div class="ingredient">
-            <span class="amount">
-              {{ ingredient.amount }}
-            </span>
-            {{ ingredient.item }}
-          </div>
-        </li>
-      </ul>
-
-      <span v-if="loading" class="simple-loading-spinner"></span>
-
-      <ingredients-edit
-        v-if="editMode"
-        :ingredients="convertedIngredients"
-        @save="saveIngredients"
-      />
-    </div>
-
-    <add-to-shopping-list
-      v-if="!editMode && ingredients.length"
-      class="margin-bottom-2xl"
-      :recipeTitle="recipeTitle"
-      :ingredients="calculatedIngredients"
-    />
   </section>
 </template>
 
@@ -60,6 +75,7 @@ import user from "~/mixins/user.js";
 import ServingsDisplay from "./ServingsDisplay.vue";
 import IngredientsEdit from "./Editing/IngredientsEdit.vue";
 import AddToShoppingList from "../Interaction/AddToShoppingList.vue";
+import ClickOutside from "vue-click-outside";
 
 export default {
   name: "ingredients-display",
@@ -98,7 +114,8 @@ export default {
       editMode: false,
       loading: false,
       updated: 0,
-      checkedIngredients: []
+      checkedIngredients: [],
+      open: false
     };
   },
   watch: {
@@ -132,6 +149,10 @@ export default {
     }
   },
   methods: {
+    closeSideBar(event) {
+      event && event.stopPropagation();
+      this.open = false;
+    },
     handleCheck(ingredientIndex) {
       let indexInArray = this.checkedIngredients.indexOf(ingredientIndex);
       if(indexInArray > -1) {
@@ -209,6 +230,9 @@ export default {
       let divisor = parseInt(fraction[1]);
       return Math.round((dividend / divisor) * 100) / 100;
     }
+  },
+  directives: {
+    ClickOutside
   }
 };
 </script>

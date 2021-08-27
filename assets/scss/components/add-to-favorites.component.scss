@@ -1,0 +1,45 @@
+.favorite-icon {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    position: relative;
+    width: 43px;
+    cursor: pointer;
+    padding: 0px 0px $spacingLarge $spacingLarge;
+    margin-top: 2px;
+
+
+    .favorites-count {
+      display: inline-block;
+      height: 23px;
+      font-size: $fontSizeSmall;
+      color: $blue;
+    }
+
+    .icon {
+      width: 100%;
+      cursor: default;
+      cursor: pointer;
+      margin-right: $spacingSmall;
+
+      path {
+        stroke: $blue;
+        fill: none;
+        transition: 0.3s;
+      }
+    }
+
+    &:hover {
+      .icon path {
+        fill: $blue;
+        stroke: $blue
+      }
+    }
+
+    &.selected {
+      .icon path {
+        fill: $blue;
+      }
+    }
+  }

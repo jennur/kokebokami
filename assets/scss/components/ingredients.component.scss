@@ -1,0 +1,47 @@
+.ingredients-section {
+    height: inherit;
+    position: absolute;
+    flex-grow: 1;
+    top: 0;
+    right: -297px;
+    transition: 0.3s;
+    // max-width: 95%;
+    width: 300px;
+    height: 100%;
+    padding: $spacingXXLarge;
+    z-index: 99;
+    background-color: $lightOrange;
+    box-shadow: -10px 0px 10px rgba(0,0,0,0.2);
+    border-radius: $spacingSmall 0px 0px $spacingSmall;
+    box-sizing: border-box;
+
+    @media screen and (min-width: $tabletWidth){
+        padding: 0px 0px 0px $spacingLarge;
+        position: relative;
+        width: auto;
+        background-color: $cream;
+        box-shadow: none;
+        margin-right: $spacingLarge;
+        right: auto;
+    }
+    &.open {
+        right: -$spacingLarge;;
+    }
+    .ingredients-button {
+        display: block;
+        position: absolute;
+        top: 60px;
+        left: -68px;
+        transform: rotate(-90deg);
+        z-index: 999;
+        @media screen and (min-width: $tabletWidth){
+            display: none;
+        }
+    }
+
+
+    .ingredients {
+        height: 100%;
+        overflow-y: scroll;
+    }
+}

@@ -15,7 +15,7 @@
       <button
         @click="openShareModal"
         class="button button--w-icon-round margin-bottom-lg margin-right-lg"
-        title="Share this recipe"
+        title="Share recipe by e-mail"
       >
         <email-icon class="icon icon-md" />
       </button>
@@ -24,7 +24,8 @@
       <a v-if="recipePublic"
          class="button button--w-icon-round"
          target="_blank"
-         :href="`https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fkokebokami.com%2Frecipes%2F${recipeKey}%2F&amp;src=sdkpreparse`"
+         title="Share recipe on facebook"
+         :href="`https://www.facebook.com/sharer/sharer.php?u=https://kokebokami.com/recipes/${sharePath}&amp;src=sdkpreparse`"
       >
         <fa :icon="['fab', 'facebook-f']" style="font-size: 20px; color: black;" class="icon icon-sm"/>
       </a>
@@ -42,6 +43,7 @@
 </template>
 <script>
 import ShareForm from "./ShareForm.vue";
+import generatePath from "~/helpers/generatePath.js";
 
 export default {
   name: "action-bar",
@@ -81,6 +83,11 @@ export default {
     recipePublic: {
       type: Boolean,
       default: false
+    }
+  },
+  computed: {
+    sharePath() {
+      return generatePath(this.recipeTitle, this.recipeKey);
     }
   },
   methods: {
