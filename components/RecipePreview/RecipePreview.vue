@@ -29,6 +29,8 @@
         </p>
       </div>
 
+      <rating :rating="recipe.rating" :recipeKey="recipe.id" />
+
       <!-- Description -->
       <h3 class="recipe-preview_title margin--none margin-bottom-md">
         {{ recipe.title ? recipe.title : $t("recipes.noTitle") }}
@@ -56,13 +58,15 @@ import user from "~/mixins/user.js";
 import getRecipeAuthor from "~/mixins/get-recipe-author.js";
 import favoriteIcon from "~/assets/graphics/icons/favorites-icon.svg";
 import LoginContainer from "~/components/Login/LoginContainer";
+import Rating from "~/components/RecipeFullView/Interaction/Rating";
 
 export default {
   name: "recipe-preview",
   components: {
     LoginContainer,
     recipeBackupImg,
-    favoriteIcon
+    favoriteIcon,
+    Rating
   },
   props: {
     recipe: {

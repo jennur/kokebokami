@@ -2,12 +2,9 @@
   <section>
     <div ref="recipe" id="recipe" class="recipe margin-auto">
       <div
-        class="flex-row flex-row--align-center margin-bottom-md"
-        :class="{
-          'flex-row--space-between': isRecipeOwner,
-          'flex-row--justify-right': !isRecipeOwner
-        }"
+        class="flex-row flex-row--align-center flex-row--space-between margin-bottom-md"
       >
+      <div class="flex-row flex-row--align-center">
         <settings-dropdown v-if="isRecipeOwner">
           <public-note
             :isRecipeOwner="isRecipeOwner"
@@ -21,6 +18,8 @@
             }}
           </span>
         </settings-dropdown>
+        <rating :rating="recipe.rating" :recipeKey="recipe.id" :show-total-votes="true" />
+      </div>
 
         <div class="flex-row flex-row--align-center">
           <language-display
@@ -148,11 +147,11 @@
 </template>
 
 <script>
-import logo from "static/kokebokamilogo.png";
 import htmlToPdfMake from "html-to-pdfmake";
 import pdfMake from "pdfmake/build/pdfmake";
 import pdfFonts from "assets/fonts/vfs_fonts";
 
+import Rating from "./Interaction/Rating.vue";
 import SettingsDropdown from "~/components/SettingsDropdown.vue";
 import PublicNote from "./Displays/PublicNote.vue";
 import LanguageDisplay from "./Displays/LanguageDisplay.vue";
@@ -168,12 +167,13 @@ import InstructionsDisplay from "./Displays/InstructionsDisplay.vue";
 import ActionBar from "./Interaction/ActionBar.vue";
 import Alert from "~/components/Alert.vue";
 import ExpandTransform from "~/components/Transitions/Expand.vue";
-// import getRecipeAuthor from "~/mixins/get-recipe-author";
+
 
 export default {
   name: "recipe-full-view",
   components: {
     SettingsDropdown,
+    Rating,
     PublicNote,
     LanguageDisplay,
     PhotoDisplay,
