@@ -75,18 +75,22 @@
     text-align: left;
   }
 
+  .rating-wrapper {
+    padding: $spacingMedium 0px 0px 0px;
+  }
+
   &_title {
-    padding-top: $spacingLarge;
+    padding-top: $spacingMedium;
     text-transform: capitalize;
   }
 
   &_description {
     display: block;
     padding-top: 0;
-    padding-bottom: $spacingMedium;
   }
   &_categories {
     display: block;
+    padding-top: $spacingMedium;
   }
   &_category {
     display: inline-block;

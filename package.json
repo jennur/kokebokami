@@ -12,6 +12,7 @@
     "heroku-postbuild": "npm run build"
   },
   "dependencies": {
+    "@fortawesome/free-regular-svg-icons": "^5.15.4",
     "@nuxtjs/axios": "^5.10.3",
     "@nuxtjs/firebase": "^7.1.1",
     "@nuxtjs/google-gtag": "^1.0.4",

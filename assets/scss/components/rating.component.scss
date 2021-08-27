@@ -1,0 +1,16 @@
+.rating-wrapper {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    padding: 0px 0px $spacingLarge $spacingMedium;
+    
+    svg {
+        color: $orange;
+    }
+
+    .total-votes {
+        color: $orange;
+        font-size: $fontSizeSmall;
+    }
+}

@@ -58,6 +58,7 @@ export default function getRecipeAndMetadata(snapshot, recipePath){
         }
       })
 
+      let rating = recipe.rating && recipe.rating.reduce((a, b) => a + b, 0)/recipe.rating.length
       // Complete structured data
       let structuredData = {
         "@context": "https://schema.org/",
@@ -80,8 +81,8 @@ export default function getRecipeAndMetadata(snapshot, recipePath){
         },
         "aggregateRating": {
           "@type": "AggregateRating",
-          "ratingValue": recipe.ratingValue,
-          "ratingCount": recipe.ratingCount
+          "ratingValue": rating,
+          "ratingCount": recipe.rating && recipe.rating.length
         },
         "suitableForDiet": suitableDiets,
         "isAccessibleForFree": true,
