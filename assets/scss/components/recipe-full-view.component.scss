@@ -209,25 +209,22 @@
     }
   }
 
-  &_ingredients-wrap {
-    width: 100%;
-    @media screen and (min-width: $mobileWidth) {
-      min-width: 220px;
-      max-width: 280px;
-      margin-right: $spacingXLarge;
-    }
+  .main-content-wrap {
+    display: flex;
+    position: relative;
+    height: 100%;
   }
-
   &_instructions-wrap {
     width: 100%;
+    padding-right: $spacingXXLarge;
     @media screen and (min-width: $mobileWidth) {
       min-width: 320px;
       max-width: 490px;
-      margin-top: 106px;
     }
     @media screen and (min-width: $tabletWidth) {
-      margin-top: 114px;
+      padding-right: 0px;
     }
+    
   }
 
   &_ingredients {

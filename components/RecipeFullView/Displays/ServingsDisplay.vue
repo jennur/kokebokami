@@ -1,7 +1,7 @@
 <template>
-  <div id="servings" class="recipe_servings-wrap margin-v-lg">
+  <div id="servings" class="recipe_servings-wrap margin-bottom-lg">
     <div class="flex-row flex-row--align-center">
-      <h4
+      <h3
         class="margin--none margin-top-sm margin-bottom-sm"
         :class="{ disabled: !servings && !editMode }"
       >
@@ -9,7 +9,7 @@
         <span v-if="!servings && !editMode && !loading">
           🤷🏾‍♂️
         </span>
-      </h4>
+      </h3>
 
       <edit-icon
         tabindex="0"

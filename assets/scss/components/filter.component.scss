@@ -8,6 +8,7 @@
     margin-top: $spacingLarge;
     padding: $spacingLarge;
     background-color: rgba($lightBlue,0.1);
+    border-radius: 0px 0px $spacingMedium $spacingMedium;
 
     & > div:not(:first-child) {
       margin-top: $spacingXLarge;

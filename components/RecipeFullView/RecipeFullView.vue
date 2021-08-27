@@ -124,7 +124,7 @@
         </div>
       </div>
 
-      <div class="recipe_flex-no-wrap flex-row--align-top margin-v-xl">
+      <div class="main-content-wrap margin-v-xl">
         <ingredients-display
           class="recipe_ingredients-wrap"
           :ingredients="recipe.ingredients"
