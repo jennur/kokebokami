@@ -22,7 +22,10 @@
         </div>
         <prep-time-edit v-if="editCookingTime" :time="cookingTime" @save-time="time => savePrepTime('cookingTime', time)"/>
         <div  v-if="prepTime && cookingTime" class="prep-time">
-            <b>{{ $t('recipes.totalTime')}}:</b> {{ totalTime }}
+           <fa :icon="['far', 'clock']"
+                style="font-size:15px;margin-right:3px;cursor:pointer;"
+            />
+         <b>{{$t('recipes.totalTime')}}:</b> {{ totalTime }}
         </div>
     </section>
 </template>

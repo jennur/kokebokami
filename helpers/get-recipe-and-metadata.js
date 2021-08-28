@@ -60,7 +60,7 @@ export default function getRecipeAndMetadata(snapshot, recipePath){
         }
       })
 
-      let rating = recipe.rating && recipe.rating.reduce((a, b) => a + b, 0)/recipe.rating.length
+      let rating = recipe.rating && recipe.rating.reduce((a, b) => a + b, 0)/recipe.rating.length;
       let totalTime = getTotalTime(recipe.prepTime, recipe.cookingTime);
 
       // Complete structured data
@@ -73,7 +73,7 @@ export default function getRecipeAndMetadata(snapshot, recipePath){
         "totalTime": getTimeString(totalTime),
         "datePublished": recipe.datePublished,
         "dateModified": recipe.dateModified,
-        "recipeYield": recipe.servings,
+        "recipeYield": recipe.servings || 4,
         "recipeCategory": typeOfMeal,
         "recipeCuisine": recipe.cuisine,
         "recipeIngredient": recipe.ingredients,
@@ -86,7 +86,7 @@ export default function getRecipeAndMetadata(snapshot, recipePath){
         "aggregateRating": {
           "@type": "AggregateRating",
           "ratingValue": rating,
-          "ratingCount": recipe.rating && recipe.rating.length
+          "ratingCount": recipe.rating && recipe.rating.length || 0
         },
         "suitableForDiet": suitableDiets,
         "isAccessibleForFree": true,

@@ -5,16 +5,20 @@
       class="recipe_categories margin-top-lg"
     >
       <span
-        class="recipe_category margin-right-lg"
+        class="recipe_category margin-right-md"
         v-for="(category, index) in categories"
         :class="{ editable: isRecipeOwner, edit: beforeEdit === index }"
         :key="`category-${index}`"
-        ><span @click="toggleEditClass(index)">{{ categoryNames[index] }}</span>
+        >
+        <span @click="toggleEditClass(index)">{{ categoryNames[index] }}</span>
+
         <edit-icon
           tabindex="0"
           class="icon recipe_category-edit-icon"
           @click="event => toggleEditMode(event)"
-      /></span>
+        />
+      </span>
+
       <button
         v-if="!categories.length"
         class="button button-xs button--round"

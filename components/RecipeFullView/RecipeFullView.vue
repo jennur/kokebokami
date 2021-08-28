@@ -101,21 +101,23 @@
             @update="payload => $emit('update', payload)"
           />
 
+          <div class="flex flex-justify--space-between flex-align--end">
           <prep-time  :is-recipe-owner="isRecipeOwner" 
                       :prep-time="recipe.prepTime" 
                       :cooking-time="recipe.cookingTime"
                       :recipe-key="recipe.id"
                       @update="payload => $emit('update', payload)"
           />
+            
 
-          <div
-            v-if="!isRecipeOwner"
-            class="recipe_category-note margin-bottom-lg text-align--right"
-          >
-            {{ $t("recipes.publishedBy") }}
-            <nuxt-link :to="localePath(`/cooks/${author && author.path}`)">
-            {{ author && author.displayName }}
-            </nuxt-link>
+            <div class="recipe_category-note">
+              {{ $t("recipes.publishedBy") }}
+              <nuxt-link :to="localePath(`/cooks/${author && author.path}`)"
+                          
+              >
+              {{ author && author.displayName }}
+              </nuxt-link>
+            </div>
           </div>
         </div>
       </div>
