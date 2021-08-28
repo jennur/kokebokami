@@ -4,7 +4,7 @@
       <button
         v-if="!addingToShoppingList && !addedToShoppingList"
         class="button--increment"
-        @click="openSelect"
+        @click="event => openSelect(event)"
       >
         {{ $t("recipes.addToShoppingList") }}
       </button>
@@ -37,7 +37,7 @@
     </div>
     <button v-else
             class="button button-xs button--round button--green padding-h-lg margin-bottom-2xl"
-            @click="$store.dispatch('SHOW_LOGIN_MODAL', {open: true, headline: 'Log in to add to shopping list'})"
+            @click="event => openModal(event)"
     >
       {{ $t("recipes.loginToAddToShoppingList") }}
     </button>
@@ -85,7 +85,12 @@ export default {
     }
   },
   methods: {
-    openSelect() {
+    openModal(event) {
+      event && event.stopPropagation();
+      this.$store.dispatch('SHOW_LOGIN_MODAL', {open: true, headline: 'Log in to add to shopping list'});
+    },
+    openSelect(event) {
+      event && event.stopPropagation();
       let shoppingLists = this.shoppingLists;
       this.chosenShoppingList = shoppingLists && shoppingLists.key;
       this.addingToShoppingList = true;

@@ -55,5 +55,15 @@ module.exports = {
     "hanukkah",
     "thanksgiving",
     "celebration"
+  ], 
+  cuisine: [
+    'american',
+    'chinese',
+    'french',
+    'italian',
+    'japanese',
+    'mediterranean',
+    'norwegian',
+    'thai'
   ]
 }

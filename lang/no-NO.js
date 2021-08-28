@@ -229,6 +229,9 @@ export default {
         "feiring"
       ]
     },
+    preptime: "Forberedelser",
+    cookingTime: "Laging",
+    totalTime: "Total tid",
     serving: "Porsjon",
     servings: "Porsjoner",
     ingredients: "Ingredienser",

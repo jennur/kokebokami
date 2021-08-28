@@ -1,19 +1,5 @@
 <template>
   <div>
-    <!-- <label
-      class="flex-row flex-row--align-center flex-row--nowrap margin-top-2xl"
-    >
-      <h4 class="margin--none">Number of servings:</h4>
-      <input
-        class="add-recipe-form_servings margin-left-md"
-        type="number"
-        id="servings-amount"
-        placeholder="4"
-        min="0"
-        step="1"
-        v-model="servings"
-      />
-    </label> -->
     <fieldset
       id="ingredientList"
       class="add-recipe-form_ingredients flex-column margin-top-2xl"
@@ -75,7 +61,7 @@
           >Add ingredient</increment-button
         ><button
           class="button button--dynamic-small button--round padding-v-sm margin-top-lg"
-          @click="$emit('save', [ingredientAmounts, ingredients])"
+          @click="event => handleClick(event)"
         >
           Save
         </button>
@@ -109,6 +95,10 @@ export default {
     ingredientNumbers: { type: Array, default: () => [] }
   },
   methods: {
+    handleClick(event) {
+      event && event.stopPropagation();
+      this.$emit('save', [this.ingredientAmounts, this.ingredients])
+    },
     incrementIngredientNumber() {
       let numbers = this.ingredientNumbers;
       let ingredientNumber =

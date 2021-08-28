@@ -228,6 +228,9 @@ export default {
         "celebration"
       ]
     },
+    preptime: "Prep time",
+    cookingTime: "Cooking time",
+    totalTime: "Total time",
     serving: "Serving",
     servings: "Servings",
     ingredients: "Ingredients",

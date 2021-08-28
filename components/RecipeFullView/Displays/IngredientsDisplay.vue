@@ -1,6 +1,7 @@
 <template>
   <section  class="ingredients-section" 
             :class="{open}"
+            @click="open = true"
             v-click-outside="event => closeSideBar(event)"
   
   >
@@ -29,7 +30,7 @@
             <edit-icon
               tabindex="0"
               v-if="isRecipeOwner && !editMode"
-              @click="toggleEditMode"
+              @click="event => toggleEditMode(event)"
               class="icon margin-md"
             />
           </div>
@@ -165,7 +166,8 @@ export default {
     setServings(number) {
       this.updatedServings = number;
     },
-    toggleEditMode() {
+    toggleEditMode(event) {
+      event && event.stopPropagation();
       this.editMode = !this.editMode;
     },
     saveIngredients(ingredients) {

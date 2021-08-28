@@ -16,9 +16,11 @@
       <li
         tabindex="0"
         class="recipe_instructions-step"
+        :class="{'focused': focusedIndex === index}"
         v-for="(step, index) in instructions"
         :key="`instruction-${index}`"
         :id="`step${index + 1}`"
+        @click="focusedIndex = index"
       >
         {{ step }}
       </li>
@@ -56,7 +58,8 @@ export default {
   data() {
     return {
       editMode: false,
-      loading: false
+      loading: false,
+      focusedIndex: null
     };
   },
   methods: {

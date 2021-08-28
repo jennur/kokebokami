@@ -27,7 +27,7 @@
         </p>
       </div>
 
-      <rating :rating="recipe.rating" :recipeKey="recipe.id" />
+      <rating :rating="recipe.rating" :recipeKey="recipe.id" :deactivated="true" />
 
       <!-- Description -->
       <h3 class="recipe-preview_title margin--none margin-bottom-md">
