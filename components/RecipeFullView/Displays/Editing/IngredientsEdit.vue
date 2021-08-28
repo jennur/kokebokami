@@ -28,23 +28,19 @@
         </div>
         <decrement-button
           :data-ingredient-ref="index"
-          @decrement="
-            event => {
-              removeIngredient(index);
-            }
-          "
+          @decrement="event => removeIngredient(event, index)"
         ></decrement-button>
       </div>
     </div>
     <div class="flex-row flex-row--align-center">
       <increment-button
         class="margin-top-lg margin-right-lg"
-        @increment="addIngredient"
+        @increment="event => addIngredient(event)"
         >Add ingredient</increment-button
       >
       <button
         class="button button--dynamic-small button--round padding-v-sm margin-top-lg"
-        @click="$emit('save', ingredientsToBeUpdated)"
+        @click="event => handleClick(event)"
       >
         Save
       </button>
@@ -75,6 +71,10 @@ export default {
     };
   },
   methods: {
+    handleClick(event) {
+      event && event.stopPropagation();
+      this.$emit('save', this.ingredientsToBeUpdated);
+    },
     startDrag(event, item, index) {
       event.dataTransfer.dropEffect = "move";
       event.dataTransfer.effectAllowed = "move";
@@ -90,10 +90,12 @@ export default {
       this.ingredientsToBeUpdated.splice(moveIndex, 1);
       this.ingredientsToBeUpdated.splice(index, 0, ingredient);
     },
-    removeIngredient(index) {
+    removeIngredient(event, index) {
+      event && event.stopPropagation();
       this.ingredientsToBeUpdated.splice(index, 1);
     },
-    addIngredient() {
+    addIngredient(event) {
+      event && event.stopPropagation();
       let id = Math.random() * 10;
       this.ingredientsToBeUpdated.push({ amount: 0, item: " ", id });
     }

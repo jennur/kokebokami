@@ -14,15 +14,15 @@
       <edit-icon
         tabindex="0"
         v-if="isRecipeOwner && !editMode"
-        @click="toggleEditMode"
+        @click="event => toggleEditMode(event)"
         class="icon margin-left-md"
       />
     </div>
 
     <div v-if="servings && !editMode && !loading" class="recipe_servings-w-btns">
-      <button class="servings-btn" @click="decrement">-</button>
+      <button class="servings-btn minus" @click="decrement"></button>
       <span class="recipe_servings">{{updatedServings}}</span>
-      <button class="servings-btn" @click="increment">+</button>
+      <button class="servings-btn plus" @click="increment"></button>
     </div>
 
     <span v-if="loading" class="simple-loading-spinner"></span>
@@ -45,22 +45,10 @@ export default {
     ServingsEdit
   },
   props: {
-    servings: {
-      type: String,
-      default: ""
-    },
-    defaultServings: {
-      type: String,
-      default: ""
-    },
-    recipeKey: {
-      type: String,
-      default: ""
-    },
-    isRecipeOwner: {
-      type: Boolean,
-      default: false
-    }
+    servings: String,
+    defaultServings: String,
+    recipeKey: String,
+    isRecipeOwner: Boolean
   },
   data() {
     return {
@@ -84,7 +72,8 @@ export default {
     }
   },
   methods: {
-    toggleEditMode() {
+    toggleEditMode(event) {
+      event && event.stopPropagation();
       this.editMode = !this.editMode;
     },
     decrement(){

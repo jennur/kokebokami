@@ -1,5 +1,7 @@
 import generatePath from "./generatePath";
-import recipeModel from "~/helpers/recipe-model";
+import recipeModel from "./recipe-model";
+import getTotalTime from "./get-total-time";
+
 const backupImg = "https://firebasestorage.googleapis.com/v0/b/kokebokami-e788f.appspot.com/o/images%2Fglobals%2FrecipeImage%2Frecipe-backup-img.png?alt=media&token=67cb87a6-78ae-4b45-bdec-44b8e702b842";
 
 export default function getRecipeAndMetadata(snapshot, recipePath){
@@ -59,14 +61,16 @@ export default function getRecipeAndMetadata(snapshot, recipePath){
       })
 
       let rating = recipe.rating && recipe.rating.reduce((a, b) => a + b, 0)/recipe.rating.length
+      let totalTime = getTotalTime(recipe.prepTime, recipe.cookingTime);
+
       // Complete structured data
       let structuredData = {
         "@context": "https://schema.org/",
         "@type": "Recipe",
         ...recipeMetaData,
-        "prepTime": recipe.prepTime,
-        "cookTime": recipe.cookTime,
-        "totalTime": recipe.prepTime,
+        "prepTime": recipe.prepTime && `PT${recipe.prepTime.h}H${recipe.prepTime.min}M`,
+        "cookTime": recipe.cookingTime && `PT${recipe.cookingTime.h}H${recipe.cookingTime.min}M`,
+        "totalTime": `PT${totalTime.h}H${totalTime.min}M`,
         "datePublished": recipe.datePublished,
         "dateModified": recipe.dateModified,
         "recipeYield": recipe.servings,

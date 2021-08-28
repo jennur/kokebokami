@@ -101,6 +101,13 @@
             @update="payload => $emit('update', payload)"
           />
 
+          <prep-time  :is-recipe-owner="isRecipeOwner" 
+                      :prep-time="recipe.prepTime" 
+                      :cooking-time="recipe.cookingTime"
+                      :recipe-key="recipe.id"
+                      @update="payload => $emit('update', payload)"
+          />
+
           <div
             v-if="!isRecipeOwner"
             class="recipe_category-note margin-bottom-lg text-align--right"
@@ -163,6 +170,7 @@ import DescriptionDisplay from "./Displays/DescriptionDisplay.vue";
 import CategoryDisplay from "./Displays/CategoryDisplay.vue";
 import FreeFromDisplay from "./Displays/FreeFromDisplay";
 import TypeOfMealDisplay from "./Displays/TypeOfMealDisplay";
+import PrepTime from './Displays/PrepTime';
 import IngredientsDisplay from "./Displays/IngredientsDisplay.vue";
 import InstructionsDisplay from "./Displays/InstructionsDisplay.vue";
 
@@ -186,6 +194,7 @@ export default {
     CategoryDisplay,
     FreeFromDisplay,
     TypeOfMealDisplay,
+    PrepTime,
     IngredientsDisplay,
     InstructionsDisplay,
     ExpandTransform,

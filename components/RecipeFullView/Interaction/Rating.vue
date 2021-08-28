@@ -6,8 +6,8 @@
             tabindex="0"
             :icon="['fas', 'star']"
             style="font-size:15px;margin-right:5px;cursor:pointer;"
-            @click="setRating(index)"
-            @keydown="event => event.keyCode === 13 && setRating(index)"
+            @click="!deactivated && setRating(index)"
+            @keydown="event => event.keyCode === 13 && !deactivated && setRating(index)"
         />
         <fa v-for="index in (5 - totalRating)"
             :key="`star-${index + totalRating}`"
@@ -15,8 +15,8 @@
             tabindex="0"
             :icon="['far', 'star']"
             style="font-size:15px;margin-right:5px;cursor:pointer;"
-            @click="setRating(index + totalRating)"
-            @keydown="event => event.keyCode === 13 && setRating(index + totalRating)"
+            @click="!deactivated && setRating(index + totalRating)"
+            @keydown="event => event.keyCode === 13 && !deactivated && setRating(index + totalRating)"
         />
         <span v-if="showTotalVotes" class="total-votes"> ({{ totalVoted }})</span>
     </section>
@@ -29,7 +29,8 @@ export default {
     props: {
         rating: Array,
         recipeKey: String,
-        showTotalVotes: Boolean
+        showTotalVotes: Boolean,
+        deactivated: Boolean
     },
     data() {
         return {

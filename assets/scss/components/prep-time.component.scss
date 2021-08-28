@@ -1,0 +1,20 @@
+.prep-time-wrapper {
+    .prep-time {
+        font-size: $fontSizeSmall;
+        color: $blue;
+        margin-top: $spacingSmall;
+    }
+}
+
+.prep-time-edit-wrapper {
+    margin-top: $spacingSmall;
+
+    input {
+        &.hour {
+            width: 50px;
+        }
+        &.minutes {
+            width: 70px;
+        }
+    }
+}

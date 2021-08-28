@@ -170,9 +170,27 @@
         border: none;
         outline: none;
         cursor: pointer;
-        font-size: $fontSizeMedium;
+        font-size: $fontSizeSmall;
         line-height: 5px;
         transition: 0.3s;
+        position: relative;
+
+        &.minus::after, 
+        &.plus::after,
+        &.plus::before {
+          content: "";
+          display: block;
+          width: 8px;
+          height: 0px;
+          border-bottom: 2px solid $blue;
+          position: absolute;
+          top: 50%;
+          transform: translateY(-50%);
+        }
+
+        &.plus::before {
+          transform: translateY(-50%) rotate(-90deg);
+        }
 
         &:hover, &:focus {
           background-color: lighten($green, 10%);
@@ -295,6 +313,7 @@
       padding-left: $spacingXXLarge;
       position: relative;
       cursor: default;
+      transition: 0.2s;
 
       &::before {
         counter-increment: b;
@@ -312,6 +331,7 @@
         font-size: 12px;
         color: $cream;
         z-index: 1;
+        transition: 0.2s;
       }
       &:not(:last-child)::after {
         content: "";
@@ -321,11 +341,24 @@
         top: $spacingLarge;
         left: 10px;
         z-index: 0;
+        transition: 0.2s;
       }
-      &:focus {
+      &.focused {
         font-weight: normal;
         outline: none;
         background-color: rgba($green, 0.1);
+        border-radius: 0px $spacingSmall $spacingSmall 0px;
+        padding: $spacingXLarge $spacingXXLarge;
+        &::after {
+          padding-top: $spacingXLarge;
+        }
+        & + .recipe_instructions-step {
+          padding-top: $spacingXLarge;
+
+          &::before {
+            top: 3px + $spacingXLarge;
+          }
+        }
       }
     }
   }

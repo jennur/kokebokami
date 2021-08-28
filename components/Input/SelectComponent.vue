@@ -5,10 +5,10 @@
     tabindex="0"
     class="select"
     :class="{'select--naked': naked}"
-    @click="open = !open"
+    @click="event => toggleDropdown(event)"
     @keydown="
       event => {
-        event.keyCode === 13 && (open = !open);
+        event.keyCode === 13 && toggleDropdown(event)
       }
     "
   >
@@ -25,10 +25,10 @@
             selected === defaultValue ? 'select_option--selected' : ''
           }`
         "
-        @click="() => handleOption(defaultValue)"
+        @click="(event) => handleOption(event, defaultValue)"
         @keydown="
           event => {
-            event.keyCode === 13 && handleOption(defaultValue);
+            event.keyCode === 13 && handleOption(event, defaultValue);
           }
         "
       >{{ defaultValue }}</span>
@@ -44,10 +44,10 @@
           }`
         "
         :key="`display-option-${index}`"
-        @click="() => handleOption(option)"
+        @click="(event) => handleOption(event, option)"
         @keydown="
           event => {
-            event.keyCode === 13 && handleOption(option);
+            event.keyCode === 13 && handleOption(event, option);
           }
         "
       >{{ option }}</span>
@@ -88,9 +88,15 @@ export default {
     }
   },
   methods: {
-    handleOption(option) {
+    toggleDropdown(event) {
+      event && event.stopPropagation();
+      this.open = !this.open;
+    },
+    handleOption(event, option) {
+      event && event.stopPropagation();
       this.selected = option;
       this.$emit("select", option);
+      this.open = false;
     },
     closeDropdown(event) {
       this.open = false;
