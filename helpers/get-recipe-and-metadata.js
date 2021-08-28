@@ -68,9 +68,9 @@ export default function getRecipeAndMetadata(snapshot, recipePath){
         "@context": "https://schema.org/",
         "@type": "Recipe",
         ...recipeMetaData,
-        "prepTime": recipe.prepTime && `PT${recipe.prepTime.h}H${recipe.prepTime.min}M`,
-        "cookTime": recipe.cookingTime && `PT${recipe.cookingTime.h}H${recipe.cookingTime.min}M`,
-        "totalTime": `PT${totalTime.h}H${totalTime.min}M`,
+        "prepTime": getTimeString(recipe.prepTime),
+        "cookTime": getTimeString(recipe.cookingTime),
+        "totalTime": getTimeString(totalTime),
         "datePublished": recipe.datePublished,
         "dateModified": recipe.dateModified,
         "recipeYield": recipe.servings,
@@ -171,4 +171,8 @@ const metadata = (values) => {
         }
       ]
   }
+}
+
+function getTimeString(time) {
+  return time && `PT${time.h && (time.h + 'H') || ''}${time.min && (time.min + 'M') || ''}`
 }

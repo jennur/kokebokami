@@ -14,7 +14,7 @@ export default {
     },
     data() {
         return {
-            newTime: this.newTime && JSON.parse(this.newTime) || { h: null, min: null }
+            newTime: this.time || { h: null, min: null }
         }
     }
 }

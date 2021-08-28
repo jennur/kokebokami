@@ -1,7 +1,7 @@
 <template>
     <section class="prep-time-wrapper">
         <div v-if="(prepTime || isRecipeOwner) && !editPrepTime" class="prep-time">
-            <b>{{ $t('recipes.preptime')}}:</b>  {{ prepTime && `${prepTime.h}h ${prepTime.min}min` || "" }}
+            <b>{{ $t('recipes.preptime')}}:</b>  {{ getTimeText(prepTime) }}
             <edit-icon
                 tabindex="0"
                 v-if="isRecipeOwner && !editPrepTime"
@@ -12,7 +12,7 @@
         <prep-time-edit v-if="editPrepTime" :time="prepTime" @save-time="time => savePrepTime('prepTime', time)"/>
 
         <div v-if="(cookingTime || isRecipeOwner) && !editCookingTime" class="prep-time">
-            <b>{{ $t('recipes.cookingTime')}}:</b> {{ cookingTime && `${cookingTime.h}h ${cookingTime.min}min` || '' }}
+            <b>{{ $t('recipes.cookingTime')}}:</b> {{ getTimeText(cookingTime) }}
             <edit-icon
                 tabindex="0"
                 v-if="isRecipeOwner && !editCookingTime"
@@ -22,7 +22,7 @@
         </div>
         <prep-time-edit v-if="editCookingTime" :time="cookingTime" @save-time="time => savePrepTime('cookingTime', time)"/>
         <div  v-if="prepTime && cookingTime" class="prep-time">
-            <b>{{ $t('recipes.totalTime')}}:</b> {{ totalTime && `${totalTime.h}h ${totalTime.min}min` || '' }}
+            <b>{{ $t('recipes.totalTime')}}:</b> {{ totalTime }}
         </div>
     </section>
 </template>
@@ -49,10 +49,18 @@ export default {
     },
     computed: {
         totalTime(){
-            return getTotalTime(this.prepTime, this.cookingTime);
+            let time = getTotalTime(this.prepTime, this.cookingTime);
+            return this.getTimeText(time);
         }
     },
     methods: {
+        getTimeText(time) {
+            let text = '';
+            if (time && time.h) text = `${time.h}h`;
+            if(time && time.min) text += ` ${time.min}min`;
+
+            return text;
+        },
         savePrepTime(path, time) {
             this.$fire.database.ref(`recipes/${this.recipeKey}/${path}`)
             .set(time)
