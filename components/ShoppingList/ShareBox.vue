@@ -1,6 +1,6 @@
 <template>
   <modal-box :open="open" :dark-bg="false" @close="$emit('close-modal')">
-    <h4>{{`${$t("shoppingLists.share.share")} '${listTitle}' ${$t("shoppingLists.share.withFollower")}` }}</h4>
+    <h4>{{`${$t("share")} '${listTitle}' ${$t("shoppingLists.share.withFollower")}` }}</h4>
 
     <form class="share-form" v-on:submit.prevent>
       <fieldset class="flex-row flex-row--align-center flex-row--nowrap margin-bottom-md">
@@ -19,7 +19,7 @@
       </fieldset>
 
       <button @click="shareShoppingList" class="button button-sm margin-top-md">
-        Share
+        {{$t('share')}}
       </button>
     </form>
 

@@ -4,7 +4,7 @@
       <settings-dropdown class="margin-top-md" v-if="subListKey">
         <span class="system-message" @click="toggleAlert">
           <delete-icon tabindex="0" class="icon margin-right-md" />
-          Delete sublist
+          {{$t('shoppingLists.deleteSublist')}}
         </span>
       </settings-dropdown>
       <div class="sub-list-container">
@@ -25,7 +25,7 @@
     </div>
     <Alert
       :alertMessage="
-        `Are you sure you want to delete this sublist: '${subList.title}'?`
+        `${$t('shoppingLists.sublistWarningText')}: '${subList.title}'?`
       "
       :showAlert="showAlert"
       @confirmed="deleteSubList"
@@ -35,8 +35,6 @@
 </template>
 
 <script>
-import ClickOutside from "vue-click-outside";
-
 import user from "~/mixins/user.js";
 
 import SettingsDropdown from "~/components/SettingsDropdown.vue";
@@ -53,22 +51,10 @@ export default {
     Alert
   },
   props: {
-    mainListTitle: {
-      type: String,
-      default: ""
-    },
-    mainListKey: {
-      type: String,
-      default: ""
-    },
-    subList: {
-      type: Object,
-      default: () => {}
-    },
-    subListKey: {
-      type: String,
-      default: ""
-    }
+    mainListTitle: String,
+    mainListKey: String,
+    subList: Object,
+    subListKey: String
   },
   data() {
     return {

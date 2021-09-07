@@ -5,15 +5,17 @@ export default {
   introCTA: "Kom igang",
   email: "E-post",
   password: "Passord",
-  searchText: "Søk",
+  searchPlaceholder: "Søk i oppskrifter",
   loginText: "Logg inn",
   loginWith: "Logg inn med",
+  signinWith: "Logg inn med",
   signUpText: "Registrer deg",
   logout: "Logg ut",
   dummyEmail: "kari.nordmann@eksempel.no",
   enterValidEmailAddress: "Vennligst skriv inn en gyldig e-postadresse",
   add: "Legg til",
   addRecipeToList: "Legg til en ny oppskrift",
+  addItem: "Legg til element",
   submit: "Publiser",
   approve: "Godkjenn",
   delete: "Slett",
@@ -27,6 +29,10 @@ export default {
   open: "Åpen",
   closed: "Lukket",
   save: "Lagre",
+  edit: "Endre",
+  editList: "Endre liste",  
+  remove: "Fjern",
+  share: "Del",
   login: {
     headingText: "Login to kokeboka di",
     forgottenPassword: "Jeg har glemt passordet mitt",
@@ -151,11 +157,19 @@ export default {
     deleteAlertNote: "Er du sikker på at du vil slette denne kommentaren"
   },
   shoppingLists: {
+    newList: "Ny handleliste",
     share: {
       share: "Del",
       withFollower: "med en av følgerene dine",
       shareWithFollowerNote: "Handlelisten vil dukke opp iblant din følgers handlelister"
-    }
+    },
+    sharedBy: "Delt av",
+    sharedWith: "Delt med",
+    newSublist: "Ny underliste",
+    deleteCollection: "Slett samling",
+    deleteSublist: "Slett underliste",
+    warningText: "Er du sikker på at du vil slette denne listen",
+    sublistWarningText: "Er du sikker på at du vil slette denne underlisten"
   },
   recipes: {
     publishedBy: "Publisert av",

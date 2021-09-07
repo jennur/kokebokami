@@ -1,6 +1,6 @@
 <template>
   <modal-box :dark-bg="false" :open="open" @close="$emit('close-modal')">
-      <h3>{{ $t("recipes.share.share") }} '{{ recipeTitle }}'</h3>
+      <h3>{{ $t("share") }} '{{ recipeTitle }}'</h3>
 
       <form v-if="user && user.id" class="share-form margin-v-lg" @submit.prevent >
         <div class="flex-row flex-row--align-center flex-row--nowrap">
@@ -22,7 +22,7 @@
 
         <div class="flex-row flex-row--align-center">
           <button @click="shareRecipe" class="button button-xs margin-left-xs margin-right-md">
-            {{ $t("recipes.share.share") }}
+            {{ $t("share") }}
           </button>
           <span v-if="!useEmail" class="link small-text" @click="useEmail = true">
             {{$t("recipes.share.iWantToEnterEmail")}}
@@ -44,7 +44,7 @@
             <label class="flex-column">
               <input id="shareEmail" type="email" :placeholder="$t('dummyEmail')"/>
               <button @click="shareRecipeByEmail" class="button button-xs margin-left-xs margin-top-md">
-                {{ $t("recipes.share.share") }}
+                {{ $t("share") }}
               </button>
             </label>
           </fieldset>

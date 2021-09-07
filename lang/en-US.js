@@ -6,15 +6,17 @@ export default {
   introCTA: "Get started",
   email: "E-mail",
   password: "Password",
-  searchText: "Search",
+  searchPlaceholder: "Search among recipes",
   loginText: "Log in",
-  loginWith: "Sign in with",
+  loginWith: "Log in with",
+  signinWith: "Sign in with",
   signUpText: "Sign up",
   logout: "Log out",
   dummyEmail: "john.doe@example.com",
   enterValidEmailAddress: "Please enter a valid e-mail address",
   add: "Add",
   addRecipeToList: "Add a recipe",
+  addItem: "Add item",
   submit: "Submit",
   approve: "Approve",
   delete: "Delete",
@@ -28,6 +30,10 @@ export default {
   open: "Open",
   closed: "Closed",
   save: "Save",
+  edit: "Edit",
+  editList: "Edit list",
+  remove: "Remove",
+  share: "Share",
   login: {
     headingText: "Login to kokeboka di",
     forgottenPassword: "I forgot my password",
@@ -150,11 +156,19 @@ export default {
     deleteAlertNote: "Are you sure you want to delete this comment"
   },
   shoppingLists: {
+    newList: "New shopping list",
     share: {
       share: "Share",
       withFollower: "with one of your followers",
       shareWithFollowerNote: "The shopping list will show up among your friend's shopping lists"
-    }
+    },
+    sharedBy: "Shared by",
+    sharedWith: "Shared with",
+    newSublist: "New sublist",
+    deleteCollection: "Delete collection",
+    deleteSublist: "Delete sublist",
+    warningText: "Are you sure you want to delete this shopping list",
+    sublistWarningText: "Are you sure you want to delete this sublist"
   },
   recipes: {
     publishedBy: "Published by",

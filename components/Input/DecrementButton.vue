@@ -2,7 +2,7 @@
   <button
     type="button"
     class="remove-icon"
-    title="Remove"
+    :title="$t('remove')"
     @click="(event)=>{this.$emit('decrement', event)}"
   >
     <slot />

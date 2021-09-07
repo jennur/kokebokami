@@ -1,12 +1,11 @@
 <template>
   <button outline fab @click="googleSignIn" class="google-btn">
     <googleLogo />
-    <span class="google-btn_text">{{ $t("loginWith") }} Google</span>
+    <span class="google-btn_text">{{ $t("signinWith") }} Google</span>
   </button>
 </template>
 <script>
 import googleLogo from "~/assets/graphics/icons/btn_google_light_normal_ios.svg";
-import user from "~/mixins/user.js";
 
 export default {
   name: "google-login",

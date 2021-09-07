@@ -67,7 +67,7 @@ export default {
         let username = this.user.displayName;
 
         let mainListKey = this.mainListKey;
-        let mainListTitle = this.mainListTitle || "New shopping list";
+        let mainListTitle = this.mainListTitle || this.$t('shoppingLists.newList');
 
         let title = this.updatedTitle;
         let subListKey = this.subListKey;
