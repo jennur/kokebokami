@@ -50,6 +50,14 @@ export default {
     RecipesList
   },
   head() {
+    let carouselItems = this.publicRecipes && this.publicRecipes.map((recipe, index) => {
+      return {
+              "@type": "ListItem",
+              "position": index,
+              "url": `https://kokebokami.com/${recipe.path}`
+            }
+    });
+    
     return {
       link: [
         {
@@ -79,6 +87,14 @@ export default {
             "@context": "https://schema.org",
             "@type": "WebSite",
             "url": "https://kokebokami.com"
+          }
+        },
+        {
+          type: "application/ld+json",
+          json: {
+            "@context": "https://schema.org",
+            "@type": "ItemList",
+            "itemListElement": carouselItems
           }
         }
       ]
