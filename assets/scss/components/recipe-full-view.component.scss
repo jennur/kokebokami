@@ -392,10 +392,6 @@
     &-note {
       color: $blue;
       font-size: $fontSizeSmall;
-      margin-bottom: $spacingMedium;
-      @media screen and (min-width: $tabletWidth) {
-        margin-bottom: $spacingSmall;
-      }
     }
     .recipe_category-edit-icon {
       display: none;

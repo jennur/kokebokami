@@ -171,7 +171,7 @@ export default {
   fontawesome: {
     component: "fa",
     icons: {
-      regular: ['faStar'],
+      regular: ['faStar', 'faClock'],
       solid: ['faSlidersH', 'faStar'],
       brands: ['faFacebookSquare', 'faFacebookF']
     }
