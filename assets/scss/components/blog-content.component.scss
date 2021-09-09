@@ -1,10 +1,6 @@
 .blog-content {
     margin: $spacingXLarge 0px;
 
-    @media screen and (min-width: $tabletWidth) {
-        margin: $spacingXLarge $spacingLarge;
-    }
-
     .headline {
         margin-top: $spacingXLarge;
         margin-bottom: $spacingMedium;

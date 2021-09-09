@@ -204,15 +204,14 @@
     width: 100%;
     font-size: $fontSizeXSmall;
     color: gray;
-    margin-bottom: $spacingXLarge;
 
     span.label {
       font-weight: bold;
     }
-    
+
     div {
       display: inline-block;
-      &:first-child::after {
+      &:nth-child(2)::before {
         @media screen and (min-width: $mobileWidth) {
           content: "|";
         }

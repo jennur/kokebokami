@@ -4,7 +4,7 @@
 
       <!--   PDF download   -->
       <button
-        class="button button--w-icon-round margin-bottom-lg margin-right-lg"
+        class="button button--w-icon-round margin-right-lg"
         @click="handlePdfExport"
         title="Download as PDF"
       >
@@ -14,7 +14,7 @@
       <!--   Email share   -->
       <button
         @click="openShareModal"
-        class="button button--w-icon-round margin-bottom-lg margin-right-lg"
+        class="button button--w-icon-round margin-right-lg"
         title="Share recipe by e-mail"
       >
         <email-icon class="icon icon-md" />

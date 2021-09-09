@@ -1,7 +1,7 @@
 <template>
   <section class="sub-list margin-v-lg">
     <div class="flex-row flex-row--align-top flex-row--nowrap">
-      <settings-dropdown class="margin-top-md" v-if="subListKey">
+      <settings-dropdown class="margin-top-md margin-right-md" v-if="subListKey">
         <span class="system-message" @click="toggleAlert">
           <delete-icon tabindex="0" class="icon margin-right-md" />
           {{$t('shoppingLists.deleteSublist')}}

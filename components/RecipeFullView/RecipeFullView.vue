@@ -1,5 +1,21 @@
 <template>
   <section ref="recipe" id="recipe" class="recipe margin-auto">
+
+    <div class="flex-row flex-row--align-center flex-row--nowrap margin-bottom-xl">
+      <settings-dropdown v-if="isRecipeOwner" class="margin-right-md">
+        <public-note
+          :isRecipeOwner="isRecipeOwner"
+          :recipeKey="recipe.id"
+          :isPublic="recipe.public"
+          @update="payload => $emit('update', payload)"
+        />
+        <span v-if="recipe.id" class="system-message" @click="toggleAlert">
+          <delete-icon tabindex="0" class="icon margin-right-sm" />{{
+            $t("recipes.deleteRecipe")
+          }}
+        </span>
+      </settings-dropdown>
+
       <div v-if="recipe.datePublished" class="recipe_dates">
         <div>
           <span class="label">Published:</span>
@@ -10,46 +26,31 @@
           {{recipe.dateModified}}
         </div>
       </div>
+    </div>
 
-      <blog-content v-if="recipe.blog" 
-                    :recipeKey="recipe.id" 
+      <blog-content :recipeKey="recipe.id" 
                     :is-recipe-owner="isRecipeOwner" 
                     :blog="recipe.blog" 
                     @update="$emit('update')"
       />
 
-      <div class="flex-row flex-row--align-center flex-row--space-between margin-bottom-md">
-      <div class="flex-row flex-row--align-center">
-        <settings-dropdown v-if="isRecipeOwner">
-          <public-note
-            :isRecipeOwner="isRecipeOwner"
-            :recipeKey="recipe.id"
-            :isPublic="recipe.public"
-            @update="payload => $emit('update', payload)"
-          />
-          <span v-if="recipe.id" class="system-message" @click="toggleAlert">
-            <delete-icon tabindex="0" class="icon margin-right-sm" />{{
-              $t("recipes.deleteRecipe")
-            }}
-          </span>
-        </settings-dropdown>
-        <rating v-if="recipe.id" :rating="recipe.rating" :recipeKey="recipe.id" :show-total-votes="true" />
-        <add-to-favorites v-if="recipe.id" :recipe-key="recipe.id" :favorites-count="recipe.favoritesCount" :show-count="true"/>
-      </div>
-
+      <div class="flex-row flex-row--align-center flex-row--space-between margin-bottom-lg">
         <div class="flex-row flex-row--align-center">
-
-          <action-bar
-            v-if="recipe.id"
-            :isRecipeOwner="isRecipeOwner"
-            :recipeOwnerID="recipe.ownerID"
-            :recipeKey="recipe.id"
-            :recipeTitle="recipe.title"
-            :recipeDescription="recipe.description"
-            :recipePublic="recipe.public"
-            @download="pdfExport"
-          />
+          <rating v-if="recipe.id" :rating="recipe.rating" :recipeKey="recipe.id" :show-total-votes="true" class="margin-right-lg" />
+          <add-to-favorites v-if="recipe.id" :recipe-key="recipe.id" :favorites-count="recipe.favoritesCount" :show-count="true"/>
         </div>
+
+
+        <action-bar
+          v-if="recipe.id"
+          :isRecipeOwner="isRecipeOwner"
+          :recipeOwnerID="recipe.ownerID"
+          :recipeKey="recipe.id"
+          :recipeTitle="recipe.title"
+          :recipeDescription="recipe.description"
+          :recipePublic="recipe.public"
+          @download="pdfExport"
+        />
       </div>
       <Alert
         :alertMessage="
