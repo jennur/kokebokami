@@ -202,18 +202,21 @@
   &_dates {
     display: block;
     width: 100%;
-    font-size: $fontSizeSmall;
+    font-size: $fontSizeXSmall;
     color: gray;
-
-    @media screen and (min-width: $mobileWidth) {
-      margin-left: $spacingLarge;
-    }
+    margin-bottom: $spacingXLarge;
 
     span.label {
       font-weight: bold;
     }
-    div:not(:first-child) {
-      margin-top: $spacingSmall;
+    
+    div {
+      display: inline-block;
+      &:first-child::after {
+        @media screen and (min-width: $mobileWidth) {
+          content: "|";
+        }
+      }
     }
   }
 
@@ -227,11 +230,12 @@
     }
   }
 
-  .main-content-wrap {
+  .recipe-content-wrap {
     display: flex;
     position: relative;
     height: 100%;
   }
+  
   &_instructions-wrap {
     width: 100%;
     padding-right: $spacingXXLarge;

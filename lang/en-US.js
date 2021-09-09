@@ -34,6 +34,7 @@ export default {
   editList: "Edit list",
   remove: "Remove",
   share: "Share",
+  photo: "Photo",
   login: {
     headingText: "Login to kokeboka di",
     forgottenPassword: "I forgot my password",
@@ -247,6 +248,17 @@ export default {
     totalTime: "Total time",
     serving: "Serving",
     servings: "Servings",
+    blog: {
+      addContent: "Add blog content",
+      addHeadline: "Add headline",
+      addImage: "Add image",
+      addText: "Add text",
+      photoCredit: "Photo credit",
+      pickHeadline: "Pick headline size",
+      largeHeadline: "Large headline",
+      mediumHeadline: "Medium headline",
+      smallHeadline: "Small headline"
+    },
     ingredients: "Ingredients",
     instructions: "Instructions",
     loginToAddToShoppingList: "Log in to add to shopping list",

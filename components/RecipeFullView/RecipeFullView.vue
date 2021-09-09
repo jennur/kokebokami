@@ -1,9 +1,24 @@
 <template>
-  <section>
-    <div ref="recipe" id="recipe" class="recipe margin-auto">
-      <div
-        class="flex-row flex-row--align-center flex-row--space-between margin-bottom-md"
-      >
+  <section ref="recipe" id="recipe" class="recipe margin-auto">
+      <div v-if="recipe.datePublished" class="recipe_dates">
+        <div>
+          <span class="label">Published:</span>
+          {{recipe.datePublished}}
+        </div>
+        <div v-if="recipe.dateModified">
+          <span class="label">Updated:</span>
+          {{recipe.dateModified}}
+        </div>
+      </div>
+
+      <blog-content v-if="recipe.blog" 
+                    :recipeKey="recipe.id" 
+                    :is-recipe-owner="isRecipeOwner" 
+                    :blog="recipe.blog" 
+                    @update="$emit('update')"
+      />
+
+      <div class="flex-row flex-row--align-center flex-row--space-between margin-bottom-md">
       <div class="flex-row flex-row--align-center">
         <settings-dropdown v-if="isRecipeOwner">
           <public-note
@@ -122,18 +137,7 @@
         </div>
       </div>
 
-      <div v-if="recipe.datePublished" class="recipe_dates margin-top-xl">
-        <div>
-          <span class="label">Published:</span>
-          {{recipe.datePublished}}
-        </div>
-        <div v-if="recipe.dateModified">
-          <span class="label">Updated:</span>
-          {{recipe.dateModified}}
-        </div>
-      </div>
-
-      <div class="main-content-wrap margin-v-xl">
+      <div class="recipe-content-wrap margin-v-xl">
         <ingredients-display
           class="recipe_ingredients-wrap"
           :ingredients="recipe.ingredients"
@@ -153,7 +157,6 @@
           @update="payload => $emit('update', payload)"
         />
       </div>
-    </div>
   </section>
 </template>
 
@@ -180,6 +183,7 @@ import ActionBar from "./Interaction/ActionBar.vue";
 import Alert from "~/components/Alert.vue";
 import ExpandTransform from "~/components/Transitions/Expand.vue";
 import AddToFavorites from './Interaction/AddToFavorites.vue';
+import BlogContent from '../BlogContent/BlogContent.vue';
 
 
 export default {
@@ -197,6 +201,7 @@ export default {
     FreeFromDisplay,
     TypeOfMealDisplay,
     PrepTime,
+    BlogContent,
     IngredientsDisplay,
     InstructionsDisplay,
     ExpandTransform,

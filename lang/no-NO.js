@@ -33,6 +33,7 @@ export default {
   editList: "Endre liste",  
   remove: "Fjern",
   share: "Del",
+  photo: "Foto",
   login: {
     headingText: "Login to kokeboka di",
     forgottenPassword: "Jeg har glemt passordet mitt",
@@ -248,6 +249,17 @@ export default {
     totalTime: "Total tid",
     serving: "Porsjon",
     servings: "Porsjoner",
+    blog: {
+      addContent: "Legg til blogginnhold",
+      addHeadline: "Legg til overskrift",
+      addImage: "Legg til bilde",
+      addText: "Legg til tekst",
+      photoCredit: "Fotocredit",
+      pickHeadline: "Velg størrelse på overskrift",
+      largeHeadline: "Stor overskrift",
+      mediumHeadline: "Middels stor overskrift",
+      smallHeadline: "Liten overskrift"
+    },
     ingredients: "Ingredienser",
     instructions: "Instruksjoner",
     loginToAddToShoppingList: "Logg inn for å legge i handleliste",

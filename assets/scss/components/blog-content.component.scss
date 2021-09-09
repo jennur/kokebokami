@@ -1,0 +1,140 @@
+.blog-content {
+    margin: $spacingXLarge 0px;
+
+    @media screen and (min-width: $tabletWidth) {
+        margin: $spacingXLarge $spacingLarge;
+    }
+
+    .headline {
+        margin-top: $spacingXLarge;
+        margin-bottom: $spacingMedium;
+    }
+
+    img {
+        max-width: 100%;
+        border-radius: $spacingSmall;
+    }
+
+    .caption {
+        font-size: $fontSizeSmall;
+        color: gray;
+        margin-top: $spacingSmall;
+
+        button:disabled {
+            background-color: lightgray;
+            color: darkgray;
+            cursor: default;
+        }
+    }
+    .editable {
+        &:hover {
+            background-color: rgba($orange, 0.3);
+            border-radius: $spacingSmall;
+        }
+    }
+}
+
+.new-blog-elements {
+    margin-top: $spacingXLarge;
+
+    .add-buttons { 
+        button { 
+            margin-bottom: $spacingSmall;
+        }
+    }
+}
+
+.headline-selector {
+    margin-bottom: $spacingMedium;
+    background-color: rgba($green, 0.1);
+    border-radius: $spacingSmall;
+    padding: $spacingLarge;
+
+    .title {
+        margin-bottom: $spacingLarge;
+    }
+
+    h2, h3, h4 {
+        color: $black;
+        cursor: pointer; 
+        &:hover {
+            color: $blue;
+        }
+    }
+}
+
+.text-input-wrap {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    width: 100%;
+    margin: $spacingMedium 0px;
+
+    div {
+        width: inherit;
+    }
+
+    button.remove-icon { 
+        padding: $spacingMedium 0px 0px $spacingMedium;
+    }
+    .headline-input {
+        width: 100%;
+        font-size: $fontSizeLarge;
+        border: 2px solid rgba($green, 0.5);
+        border-radius: $spacingSmall;
+    
+        &.large {
+            font-size: $fontSizeXLarge;
+        }
+        &.medium {
+            font-size: $fontSizeLarge;
+        }
+        &.small {
+            font-size: $fontSizeMedium;
+        }
+    
+        @media screen and (min-width: $mobileWidth) {
+            width: 80%;
+        }
+    }
+
+    .text-input {
+        width: 100%;
+        min-height: 200px;
+        border: 2px solid rgba($green, 0.5);
+        border-radius: $spacingSmall;
+        margin: $spacingLarge 0px;
+        resize: none;
+    }
+}
+
+.image-input-wrap {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    width: 100%;
+    position: relative;
+    margin-top: $spacingXLarge;
+
+    .simple-loading-spinner {
+        position: absolute;
+        top: $spacingLarge;
+        left: $spacingLarge;
+    }
+    .image-input {
+        background-position: 50%;
+        width: inherit;
+
+        .vue-dropzone {
+            opacity: 80%;
+        }
+    }
+    button.remove-icon { 
+        margin-top: 0px;
+        padding-top: 0px;
+    }
+}
+
+.caption {
+    margin-bottom: $spacingXLarge;
+}
