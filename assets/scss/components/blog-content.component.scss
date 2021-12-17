@@ -28,6 +28,22 @@
             border-radius: $spacingSmall;
         }
     }
+
+    .blog-divider {
+        border-bottom: 1px solid $blue;
+        margin: $spacingXXXLarge 0px;
+        position: relative;
+
+        .label {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: $fontSizeLarge;
+            background-color: $cream;
+            padding: 0px $spacingMedium;
+        }
+    }
 }
 
 .new-blog-elements {
@@ -133,4 +149,12 @@
 
 .caption {
     margin-bottom: $spacingXLarge;
+}
+
+.recipe-jump-btn {
+    margin-top: $spacingXLarge;
+
+    @media screen and (min-with: $mobileWidth) {
+        margin-top: 0px;
+    }
 }

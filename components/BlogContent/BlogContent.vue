@@ -1,6 +1,6 @@
 <template>
     <section class="blog-content">
-        <button v-if="isRecipeOwner && (!addingNewBlog && !blog)" 
+        <button v-if="isRecipeOwner && (!addingNewBlog && !blog)"
                 class="button button--increment"
                 @click="addingNewBlog = true"
         >
@@ -9,11 +9,11 @@
 
         <div v-for="element in content" :key="element[0]">
             <div v-if="element[1].type === 'headline'" class="headline-wrap">
-                <component :is="headlineSize(element[1].size)" v-if="editHeadline !== element[0]" 
-                    class="headline" 
+                <component :is="headlineSize(element[1].size)" v-if="editHeadline !== element[0]"
+                    class="headline"
                     :class="{ 'editable': isRecipeOwner }"
                     @click.stop="isRecipeOwner && (editHeadline = element[0])"
-                > 
+                >
                     {{element[1].content}}
                 </component>
 
@@ -28,8 +28,8 @@
 
             <div v-if="element[1].type === 'image'" class="image-wrap">
                 <img    v-if="editImage !== element[0]"
-                        :src="element[1].content" 
-                        :class="{'editable': isRecipeOwner }" 
+                        :src="element[1].content"
+                        :class="{'editable': isRecipeOwner }"
                         @click.stop="isRecipeOwner && (editImage = element[0])"
                 />
                 <div v-if="editImage !== element[0] && element[1].caption" class="caption">
@@ -45,13 +45,13 @@
             </div>
 
             <div v-if="element[1].type === 'text'" class="text-wrap">
-                <p  v-if="editText !== element[0]" 
-                    :class="{'editable': isRecipeOwner }" 
+                <p  v-if="editText !== element[0]"
+                    :class="{'editable': isRecipeOwner }"
                     @click.stop="isRecipeOwner && (editText = element[0])"
                 >
                     {{ element[1].content }}
                 </p>
-                
+
                 <blog-text-input v-else
                                 :element="element"
                                 :recipe-key="recipeKey"
@@ -66,10 +66,13 @@
                             :content="content"
                             :end-position="content && content.length || 0"
                             :recipe-key="recipeKey"
-                            @update="$emit('update')"
+                            @update="payload => $emit('update', payload)"
                             class="new-blog-elements"
         />
 
+        <div v-if="blog" class="blog-divider" id="recipeSection">
+            <span class="label">{{ $t('recipe') }}</span>
+        </div>
     </section>
 </template>
 
@@ -87,6 +90,7 @@ export default {
         BlogImageInput
     },
     props: {
+        recipeTitle: String,
         blog: Object,
         isRecipeOwner: Boolean,
         recipeKey: String
@@ -110,17 +114,16 @@ export default {
             switch(size) {
                 case 'large':
                     return 'h2';
-                case 'medium': 
+                case 'medium':
                     return 'h3';
                 case 'small':
                     return 'h4';
-                default: 
+                default:
                     return 'h2';
             }
         },
         deleteImage(key){
             // Delete from storage
-            //then this.deleteFromDB(key)
             if (this.recipeKey) {
                 //remove image from blog content
                 var storageRef = this.$fire.storage.ref();
@@ -138,18 +141,10 @@ export default {
         },
         deleteFromDB(key){
             let blogRef = this.$fire.database.ref(`recipes/${this.recipeKey}/blog`);
-            // blogRef.orderByChild('position').once('value', snapshot => {
-            //     let index = 0;
-            //     snapshot && snapshot.forEach((childSnapshot) => {
-            //     var childData = childSnapshot.val();
-            //     console.log(index, childData);
-            //     index++
-            // })}
-            // );
-                            
+
             this.$fire.database.ref(`recipes/${this.recipeKey}/blog/${key}`)
                 .remove()
-                .then(() =>  { 
+                .then(() =>  {
                     console.log("Deleted element from db");
                     blogRef.orderByChild('position').once('value', snapshot => {
                         //Reindex elements
@@ -162,19 +157,13 @@ export default {
                             }
                             index++
                         })
-                        console.log("Reindexed elements:", reIndexedElems);
+                        console.log("Reindexed elements");
                         blogRef.set(reIndexedElems);
                     })
                     this.$emit('update');
                 })
                 .catch(error => console.log("Error deleting element from db:", error.message));
-        },
-        // openEdit(event, type, key){
-        //     event && event.stopPropagation();
-        //     if(type === 'headline') this.editHeadline = key;
-        //     if(type === 'text') this.editText = key;
-        //     if(type === 'image') this.editImage = key;
-        // }
+        }
     }
 }
 </script>

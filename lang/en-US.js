@@ -35,6 +35,9 @@ export default {
   remove: "Remove",
   share: "Share",
   photo: "Photo",
+  recipe: "Recipe",
+  language: "Language",
+  jumpToRecipe: "Jump to recipe",
   login: {
     headingText: "Login to kokeboka di",
     forgottenPassword: "I forgot my password",
@@ -178,7 +181,6 @@ export default {
     makePrivate: "Make recipe private",
     noTitle: "Untitled recipe",
     noDescription: "Recipe has no description",
-    language: "Recipe language",
     writtenIn: "This recipes is written in",
     typeOfMeal: "Meal type",
     categories: "Categories",

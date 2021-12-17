@@ -4,7 +4,7 @@
             <div v-if="element[1].type === 'image'" class="input-wrap">
                 <blog-image-input   :element="element"
                                     :recipe-key="recipeKey" 
-                                    @update="$emit('update')" 
+                                    @update="payload => $emit('update', payload)" 
                                     @close="removeInactiveInput"
                                     @delete="removeInactiveInput"
                 />
@@ -12,7 +12,7 @@
             <div v-else class="input-wrap">
                 <blog-text-input    :element="element" 
                                     :recipe-key="recipeKey" 
-                                    @update="$emit('update')" 
+                                    @update="payload => $emit('update', payload)" 
                                     @close="removeInactiveInput"
                                     @delete="removeInactiveInput"
                 />
@@ -22,9 +22,9 @@
         <expand :show="selectingHeadline">
             <div class="headline-selector">
                 <div class="title">{{ $t('recipes.blog.pickHeadline') }}:</div>
-                <h2 @click="selectHeadline('large')">{{ $t('recipes.blog.largeHeadline') }}</h2>
-                <h3 @click="selectHeadline('medium')">{{ $t('recipes.blog.mediumHeadline') }}</h3>
-                <h4 @click="selectHeadline('small')">{{ $t('recipes.blog.smallHeadline') }}</h4>
+                <h2 @click.stop="selectHeadline('large')">{{ $t('recipes.blog.largeHeadline') }}</h2>
+                <h3 @click.stop="selectHeadline('medium')">{{ $t('recipes.blog.mediumHeadline') }}</h3>
+                <h4 @click.stop="selectHeadline('small')">{{ $t('recipes.blog.smallHeadline') }}</h4>
             </div>
         </expand>
 

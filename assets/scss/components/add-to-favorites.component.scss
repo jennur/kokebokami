@@ -35,6 +35,13 @@
       }
     }
 
+    &:focus {
+      .icon path {
+        fill: transparent;
+        stroke: $blue
+      }
+    }
+
     &.selected {
       .icon path {
         fill: $blue;

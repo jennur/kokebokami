@@ -45,23 +45,30 @@ export default {
             let content = this.newElement[1];
 
             let hasChanged = !this.isSameString(content.content, this.element[1].content);
-
-            if(this.recipeKey && hasChanged) {
-                console.log("Saving text");
-                if(content.new) delete content.new;
-                this.$fire.database.ref(`recipes/${this.recipeKey}/blog/${key}`)
-                    .set(content)
-                    .then(() =>  { 
-                        console.log("Saved content to db");
+            if(this.recipeKey){
+                if(hasChanged) {
+                    console.log("Saving text");
+                    if(content.new) delete content.new;
+                    this.$fire.database.ref(`recipes/${this.recipeKey}/blog/${key}`)
+                        .set(content)
+                        .then(() =>  { 
+                            console.log("Saved content to db");
+                            this.$emit('close', key);
+                            this.$emit('update');
+                        })
+                        .catch(error => console.log("Error saving content to db:", error.message));
+                } else {
+                    if(!content.new) {
+                        console.log("Not new. No change, closing text edit");
                         this.$emit('close', key);
-                        this.$emit('update');
-                    })
-                    .catch(error => console.log("Error saving content to db:", error.message));
-            } else {
-                if(!content.new) {
-                    console.log("Not new. No change, closing text edit");
-                    this.$emit('close', key);
+                    }
                 }
+            } else {
+                if(content.new) delete content.new;
+                let blog = {};
+                blog[key] = content;
+                this.$emit('close', key);
+                this.$emit('update', { blog });
             }
         },
         isSameString(string1, string2){

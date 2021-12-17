@@ -34,6 +34,9 @@ export default {
   remove: "Fjern",
   share: "Del",
   photo: "Foto",
+  recipe: "Oppskrift",
+  language: "Språk",
+  jumpToRecipe: "Gå til oppskriften",
   login: {
     headingText: "Login to kokeboka di",
     forgottenPassword: "Jeg har glemt passordet mitt",
@@ -179,7 +182,6 @@ export default {
     makePrivate: "Gjør oppskriften privat",
     noTitle: "Uten tittel",
     noDescription: "Oppskriften har ingen beskrivelse",
-    language: "Språk",
     writtenIn: "Denne oppskriften er skrevet på",
     typeOfMeal: "Måltid",
     categories: "Kategorier",

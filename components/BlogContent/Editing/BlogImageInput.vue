@@ -1,8 +1,8 @@
 <template>
     <div>
         <div class="image-input-wrap">
-            <image-input    class="image-input" 
-                            :style="`background-image: url(${element[1].content || imageURL})`" 
+            <image-input    class="image-input"
+                            :style="`background-image: url(${element[1].content || imageURL})`"
                             @uploaded="saveImage"
             />
             <span v-if="loading" class="simple-loading-spinner"></span>
@@ -10,8 +10,8 @@
         </div>
         <div class="caption">
             {{ $t('recipes.blog.photoCredit') }}: <input type="text" class="image-caption" v-model="caption"/>
-            <button class="button button-xs" 
-                    @click="saveCaption" 
+            <button class="button button-xs"
+                    @click="saveCaption"
                     :disabled="!element[1].content && !uploaded"
             >
                 {{ $t('save') }}
@@ -21,8 +21,6 @@
 </template>
 
 <script>
-import ClickOutside from "vue-click-outside";
-
 import ImageInput from "../../Input/ImageInput.vue";
 import DecrementButton from '../../Input/DecrementButton.vue';
 
@@ -47,14 +45,19 @@ export default {
     methods: {
         saveCaption(){
             let key = this.element[0];
-            this.$fire.database.ref(`recipes/${this.recipeKey}/blog/${key}/caption`)
-                    .set(this.caption)
-                    .then(() =>  { 
-                        console.log("Saved caption to element");
-                        this.$emit('close', key);
-                        this.$emit('update');
-                    })
-                    .catch(error => console.log("Error saving content to db:", error.message));
+            if(this.recipeKey) {
+              this.$fire.database.ref(`recipes/${this.recipeKey}/blog/${key}/caption`)
+                .set(this.caption)
+                .then(() =>  {
+                    console.log("Saved caption to element");
+                    this.$emit('close', key);
+                    this.$emit('update');
+                })
+                .catch(error => console.log("Error saving content to db:", error.message));
+            } else {
+              blog[key] = { caption: this.caption }
+              this.$emit('update', { blog })
+            }
         },
         async saveImage(upload){
             this.loading = true;
@@ -65,6 +68,7 @@ export default {
             let metadata = {
                 contentType: "image/jpeg"
             };
+
             let storageRef = this.$fire.storage.ref();
             let imageRef = storageRef.child(`images/recipes/${this.recipeKey}/${key}.jpeg`);
 
@@ -74,24 +78,33 @@ export default {
                 .then(result => {
                     console.log("Uploaded image", result);
                     this.imageURL = result;
-                    this.$fire.database.ref(`recipes/${this.recipeKey}/blog/${key}`)
-                    .set({
-                        position: content.position,
-                        type: 'image',
-                        content: result
-                    })
-                    .then(() => {
-                        console.log("Saved image to db");
+                    if(this.recipeKey){
+                        this.$fire.database.ref(`recipes/${this.recipeKey}/blog/${key}`)
+                        .set({
+                            position: content.position,
+                            type: 'image',
+                            content: result
+                        })
+                        .then(() => {
+                            console.log("Saved image to db");
+                            this.uploaded = true;
+                            this.loading = false;
+                        })
+                        .catch(error => console.log("Error saving image to db:", error.message));
+                      } else {
+                        let blog = {};
+                        blog[key] = {
+                                    position: content.position,
+                                    type: 'image',
+                                    content: result
+                                }
+                        this.$emit('update', { blog })
                         this.uploaded = true;
                         this.loading = false;
-                    })
-                    .catch(error => console.log("Error saving image to db:", error.message));
+                    }
                 })
                 .catch(error => console.log("Error uploading image:", error.message));
         }
-    },
-    directives: {
-        ClickOutside
     }
 }
 </script>
