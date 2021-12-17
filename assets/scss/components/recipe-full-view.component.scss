@@ -1,21 +1,28 @@
 .recipe {
   text-align: left;
 
-  h4 {
-    color: $blue;
+  .editable {
+    cursor: default;
+    &:hover {
+      background-color: rgba($orange, 0.3);
+      border-radius: $spacingSmall;
+    }
+  }
+
+  .public-note {
+    display: inline-block;
+    font-size: $fontSizeSmall;
+    color: rgba($pink, 1);
+    border: 2px solid rgba($pink, 0.7);
+    padding: $spacingXSmall $spacingMedium;
+    border-radius: $spacingLarge;
+    margin-right: $spacingMedium;
   }
 
   &_language {
     color: $blue;
-    font-size: $fontSizeSmall;
+    font-size: $fontSizeXSmall;
     min-height: 35px;
-
-    .editable {
-      &:hover {
-        background-color: rgba($orange, 0.3);
-        border-radius: $spacingSmall;
-      }
-    }
   }
 
   &_image {
@@ -97,14 +104,6 @@
       font-size: $fontSizeXXLarge;
     }
 
-    &.editable {
-      cursor: default;
-      &:hover {
-        background-color: rgba($orange, 0.3);
-        border-radius: $spacingSmall;
-      }
-    }
-
     &--edit {
       &:hover {
         background-color: transparent;
@@ -121,14 +120,6 @@
     color: $blue;
     width: max-content;
     max-width: 100%;
-
-    &.editable {
-      cursor: default;
-      &:hover {
-        background-color: rgba($orange, 0.3);
-        border-radius: $spacingSmall;
-      }
-    }
 
     &--edit {
       resize: none;
@@ -175,7 +166,7 @@
         transition: 0.3s;
         position: relative;
 
-        &.minus::after, 
+        &.minus::after,
         &.plus::after,
         &.plus::before {
           content: "";
@@ -202,18 +193,20 @@
   &_dates {
     display: block;
     width: 100%;
-    font-size: $fontSizeSmall;
+    font-size: $fontSizeXSmall;
     color: gray;
-
-    @media screen and (min-width: $mobileWidth) {
-      margin-left: $spacingLarge;
-    }
 
     span.label {
       font-weight: bold;
     }
-    div:not(:first-child) {
-      margin-top: $spacingSmall;
+
+    div {
+      display: inline-block;
+      &:nth-child(2)::before {
+        @media screen and (min-width: $mobileWidth) {
+          content: "| ";
+        }
+      }
     }
   }
 
@@ -227,11 +220,12 @@
     }
   }
 
-  .main-content-wrap {
+  .recipe-content-wrap {
     display: flex;
     position: relative;
     height: 100%;
   }
+
   &_instructions-wrap {
     width: 100%;
     padding-right: $spacingXXLarge;
@@ -242,7 +236,7 @@
     @media screen and (min-width: $tabletWidth) {
       padding-right: 0px;
     }
-    
+
   }
 
   &_ingredients {
@@ -362,15 +356,7 @@
       }
     }
   }
-  &_type-of-meal {
-    &.editable {
-      cursor: default;
-      &:hover {
-        background-color: rgba($orange, 0.3);
-        border-radius: $spacingSmall;
-      }
-    }
-  }
+  &_type-of-meal {  }
   &_category {
     display: inline-flex;
     flex-direction: row;

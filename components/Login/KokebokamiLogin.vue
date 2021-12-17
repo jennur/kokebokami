@@ -1,6 +1,6 @@
 <template>
   <modal-box :open="open" @close="closeModal" class="kokebokami-login">
-    <h3>Log in with Kokebokami</h3>
+    <h3>{{$t('loginWith')}} Kokebokami</h3>
 
     <form class="kokebokami-login-form" v-on:submit.prevent>
       <fieldset>

@@ -6,13 +6,13 @@
         class="margin-top-2xl"
         @increment="addNewShoppingList"
       >
-        New shopping list
+        {{$t('shoppingLists.newList')}}
       </increment-button>
     </div>
     <div class="margin-v-2xl">
       <shopping-list
         v-if="addingNewShoppingList"
-        :list="{ key: '', title: 'New shopping list', subLists: [] }"
+        :list="{ key: '', title: $t('shoppingLists.newList'), subLists: [] }"
         @update="updateShoppingLists"
         @cancel="addingNewShoppingList = false"
       />

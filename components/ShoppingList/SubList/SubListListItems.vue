@@ -37,7 +37,7 @@
             class="button button-xs button--green-border button--round"
             tabindex="0"
     >
-      Edit list
+      {{$t('editList')}}
       <edit-icon class="icon margin-left-sm"/>
     </button>
     
@@ -45,14 +45,14 @@
       <increment-button
         class="margin-right-md margin-v-lg"
         @increment="addNewListItem"
-        >Add item</increment-button
+        >{{$t('addItem')}}</increment-button
       >
       <button
         v-if="listItems.length"
         class="button button-xs button--round padding-h-lg margin-v-lg"
         @click="saveListItems"
       >
-        Save
+        {{$t('save')}}
       </button>
     </div>
   </div>
@@ -105,7 +105,6 @@ export default {
       this.updatedListItems.push({ text: "", complete: false });
     },
     removeListItem(index) {
-      let listItems = this.updatedListItems;
       this.updatedListItems.splice(index, 1);
     },
     handleComplete(index) {
@@ -114,15 +113,10 @@ export default {
       this.saveListItems();
     },
     saveListItems() {
-      let userID = this.user.id;
-
       let mainListKey = this.mainListKey;
-      let mainListTitle = this.mainListTitle || "New shopping list";
-
       let listItems = this.updatedListItems;
       let subListKey = this.subListKey;
 
-      let shoppingListsRef = this.$fire.database.ref(`shoppingLists`);
       let mainListRef = this.$fire.database.ref(`shoppingLists/${mainListKey}`);
 
       if (mainListKey && subListKey !== "") {

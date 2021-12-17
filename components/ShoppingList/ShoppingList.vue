@@ -21,7 +21,7 @@
       <settings-dropdown v-if="list.key" :right="true">
         <span class="system-message" @click="toggleAlert">
           <delete-icon tabindex="0" class="icon margin-right-md" />
-          Delete collection
+          {{ $t('shoppingLists.deleteCollection')}}
         </span>
       </settings-dropdown>
 
@@ -31,7 +31,7 @@
     </div>
 
     <Alert
-      :alertMessage="`Are you sure you want to delete this shopping list: '${list.title}'?`"
+      :alertMessage="`${$t('shoppingLists.warningText')}: '${list.title}'?`"
       :showAlert="showAlert"
       @confirmed="deleteShoppingList"
       @cancel="toggleAlert"
@@ -46,7 +46,7 @@
 
         <!--   Shared-from list     -->
         <span v-if="shared" class="shopping-list_shared">
-          Shared from:
+          {{$t('shoppingLists.sharedBy')}}:
           <nuxt-link :to="`/cooks/${createdByCookPath}`">
             {{ list.createdBy.displayName }}
           </nuxt-link>
@@ -54,7 +54,7 @@
 
         <!--   Shared-with list     -->
         <span v-if="sharedWith" class="shopping-list_shared">
-          Shared with:
+          {{$t('shoppingLists.sharedWith')}}:
           <nuxt-link
             v-for="(user, index) in sharedWith"
             :key="user.id"
@@ -101,7 +101,7 @@
 
     <div class="flex-row flex-row--align-center flex-row--space-between full-width">
       <increment-button class="margin-v-lg margin-right-2xl" @increment="addNewSubList">
-        New sublist
+        {{$t('shoppingLists.newSublist')}}
       </increment-button>
     </div>
   </section>

@@ -65,15 +65,23 @@ export default {
             return text;
         },
         savePrepTime(path, time) {
-            this.$fire.database.ref(`recipes/${this.recipeKey}/${path}`)
-            .set(time)
-            .then(() => {
-                console.log(`Successfully updated ${path} time`);
+            if(this.recipeKey){
+                this.$fire.database.ref(`recipes/${this.recipeKey}/${path}`)
+                .set(time)
+                .then(() => {
+                    console.log(`Successfully updated ${path} time`);
+                    if(path === 'prepTime') this.editPrepTime = false;
+                    if(path === 'cookingTime') this.editCookingTime = false;
+                    this.$emit('update');
+                })
+                .catch(error => console.log(`Error saving ${path} time`, error.message));
+            } else {
+                let timeObj = {}
+                timeObj[path] = time;
                 if(path === 'prepTime') this.editPrepTime = false;
                 if(path === 'cookingTime') this.editCookingTime = false;
-                this.$emit('update');
-            })
-            .catch(error => console.log(`Error saving ${path} time`, error.message));
+                this.$emit("update", { timeObj });
+            }
         }
     }
 }
