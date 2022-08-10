@@ -2,7 +2,7 @@
   <label class="search-field">
       <input  id="search"
               type="text"
-              placeholder="Search among recipes"
+              :placeholder="$t('searchPlaceholder')"
               @input="event => handleSearchTerm(event.target.value)"
       />
       <search-icon class="icon search-icon"/> 

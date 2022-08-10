@@ -36,7 +36,6 @@ import getPublicRecipes from "~/helpers/get-public-recipes.js";
 import CtaSection from "~/components/CTASection/CTASection.vue";
 import SignUpSection from "~/components/SignUp/SignUpSection.vue";
 import RecipesList from "~/components/RecipePreview/RecipesList.vue";
-import RecipeSearch from "~/components/Search/RecipeSearch.vue";
 import FilterSection from "~/components/Filter/FilterSection";
 
 export default {
@@ -46,10 +45,17 @@ export default {
     FilterSection,
     CtaSection,
     SignUpSection,
-    RecipeSearch,
     RecipesList
   },
   head() {
+    let carouselItems = this.publicRecipes && this.publicRecipes.map((recipe, index) => {
+      return {
+              "@type": "ListItem",
+              "position": index,
+              "url": `https://kokebokami.com/${recipe.path}`
+            }
+    });
+    
     return {
       link: [
         {
@@ -79,6 +85,14 @@ export default {
             "@context": "https://schema.org",
             "@type": "WebSite",
             "url": "https://kokebokami.com"
+          }
+        },
+        {
+          type: "application/ld+json",
+          json: {
+            "@context": "https://schema.org",
+            "@type": "ItemList",
+            "itemListElement": carouselItems
           }
         }
       ]

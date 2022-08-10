@@ -1,9 +1,8 @@
-export default function(context) {
-  let { redirect, route, app } = context;
+export default function({ redirect, route, app }) {
   let unsubscribe = app.$fire.auth.onAuthStateChanged(user => {
     if (user) {
       if (user.emailVerified) {
-        performAdminRedirect(route, redirect, app);
+        return performAdminRedirect(route, redirect, app);
       } 
       else {
         if (route.name.indexOf("verify-email") === -1) {
@@ -14,9 +13,7 @@ export default function(context) {
     } 
     else {
       if (onAdminRoute(route)) {
-        console.log(
-          "Redirecting to login, unauthenticated user on admin route"
-        );
+        console.log("Redirecting to login, unauthenticated user on admin route");
         redirect(app.localePath("/login/"));
       }
     }
@@ -34,13 +31,12 @@ function onAdminRoute(route) {
 }
 
 function performAdminRedirect(route, redirect, app) {
-  if (
-    route.path.indexOf("login") > -1 ||
-    route.path.indexOf("sign-up") > -1 ||
-    route.path.indexOf("verify-email") > -1 ||
-    route.path.indexOf("goodbye") > -1
-  ) {
-    console.log("Redirecting to account");
-    redirect(app.localePath("/account/"));
-  }
+  let unauthPaths = ["login", "sign-up", "verify-email", "goodbye"];
+
+  unauthPaths.forEach(path => {
+    if(route.path.indexOf(path) > -1) {
+      console.log("Rederecting to account");
+      return redirect(app.localePath("/account/"));
+    }
+  })
 }

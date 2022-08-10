@@ -89,6 +89,7 @@ export default {
           });
       }
       else {
+        recipeObj = recipeObj || {};
         this.$fire.database
           .ref(`recipes/${recipeKey}`)
           .update(recipeObj)

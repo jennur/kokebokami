@@ -76,7 +76,7 @@ export default function getRecipeAndMetadata(snapshot, recipePath){
         "recipeYield": recipe.servings || 4,
         "recipeCategory": typeOfMeal,
         "recipeCuisine": recipe.cuisine,
-        "recipeIngredient": recipe.ingredients,
+        "recipeIngredient": recipe.ingredients && recipe.ingredients.map(ingredient => ingredient.replace("NaN", "")) || [],
         "recipeInstructions": instructions,
         "interactionStatistic": {
           "@type": "InteractionCounter",

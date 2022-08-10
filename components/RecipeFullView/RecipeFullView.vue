@@ -1,11 +1,9 @@
 <template>
-  <section>
-    <div ref="recipe" id="recipe" class="recipe margin-auto">
-      <div
-        class="flex-row flex-row--align-center flex-row--space-between margin-bottom-md"
-      >
-      <div class="flex-row flex-row--align-center">
-        <settings-dropdown v-if="isRecipeOwner">
+  <section ref="recipe" id="recipe" class="recipe margin-auto">
+
+    <div class="flex-row flex-row--align-center flex-justify--space-between margin-bottom-xl">
+      <div class="flex-row flex-row--align-center flex-row--nowrap">
+        <settings-dropdown v-if="isRecipeOwner" class="margin-right-md">
           <public-note
             :isRecipeOwner="isRecipeOwner"
             :recipeKey="recipe.id"
@@ -18,24 +16,49 @@
             }}
           </span>
         </settings-dropdown>
-        <rating v-if="recipe.id" :rating="recipe.rating" :recipeKey="recipe.id" :show-total-votes="true" />
-        <add-to-favorites v-if="recipe.id" :recipe-key="recipe.id" :favorites-count="recipe.favoritesCount" :show-count="true"/>
-      </div>
 
-        <div class="flex-row flex-row--align-center">
+        <span v-if="recipe.public" class="public-note">{{$t("recipes.public") }}</span>
 
-          <action-bar
-            v-if="recipe.id"
-            :isRecipeOwner="isRecipeOwner"
-            :recipeOwnerID="recipe.ownerID"
-            :recipeKey="recipe.id"
-            :recipeTitle="recipe.title"
-            :recipeDescription="recipe.description"
-            :recipePublic="recipe.public"
-            @download="pdfExport"
-          />
+        <div v-if="recipe.datePublished" class="recipe_dates">
+          <div>
+            <span class="label">Published:</span>
+            {{recipe.datePublished}}
+          </div>
+          <div v-if="recipe.dateModified">
+            <span class="label">Updated:</span>
+            {{recipe.dateModified}}
+          </div>
         </div>
       </div>
+
+      <a v-if="recipe.blog" href="#recipeSection" class="button button-xs recipe-jump-btn">{{ $t('jumpToRecipe') }}</a>
+    </div>
+
+      <blog-content :recipeKey="recipe.id"
+                    :is-recipe-owner="isRecipeOwner"
+                    :blog="recipe.blog"
+                    :recipe-title="recipe.title"
+                    @update="payload => $emit('update', payload)"
+      />
+
+      <div class="flex-row flex-row--align-center flex-row--space-between margin-bottom-lg">
+        <div class="flex-row flex-row--align-center">
+          <rating v-if="recipe.id" :rating="recipe.rating" :recipeKey="recipe.id" :show-total-votes="true" class="margin-right-lg" />
+          <add-to-favorites v-if="recipe.id" :recipe-key="recipe.id" :favorites-count="recipe.favoritesCount" :show-count="true"/>
+        </div>
+
+        <action-bar
+          v-if="recipe.id"
+          :isRecipeOwner="isRecipeOwner"
+          :recipeOwnerID="recipe.ownerID"
+          :recipeKey="recipe.id"
+          :recipeTitle="recipe.title"
+          :recipeDescription="recipe.description"
+          :recipePublic="recipe.public"
+          @download="pdfExport"
+        />
+      </div>
+
       <Alert
         :alertMessage="
           `${$t('recipes.deleteAlert.beforeTitle')}: ${recipe.title}?
@@ -102,18 +125,18 @@
           />
 
           <div class="flex flex-justify--space-between flex-align--end">
-          <prep-time  :is-recipe-owner="isRecipeOwner" 
-                      :prep-time="recipe.prepTime" 
+          <prep-time  :is-recipe-owner="isRecipeOwner"
+                      :prep-time="recipe.prepTime"
                       :cooking-time="recipe.cookingTime"
                       :recipe-key="recipe.id"
                       @update="payload => $emit('update', payload)"
           />
-            
+
 
             <div class="recipe_category-note">
               {{ $t("recipes.publishedBy") }}
               <nuxt-link :to="localePath(`/cooks/${author && author.path}`)"
-                          
+
               >
               {{ author && author.displayName }}
               </nuxt-link>
@@ -122,18 +145,7 @@
         </div>
       </div>
 
-      <div v-if="recipe.datePublished" class="recipe_dates margin-top-xl">
-        <div>
-          <span class="label">Published:</span>
-          {{recipe.datePublished}}
-        </div>
-        <div v-if="recipe.dateModified">
-          <span class="label">Updated:</span>
-          {{recipe.dateModified}}
-        </div>
-      </div>
-
-      <div class="main-content-wrap margin-v-xl">
+      <div class="recipe-content-wrap margin-v-xl">
         <ingredients-display
           class="recipe_ingredients-wrap"
           :ingredients="recipe.ingredients"
@@ -153,7 +165,6 @@
           @update="payload => $emit('update', payload)"
         />
       </div>
-    </div>
   </section>
 </template>
 
@@ -180,6 +191,7 @@ import ActionBar from "./Interaction/ActionBar.vue";
 import Alert from "~/components/Alert.vue";
 import ExpandTransform from "~/components/Transitions/Expand.vue";
 import AddToFavorites from './Interaction/AddToFavorites.vue';
+import BlogContent from '../BlogContent/BlogContent.vue';
 
 
 export default {
@@ -197,6 +209,7 @@ export default {
     FreeFromDisplay,
     TypeOfMealDisplay,
     PrepTime,
+    BlogContent,
     IngredientsDisplay,
     InstructionsDisplay,
     ExpandTransform,
@@ -345,9 +358,6 @@ export default {
         });
       }
     }
-  },
-  // mounted(){
-  //   this.getRecipeAuthor(this.recipe.ownerID);
-  // }
+  }
 };
 </script>
