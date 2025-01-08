@@ -1,27 +1,9 @@
 module.exports = {
   languages: [
     "English",
-    "French",
-    "German",
-    "Hebrew",
-    "Italian",
     "Norwegian",
-    "Polish",
-    "Spanish",
 
-    "Arabic",
-    "Dutch",
-    "Hindi",
-    "Japanese",
-    "Korean",
-    "Mandarin",
-    "Portuguese",
-    "Punjabi",
-    "Russian",
-    "Swahili",
-    "Thai",
-    "Turkish",
-    "Vietnamese"
+    "Other"
   ],
   typeOfMeal: [
     "breakfast",

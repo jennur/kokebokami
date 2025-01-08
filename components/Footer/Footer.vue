@@ -34,28 +34,6 @@
           >
         </li>
       </ul>
-
-      <ul class="footer_nav margin-lg">
-        <li>
-          <h4 class="color--blue">
-            {{ $t("navigation.footer.contactHeading") }}
-          </h4>
-        </li>
-        <li>
-          <a href="https://www.facebook.com/kokebokami" class="social-media">
-            <fa
-              :icon="['fab', 'facebook-square']"
-              style="font-size: 25px; margin-right: 10px;"
-            />
-            <span class="social-media_text">{{
-              $t("navigation.footer.facebookLikeText")
-            }}</span>
-          </a>
-        </li>
-        <li>
-          <a href="mailto:contact@kokebokami.com">contact@kokebokami.com</a>
-        </li>
-      </ul>
     </div>
     <p class="footer_copyright">© {{ year }} Kokebokami</p>
   </footer>

@@ -94,3 +94,5 @@ dist
 
 # Vim swap files
 *.swp
+
+.vscode
