@@ -16,7 +16,11 @@ export default {
     googleSignIn() {
       this.$store.dispatch("SHOW_LOADING_SPLASH", true);
       const GoogleProvider = new this.$fireModule.auth.GoogleAuthProvider();
-      this.$fire.auth.signInWithRedirect(GoogleProvider);
+      this.$fire.auth.signInWithPopup(GoogleProvider)
+        .catch(error => {
+          console.error("[googleSignIn]", error)
+          this.$store.dispatch("SET_LOGIN_MESSAGE", error.message);
+        })
     }
   }
 };
