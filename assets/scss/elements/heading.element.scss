@@ -38,6 +38,7 @@ h2, .heading--xl {
 h3, .heading--lg {
   font-family: $subHeadingFont;
   font-size: $fontSizeLargeMobile;
+  font-weight: 300;
 
   //margin-top: $spacingXLarge;
   @media screen and (min-width: $tabletWidth) {
