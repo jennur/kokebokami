@@ -5,9 +5,6 @@
   max-width: 300px;
   margin: 0px auto;
   @media screen and (min-width: $mobileWidth) {
-    flex-direction: row;
-    justify-content: center;
-    align-items: baseline;
     max-width: $tabletWidth;
   }
   .sign-up-form {
@@ -38,13 +35,9 @@
   }
 
   .sign-in-with-provider {
-    max-width: 300px;
     text-align: center;
     margin-bottom: $spacingLarge;
-    @media screen and (min-width: $mobileWidth) {
-      margin-right: $spacingXLarge;
-      text-align: left;
-    }
+
     p {
       margin-top: 0px;
     }

@@ -6,45 +6,27 @@
     <add-to-favorites :recipe-key="recipe.id" :favorites-count="recipe.favoritesCount"/>
 
     <span class="recipe-preview_published-by" v-if="inPublicList">
-      {{ `${$t("recipes.publishedBy")} ${author && author.displayName}` }}
+      {{ `${$t("recipes.publishedBy")} ${author && author.displayName || '...'}` }}
     </span>
 
     <span class="recipe-preview_public-note" v-if="showPublicNote">
       {{$t("recipes.public") }}
     </span>
 
-    <nuxt-link :to="localePath(`/recipes/${recipe.path}`)" class="full-width padding-xl">
-      <!-- Details -->
-
-      <div class="recipe-preview_category-note">
-        <p v-if="typeOfMeal">
-          <b>{{ $t("recipes.typeOfMeal") }}: </b>
-          {{ typeOfMeal }}
-        </p>
-        <p v-if="freeFrom">
-          <b>{{ $t("recipes.freeFrom") }}:</b>
-          {{ freeFrom }}
-        </p>
-      </div>
-
+    <nuxt-link :to="localePath(`/recipes/${recipe.path}`)" class="recipe-preview_content">
+      
       <rating :rating="recipe.rating" :recipeKey="recipe.id" :deactivated="true" />
-
-      <!-- Description -->
+      
+      <!-- Title -->
       <h3 class="recipe-preview_title margin--none margin-bottom-md">
         {{ recipe.title ? recipe.title : $t("recipes.noTitle") }}
       </h3>
-
-      <div v-if="recipe.description" class="recipe-preview_description margin-bottom-lg">
-        {{ recipe.description }}
-      </div>
-
+      
       <!-- Categories -->
-      <div>
-        <div class="recipe-preview_categories">
-          <span class="recipe-preview_category" v-for="category in categories" :key="category">
-            {{ category }}
-          </span>
-        </div>
+      <div class="recipe-preview_categories">
+        <span class="recipe-preview_category" v-for="category in categories" :key="category">
+          {{ category }}
+        </span>
       </div>
     </nuxt-link>
   </div>

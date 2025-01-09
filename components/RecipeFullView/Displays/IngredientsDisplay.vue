@@ -11,7 +11,7 @@
             @click="open = !open"
             @keydown="event => event.keyCode === 13 && (open =!open)"
     >
-            Ingredients
+      {{ $t("recipes.ingredients") }}
     </button>
 
       <div class="ingredients">

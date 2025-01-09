@@ -10,8 +10,6 @@
         <language-navigation />
       </ul>
 
-      <shortcuts />
-
       <ul class="footer_nav margin-lg">
         <li>
           <h4 class="color--blue">

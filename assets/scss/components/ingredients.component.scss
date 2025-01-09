@@ -7,7 +7,8 @@
     transition: 0.3s;
     max-width: 100%;
     width: 320px;
-    height: 100%;
+    min-height: 300px;
+    height: max-content;
     padding: $spacingXXLarge;
     z-index: 99;
     background-color: $lightOrange;
@@ -19,6 +20,7 @@
         padding: 0px 0px 0px $spacingLarge;
         position: relative;
         width: auto;
+        height: 100%;
         background-color: $cream;
         box-shadow: none;
         margin-right: $spacingLarge;
@@ -26,6 +28,8 @@
     }
     &.open {
         right: -$spacingLarge;
+        min-width: 330px;
+
         @media screen and (min-width: $tabletWidth){
             right: auto;
         }
@@ -45,7 +49,8 @@
 
     .ingredients {
         height: 100%;
-        overflow-y: scroll;
+        min-height: max-content;
+        overflow-y: auto;
 
         .add-to-shopping-list .select {
             width: 150px;

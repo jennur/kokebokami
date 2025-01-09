@@ -3,7 +3,7 @@ textarea {
   font-size: $fontSizeMedium;
   padding: $spacingSmall;
   border: 2px solid transparent;
-  border-bottom: 2px solid $green;
+  border-bottom: 2px solid $blue;
   box-sizing: border-box;
   max-width: 100%;
   box-sizing: border-box;
@@ -11,7 +11,7 @@ textarea {
   background-color: transparent;
   &:focus {
     outline: none;
-    border: 2px solid $green;
+    border: 2px solid $blue;
     border-radius: $spacingSmall;
   }
 }

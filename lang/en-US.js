@@ -7,6 +7,7 @@ export default {
   email: "E-mail",
   password: "Password",
   searchPlaceholder: "Search among recipes",
+  openFilter: "Open filter",
   loginText: "Log in",
   loginWith: "Log in with",
   signinWith: "Sign in with",
@@ -37,19 +38,20 @@ export default {
   photo: "Photo",
   recipe: "Recipe",
   language: "Language",
+  recipeLanguage: "Show only recipes in",
   jumpToRecipe: "Jump to recipe",
   login: {
     headingText: "Login to kokeboka di",
     forgottenPassword: "I forgot my password",
     newPasswordText: "Enter your email address to reset your password",
     noAccount: "Don't already have an account",
-    withNewPassword: "Log in with your new password"
+    withNewPassword: "Log in with your new password",
+    googlebtn: "Continue with Google"
   },
   signUp: {
     headingIndex: "Sign up to start building your own cookbook",
     headingSignUp: "Sign up to start adding your recipes",
-    soMeLoginText:
-      "If you have a Google account, there is no need to sign up - just login directly.",
+    soMeLoginText: "It's simple! Just login with your Google account.",
     repeatPassword: "Repeat password",
     iAgreeTo: "I agree to the"
   },
@@ -184,32 +186,14 @@ export default {
     writtenIn: "This recipes is written in",
     typeOfMeal: "Meal type",
     categories: "Categories",
+    category: "Category",
     freeFrom: "Free from",
     addCategory: "Add category",
     allCategories: {
       languages: [
         "English",
-        "French",
-        "German",
-        "Hebrew",
-        "Italian",
         "Norwegian",
-        "Polish",
-        "Spanish",
-
-        "Arabic",
-        "Dutch",
-        "Hindi",
-        "Japanese",
-        "Korean",
-        "Mandarin",
-        "Portuguese",
-        "Punjabi",
-        "Russian",
-        "Swahili",
-        "Thai",
-        "Turkish",
-        "Vietnamese"
+        "Other",
       ],
       typeOfMeal: [
         "breakfast",

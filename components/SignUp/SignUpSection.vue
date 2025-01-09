@@ -9,15 +9,15 @@
     </div>
     <div class="sign-up-section">
       <sign-in-with-provider
-        class="flex-row_half sign-in-with-provider margin-top-2xl"
+        class="sign-in-with-provider margin-bottom-2xl"
       />
-      <sign-up-form
+      <!-- <sign-up-form
         class="flex-row_half margin-top-2xl"
         :class="{
           'dark-bg': darkBg,
           'sign-up-form--green': !darkBg
         }"
-      />
+      /> -->
     </div>
   </section>
 </template>

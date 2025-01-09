@@ -6,6 +6,7 @@ export default {
   email: "E-post",
   password: "Passord",
   searchPlaceholder: "Søk i oppskrifter",
+  openFilter: "Åpne filter",
   loginText: "Logg inn",
   loginWith: "Logg inn med",
   signinWith: "Logg inn med",
@@ -30,12 +31,13 @@ export default {
   closed: "Lukket",
   save: "Lagre",
   edit: "Endre",
-  editList: "Endre liste",  
+  editList: "Endre liste",
   remove: "Fjern",
   share: "Del",
   photo: "Foto",
   recipe: "Oppskrift",
   language: "Språk",
+  recipeLanguage: "Vis kun oppskrifter på",
   jumpToRecipe: "Gå til oppskriften",
   login: {
     headingText: "Login to kokeboka di",
@@ -43,13 +45,13 @@ export default {
     newPasswordText:
       "Skriv inn e-postadressen din for å gjenopprette passordet ditt.",
     noAccount: "Har du ikke allerede en konto",
-    withNewPassword: "Logg inn med ditt nye passord"
+    withNewPassword: "Logg inn med ditt nye passord",
+    googlebtn: "Fortsett med Google"
   },
   signUp: {
     headingIndex: "Registrer deg for å opprette din egen kokebok",
     headingSignUp: "Registrer deg for å lagre oppskriftene dine",
-    soMeLoginText:
-      "Hvis du har en Google-konto, trenger du ikke å registrere deg - bare logg inn direkte.",
+    soMeLoginText: "Det er superlett! Bare logg inn med Google-kontoen din.",
     repeatPassword: "Repeter passord",
     iAgreeTo: "Jeg godtar"
   },
@@ -185,32 +187,14 @@ export default {
     writtenIn: "Denne oppskriften er skrevet på",
     typeOfMeal: "Måltid",
     categories: "Kategorier",
+    category: "Kategori",
     freeFrom: "Fri for",
     addCategory: "Legg til kategori",
     allCategories: {
       languages: [
         "Engelsk",
-        "Fransk",
-        "Tysk",
-        "Hebraisk",
-        "Italiensk",
         "Norsk",
-        "Polsk",
-        "Spansk",
-
-        "Arabisk",
-        "Nederlandsk",
-        "Hindi",
-        "Japansk",
-        "Koreansk",
-        "Mandarin",
-        "Portugesisk",
-        "Punjabi",
-        "Russisk",
-        "Swahili",
-        "Thailandsk",
-        "Tyrkisk",
-        "Vietnamesisk"
+        "Annet",
       ],
       typeOfMeal: [
         "frokost",
