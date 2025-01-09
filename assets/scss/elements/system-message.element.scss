@@ -6,6 +6,12 @@
   &--dark-bg {
     color: $orange;
   }
+
+  &--with-bg {
+    background-color: rgba($pink, 0.05);
+    padding: $spacingXSmall $spacingMedium;
+    border-radius: $spacingXSmall;
+  }
 }
 
 .dark-bg .system-message {

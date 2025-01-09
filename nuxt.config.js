@@ -172,7 +172,7 @@ export default {
     component: "fa",
     icons: {
       regular: ['faStar', 'faClock'],
-      solid: ['faSlidersH', 'faStar'],
+      solid: ['faSlidersH', 'faStar', 'faSearch'],
       brands: ['faFacebookSquare', 'faFacebookF']
     }
   },

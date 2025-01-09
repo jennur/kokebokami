@@ -17,13 +17,22 @@
   text-align: left;
 
   .favorite-icon {
-    display: block;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: $spacingMedium;
+    background-color: rgba($cream, 0.5);
+    border-radius: $spacingXLarge;
+
     position: absolute;
-    top: $spacingMedium + 5px;
-    right: $spacingLarge;
-    width: 25px;
-    height: 25px;
-    padding: 0px;
+    top: $spacingMedium;
+    right: $spacingMedium;
+    width: 22px;
+    height: 22px;
+
+    .icon {
+      margin-right: 0;
+    }
   }
 
   @media screen and (min-width: $mobileWidth) {
@@ -53,19 +62,35 @@
   }
 
   .rating-wrapper {
-    text-align: center;
-    padding: $spacingMedium 0px 0px 0px;
-    
+    svg {
+      color: lighten($orange, 30%);
+
+      &:hover {
+        color: $orange;
+      }
+    }
     svg:focus { 
       outline: none;
     }
   }
-
+  
+  &_content {
+    width: 100%;
+    padding: $spacingLarge;
+    box-sizing: border-box;
+    flex-basis: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+    
   &_title {
     padding-top: $spacingMedium;
+    font-size: $fontSizeMedium;
+    font-weight: 700;
+    color: darken($orange, 20%);
     text-transform: capitalize;
   }
-
+  
   &_description {
     display: block;
     padding-top: 0;
@@ -73,21 +98,24 @@
   &_categories {
     display: block;
     padding-top: $spacingMedium;
+    align-content: flex-end;
+    flex-basis: 100%;
   }
   &_category {
     display: inline-block;
-    background-color: $orange;
-    color: $white;
+    background-color: lighten($orange, 40%);
+    color: darken($orange, 20%);
     padding: 1px $spacingMedium;
     margin-right: $spacingSmall;
     margin-bottom: $spacingSmall;
     border-radius: $spacingLarge;
     text-transform: capitalize;
     font-size: $fontSizeSmall;
-
+    justify-self: flex-end;
+    
     &-note {
       text-align: left;
-
+      
       & p {
         margin: $spacingXSmall;
         font-size: $fontSizeSmall;
@@ -95,10 +123,11 @@
       }
     }
   }
-
+    
   &_image {
     width: 100%;
     height: 200px;
+    min-height: 200px;
     background-size: cover;
     border-radius: ($spacingMedium - 2px) ($spacingMedium - 2px) 0px 0px;
     background-position: 50%;
@@ -111,9 +140,9 @@
   &_public-note {
     display: block;
     position: absolute;
-    top: 180px;
+    top: 187px;
     right: $spacingMedium;
-    font-size: $fontSizeSmall;
+    font-size: $fontSizeXXSmall;
     color: $blue;
     background-color: rgba($cream, 0.9);
     padding: $spacingSmall;

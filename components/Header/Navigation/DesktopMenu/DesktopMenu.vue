@@ -1,8 +1,9 @@
 <template>
   <!-- Desktop menu -->
   <div class="desktop-menu" v-click-outside="closeDropdown">
-    <ul v-if="user && !user.id" class="login-menu">
-      <li>
+    <div v-if="user && !user.id" class="login-menu">
+      <google-login class="" tabindex="0" />
+      <!-- <li>
         <nuxt-link class="login-menu_signup-btn" :to="localePath('/sign-up')">
           {{ $t("signUpText") }}
         </nuxt-link>
@@ -19,8 +20,8 @@
         <transition name="pop-dropdown">
           <login-menu v-if="open" />
         </transition>
-      </li>
-    </ul>
+      </li> -->
+    </div>
 
     <div v-if="user && user.id" class="account-menu margin-bottom-sm">
       <user-image :username="user.displayName" :photoURL="user.photoURL" />
@@ -32,7 +33,7 @@
 </template>
 <script>
 import ClickOutside from "vue-click-outside";
-
+import GoogleLogin from "../../../Login/GoogleLogin.vue";
 import UserImage from "../UserImage.vue";
 import LoginMenu from "./LoginMenu.vue";
 
@@ -40,7 +41,8 @@ export default {
   name: "desktop-menu",
   components: {
     UserImage,
-    LoginMenu
+    LoginMenu,
+    GoogleLogin
   },
   props: {
     accountMenu: {

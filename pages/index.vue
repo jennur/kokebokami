@@ -14,14 +14,14 @@
           addRecipeUrl="/account/my-cookbook/add-recipe"
         />
         <div v-else class="container">
-          <span class="simple-loading-spinner margin-auto" />
+          <span class="simple-loading-spinner margin-auto"></span>
         </div>
       </div>
     </div>
     <sign-up-section
       v-if="user && !user.id"
       id="signUp"
-      class="container--full-height container--dark padding-top-3xl"
+      class="container--dark padding-top-3xl"
       :darkBg="true"
     />
   </div>

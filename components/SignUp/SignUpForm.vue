@@ -68,6 +68,11 @@
       <span class="system-message margin-top-sm">{{ systemMessage }}</span>
     </div>
   </form>
+  <!-- <form action="?" method="POST">
+    <div class="g-recaptcha" data-sitekey="your_site_key"></div>
+    <br/>
+    <input type="submit" value="Submit">
+  </form> -->
 </template>
 <script>
 export default {

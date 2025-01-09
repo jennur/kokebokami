@@ -3,10 +3,10 @@
     <div class="flex flex-align--center">
         <fa tabindex="0"
             :icon="['fas', 'sliders-h']"
-            style="font-size:25px;margin-right:10px;cursor:pointer;"
+            style="font-size:25px;cursor:pointer;"
             @click="open = !open"
             @keydown="event => event.keyCode === 13 && (open = !open)"
-            title="Open filter"
+            :title="$t('openFilter')"
         />
       <search class="search-field margin-left-md" 
               @filterOnSearchTerm="searchTerm => setSearchTerm(searchTerm)"
@@ -15,7 +15,7 @@
     <expand :show="open">
       <div class="filter">
         <div>
-          <h2 class="heading--lg">Type of meal</h2>
+          <h2 class="heading--lg">{{ $t("recipes.typeOfMeal") }}</h2>
           <radio-pills  :pills="$t('recipes.allCategories.typeOfMeal')"
                         :values="$store.state.allCategories.typeOfMeal"
                         @selected="setTypeOfMeal"
@@ -23,7 +23,7 @@
         </div>
 
         <div>
-          <h2 class="heading--lg">Free from</h2>
+          <h2 class="heading--lg">{{ $t("recipes.freeFrom") }}</h2>
           <radio-pills  :pills="$t('recipes.allCategories.allergens')"
                         :values="$store.state.allCategories.allergens"
                         @selected="setAllergen"
@@ -31,7 +31,7 @@
         </div>
 
         <div>
-          <h2 class="heading--lg">Category</h2>
+          <h2 class="heading--lg">{{ $t("recipes.category") }}</h2>
           <radio-pills  :pills="$t('recipes.allCategories.categories')"
                         :values="$store.state.allCategories.categories"
                         @selected="setCategory"
@@ -42,7 +42,7 @@
       
     </expand>
     <div class="recipe-lang-select-wrap margin-top-xl">
-      <span class="label">Recipe language:</span>
+      <span class="label">{{ $t("recipeLanguage") }}:</span>
       <language-input :existing-language="defaultLanguage"
                       :naked="true"
                       @selected="setLanguage"
