@@ -116,11 +116,8 @@ export default {
   ],
   i18n: {
     vueI18nLoader: true,
-    detectBrowserLanguage: {
-      useCookie: true,
-      cookieKey: "i18n_redirected",
-      alwaysRedirect: true
-    },
+    differentDomains: process.env.NODE_ENV === "production",
+    detectBrowserLanguage: false,
     objectNotation: true,
     baseUrl: "https://kokebokami.com",
     locales: [
@@ -128,18 +125,19 @@ export default {
         name: "Norsk",
         code: "no",
         iso: "no-NO",
-        file: "no-NO.js"
+        file: "no-NO.js",
+        domain: process.env.NODE_ENV === "production" && "kokebokami.no" || "localhost:3000"
       },
       {
         name: "English",
         code: "en",
         iso: "en-US",
-        file: "en-US.js"
-      }
+        file: "en-US.js",
+        domain: process.env.NODE_ENV === "production" && "kokebokami.com" || "localhost:3000"
+      },
     ],
     lazy: true,
     langDir: "lang/",
-    defaultLocale: "en"
   },
   firebase: {
     config: {
