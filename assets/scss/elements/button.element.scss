@@ -1,3 +1,6 @@
+@use "sass:color";
+@use "../settings/variables.settings" as *;
+
 .button {
   display: inline-flex;
   justify-content: center;
@@ -15,7 +18,7 @@
   position: relative;
 
   &:hover {
-    background-color: lighten($blue, 10%);
+    background-color: color.adjust($blue, $lightness: 10%);
     text-decoration: none;
   }
   &--w-icon {
@@ -67,7 +70,7 @@
     color: $richBlack;
 
     &:hover {
-      background-color: lighten($green, 10%);
+      background-color: color.adjust($green, $lightness: 10%);
     }
   }
 
@@ -209,7 +212,7 @@
       content: "+";
       font-weight: bold;
       position: relative;
-      margin-left: -$spacingLargeMobile;
+      margin-left: -($spacingLargeMobile);
       top: 0px;
       margin-right: $spacingSmall;
       @media screen and (min-width: $mobileWidth) {

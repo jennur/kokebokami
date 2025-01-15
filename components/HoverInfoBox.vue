@@ -9,7 +9,7 @@
 
 <script>
 import infoIcon from "~/assets/graphics/icons/info-icon.svg";
-import ClickOutside from "vue-click-outside";
+ 
 
 export default {
   name: "hover-info-box",
@@ -29,9 +29,6 @@ export default {
     closeBox() {
       this.boxVisible = false;
     },
-  },
-  directives: {
-    ClickOutside,
-  },
+  }
 };
 </script>

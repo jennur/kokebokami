@@ -14,12 +14,12 @@
           >
             {{ menuItem.headline }}
           </h5>
-          <nuxt-link
+          <NuxtLink
             v-if="!menuItem.noLink"
             class="burger-menu_link"
             :to="menuItem.path"
-            @click.native="$emit('close-menu')"
-            >{{ menuItem.title }}</nuxt-link
+            @click.native="emit('close-menu')"
+            >{{ menuItem.title }}</NuxtLink
           ></span
         >
       </div>
@@ -28,17 +28,17 @@
         class="burger-menu_sub-list margin-top-md margin-bottom-lg"
       >
         <li v-for="link in menuItem.subLinks" :key="link.title">
-          <nuxt-link
+          <NuxtLink
             class="burger-menu_link"
             :to="link.path"
-            @click.native="$emit('close-menu')"
-            >{{ link.title }}</nuxt-link
+            @click.native="emit('close-menu')"
+            >{{ link.title }}</NuxtLink
           >
         </li>
       </ul>
     </li>
     <li v-if="user && user.id">
-      <button class="logout-button" @click="$emit('logout')">
+      <button class="logout-button" @click="emit('logout')">
         {{ $t("logout") }}
       </button>
     </li>
@@ -48,38 +48,32 @@
       </h5>
     </li>
     <li>
-      <nuxt-link class="burger-menu_link" :to="switchLocalePath('en')"
-        >English</nuxt-link
+      <NuxtLink class="burger-menu_link" :to="$switchLocalePath('en')"
+        >English</NuxtLink
       >
     </li>
     <li>
-      <nuxt-link class="burger-menu_link" :to="switchLocalePath('no')"
-        >Norsk (beta)</nuxt-link
+      <NuxtLink class="burger-menu_link" :to="$switchLocalePath('no')"
+        >Norsk (beta)</NuxtLink
       >
     </li>
   </ul>
 </template>
-<script>
+<script setup>
 import UserImage from "../UserImage.vue";
+import useUser from "~/composables/user.js";
 
-export default {
-  name: "burger-list",
-  components: {
-    UserImage
+const user = computed(() => useUser());
+const emit = defineEmits("close-menu", "logout")
+
+const props = defineProps({
+  open: {
+    type: Boolean,
+    default: false
   },
-  props: {
-    open: {
-      type: Boolean,
-      default: false
-    },
-    user: {
-      type: Object,
-      default: () => {}
-    },
-    menuItems: {
-      type: Array,
-      default: () => []
-    }
+  menuItems: {
+    type: Array,
+    default: () => []
   }
-};
+})
 </script>

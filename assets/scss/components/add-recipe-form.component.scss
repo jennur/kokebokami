@@ -1,7 +1,10 @@
+@use "../settings/variables.settings" as *;
+
 .add-recipe {
   position: relative;
   width: 100%;
   max-width: 300px;
+
   &-dropdown {
     display: flex;
     flex-direction: column;
@@ -40,9 +43,11 @@
       z-index: 4;
       padding: $spacingLarge 0px;
       transition: background-color 0.1s;
+
       &:first-child {
         border-bottom: 1px dotted $blue;
       }
+
       &:hover {
         text-decoration: none;
         background-color: $blue;
@@ -52,47 +57,57 @@
     }
   }
 }
+
 .add-recipe-form {
   display: block;
   width: 100%;
   text-align: left;
+
   input::placeholder {
     color: rgba(0, 0, 0, 0.25);
   }
+
   #dropImage {
     margin: $spacingMedium auto;
   }
+
   &_image {
     display: block;
     width: 100%;
     height: 260px;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: 50%;
+
     @media screen and (min-width: $mobileWidth) {
       height: 350px;
     }
     @media screen and (min-width: $tabletWidth) {
       height: 450px;
     }
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: 50%;
   }
+
   fieldset {
     max-width: 100%;
   }
+
   input[type="text"],
   input[type="number"],
   textarea {
     border: 1px solid $green;
     border-radius: $spacingSmall;
   }
+
   &_ingredient-wrap {
     width: 265px;
   }
+
   &_ingredient-heading {
     font-size: $fontSizeSmall;
     font-family: $bodyFont;
     width: 275px;
   }
+
   &_servings,
   &_amount {
     display: block;
@@ -100,6 +115,7 @@
     width: 60px;
     padding-left: $spacingMedium;
   }
+
   &_title,
   &_ingredient,
   &_description,
@@ -119,10 +135,12 @@
   &_title {
     font-family: $headingFont;
     font-size: $fontSizeXXLargeMobile;
+
     @media screen and (min-width: $tabletWidth) {
       font-size: $fontSizeXXLarge;
     }
   }
+
   &_description {
     width: 100%;
     height: 150px;
@@ -143,6 +161,7 @@
   &_ingredient {
     width: 200px;
   }
+
   &_instructions {
     padding-left: $spacingSmall;
     list-style: none;
@@ -151,6 +170,7 @@
     li {
       padding-left: $spacingXXLarge;
       position: relative;
+
       &::before {
         counter-increment: a;
         content: counter(a);
@@ -168,6 +188,7 @@
         color: $blue;
         z-index: 1;
       }
+
       &:not(:last-child)::after {
         content: "";
         border-left: 1px dotted $green;
@@ -194,6 +215,7 @@
   &--url {
     width: 360px;
   }
+  
   .delete-button,
   .save-button {
     margin: $spacingXXLarge $spacingMedium $spacingLarge $spacingMedium;

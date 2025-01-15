@@ -1,11 +1,13 @@
+import { getDatabase, ref, get } from "firebase/database";
 import getRecipeAndMetadata from "~/helpers/get-recipe-and-metadata.js";
 import getRecipeOwner from "~/helpers/recipe-owner";
 import recipeModel from "~/helpers/recipe-model";
+import { useCurrentUser } from 'vuefire'
 
 export default {
   data() {
     return {
-      userAuth: this.$fire.auth.currentUser,
+      userAuth: useCurrentUser(),
       recipe: {},
       author: {},
       loaded: false,
@@ -16,16 +18,16 @@ export default {
   },
   async asyncData({ app, params }) {
     try {
-      let recipesSnapshot = await app.$fire.database
-        .ref("recipes")
-        .once("value");
+      const db = getDatabase();
+      console.log("GETTING RECIPE DATA")
+      
+      const snapshot = await get(ref(db, `recipes/${params.key}`));
+      console.log("SNAPSHOT:", snapshot.val());
 
       let recipePath = `${params.key}/${params.recipeid}/`;
-      let recipe = getRecipeAndMetadata(recipesSnapshot, recipePath);
+      let recipe = getRecipeAndMetadata(snapshot, recipePath);
 
-      let userSnapshot = recipe.content && await app.$fire.database
-        .ref(`users/${recipe.content.ownerID}/displayName`)
-        .once("value");
+      let userSnapshot = recipe.content && await get(ref(db, `users/${recipe.content.ownerID}/displayName`));
 
       let author = userSnapshot && getRecipeOwner(userSnapshot, recipe.content.ownerID);
 
@@ -61,9 +63,10 @@ export default {
       try {
         console.log("Getting recipe");
 
-        let snapshot = await this.$fire.database
-          .ref(`recipes/${key}`)
-          .once("value");
+        const db = getDatabase();
+        console.log("GETTING RECIPE DATA getRecipe")
+        const dbRef = ref(db, `recipes/${key}`);
+        const snapshot = await get(dbRef);
 
         if (snapshot.val()) {
           let recipe = snapshot.val();

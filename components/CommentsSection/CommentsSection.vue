@@ -22,8 +22,10 @@
 </template>
 
 <script>
+import { getDatabase, ref, get } from "firebase/database";
+
 import axios from "axios";
-import user from "~/mixins/user.js";
+import user from "~/composables/user.js";
 
 import CommentForm from "./CommentForm.vue";
 import Comments from "./Comments.vue";
@@ -89,8 +91,8 @@ export default {
                         </span>
                       </p>
                     </div>`;
-      this.$fire.database
-        .ref(`users/${this.recipeOwnerID}/notificationsOff/comments`)
+      const db = getDatabase();
+        ref(db, `users/${this.recipeOwnerID}/notificationsOff/comments`)
         .once("value", snapshot => {
           let commentNotificationsOff = snapshot.exists() && snapshot.val();
           if (!commentNotificationsOff) {
@@ -108,8 +110,8 @@ export default {
     },
     submitComment(commentObj) {
       if(this.recipeKey){
-        this.$fire.database
-          .ref(`recipes/${this.recipeKey}/comments`)
+        const db = getDatabase();
+          ref(db, `recipes/${this.recipeKey}/comments`)
           .push(commentObj)
           .then(() => {
             this.submitted = true;

@@ -1,3 +1,6 @@
+@use "sass:color";
+@use "../settings/variables.settings" as *;
+
 .comments-section {
   width: 100%;
 
@@ -11,6 +14,7 @@
   background-color: $lightOrange;
   padding: $spacingLarge;
   border-radius: 0px 0px $spacingMedium $spacingMedium;
+
   .simple-loading-spinner {
     position: absolute;
     top: 0px;
@@ -19,23 +23,27 @@
     z-index: 1;
     width: $spacingLarge;
     height: $spacingLarge;
+
     @media screen and (min-width: $mobileWidth) {
       width: $spacingXLarge;
       height: $spacingXLarge;
     }
   }
+
   label {
     max-width: 400px;
   }
   .comment_user-img {
     z-index: 5;
+
     g circle {
-      fill: mix($lightOrange, $orange, 70%);
+      fill: color.mix($lightOrange, $orange, 70%);
       opacity: 1;
     }
   }
   &_anonymous {
     font-size: $fontSizeSmall;
+
     @media screen and (min-width: $mobileWidth) {
       font-size: $fontSizeMedium;
     }
@@ -70,6 +78,7 @@
 .comment {
   border-bottom: 1px solid $green;
   position: relative;
+
   &:first-child {
     border-top: 1px solid $green;
   }
@@ -94,23 +103,27 @@
     padding: $spacingMedium $spacingLarge;
     border-radius: $spacingMedium;
     box-sizing: border-box;
+
     @media screen and (min-width: $mobileWidth) {
       width: max-content;
     }
+
     &-btn {
-      &-wrap {
-        display: block;
-        width: 160px;
-        min-width: 160px;
-        @media screen and (min-width: $mobileWidth) {
-          display: inline-block;
-        }
-      }
       font-size: $fontSizeSmall;
       padding: $spacingSmall $spacingMedium;
 
       @media screen and (min-width: $mobileWidth) {
         padding: 2px $spacingMedium;
+      }
+
+      &-wrap {
+        display: block;
+        width: 160px;
+        min-width: 160px;
+
+        @media screen and (min-width: $mobileWidth) {
+          display: inline-block;
+        }
       }
     }
   }
@@ -123,21 +136,26 @@
     background-position: 50% 50%;
     background-size: cover;
     background-repeat: no-repeat;
+
     @media screen and (min-width: $mobileWidth) {
       width: $spacingXXLarge;
       height: $spacingXXLarge;
     }
   }
+
   a {
     border-bottom: 1px dotted $green;
+
     &:hover {
       text-decoration: none;
       border-bottom: 1px solid $green;
     }
   }
+
   span.no-link {
     color: $richBlack;
   }
+
   &_comment,
   &_reply-btn,
   .sub-comments-form,
@@ -145,6 +163,7 @@
   .sub-comments-form_error,
   &_sub-comments {
     margin-left: $spacingXLarge + $spacingMediumMobile;
+
     @media screen and (min-width: $mobileWidth) {
       margin-left: $spacingXXLarge + $spacingMediumMobile;
     }
@@ -179,10 +198,11 @@
 
   .sub-comment {
     max-width: 500px;
+    border-bottom: 1px dotted $green;
+    
     &:first-child {
       border-top: 1px dotted $green;
       //margin-top: $spacingLarge;
     }
-    border-bottom: 1px dotted $green;
   }
 }

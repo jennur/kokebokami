@@ -1,3 +1,5 @@
+@use "../settings/variables.settings" as *;
+
 .logout-button {
   display: inline-block;
   border: 2px solid $gray;

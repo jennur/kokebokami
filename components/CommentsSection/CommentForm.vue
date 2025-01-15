@@ -67,7 +67,7 @@
 </template>
 
 <script>
-import user from "~/mixins/user.js";
+import user from "~/composables/user.js";
 import CookSilhouette from "~/assets/graphics/icons/cook-silhouette-circle.svg";
 
 export default {

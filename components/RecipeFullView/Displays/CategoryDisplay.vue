@@ -37,8 +37,10 @@
   </div>
 </template>
 <script>
+import { getDatabase, ref, get } from "firebase/database";
+
 import CategoryEdit from "./Editing/CategoryEdit.vue";
-import ClickOutside from "vue-click-outside";
+ 
 export default {
   name: "category-display",
   components: {
@@ -67,10 +69,10 @@ export default {
   },
   computed: {
     allCategories() {
-      return this.$store.state.allCategories.categories;
+      return this.$store.allCategories.categories;
     },
     categoryNames() {
-      let allCategories = this.$store.state.allCategories.categories;
+      let allCategories = this.$store.allCategories.categories;
       let localeCategories = this.$t("recipes.allCategories.categories");
       return (
         this.categories &&
@@ -96,8 +98,8 @@ export default {
 
       if (recipeKey) {
         this.loading = true;
-        this.$fire.database
-          .ref(`recipes/${recipeKey}/categories`)
+        const db = getDatabase();
+          ref(db, `recipes/${recipeKey}/categories`)
           .set(categories)
           .then(() => {
             console.log("Successfully updated categories");
@@ -112,8 +114,6 @@ export default {
       }
     }
   },
-  directives: {
-    ClickOutside
-  }
+  
 };
 </script>

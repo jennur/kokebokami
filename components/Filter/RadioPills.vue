@@ -14,35 +14,30 @@
               tabindex="-1"
 
       />
-        {{pills[index]}}
+        {{$tm(pillsTranslationCode)[index].body.static}}
     </label>
   </div>
 </template>
 
-<script>
-export default {
-  name: "radio-pills",
-  props: {
-    pills: {
-      type: Array,
-      default: () => []
-    },
-    values: {
-      type: Array,
-      default: () => []
-    }
+<script setup>
+const emit = defineEmits(["selected"]);
+
+const props = defineProps({
+  pillsTranslationCode: {
+    type: String,
+    default: ""
   },
-  data(){
-    return {
-      checkedValue: null
-    }
-  },
-  methods: {
-    setValue(value) {
-      if(this.checkedValue === value) value = null;
-      this.checkedValue = value;
-      this.$emit('selected', value);
-    }
+  values: {
+    type: Array,
+    default: () => []
   }
+})
+
+const checkedValue = ref(null);
+
+function setValue(value) {
+  if(checkedValue.value === value) value = null;
+  checkedValue.value = value;
+  emit('selected', value);
 }
 </script>

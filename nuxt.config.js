@@ -1,16 +1,17 @@
-// const getRoutes = require("./build-helpers/getRoutes");
-const redirectSSL = require("redirect-ssl");
+// TODO: Implement SSL redirect
+import path from 'path'
 
-export default {
-  target: 'server',
-  // generate: {
-  //   fallback: true,
-  //   routes() {
-  //     return getRoutes();
-  //   }
-  // },
-
-  // Headers of the page
+import { defineNuxtConfig } from "nuxt/config";
+// console.log("PATH:", import.meta.resolve("~/assets/scss/main.scss"))
+export default defineNuxtConfig({
+  ssr: true,
+  pages: true,
+  components: [
+    {
+      path: "~/components",
+      pathPrefix: false
+    }
+  ],
   head: {
     title: "Kokebokami",
     meta: [
@@ -66,80 +67,52 @@ export default {
 
   // Global CSS
   css: ["~/assets/scss/main.scss"],
+
   plugins: [
-    "~/plugins/globalComponents.js",
-    "~/plugins/router-auth.client.js"
+    "~/plugins/router-auth.client.js",
+    "~/plugins/firebase.js"
   ],
-  vendor: ["axios", "babel-polyfill"],
+
   router: {
-    middleware: ["router-auth"],//, "redirect-trailing-slash"],
-    linkExactActiveClass: "active-link",
-    linkActiveClass: null
+    middleware: ["router-auth"],
   },
+
   pageTransition: "fade",
-  // Nuxt.js dev-modules
-  babel: {
-    presets: ["es2015", "stage-0"],
-    plugins: [
-      [ "transform-runtime", { polyfill: true, regenerator: true } ]
-    ]
-  },
-  buildModules: [
-    [
-      "@nuxtjs/google-gtag",
-      {
-        id: process.env.GOOGLE_PROPERTY_ID
-      }
-    ],
-    [
-      "@nuxtjs/google-analytics",
-      {
-        id: "UA-108483738-5"
-      }
-    ],
-    '@nuxtjs/fontawesome'
-  ],
-  serverMiddleware: [
-    redirectSSL.create({
-      enabled: process.env.NODE_ENV === "production"
-    }),
-    "~/modules/redirectToTrailingSlash.js",
-    "~/api/send-email.js",
-    "~/api/sitemap.js"
-  ],
-  // Nuxt.js modules
+
   modules: [
-    "nuxt-i18n",
-    "@nuxtjs/firebase",
-    "@nuxtjs/axios",
-    "nuxt-svg-loader"
+    // [
+      // "@nuxtjs/google-gtag",
+      // {
+        //   id: process.env.GOOGLE_PROPERTY_ID
+        // }
+      // ],
+      // [
+    //   "@nuxtjs/google-analytics",
+    //   {
+    //     id: "UA-108483738-5"
+    //   }
+    // ],
+    "nuxt-vuefire",
+    "@pinia/nuxt",
+    "@nuxtjs/i18n",
+    "nuxt-svgo-loader",
+    "@vesp/nuxt-fontawesome"
   ],
-  i18n: {
-    vueI18nLoader: true,
-    differentDomains: process.env.NODE_ENV === "production",
-    detectBrowserLanguage: false,
-    objectNotation: true,
-    baseUrl: "https://kokebokami.com",
-    locales: [
-      {
-        name: "Norsk",
-        code: "no",
-        iso: "no-NO",
-        file: "no-NO.js",
-        domain: process.env.NODE_ENV === "production" && "kokebokami.no" || "localhost:3000"
-      },
-      {
-        name: "English",
-        code: "en",
-        iso: "en-US",
-        file: "en-US.js",
-        domain: process.env.NODE_ENV === "production" && "kokebokami.com" || "localhost:3000"
-      },
-    ],
-    lazy: true,
-    langDir: "lang/",
+
+  svgoLoader: {
+    // Options here will be passed to `vite-svg-loader`
   },
-  firebase: {
+
+  i18n: {
+    locales: ["en", "no"],
+    defaultLocale: "en",
+    vueI18n: "~/i18n/i18n.config.js",
+  },
+
+  vuefire: {
+    auth: {
+      enabled: true,
+    },
     config: {
       apiKey: process.env.API_KEY,
       authDomain: process.env.AUTH_DOMAIN,
@@ -150,22 +123,24 @@ export default {
       appId: process.env.APP_ID,
       measurementId: process.env.MEASUREMENT_ID
     },
-    services: {
-      auth: {
-        persistence: "local",
-
-        // it is recommended to configure either a mutation or action but you can set both
-        initialize: {
-          onAuthStateChangedAction: "ON_AUTH_STATE_CHANGED"
-        },
-        ssr: false
-      },
-      database: true,
-      storage: true
-    },
-    terminateDatabasesAfterGenerate: true
+    // services: {
+    //   auth: {
+    //     persistence: "local",
+  
+    //     // it is recommended to configure either a mutation or action but you can set both
+    //     initialize: {
+    //       onAuthStateChangedAction: "ON_AUTH_STATE_CHANGED"
+    //     },
+    //     ssr: false
+    //   },
+    //   database: true,
+    //   storage: true
+    // },
+    // terminateDatabasesAfterGenerate: true
   },
+
   pwa: {},
+
   fontawesome: {
     component: "fa",
     icons: {
@@ -174,12 +149,16 @@ export default {
       brands: ['faFacebookSquare', 'faFacebookF']
     }
   },
-  // Build configuration
-  build: {
-    babel: {
-      plugins: [
-        ['@babel/plugin-proposal-private-property-in-object', { loose: true }]
-      ],
-      }
-  }
-};
+
+  // vite: {
+  //   css: {
+  //     preprocessorOptions: {
+  //       scss: {
+  //         // api: "modern-compiler",
+  //         additionalData: '@use "~/assets/scss/settings/variables.settings.scss" as *;',
+  //       },
+  //     },
+  //   },
+  // },
+  compatibilityDate: "2025-01-10"
+});

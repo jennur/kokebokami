@@ -1,14 +1,14 @@
 <template>
   <div>
-    <breadcrumbs :routes="breadcrumbs" />
+    <BreadCrumbs :routes="breadcrumbs" />
     <div class="account container tablet-width padding-h-lg">
       <h1 class="margin-top-2xl margin-bottom-lg">
         {{ $t("accountDetails.headline") }}
       </h1>
-      <nuxt-link :to="localePath('/account/public-profile-view/')">
+      <NuxtLink :to="$localePath('/account/public-profile-view/')">
         {{ $t("accountDetails.seeYourPublicProfile") }}
         <right-arrow class="icon icon--blue" />
-      </nuxt-link>
+      </NuxtLink>
       <div>
         <h3 class="margin-top-2xl">
           {{ $t("accountDetails.personalData") }}
@@ -172,15 +172,18 @@
 </template>
 
 <script>
+import { getDatabase, ref, get } from "firebase/database";
+
 const uuid = require("uuid");
 import Compressor from "compressorjs";
+import { useCurrentUser } from 'vuefire'
 
-import user from "~/mixins/user.js";
+import user from "~/composables/user.js";
 import connectedUsers from "~/mixins/followed-and-followers.js";
 import sharedRecipes from "~/mixins/shared-recipes.js";
 import userRecipes from "~/mixins/user-recipes.js";
 import recipeLinks from "~/mixins/user-recipe-links.js";
-import validateUsername from "~/mixins/validate-username.js";
+// import validateUsername from "~/helpers/validate-username.js";
 
 import AccountDetail from "~/components/Account/Displays/AccountDetail.vue";
 import AccountLinkList from "~/components/Account/Displays/AccountLinkList.vue";
@@ -238,7 +241,6 @@ export default {
     userRecipes,
     recipeLinks,
     sharedRecipes,
-    validateUsername
   ],
   computed: {
     breadcrumbs() {
@@ -259,8 +261,8 @@ export default {
     updateHiddenProfileStatus(checked) {
       let hiddenProfile = !!this.hiddenProfile;
       if (checked === hiddenProfile) {
-        this.$fire.database
-          .ref(`users/${this.user.id}`)
+        const db = getDatabase();
+          ref(db, `users/${this.user.id}`)
           .update({ hiddenProfile: !checked })
           .then(() => {
             console.log("Successfully updated hidden profile status");
@@ -277,8 +279,8 @@ export default {
 
       if (status !== (notificationsOff && notificationsOff[type])) {
         notificationsOff[type] = status;
-        this.$fire.database
-          .ref(`users/${this.user.id}/notificationsOff`)
+        const db = getDatabase();
+          ref(db, `users/${this.user.id}/notificationsOff`)
           .set(notificationsOff)
           .then(() => {
             console.log(`Successfully updated ${type} notifications status`);
@@ -331,7 +333,7 @@ export default {
         var metadata = {
           contentType: "image/png"
         };
-        var storageRef = this.$fire.storage.ref();
+        var storageRef = this.$fire.storageref(db, );
         var imageRef = storageRef.child(
           `images/users/${this.user.id}/profileImg/${imageName}.png`
         );
@@ -339,8 +341,8 @@ export default {
         let photoURL = await imageRef.getDownloadURL();
         this.photoURL = photoURL;
 
-        this.$fire.database
-          .ref("/users/" + this.user.id)
+        const db = getDatabase();
+          ref(db, "/users/" + this.user.id)
           .update({ photoURL })
           .then(() => {
             this.updateProfileImgSystemMessage = "";
@@ -361,7 +363,7 @@ export default {
     removeProfileImg() {
       if (this.user.id) {
         this.$fire.storage
-          .ref()
+          ref(db, )
           .child(`images/users/${this.user.id}/profileImg`)
           .listAll()
           .then((res) =>  {
@@ -380,8 +382,8 @@ export default {
       }
     },
     removeProfileImageFromDb() {
-      this.$fire.database
-        .ref("/users/" + this.user.id)
+      const db = getDatabase();
+        ref(db, "/users/" + this.user.id)
         .update({
           photoURL: ""
         })
@@ -396,8 +398,8 @@ export default {
         });
     },
     updateUsername(value) {
-      this.$fire.database
-        .ref("/users/" + this.user.id)
+      const db = getDatabase();
+        ref(db, "/users/" + this.user.id)
         .update({
           displayName: value
         })
@@ -424,8 +426,8 @@ export default {
         var user = this.$fire.auth().currentUser;
         user.updateEmail(value)
             .then(function() {
-              componentThis.$fire.database
-                .ref("/users/" + user.id)
+              componentconst db = getDatabase();
+                ref(db, "/users/" + user.id)
                 .update({
                   email: value
                 })
@@ -447,8 +449,8 @@ export default {
       } */
     },
     updateBiography(value) {
-      this.$fire.database
-        .ref("/users/" + this.user.id)
+      const db = getDatabase();
+        ref(db, "/users/" + this.user.id)
         .update({
           biography: value
         })
@@ -463,17 +465,17 @@ export default {
         });
     },
     deleteAccount() {
-      let user = this.$fire.auth.currentUser;
+      let user = useCurrentUser();
 
       //Remove user's recipes
-      this.$fire.database
-        .ref("recipes")
+      const db = getDatabase();
+        ref(db, "recipes")
         .orderByChild("ownerID")
         .once("value", recipes => {
           recipes.forEach(recipe => {
             if (recipe.val().ownerID === user.uid) {
-              this.$fire.database
-                .ref("recipes/" + recipe.key)
+              const db = getDatabase();
+                ref(db, "recipes/" + recipe.key)
                 .remove()
                 .then(() => {
                   console.log("Success: Deleted recipe:", recipe.key);
@@ -486,8 +488,8 @@ export default {
         })
         .then(() => {
           if(user.uid) {
-            this.$fire.database
-              .ref("users/" + user.uid)
+            const db = getDatabase();
+              ref(db, "users/" + user.uid)
               .remove()
               .then(() => {
                 console.log("Success: User was removed from database");

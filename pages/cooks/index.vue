@@ -1,6 +1,6 @@
 <template>
   <div>
-    <breadcrumbs :routes="breadcrumbs" />
+    <BreadCrumbs :routes="breadcrumbs" />
     <div class="cooks container container--center mobile-width margin-top-xl margin-auto">
       <div v-if="user && user.id">
         <h2>{{ $t("cooks.headline") }}</h2>
@@ -43,7 +43,7 @@
   </div>
 </template>
 <script>
-import user from "~/mixins/user.js";
+import user from "~/composables/user.js";
 import connectedUsers from "~/mixins/followed-and-followers.js";
 
 import Tabs from "~/components/Tabs.vue";

@@ -1,3 +1,5 @@
+@use "../settings/variables.settings" as *;
+
 .filter-section {
   display: block;
   padding: $spacingLarge 0px;
@@ -10,9 +12,6 @@
     background-color: rgba($lightBlue,0.1);
     border-radius: 0px 0px $spacingMedium $spacingMedium;
 
-    & > div:not(:first-child) {
-      margin-top: $spacingXLarge;
-    }
     @media screen and (min-width: $tabletWidth) {
       display: flex;
       flex-direction: row;
@@ -24,6 +23,10 @@
         }
       }
       
+    }
+    
+    & > div:not(:first-child) {
+      margin-top: $spacingXLarge;
     }
   }
   .recipe-lang-select-wrap {

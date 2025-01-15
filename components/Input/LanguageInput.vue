@@ -29,7 +29,7 @@ export default {
   },
   computed: {
     languages() {
-      return this.$store.state.allCategories.languages;
+      return this.$store.allCategories.languages;
     }
   }
 };

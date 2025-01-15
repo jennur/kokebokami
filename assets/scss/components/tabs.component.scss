@@ -1,7 +1,6 @@
+@use "../settings/variables.settings" as *;
+
 .tabs {
-  &-wrap {
-    position: relative;
-  }
   width: 100%;
   display: block;
   max-width: 100%;
@@ -13,6 +12,10 @@
   position: relative;
   box-shadow: none;
   background-color: transparent;
+
+  &-wrap {
+    position: relative;
+  }
 
   .tab {
     display: inline-block;

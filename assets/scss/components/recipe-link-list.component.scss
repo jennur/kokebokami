@@ -1,3 +1,7 @@
+@use "sass:color";
+@use "../settings/variables.settings" as *;
+@use "sass:math" as math;
+
 .recipe-link-list {
   display: flex;
   flex-wrap: wrap;
@@ -47,8 +51,9 @@
 
   &:hover {
     text-decoration: none;
+
     @media screen and (min-width: $tabletWidth) {
-      background-color: darken($lightOrange, 2%);
+      background-color: color.adjust($lightOrange, $lightness: -2%);
     }
 
     a {
@@ -60,8 +65,10 @@
     position: absolute;
     left: $spacingMedium;
     top: $spacingMedium;
+
     .icon {
       transition: 0.1s;
+
       &:hover {
         width: 1.1em;
         height: 1.1em;
@@ -69,12 +76,14 @@
       }
     }
   }
+
   &_new-tab-icon {
     width: 15px;
     position: absolute;
     right: $spacingMedium;
     top: $spacingMedium;
   }
+  
   &_edit-form-wrap {
     display: block;
     max-width: 100%;
@@ -113,7 +122,7 @@
       &--required {
         color: $pink;
         position: absolute;
-        right: -$spacingLarge;
+        right: -($spacingLarge);
         bottom: $spacingSmall;
       }
       &_comment {

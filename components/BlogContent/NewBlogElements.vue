@@ -45,7 +45,7 @@
 <script>
 const uuid = require('uuid');
 
-import user from "~/mixins/user";
+import user from "~/composables/user";
 import BlogTextInput from "./Editing/BlogTextInput.vue";
 import BlogImageInput from "./Editing/BlogImageInput.vue";
 import Expand from '../Transitions/Expand.vue';

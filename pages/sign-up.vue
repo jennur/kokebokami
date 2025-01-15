@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import SignUpSection from "~/components/SignUp/SignUpSection.vue";
+import SignUpSection from "~/components/SignUpSection/SignUpSection.vue";
 
 export default {
   name: "sign-up",

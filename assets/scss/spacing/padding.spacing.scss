@@ -1,3 +1,5 @@
+@use "../settings/variables.settings" as *;
+
 .padding {
   &--none {
     padding: 0px;

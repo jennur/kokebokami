@@ -1,4 +1,6 @@
+import { getDatabase, ref, get } from "firebase/database";
 import recipeModel from "~/helpers/recipe-model";
+import { useCurrentUser } from 'vuefire'
 
 export default {
   data(){
@@ -8,18 +10,16 @@ export default {
   },
   methods: {
     getUserFavorites(){
-      let currentUser = this.$fire.auth.currentUser;
+      let currentUser = useCurrentUser();
       if(currentUser && currentUser.uid) {
-        this.$fire.database
-          .ref(`users/${currentUser.uid}/favorites`)
-          .once("value", snapshot => {
+        const db = getDatabase();
+          get(ref(db, `users/${currentUser.uid}/favorites`), snapshot => {
             if(snapshot.exists()){
               let keys = Object.values(snapshot.val());
 
               keys && keys.forEach(key => {
-                this.$fire.database
-                  .ref(`recipes/${key}`)
-                  .once("value", snapshot => {
+                const db = getDatabase();
+                get(ref(db, `recipes/${key}`), snapshot => {
                     if(snapshot.exists()){
                       let recipe = snapshot.val();
                       this.favoriteRecipes.push(recipeModel(recipe, key))

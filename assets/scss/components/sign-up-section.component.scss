@@ -1,3 +1,5 @@
+@use "../settings/variables.settings" as *;
+
 .sign-up-section {
   display: flex;
   flex-direction: column;
@@ -6,40 +8,5 @@
   margin: 0px auto;
   @media screen and (min-width: $mobileWidth) {
     max-width: $tabletWidth;
-  }
-  .sign-up-form {
-    display: block;
-    width: 100%;
-    max-width: 300px;
-    text-align: left;
-
-    input[type="email"],
-    input[type="password"] {
-      background-color: rgba($green, 0.05);
-      border-radius: $spacingSmall $spacingSmall 0px 0px;
-
-      &:focus {
-        outline: none;
-        border: 2px solid $green;
-        border-radius: $spacingSmall;
-      }
-    }
-    &_terms {
-      max-width: 250px;
-    }
-    &--green {
-      padding: $spacingXLarge;
-      background-color: rgba($green, 0.08);
-      border-radius: $spacingMedium;
-    }
-  }
-
-  .sign-in-with-provider {
-    text-align: center;
-    margin-bottom: $spacingLarge;
-
-    p {
-      margin-top: 0px;
-    }
   }
 }

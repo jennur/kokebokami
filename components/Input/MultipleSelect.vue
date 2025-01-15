@@ -36,7 +36,7 @@
   </div>
 </template>
 <script>
-import ClickOutside from "vue-click-outside";
+ 
 
 export default {
   name: "multiple-select",
@@ -72,8 +72,6 @@ export default {
       this.open = false;
     }
   },
-  directives: {
-    ClickOutside
-  }
+  
 };
 </script>

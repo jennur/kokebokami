@@ -1,3 +1,6 @@
+@use "sass:color";
+@use "../settings/variables.settings" as *;
+
 .recipe-preview {
   display: flex;
   flex-direction: column;
@@ -15,6 +18,17 @@
   text-decoration: none;
   transition: all 0.3s;
   text-align: left;
+
+  @media screen and (min-width: $mobileWidth) {
+    flex-basis: calc(50% - 12px);
+    width: calc(50% - 12px);
+    flex-grow: 0;
+  }
+  
+  @media screen and (min-width: $tabletWidth) {
+    flex-basis: calc(33% - 8px);
+    width: calc(33% - 8px);
+  }
 
   .favorite-icon {
     display: flex;
@@ -35,21 +49,11 @@
     }
   }
 
-  @media screen and (min-width: $mobileWidth) {
-    flex-basis: calc(50% - 12px);
-    width: calc(50% - 12px);
-    flex-grow: 0;
-
-  }
-  @media screen and (min-width: $tabletWidth) {
-    flex-basis: calc(33% - 8px);
-    width: calc(33% - 8px);
-  }
 
   &:hover {
     text-decoration: none;
     @media screen and (min-width: $tabletWidth) {
-      background-color: darken($lightOrange, 2%);
+      background-color: color.adjust($lightOrange, $lightness: -2%);
     }
     a {
       text-decoration: none;
@@ -63,7 +67,7 @@
 
   .rating-wrapper {
     svg {
-      color: lighten($orange, 30%);
+      color: color.adjust($orange, $lightness: 30%);
 
       &:hover {
         color: $orange;
@@ -87,7 +91,7 @@
     padding-top: $spacingMedium;
     font-size: $fontSizeMedium;
     font-weight: 700;
-    color: darken($orange, 20%);
+    color: color.adjust($orange, $lightness: -20%);
     text-transform: capitalize;
   }
   
@@ -103,8 +107,8 @@
   }
   &_category {
     display: inline-block;
-    background-color: lighten($orange, 40%);
-    color: darken($orange, 20%);
+    background-color: color.adjust($orange, $lightness: 40%);
+    color: color.adjust($orange, $lightness: -20%);
     padding: 1px $spacingMedium;
     margin-right: $spacingSmall;
     margin-bottom: $spacingSmall;

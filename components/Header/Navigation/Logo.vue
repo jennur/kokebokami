@@ -1,11 +1,7 @@
 <template>
   <h1 class="logo">
-    <nuxt-link class="logo_link" :to="localePath('/')">Kokebokami</nuxt-link>
+    <NuxtLink class="logo_link" :to="$localePath('/')">Kokebokami</NuxtLink>
   </h1>
 </template>
 
-<script>
-export default {
-  name: "logo"
-};
-</script>
+<script setup></script>

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <breadcrumbs :routes="breadcrumbs" />
+    <BreadCrumbs :routes="breadcrumbs" />
 
     <div class="flex-center-container flex-center-container--column">
       <h2 class="margin-bottom-lg">One last step!</h2>
@@ -45,7 +45,7 @@ export default {
   methods: {
     logOut(){
       this.$store.dispatch("USER_SIGN_OUT");
-      this.$router.push(this.localePath("/"));
+      this.$router.push($localePath("/"));
     }
   }
 };

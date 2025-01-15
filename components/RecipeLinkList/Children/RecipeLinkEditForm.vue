@@ -114,7 +114,9 @@
   </div>
 </template>
 <script>
-import user from "~/mixins/user.js";
+import { getDatabase, ref, get } from "firebase/database";
+
+import user from "~/composables/user.js";
 import SelectComponent from "~/components/Input/SelectComponent.vue";
 import ExpandTransition from "~/components/Transitions/Expand.vue";
 import recipeLinks from "~/mixins/user-recipe-links";
@@ -197,7 +199,8 @@ export default {
 
         try {
           if (this.recipeLink.id) {
-            const recipeLinkRef = this.$fire.database.ref(
+            const db = getDatabase();
+            const recipeLinkRef = ref(db, 
               `users/${this.user.id}/recipeLinks/${this.recipeLink.id}`
             );
             recipeLinkRef
@@ -211,7 +214,7 @@ export default {
                 console.log("Error saving recipe", error.message);
               });
           } else {
-            let userRef = this.$fire.database.ref(`users/${this.user.id}`);
+            let userRef = ref(db, `users/${this.user.id}`);
             userRef
               .child("recipeLinks")
               .push(dataObject)

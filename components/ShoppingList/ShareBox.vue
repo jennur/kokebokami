@@ -31,8 +31,10 @@
   </modal-box>
 </template>
 <script>
+import { getDatabase, ref, get } from "firebase/database";
+
 import allUsers from "~/mixins/allUsers.js";
-import user from "~/mixins/user.js";
+import user from "~/composables/user.js";
 import connectedUsers from "~/mixins/followed-and-followers.js";
 
 import ExpandTransition from "~/components/Transitions/Expand.vue";
@@ -88,7 +90,8 @@ export default {
       let follower = this.selectedFollower;
 
       if (follower && follower.id !== "") {
-        let ownersRef = this.$fire.database.ref(`shoppingLists/${this.listKey}/owners`);
+        const db = getDatabase();
+        let ownersRef = ref(db, `shoppingLists/${this.listKey}/owners`);
 
         try {
           ownersRef.once("value", snapshot => {

@@ -9,7 +9,7 @@
       :recipes="content"
     />
 
-    <nuxt-link :to="contentLink">See all</nuxt-link>
+    <NuxtLink :to="contentLink">See all</NuxtLink>
   </div>
 </template>
 

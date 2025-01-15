@@ -109,7 +109,9 @@
 </template>
 
 <script>
-import user from "~/mixins/user.js";
+import { getDatabase, ref, get } from "firebase/database";
+
+import user from "~/composables/user.js";
 import recipeLinks from "~/mixins/user-recipe-links.js";
 
 import ExpandTransition from "~/components/Transitions/Expand.vue";
@@ -187,7 +189,8 @@ export default {
           comment
         };
         try {
-          this.$fire.database.ref(`users/${this.user.id}/recipeLinks`).push(dataObject);
+          const db = getDatabase();
+          ref(db, `users/${this.user.id}/recipeLinks`).push(dataObject);
           this.$emit("save");
         } catch (error) {
           console.log("Error saving recipe link:", error.message);

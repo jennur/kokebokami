@@ -1,3 +1,5 @@
+@use "../settings/variables.settings" as *;
+
 .navigation-menu-wrapper {
   display: flex;
   align-items: center;
@@ -55,7 +57,8 @@
         line-height: $fontSizeSmall;
         color: $orange;
 
-        &.active-link {
+        &.active-link,
+        &.router-link-active {
           color: gray;
           pointer-events: none;
         }
@@ -95,17 +98,19 @@
         text-decoration: none;
       }
     }
-    .active-link {
+    .active-link, 
+    .router-link-active {
       text-decoration: none;
       color: $gray;
       border-bottom: none;
       margin-bottom: 2px;
       cursor: default;
-    }
-    .active-link:hover {
-      border-bottom: none;
-      margin-bottom: 2px;
-      color: $gray;
+      
+      &:hover {
+        border-bottom: none;
+        margin-bottom: 2px;
+        color: $gray;
+      }
     }
     &_signup-btn,
     &_signup-btn.active-link {
@@ -145,17 +150,19 @@
       position: relative;
       box-shadow: none;
     }
-    .active-link {
+    .active-link,
+    .router-link-active {
       text-decoration: none;
       color: $gray;
       border-bottom: none;
       margin-bottom: 2px;
       cursor: default;
-    }
-    .active-link:hover {
-      border-bottom: none;
-      margin-bottom: 2px;
-      color: $gray;
+      
+      &:hover {
+        border-bottom: none;
+        margin-bottom: 2px;
+        color: $gray;
+      }
     }
 
     .dropdown-menu {
@@ -207,7 +214,8 @@
   }
 }
 
-.active-link {
+.active-link,
+.router-link-active {
   text-decoration: none;
   color: $gray;
   border-bottom: none;

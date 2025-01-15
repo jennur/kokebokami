@@ -26,6 +26,8 @@
   </div>
 </template>
 <script>
+import { getDatabase, ref, get } from "firebase/database";
+
 import CategoryEdit from "./Editing/CategoryEdit.vue";
 
 export default {
@@ -55,7 +57,7 @@ export default {
   },
   computed: {
     typeOfMealList() {
-      let allTypesOfMeal = this.$store.state.allCategories.typeOfMeal;
+      let allTypesOfMeal = this.$store.allCategories.typeOfMeal;
       let localetypeOfMeal = this.$t("recipes.allCategories.typeOfMeal");
       return this.typeOfMeal
         .map(type => {
@@ -66,7 +68,7 @@ export default {
         .join(", ");
     },
     allTypesOfMeal() {
-      return this.$store.state.allCategories.typeOfMeal;
+      return this.$store.allCategories.typeOfMeal;
     }
   },
   methods: {
@@ -82,7 +84,8 @@ export default {
 
       if (recipeKey) {
         this.loading = true;
-        let typeOfMealRef = this.$fire.database.ref(`recipes/${recipeKey}/typeOfMeal`);
+        const db = getDatabase();
+        let typeOfMealRef = ref(db, `recipes/${recipeKey}/typeOfMeal`);
         typeOfMealRef
           .set(types)
           .then(() => {

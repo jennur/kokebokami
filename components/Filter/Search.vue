@@ -16,21 +16,15 @@
   </label>
 </template>
 
-<script>
-export default {
-  name: "search",
-  data() {
-      return {
-          open: false
-      }
-  },
-  methods: {
-    handleSearchTerm(value) {
-      this.$emit("filterOnSearchTerm", value);
-    },
-    handleFocus() {
-      this.open = true;
-    }
-  }
-};
+<script setup>
+const emit = defineEmits(["filterOnSearchTerm"]);
+const open = ref(false);
+
+function handleSearchTerm(value) {
+  emit("filterOnSearchTerm", value);
+}
+
+function handleFocus() {
+  open.value = true;
+}
 </script>

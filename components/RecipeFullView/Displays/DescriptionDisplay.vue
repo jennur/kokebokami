@@ -17,6 +17,8 @@
   </div>
 </template>
 <script>
+import { getDatabase, ref, get } from "firebase/database";
+
 import DescriptionEdit from "./Editing/DescriptionEdit.vue";
 
 export default {
@@ -62,7 +64,8 @@ export default {
 
       if (recipeKey && updatedDescription !== this.description) {
         this.loading = true;
-        let descriptionRef = this.$fire.database.ref(
+        const db = getDatabase();
+        let descriptionRef = ref(db, 
           `recipes/${recipeKey}/description`
         );
         descriptionRef

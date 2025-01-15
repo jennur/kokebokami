@@ -1,6 +1,6 @@
 <template>
-  <nuxt-link
-    :to="localePath(`/cooks/${cook.path}`)"
+  <NuxtLink
+    :to="$localePath(`/cooks/${cook.path}`)"
     class="following-cooks_cook"
   >
     <div
@@ -24,7 +24,7 @@
         {{ biography }}
       </p>
     </div>
-  </nuxt-link>
+  </NuxtLink>
 </template>
 <script>
 import BackupImg from "~/assets/graphics/icons/cook-silhouette.svg";

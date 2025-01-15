@@ -1,3 +1,7 @@
+@use "sass:color";
+@use "../settings/variables.settings" as *;
+@use "sass:math" as math;
+
 .following-cooks {
   &_cook {
     display: inline-flex;
@@ -15,10 +19,11 @@
       flex-basis: calc(50% - 54px);
       flex-grow: 0;
     }
+
     &:hover {
       color: $blue;
       text-decoration: none;
-      background-color: darken($lightOrange, 2%);
+      background-color: color.adjust($lightOrange, $lightness: -2%);
     }
   }
   &_img {
@@ -33,6 +38,7 @@
 
     svg {
       height: 70px;
+
       path,
       ellipse {
         fill: $orange;

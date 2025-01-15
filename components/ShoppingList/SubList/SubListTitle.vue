@@ -22,8 +22,9 @@
 </template>
 
 <script>
-import ClickOutside from "vue-click-outside";
-import user from "~/mixins/user.js";
+import { getDatabase, ref, get } from "firebase/database";
+
+import user from "~/composables/user.js";
 
 export default {
   name: "sublist-title",
@@ -72,8 +73,9 @@ export default {
         let title = this.updatedTitle;
         let subListKey = this.subListKey;
 
-        let shoppingListsRef = this.$fire.database.ref(`shoppingLists`);
-        let mainListRef = this.$fire.database.ref(`shoppingLists/${mainListKey}`);
+        const db = getDatabase();
+        let shoppingListsRef = ref(db, `shoppingLists`);
+        let mainListRef = ref(db, `shoppingLists/${mainListKey}`);
 
         if (mainListKey && subListKey !== "") {
           mainListRef
@@ -129,9 +131,6 @@ export default {
         this.toggleEditMode();
       }
     }
-  },
-  directives: {
-    ClickOutside
   },
   mounted() {
     if (this.subListKey === "") {

@@ -1,14 +1,16 @@
 <template>
   <ul>
     <li>
-      <nuxt-link :to="switchLocalePath('no')">Norsk</nuxt-link>
+      <NuxtLink :to="$switchLocalePath('no')">Norsk</NuxtLink>
     </li>
     <li>
-      <nuxt-link :to="switchLocalePath('en')">English</nuxt-link>
+      <NuxtLink :to="$switchLocalePath('en')">English</NuxtLink>
     </li>
   </ul>
 </template>
+
 <script>
+
 export default {
   name: "language-navigation"
 };

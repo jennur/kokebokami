@@ -1,39 +1,43 @@
 <template>
   <section class="filter-section">
     <div class="flex flex-align--center">
-        <fa tabindex="0"
-            :icon="['fas', 'sliders-h']"
-            style="font-size:25px;cursor:pointer;"
-            @click="open = !open"
-            @keydown="event => event.keyCode === 13 && (open = !open)"
-            :title="$t('openFilter')"
-        />
-      <search class="search-field margin-left-md" 
+      <span
+        tabindex="0"
+        role="button"  
+        :title="$t('openFilter')"
+        @click="open = !open"
+        @keydown="event => event.keyCode === 13 && (open = !open)"
+      >
+        <fa :icon="['fas', 'sliders-h']" style="font-size:25px;cursor:pointer;"/>
+      </span>
+      
+      <Search class="search-field margin-left-md" 
               @filterOnSearchTerm="searchTerm => setSearchTerm(searchTerm)"
       />
     </div>
-    <expand :show="open">
+    <Expand :show="open">
       <div class="filter">
         <div>
           <h2 class="heading--lg">{{ $t("recipes.typeOfMeal") }}</h2>
-          <radio-pills  :pills="$t('recipes.allCategories.typeOfMeal')"
-                        :values="$store.state.allCategories.typeOfMeal"
+
+          <RadioPills  pillsTranslationCode="recipes.allCategories.typeOfMeal"
+                        :values="$store.allCategories.typeOfMeal"
                         @selected="setTypeOfMeal"
           />
         </div>
 
         <div>
           <h2 class="heading--lg">{{ $t("recipes.freeFrom") }}</h2>
-          <radio-pills  :pills="$t('recipes.allCategories.allergens')"
-                        :values="$store.state.allCategories.allergens"
+          <RadioPills  pillsTranslationCode="recipes.allCategories.allergens"
+                        :values="$store.allCategories.allergens"
                         @selected="setAllergen"
           />
         </div>
 
         <div>
           <h2 class="heading--lg">{{ $t("recipes.category") }}</h2>
-          <radio-pills  :pills="$t('recipes.allCategories.categories')"
-                        :values="$store.state.allCategories.categories"
+          <RadioPills  pillsTranslationCode="recipes.allCategories.categories"
+                        :values="$store.allCategories.categories"
                         @selected="setCategory"
           />
         </div>
@@ -43,7 +47,7 @@
     </expand>
     <div class="recipe-lang-select-wrap margin-top-xl">
       <span class="label">{{ $t("recipeLanguage") }}:</span>
-      <language-input :existing-language="defaultLanguage"
+      <LanguageInput :existing-language="defaultLanguage"
                       :naked="true"
                       @selected="setLanguage"
       />
@@ -52,102 +56,98 @@
   </section>
 </template>
 
-<script>
+<script setup>
 import RadioPills from "./RadioPills";
 import LanguageInput from "~/components/Input/LanguageInput";
 import Search from "./Search.vue";
 import Expand from '../Transitions/Expand.vue';
 
-export default {
-  name: "filter-section",
-  components: {
-    LanguageInput,
-    RadioPills,
-    Search,
-    Expand
-  },
-  props: {
-    recipes: {
-      type: Array,
-      default: () => []
-    },
-    initialRecipes: {
-      type: Array,
-      default: () => []
-    }
-  },
-  data() {
-    return {
-      open: false,
-      language: null,
-      typeOfMeal: null,
-      category: null,
-      allergen: null,
-      searchTerm: null
-    }
-  },
-  computed: {
-    defaultLanguage() {
-      if (this.$i18n.locale === "no") {
-        this.language = "Norwegian";
-        return "Norwegian";
-      }
-      this.language = "English";
-      return "English";
-    },
-  },
-  methods: {
-    setTypeOfMeal(type){
-      this.typeOfMeal = type;
-      this.filterRecipes();
-    },
-    setCategory(type){
-      this.category = type;
-      this.filterRecipes();
-    },
-    setAllergen(type){
-      this.allergen = type;
-      this.filterRecipes();
-    },
-    setLanguage(lang){
-      if(lang === "All languages") this.language = null;
-      else this.language = lang;
-      this.filterRecipes();
-    },
-    setSearchTerm(value) {
-      this.searchTerm = value;
-      this.filterRecipes();
-    },
-    filterRecipes(){
-      let recipes = this.recipes;
-      let typeOfMeal = this.typeOfMeal;
-      let category = this.category;
-      let allergen = this.allergen;
-      let lang = this.language;
-      let searchTerm = this.searchTerm && this.searchTerm.toLowerCase();
+const { locale } = useI18n();
 
-      if(!typeOfMeal && !category && !allergen && !lang && !searchTerm) {
-        this.$emit('filter', {recipes, filtered: true});
-      } else {
-        recipes = recipes.filter(recipe => {
-          let isTypeOfMeal = true;
-          let isInCategory = true;
-          let isFreeFrom = true;
-          let isInLanguage = true;
-          let hasSearchTerm = true;
+const emit = defineEmits(["filter"]);
 
-          if(typeOfMeal) isTypeOfMeal = recipe.typeOfMeal && recipe.typeOfMeal.indexOf(typeOfMeal) > -1;
-          if(category) isInCategory = recipe.categories && recipe.categories.indexOf(category) > -1;
-          if(allergen) isFreeFrom = recipe.freeFrom && recipe.freeFrom.indexOf(allergen) > -1;
-          if(lang) isInLanguage = recipe.language && recipe.language === lang;
-          if(searchTerm) hasSearchTerm = recipe.title.toLowerCase().indexOf(searchTerm) > -1 || recipe.description.toLowerCase().indexOf(searchTerm) > -1;
-
-          return isTypeOfMeal && isInCategory && isFreeFrom && isInLanguage && hasSearchTerm;
-        })
-        this.$emit('filter', {recipes, filtered: true});
-      }
-    }
+const props = defineProps({
+  recipes: {
+    type: Array,
+    default: () => []
+  },
+  initialRecipes: {
+    type: Array,
+    default: () => []
   }
+});
 
+const open = ref(false);
+const language = ref(null);
+const typeOfMeal = ref(null);
+const category = ref(null);
+const allergen = ref(null);
+const searchTerm = ref(null);
+
+const defaultLanguage = computed(() => {
+  if (locale === "no") {
+    language.value = "Norwegian";
+    return "Norwegian";
+  }
+  language.value = "English";
+  return "English";
+});
+
+function setTypeOfMeal(type) {
+  typeOfMeal.value = type;
+  filterRecipes();
+}
+
+function setCategory(type) {
+  category.value = type;
+  filterRecipes();
+}
+
+function setAllergen(type) {
+  allergen.value = type;
+  filterRecipes();
+}
+
+function setLanguage(lang) {
+  if(lang === "All languages") language.value = null;
+  else language.value = lang;
+  filterRecipes();
+}
+
+function setSearchTerm(value) {
+  searchTerm.value = value;
+  filterRecipes();
+}
+
+function filterRecipes() {
+  const search = searchTerm.value?.toLowerCase();
+
+  if(!typeOfMeal.value && !category.value && !allergen.value && !language.value && !search) {
+    emit('filter', {
+      recipes: props.recipes, 
+      filtered: true
+    });
+  } else {
+    const filteredRecipes = props.recipes.filter(recipe => {
+      let isTypeOfMeal = true;
+      let isInCategory = true;
+      let isFreeFrom = true;
+      let isInLanguage = true;
+      let hasSearchTerm = true;
+
+      if(typeOfMeal.value) isTypeOfMeal = recipe.typeOfMeal?.indexOf(typeOfMeal.value) > -1;
+      if(category.value) isInCategory = recipe.categories?.indexOf(category.value) > -1;
+      if(allergen.value) isFreeFrom = recipe.freeFrom?.indexOf(allergen.value) > -1;
+      if(language.value) isInLanguage = recipe.language === language.value;
+      if(search) hasSearchTerm = recipe.title?.toLowerCase().indexOf(search) > -1 || recipe.description.toLowerCase().indexOf(searchTerm) > -1;
+
+      return isTypeOfMeal && isInCategory && isFreeFrom && isInLanguage && hasSearchTerm;
+    })
+
+    emit('filter', {
+      recipes: filteredRecipes,
+      filtered: true
+    });
+  }
 }
 </script>

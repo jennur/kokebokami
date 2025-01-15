@@ -1,3 +1,5 @@
+@use "../settings/variables.settings" as *;
+
 .prep-time-wrapper {
     .prep-time {
         font-size: $fontSizeSmall;

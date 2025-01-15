@@ -34,7 +34,7 @@ export default {
   },
   computed: {
     allTypesOfMeal() {
-      let allCategoryObjects = this.$store.state.allCategories;
+      let allCategoryObjects = this.$store.allCategories;
       return Object.values(
         allCategoryObjects.filter(object => {
           return object.typeOfMeal;

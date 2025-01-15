@@ -72,11 +72,13 @@
 </template>
 
 <script>
-import user from "~/mixins/user.js";
+import { getDatabase, ref, get } from "firebase/database";
+
+import user from "~/composables/user.js";
 import ServingsDisplay from "./ServingsDisplay.vue";
 import IngredientsEdit from "./Editing/IngredientsEdit.vue";
 import AddToShoppingList from "../Interaction/AddToShoppingList.vue";
-import ClickOutside from "vue-click-outside";
+ 
 
 export default {
   name: "ingredients-display",
@@ -179,7 +181,8 @@ export default {
 
       if (recipeKey) {
         this.loading = true;
-        let ingredientsRef = this.$fire.database.ref(
+        const db = getDatabase();
+        let ingredientsRef = ref(db, 
           `recipes/${recipeKey}/ingredients`
         );
         ingredientsRef
@@ -233,8 +236,6 @@ export default {
       return Math.round((dividend / divisor) * 100) / 100;
     }
   },
-  directives: {
-    ClickOutside
-  }
+  
 };
 </script>

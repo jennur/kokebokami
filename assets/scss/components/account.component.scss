@@ -1,3 +1,5 @@
+@use "../settings/variables.settings" as *;
+
 .account {
   &_detail {
     display: inline-block;

@@ -1,3 +1,5 @@
+@use "../settings/variables.settings" as *;
+
 .arrow-list {
   & li {
     list-style: none;
@@ -5,7 +7,7 @@
     &::before {
       content: "➔";
       position: absolute;
-      margin-left: -$spacingXLarge;
+      margin-left: -($spacingXLarge);
       color: $green;
     }
   }

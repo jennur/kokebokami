@@ -19,6 +19,8 @@
 </template>
 
 <script>
+import { getDatabase, ref, get } from "firebase/database";
+
 import TitleEdit from "./Editing/TitleEdit.vue";
 
 export default {
@@ -65,7 +67,8 @@ export default {
 
       if (recipeKey && updatedTitle !== this.title) {
         this.loading = true;
-        let titleRef = this.$fire.database.ref(`recipes/${recipeKey}/title`);
+        const db = getDatabase();
+        let titleRef = ref(db, `recipes/${recipeKey}/title`);
         titleRef
           .set(updatedTitle)
           .then(() => {

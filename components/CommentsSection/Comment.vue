@@ -43,7 +43,7 @@
 
       <CookSilhouette v-else class="comment_user-img" />
       <component
-        :is="isAnonymous ? 'span' : 'nuxt-link'"
+        :is="isAnonymous ? 'span' : 'NuxtLink'"
         :to="isAnonymous ? null : `/cooks/${userPath}`"
         class="margin-left-md"
         :class="{
@@ -113,6 +113,8 @@
 </template>
 
 <script>
+import { getDatabase, ref, get } from "firebase/database";
+
 import CookSilhouette from "~/assets/graphics/icons/cook-silhouette-circle.svg";
 import SubComment from "./SubComment.vue";
 import ExpandTransition from "~/components/Transitions/Expand.vue";
@@ -208,9 +210,10 @@ export default {
       this.formOpen = true;
     },
     submitSubComment(subCommentObj) {
+      const db = getDatabase();
       let recipeKey = this.recipeKey;
       let commentKey = this.comment[0];
-      let subCommentsRef = this.$fire.database.ref(
+      let subCommentsRef = ref(db, 
         `recipes/${recipeKey}/comments/${commentKey}/subComments`
       );
       subCommentsRef
@@ -237,7 +240,8 @@ export default {
       let commentKey = this.comment[0];
 
       if (this.isSubComment) {
-        let subCommentRef = this.$fire.database.ref(
+        const db = getDatabase();
+        let subCommentRef = ref(db, 
           `recipes/${recipeKey}/comments/${mainCommentKey}/subComments/${commentKey}`
         );
         subCommentRef
@@ -250,7 +254,8 @@ export default {
             console.log("Error updating subcomment:", error.message);
           });
       } else {
-        let commentRef = this.$fire.database.ref(
+        const db = getDatabase();
+        let commentRef = ref(db, 
           `recipes/${recipeKey}/comments/${commentKey}`
         );
         commentRef
@@ -271,7 +276,8 @@ export default {
       let commentKey = this.comment[0];
 
       if (this.isSubComment) {
-        let subCommentRef = this.$fire.database.ref(
+        const db = getDatabase();
+        let subCommentRef = ref(db, 
           `recipes/${recipeKey}/comments/${mainCommentKey}/subComments/${commentKey}`
         );
         subCommentRef
@@ -284,7 +290,8 @@ export default {
             console.log("Error deleting comment:", error.message);
           });
       } else {
-        let commentRef = this.$fire.database.ref(
+        const db = getDatabase();
+        let commentRef = ref(db, 
           `recipes/${recipeKey}/comments/${commentKey}`
         );
         commentRef

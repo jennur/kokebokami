@@ -1,3 +1,5 @@
+import { getDatabase, ref, get } from "firebase/database";
+
 export default {
   data() {
     return {
@@ -7,10 +9,11 @@ export default {
   },
   methods: {
     getShoppingLists() {
-      let user = this.$store.state.user;
+      let user = this.$store.user;
 
       if (user) {
-        let shoppingListRef = this.$fire.database.ref(`shoppingLists`);
+        const db = getDatabase();
+        let shoppingListRef = ref(db, `shoppingLists`);
 
         shoppingListRef
           .once("value", snapshot => {

@@ -33,7 +33,7 @@ export default {
   },
   computed: {
     allCategoryObjects() {
-      return this.$store.state.allCategories;
+      return this.$store.allCategories;
     },
     categories() {
       return Object.values(

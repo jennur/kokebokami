@@ -1,3 +1,6 @@
+@use "sass:color";
+@use "../settings/variables.settings" as *;
+
 .gateway-link {
   min-width: 200px;
   border-radius: $spacingMedium;
@@ -17,7 +20,7 @@
   &:hover {
     text-decoration: none;
     @media screen and (min-width: $tabletWidth) {
-      background-color: darken($lightOrange, 2%);
+      background-color: color.adjust($lightOrange, $lightness: -2%);
       transform: scale(1.03);
     }
   }

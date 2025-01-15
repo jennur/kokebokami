@@ -1,6 +1,6 @@
 <template>
   <section>
-    <breadcrumbs :routes="breadcrumbs" />
+    <BreadCrumbs :routes="breadcrumbs" />
     <div class="system-message system-message--with-bg margin-v-lg">
       {{ $t("accountDetails.publicProfileViewNote") }}
     </div>
@@ -13,8 +13,8 @@
 </template>
 
 <script>
-import user from "~/mixins/user.js";
-import publicRecipes from "~/helpers/get-public-recipes.js";
+import user from "~/composables/user.js";
+import publicRecipes from "~/composables/publicRecipes.js";
 
 import ProfileView from "~/components/ProfileView.vue";
 import RecipesList from "~/components/RecipePreview/RecipesList";

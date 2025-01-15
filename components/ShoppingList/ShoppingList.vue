@@ -47,22 +47,22 @@
         <!--   Shared-from list     -->
         <span v-if="shared" class="shopping-list_shared">
           {{$t('shoppingLists.sharedBy')}}:
-          <nuxt-link :to="`/cooks/${createdByCookPath}`">
+          <NuxtLink :to="`/cooks/${createdByCookPath}`">
             {{ list.createdBy.displayName }}
-          </nuxt-link>
+          </NuxtLink>
         </span>
 
         <!--   Shared-with list     -->
         <span v-if="sharedWith" class="shopping-list_shared">
           {{$t('shoppingLists.sharedWith')}}:
-          <nuxt-link
+          <NuxtLink
             v-for="(user, index) in sharedWith"
             :key="user.id"
             :to="`/cooks/${sharedWithUrl(user)}`"
             >
             {{ user.displayName }}
             {{ index !== sharedWith.length - 1 ? ", " : "" }}
-          </nuxt-link>
+          </NuxtLink>
         </span>
       </div>
 
@@ -108,11 +108,13 @@
 </template>
 
 <script>
+import { getDatabase, ref, get } from "firebase/database";
+
 import axios from "axios";
-import ClickOutside from "vue-click-outside";
+ 
 import shareIcon from "~/assets/graphics/icons/shareicon.svg";
 
-import user from "~/mixins/user.js";
+import user from "~/composables/user.js";
 
 import SettingsDropdown from "~/components/SettingsDropdown.vue";
 import Alert from "~/components/Alert.vue";
@@ -197,8 +199,8 @@ export default {
         let title = this.updatedTitle;
 
         if (mainListKey) {
-          this.$fire.database
-            .ref(`shoppingLists/${mainListKey}`)
+          const db = getDatabase();
+            ref(db, `shoppingLists/${mainListKey}`)
             .update({ title })
             .then(() => {
               console.log("Title updated");
@@ -210,8 +212,8 @@ export default {
             });
         } else {
           let currentUserObj = { id: this.user.id, displayName: this.user.displayName };
-          this.$fire.database
-            .ref(`shoppingLists`)
+          const db = getDatabase();
+            ref(db, `shoppingLists`)
             .push({
               title,
               createdBy: currentUserObj,
@@ -248,8 +250,8 @@ export default {
             .catch(error => console.log("Error:", error));
     },
     deleteShoppingList() {
-      let mainListRef = this.$fire.database.ref(`shoppingLists/${this.list.key}`);
-      let ownersRef = this.$fire.database.ref(`shoppingLists/${this.list.key}/owners`);
+      let mainListRef = ref(db, `shoppingLists/${this.list.key}`);
+      let ownersRef = ref(db, `shoppingLists/${this.list.key}/owners`);
 
       let owners = this.list.owners && Object.values(this.list.owners);
 
@@ -287,8 +289,6 @@ export default {
       }
     }
   },
-  directives: {
-    ClickOutside
-  }
+  
 };
 </script>

@@ -1,78 +1,52 @@
 <template>
-  <!-- Desktop menu -->
-  <div class="desktop-menu" v-click-outside="closeDropdown">
+  <div class="desktop-menu">
     <div v-if="user && !user.id" class="login-menu">
-      <google-login class="" tabindex="0" />
-      <!-- <li>
-        <nuxt-link class="login-menu_signup-btn" :to="localePath('/sign-up')">
-          {{ $t("signUpText") }}
-        </nuxt-link>
-      </li>
-      <li>
-        <span class="login-menu_link" 
-              tabindex="0" 
-              @keydown="event => event.keyCode === 13 && toggleDropdown()" 
-              @click="toggleDropdown"
-              >
-          {{ $t("loginText") }}
-        </span>
-
-        <transition name="pop-dropdown">
-          <login-menu v-if="open" />
-        </transition>
-      </li> -->
+      <GoogleLogin tabindex="0" />
     </div>
 
     <div v-if="user && user.id" class="account-menu margin-bottom-sm">
-      <user-image :username="user.displayName" :photoURL="user.photoURL" />
-      <nuxt-link class="account-menu_button" :to="localePath('/account')">
+      <UserImage :username="user.displayName" :photoURL="user.photoURL" />
+      <NuxtLink class="account-menu_button" :to="$localePath('/account')">
         {{ accountMenu.title }}
-      </nuxt-link>
+      </NuxtLink>
     </div>
   </div>
 </template>
-<script>
-import ClickOutside from "vue-click-outside";
-import GoogleLogin from "../../../Login/GoogleLogin.vue";
-import UserImage from "../UserImage.vue";
-import LoginMenu from "./LoginMenu.vue";
 
-export default {
-  name: "desktop-menu",
-  components: {
-    UserImage,
-    LoginMenu,
-    GoogleLogin
-  },
-  props: {
-    accountMenu: {
-      type: Object,
-      default: {}
+<script setup>
+import GoogleLogin from "~/components/Login/GoogleLogin.vue";
+import UserImage from "~/components/Header/Navigation/UserImage.vue";
+import useUser from "~/composables/user.js";
+
+const { $localePath } = useNuxtApp();
+
+const user = computed(() => useUser());
+
+const accountMenu = computed(() => {
+  return {
+    link: $localePath("/account/"),
+    title: `${user.value && user.value.displayName}`,
+    img: {
+      url: user.value && user.value.photoURL
     },
-    loginMenu: {
-      type: Array,
-      default: []
-    },
-    user: {
-      type: Object,
-      default: {}
-    }
-  },
-  data() {
-    return {
-      open: false
-    };
-  },
-  methods: {
-    toggleDropdown() {
-      this.open = !this.open;
-    },
-    closeDropdown() {
-      this.open = false;
-    }
-  },
-  directives: {
-    ClickOutside
+    subLinks: [
+      {
+        path: $localePath("/account/"),
+        title: "Dashboard",
+        icon: () => import(`~/assets/graphics/icons/dashboard-icon.svg`)
+      },
+      {
+        path: $localePath("/account/my-cookbook/"),
+        title: "My cookbook",
+        icon: () => import(`~/assets/graphics/icons/cookbook-icon.svg`)
+      },
+      {
+        path: $localePath("/account/account-details/"),
+        title: "Account details",
+        icon: () =>
+          import(`~/assets/graphics/icons/account-details-icon.svg`)
+      }
+    ]
   }
-};
+});
 </script>

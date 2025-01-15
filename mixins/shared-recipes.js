@@ -1,9 +1,11 @@
+import { getDatabase, ref, get } from "firebase/database";
 import recipeModel from "../helpers/recipe-model";
+import { useCurrentUser } from 'vuefire'
 
 export default {
   data() {
     return {
-      currentUser: this.$fire.auth.currentUser,
+      currentUser: useCurrentUser(),
       sharedRecipes: [],
       errorMessage: "",
       loaded: false
@@ -13,8 +15,8 @@ export default {
     getSharedRecipes() {
       if (this.currentUser) {
         try {
-          this.$fire.database
-            .ref("recipes")
+          const db = getDatabase();
+            ref(db, "recipes")
             .orderByChild("sharedWith")
             .once("value", snapshot => {
               if (snapshot.exists()) {

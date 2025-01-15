@@ -1,3 +1,5 @@
+@use "../settings/variables.settings" as *;
+
 .system-message {
   min-height: 1.4em;
   font-size: $fontSizeSmall;

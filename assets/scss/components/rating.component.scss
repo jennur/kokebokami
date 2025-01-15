@@ -1,3 +1,5 @@
+@use "../settings/variables.settings" as *;
+
 .rating-wrapper {
     display: flex;
     flex-direction: row;

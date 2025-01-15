@@ -1,6 +1,6 @@
 <template>
   <div class="container container--center">
-    <breadcrumbs :routes="breadcrumbs" />
+    <BreadCrumbs :routes="breadcrumbs" />
     <h1 class="margin-bottom-lg">{{ headlineText }}</h1>
     <div
       v-click-outside="closeDropdown"
@@ -15,10 +15,10 @@
       </button>
       <transition name="pop-modal" tag="div">
         <div v-if="dropdown" class="add-recipe-dropdown">
-          <nuxt-link
-            :to="localePath('/account/my-cookbook/add-recipe/')"
+          <NuxtLink
+            :to="$localePath('/account/my-cookbook/add-recipe/')"
             class="add-recipe-dropdown_link"
-            >{{ $t("navigation.addPersonalRecipe") }}</nuxt-link
+            >{{ $t("navigation.addPersonalRecipe") }}</NuxtLink
           >
           <button @click="toggleRecipeForm" class="add-recipe-dropdown_link">
             {{ $t("navigation.addRecipeLink") }}
@@ -68,9 +68,9 @@
 </template>
 
 <script>
-import ClickOutside from "vue-click-outside";
+ 
 
-import user from "~/mixins/user.js";
+import user from "~/composables/user.js";
 import favoriteRecipes from "~/mixins/user-favorites.js";
 import userRecipes from "~/mixins/user-recipes.js";
 import recipeLinks from "~/mixins/user-recipe-links.js";
@@ -189,8 +189,6 @@ export default {
       this.activeTabIndex = index;
     }
   },
-  directives: {
-    ClickOutside
-  }
+  
 };
 </script>

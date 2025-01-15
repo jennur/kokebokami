@@ -11,24 +11,14 @@
       >
         {{ $t("introDescription") }}
       </p>
-      <nuxt-link
-        :to="localePath('/sign-up/')"
+      <NuxtLink
+        :to="$localePath('/sign-up/')"
         class="button button-lg padding-h-xl margin-v-lg"
-        >{{ $t("introCTA") }} ➔</nuxt-link
       >
+        {{ $t("introCTA") }} ➔
+      </NuxtLink>
     </div>
   </section>
 </template>
 
-<script>
-export default {
-  name: "cta-section",
-  props: {
-    nextSection: {
-      type: String,
-      default: ""
-    }
-  },
-  computed: {}
-};
-</script>
+<script setup></script>

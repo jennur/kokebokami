@@ -1,3 +1,5 @@
+@use "../settings/variables.settings" as *;
+
 select {
   display: none;
 }
@@ -104,7 +106,7 @@ select {
     }
 
     & .select_selected::after {
-      right: -$spacingMedium;
+      right: -($spacingMedium);
     }
   }
 }

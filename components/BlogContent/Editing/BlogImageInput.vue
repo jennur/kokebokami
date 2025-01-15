@@ -21,6 +21,8 @@
 </template>
 
 <script>
+import { getDatabase, ref, get } from "firebase/database";
+
 import ImageInput from "../../Input/ImageInput.vue";
 import DecrementButton from '../../Input/DecrementButton.vue';
 
@@ -44,9 +46,10 @@ export default {
     },
     methods: {
         saveCaption(){
+            const db = getDatabase();
             let key = this.element[0];
             if(this.recipeKey) {
-              this.$fire.database.ref(`recipes/${this.recipeKey}/blog/${key}/caption`)
+              ref(db, `recipes/${this.recipeKey}/blog/${key}/caption`)
                 .set(this.caption)
                 .then(() =>  {
                     console.log("Saved caption to element");
@@ -69,7 +72,7 @@ export default {
                 contentType: "image/jpeg"
             };
 
-            let storageRef = this.$fire.storage.ref();
+            let storageRef = this.$fire.storageref(db, );
             let imageRef = storageRef.child(`images/recipes/${this.recipeKey}/${key}.jpeg`);
 
             await imageRef.put(file, metadata);
@@ -79,7 +82,8 @@ export default {
                     console.log("Uploaded image", result);
                     this.imageURL = result;
                     if(this.recipeKey){
-                        this.$fire.database.ref(`recipes/${this.recipeKey}/blog/${key}`)
+                        const db = getDatabase();
+                        ref(db, `recipes/${this.recipeKey}/blog/${key}`)
                         .set({
                             position: content.position,
                             type: 'image',

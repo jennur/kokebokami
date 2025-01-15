@@ -1,3 +1,5 @@
+@use "../settings/variables.settings" as *;
+
 .recipes-list-container {
   display: flex;
   flex-direction: row;

@@ -4,6 +4,8 @@
   </span>
 </template>
 <script>
+import { getDatabase, ref, get } from "firebase/database";
+
 export default {
   name: "public-note",
   props: {
@@ -27,7 +29,8 @@ export default {
       let recipeKey = this.recipeKey;
 
       if (recipeKey) {
-        let publicRef = this.$fire.database.ref(`recipes/${recipeKey}/public`);
+        const db = getDatabase();
+        let publicRef = ref(db, `recipes/${recipeKey}/public`);
         publicRef
           .set(isPublic)
           .then(() => {

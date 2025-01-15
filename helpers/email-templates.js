@@ -1,5 +1,5 @@
 
-const anonymousTemplate = (path, recipeTitle) => `
+export const anonymousTemplate = (path, recipeTitle) => `
             <p>
               <br>Someone shared a recipe with you:
               <br>Check it out: <a href="https://kokebokami.com${path}">'${recipeTitle}'</a>.
@@ -9,7 +9,7 @@ const anonymousTemplate = (path, recipeTitle) => `
             </p>
             `
 
-const kokebokamiUsersTemplate = (receiver, sender, path, recipeTitle) => `
+export const kokebokamiUsersTemplate = (receiver, sender, path, recipeTitle) => `
         <p>Hi ${receiver},
           <br>
           <br>${sender} just shared a recipe with you!
@@ -20,9 +20,9 @@ const kokebokamiUsersTemplate = (receiver, sender, path, recipeTitle) => `
           <br>Best wishes,
           <br>Your Kokebokami team 👩‍🍳</p>`
 
-const commentTemplate = () => ``
+export const commentTemplate = () => ``
 
-const shoppingListTemplate = (receiver, sender, listTitle) => `
+export const shoppingListTemplate = (receiver, sender, listTitle) => `
         <p>Hi ${receiver},
           <br>
           <br>You just received a shopping list from ${sender}.
@@ -34,9 +34,3 @@ const shoppingListTemplate = (receiver, sender, listTitle) => `
           <br>Your Kokebokami team 👩‍🍳
         </p>`
 
-module.exports = {
-  anonymousTemplate,
-  kokebokamiUsersTemplate,
-  commentTemplate,
-  shoppingListTemplate
-}

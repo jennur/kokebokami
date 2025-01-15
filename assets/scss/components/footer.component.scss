@@ -1,3 +1,5 @@
+@use "../settings/variables.settings" as *;
+
 .footer {
   font-size: $fontSizeSmall;
   background-color: rgba($lightOrange, 0.8);
@@ -37,7 +39,7 @@
             color: $richBlack;
           }
           &.active-link,
-          &.nuxt-link-active {
+          &.router-link-active {
             text-decoration: none;
             color: $gray;
             border-bottom: none;

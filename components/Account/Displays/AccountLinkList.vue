@@ -17,7 +17,7 @@
           <new-tab-icon class="account_recipe-link-icon" />
         </div>
         <div v-else>
-          <nuxt-link :to="basePath + link.path">{{ link.title }}</nuxt-link>
+          <NuxtLink :to="basePath + link.path">{{ link.title }}</NuxtLink>
           <span class="system-message" v-if="link.public">Public</span>
         </div>
       </li>

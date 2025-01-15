@@ -45,7 +45,9 @@
 </template>
 
 <script>
-import user from "~/mixins/user.js";
+import { getDatabase, ref, get } from "firebase/database";
+
+import user from "~/composables/user.js";
 import shoppingLists from "~/mixins/shopping-lists.js";
 import SelectComponent from "~/components/Input/SelectComponent.vue";
 
@@ -118,8 +120,8 @@ export default {
 
       if (this.newListTitle === "" && this.chosenShoppingList && this.chosenShoppingList.key) {
 
-        this.$fire.database
-          .ref(`shoppingLists/${this.chosenShoppingList.key}`)
+        const db = getDatabase();
+          ref(db, `shoppingLists/${this.chosenShoppingList.key}`)
           .child("subLists")
           .push({
             title: this.recipeTitle,
@@ -141,8 +143,8 @@ export default {
           id: this.user.id,
           displayName: this.user.displayName
         }
-
-        let shoppingListRef = this.$fire.database.ref(`shoppingLists`);
+        const db = getDatabase();
+        let shoppingListRef = ref(db, `shoppingLists`);
 
         shoppingListRef
           .push({

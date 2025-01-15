@@ -3,7 +3,7 @@
     <!-- Image -->
     <div :style="`background-image: url(${recipeImage})`" class="recipe-preview_image"></div>
 
-    <add-to-favorites :recipe-key="recipe.id" :favorites-count="recipe.favoritesCount"/>
+    <AddToFavorites :recipe-key="recipe.id" :favorites-count="recipe.favoritesCount"/>
 
     <span class="recipe-preview_published-by" v-if="inPublicList">
       {{ `${$t("recipes.publishedBy")} ${author && author.displayName || '...'}` }}
@@ -13,9 +13,9 @@
       {{$t("recipes.public") }}
     </span>
 
-    <nuxt-link :to="localePath(`/recipes/${recipe.path}`)" class="recipe-preview_content">
+    <NuxtLink :to="$localePath(`/recipes/${recipe.path}`)" class="recipe-preview_content">
       
-      <rating :rating="recipe.rating" :recipeKey="recipe.id" :deactivated="true" />
+      <Rating :rating="recipe.rating" :recipeKey="recipe.id" :deactivated="true" />
       
       <!-- Title -->
       <h3 class="recipe-preview_title margin--none margin-bottom-md">
@@ -28,96 +28,58 @@
           {{ category }}
         </span>
       </div>
-    </nuxt-link>
+    </NuxtLink>
   </div>
 </template>
 
-<script>
+<script setup>
 import recipeBackupImg from "assets/graphics/icons/recipe-backup-img.svg";
-import user from "~/mixins/user.js";
-import getRecipeAuthor from "~/mixins/get-recipe-author.js";
-import LoginContainer from "~/components/Login/LoginContainer";
+import useUser from "~/composables/user.js";
+import useRecipeAuthor from "~/mixins/get-recipe-author.js";
 import Rating from "~/components/RecipeFullView/Interaction/Rating";
 import AddToFavorites from '../RecipeFullView/Interaction/AddToFavorites.vue';
+import { computed } from "vue";
+import { useNuxtApp } from "nuxt/app";
 
-export default {
-  name: "recipe-preview",
-  components: {
-    LoginContainer,
-    recipeBackupImg,
-    Rating,
-    AddToFavorites
-  },
-  props: {
-    recipe: {
-      type: Object,
-      default: () => {}
-    },
-    inPublicList: {
-      type: Boolean,
-      default: false
-    }
-  },
-  mixins: [user, getRecipeAuthor],
-  computed: {
-    showPublicNote() {
-      return (
-        !this.inPublicList &&
-        this.user &&
-        this.user.id === this.recipe.ownerID &&
-        this.recipe.public
-      );
-    },
-    recipeImage() {
-      let photoURL = this.recipe.photoURL;
-      return photoURL
-        ? photoURL
-        : require("assets/graphics/icons/recipe-backup-img.png");
-    },
-    categories() {
-      let allCategories = this.$store.state.allCategories.categories;
-      let localeCategories = this.$t("recipes.allCategories.categories");
+const { $store } = useNuxtApp();
+const { tm } = useI18n();
 
-      let categories = this.recipe.categories;
-      return (
-        categories &&
-        Object.values(categories).map(category => {
-          let index = allCategories.indexOf(category);
-          return localeCategories[index];
-        })
-      );
-    },
-    typeOfMeal() {
-      let typeOfMeal = [];
-      let allTypesOfMeal = this.$store.state.allCategories.typeOfMeal;
-      let localeTypesOfMeal = this.$t("recipes.allCategories.typeOfMeal");
-      if (this.recipe && this.recipe.typeOfMeal) {
-        this.recipe.typeOfMeal.forEach(type => {
-          let index = allTypesOfMeal.indexOf(type);
-          type = localeTypesOfMeal[index];
-          type = type.charAt(0).toUpperCase() + type.slice(1);
-          typeOfMeal.push(type);
-        });
-      }
-      return typeOfMeal.join(", ");
-    },
-    freeFrom() {
-      let freeFrom = [];
-      let allAllergens = this.$store.state.allCategories.allergens;
-      let localeAllergens = this.$t("recipes.allCategories.allergens");
-      if (this.recipe && this.recipe.freeFrom) {
-        this.recipe.freeFrom.forEach(allergen => {
-          let index = allAllergens.indexOf(allergen);
-          allergen = localeAllergens[index];
-          allergen = allergen.charAt(0).toUpperCase() + allergen.slice(1);
-          freeFrom.push(allergen);
-        });
-      }
-      return freeFrom.join(", ");
-    }
+const props = defineProps({
+  recipe: {
+    type: Object,
+    default: () => {}
   },
-  mounted(){
-    this.getRecipeAuthor(this.recipe.ownerID);
+  inPublicList: {
+    type: Boolean,
+    default: false
   }
-};
+})
+
+const author = await useRecipeAuthor(props.recipe.ownerID)
+const user = computed(() => useUser());
+const showPublicNote = computed(() => (
+  !props.inPublicList &&
+  user &&
+  user.id === props.recipe.ownerID &&
+  props.recipe.public
+));
+
+const recipeImage = computed(() => {
+  return props.recipe.photoURL || recipeBackupImg;
+});
+
+const categories = computed(() => {
+  const allCategories = $store.allCategories.categories;
+  const localeCategories = tm("recipes.allCategories.categories");
+  const recipeCategories = props.recipe.categories;
+
+  return (
+    recipeCategories &&
+    Object.values(recipeCategories).map(category => {
+      const index = allCategories.indexOf(category);
+      return localeCategories[index].body.static;
+    })
+  );
+});
+
 </script>

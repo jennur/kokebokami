@@ -36,8 +36,10 @@
 </template>
 
 <script>
+import { getDatabase, ref, get } from "firebase/database";
+
 import getDateString from "~/helpers/get-date-string";
-import user from "~/mixins/user.js";
+import user from "~/composables/user.js";
 import Comment from "./Comment.vue";
 import ExpandTransition from "~/components/Transitions/Expand.vue";
 
@@ -83,7 +85,8 @@ export default {
     getComments() {
       let componentThis = this;
       this.loading = true;
-      let commentsRef = this.$fire.database.ref(`recipes/${this.recipeKey}/comments`);
+      const db = getDatabase();
+      let commentsRef = ref(db, `recipes/${this.recipeKey}/comments`);
       commentsRef
         .once("value", comments => {
           if (comments.exists()) {

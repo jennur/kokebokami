@@ -26,6 +26,8 @@
   </div>
 </template>
 <script>
+import { getDatabase, ref, get } from "firebase/database";
+
 import CategoryEdit from "./Editing/CategoryEdit.vue";
 
 export default {
@@ -55,7 +57,7 @@ export default {
   },
   computed: {
     freeFromList() {
-      let allAllergens = this.$store.state.allCategories.allergens;
+      let allAllergens = this.$store.allCategories.allergens;
       let localeAllergens = this.$t("recipes.allCategories.allergens");
       return this.freeFrom
         .map(type => {
@@ -66,7 +68,7 @@ export default {
         .join(", ");
     },
     allFreeFrom() {
-      return this.$store.state.allCategories.allergens;
+      return this.$store.allCategories.allergens;
     }
   },
   methods: {
@@ -82,7 +84,8 @@ export default {
 
       if (recipeKey) {
         this.loading = true;
-        let freeFromRef = this.$fire.database.ref(`recipes/${recipeKey}/freeFrom`);
+        const db = getDatabase();
+        let freeFromRef = ref(db, `recipes/${recipeKey}/freeFrom`);
         freeFromRef
           .set(allergens)
           .then(() => {

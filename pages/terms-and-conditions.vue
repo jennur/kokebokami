@@ -1,6 +1,6 @@
 <template>
   <div>
-    <breadcrumbs :routes="breadcrumbs" />
+    <BreadCrumbs :routes="breadcrumbs" />
     <section class="mobile-width margin-auto">
       <h1>Terms and Conditions</h1>
 

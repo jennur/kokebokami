@@ -1,3 +1,5 @@
+@use "../settings/variables.settings" as *;
+
 .share-form {
   padding-top: $spacingLarge;
   border-top: 1px dotted $blue;

@@ -1,3 +1,5 @@
+@use "../settings/variables.settings" as *;
+
 .add-recipe-from-url {
   display: block;
   width: 100%;
@@ -67,12 +69,12 @@
     &--required {
       color: $pink;
       position: absolute;
-      right: -$spacingLarge;
+      right: -($spacingLarge);
       bottom: $spacingSmall;
     }
     &_category {
       margin-top: $spacingSmall;
-      @media screen and(min-width: $mobileWidth) {
+      @media screen and (min-width: $mobileWidth) {
         margin-top: 0px;
       }
     }

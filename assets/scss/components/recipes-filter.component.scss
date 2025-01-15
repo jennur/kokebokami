@@ -1,3 +1,5 @@
+@use "../settings/variables.settings" as *;
+
 .recipes-filter {
   &_form {
     display: block;
@@ -24,6 +26,17 @@
       left: $spacingMedium;
     }
     & .categories {
+      display: inline-block;
+      width: 100%;
+      color: $blue;
+
+      @media screen and (min-width: $tabletWidth) {
+        //float: left;
+        vertical-align: top;
+        width: max-content;
+        margin-left: $spacingXLarge;
+      }
+
       &-container {
         width: 100%;
         background-color: rgba($orange, 0.08);
@@ -49,15 +62,6 @@
         padding: $spacingMedium;
       }
 
-      display: inline-block;
-      width: 100%;
-      color: $blue;
-      @media screen and (min-width: $tabletWidth) {
-        //float: left;
-        vertical-align: top;
-        width: max-content;
-        margin-left: $spacingXLarge;
-      }
 
       &_title {
         margin-top: $spacingMedium;

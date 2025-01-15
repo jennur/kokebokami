@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import ClickOutside from "vue-click-outside";
+ 
 export default {
   name: "settings-dropdown",
   props: {
@@ -42,8 +42,6 @@ export default {
       this.open = false;
     }
   },
-  directives: {
-    ClickOutside
-  }
+  
 };
 </script>

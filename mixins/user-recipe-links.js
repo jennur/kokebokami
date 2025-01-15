@@ -1,3 +1,6 @@
+import { getDatabase, ref, get } from "firebase/database";
+import { useCurrentUser } from 'vuefire'
+
 export default {
   data(){
     return {
@@ -6,13 +9,11 @@ export default {
   },
   methods: {
     async getRecipeLinks() {
-      let currentUser = this.$fire.auth.currentUser;
+      let currentUser = useCurrentUser();
       if (currentUser) {
         try {
-          let snapshot = await this.$fire.database
-            .ref(`users/${currentUser.uid}/recipeLinks`)
-            .orderByKey()
-            .once("value");
+          const db = getDatabase();
+          const snapshot = await get(ref(db, `users/${currentUser.uid}/recipeLinks`));
 
           let recipeLinks = [];
           if (snapshot.val()) {

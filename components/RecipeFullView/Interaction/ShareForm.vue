@@ -55,12 +55,14 @@
   </modal-box>
 </template>
 <script>
+import { getDatabase, ref, get } from "firebase/database";
+
 import axios from "axios";
-import ClickOutside from "vue-click-outside";
+ 
 
 import { anonymousTemplate, kokebokamiUsersTemplate } from "~/helpers/email-templates";
 
-import user from "~/mixins/user.js";
+import user from "~/composables/user.js";
 import connectedUsers from "~/mixins/followed-and-followers.js";
 
 import ExpandTransition from "~/components/Transitions/Expand.vue";
@@ -158,7 +160,8 @@ export default {
     shareRecipe() {
       const selectedDisplayName = this.selected;
       const recipeKey = this.recipeKey;
-      const sharesRef = this.$fire.database.ref(`recipes/${recipeKey}/sharedWith`);
+      const db = getDatabase();
+      const sharesRef = ref(db, `recipes/${recipeKey}/sharedWith`);
 
       let followers = this.followers;
       let selectedFollower = followers.filter(follower => {
@@ -211,8 +214,6 @@ export default {
           );
     },
   },
-  directives: {
-    ClickOutside
-  }
+  
 };
 </script>

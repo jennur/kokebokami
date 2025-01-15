@@ -1,6 +1,6 @@
 <template>
   <div class="tablet-width margin-auto">
-    <breadcrumbs :routes="breadcrumbs" />
+    <BreadCrumbs :routes="breadcrumbs" />
     <div class="flex-row flex-row--align-center">
       <increment-button
         class="margin-top-2xl"
@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import user from "~/mixins/user.js";
+import user from "~/composables/user.js";
 
 import shoppingLists from "~/mixins/shopping-lists.js";
 

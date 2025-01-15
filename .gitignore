@@ -96,3 +96,5 @@ dist
 *.swp
 
 .vscode
+
+service-account.json

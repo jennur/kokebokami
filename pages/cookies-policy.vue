@@ -1,6 +1,6 @@
 <template>
   <div>
-    <breadcrumbs :routes="breadcrumbs" />
+    <BreadCrumbs :routes="breadcrumbs" />
     <section class="mobile-width margin-auto margin-top-lg">
       <h1 class="article-heading">Cookies Policy</h1>
 

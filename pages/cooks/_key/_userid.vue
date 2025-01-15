@@ -7,7 +7,7 @@
     <div v-if="loadedProfile">
       <div v-if="user && user.id && cook && !cook.hidden">
 
-        <breadcrumbs :routes="breadcrumbs" />
+        <BreadCrumbs :routes="breadcrumbs" />
 
         <div class="flex-column flex-align--end">
           <button v-if="isFollowingUser" @click="unfollowUser" class="button button-sm button--red-border margin-top-lg">
@@ -36,8 +36,11 @@
 </template>
 
 <script>
-import user from "~/mixins/user.js";
-import getPublicRecipes from "~/helpers/get-public-recipes.js";
+import { getDatabase, ref, get } from "firebase/database";
+import { useCurrentUser } from 'vuefire'
+
+import user from "~/composables/user.js";
+import getPublicRecipes from "~/composables/publicRecipes.js";
 
 import ProfileView from "~/components/ProfileView.vue";
 import RecipesList from "~/components/RecipePreview/RecipesList";
@@ -119,31 +122,31 @@ export default {
     getUser(){
       let params = this.$route.params;
       console.log("Getting user");
-      this.$fire.database
-        .ref("users")
-        .once("value", snapshot => {
-          if (snapshot.exists() && snapshot.val()) {
-            let userPath = `${params.key}/${params.userid}/`;
-            let users = snapshot.val();
+      const db = getDatabase();
+      get(ref(db, "users"), snapshot => {
+        if (snapshot.exists() && snapshot.val()) {
+          let userPath = `${params.key}/${params.userid}/`;
+          let users = snapshot.val();
 
-            for (let key in users) {
-              let user = users[key];
-              let path = generatePath(user.displayName, key, true);
-              if (userPath === path) {
-                this.cook = userModel(user, key);
-              }
+          for (let key in users) {
+            let user = users[key];
+            let path = generatePath(user.displayName, key, true);
+            if (userPath === path) {
+              this.cook = userModel(user, key);
             }
           }
-        }).then(() => {
-          this.loadedProfile = true;
-        }).catch(error => {
-          console.log("Unable to get user:", error);
-          this.loadedProfile = true;
-        })
+        }
+      }).then(() => {
+        this.loadedProfile = true;
+      }).catch(error => {
+        console.log("Unable to get user:", error);
+        this.loadedProfile = true;
+      })
     },
     followUser() {
       try {
-        let currentUserRef = this.$fire.database.ref(`users/${this.user.id}/following`);
+        const db = getDatabase();
+        let currentUserRef = ref(db, `users/${this.user.id}/following`);
 
         currentUserRef.once("value", async snapshot => {
           let followingAlready = false;
@@ -180,7 +183,8 @@ export default {
     },
     unfollowUser() {
       try {
-        let userRef = this.$fire.database.ref(`users/${this.user.id}/following`);
+        const db = getDatabase();
+        let userRef = ref(db, `users/${this.user.id}/following`);
 
         userRef.once("value", snapshot => {
           if (snapshot.exists()) {
@@ -206,7 +210,7 @@ export default {
     }
   },
   created() {
-    if(this.$fire.auth.currentUser) this.getUser();
+    if(useCurrentUser()) this.getUser();
     else this.loadedProfile = true;
   }
 };

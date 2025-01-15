@@ -10,7 +10,7 @@
       </h3>
     </div>
     <div class="container container--center">
-      <nuxt-link :to="localePath('/')">Discover public recipes</nuxt-link>
+      <NuxtLink :to="$localePath('/')">Discover public recipes</NuxtLink>
     </div>
   </main>
 </template>

@@ -1,3 +1,5 @@
+@use "../settings/variables.settings" as *;
+
 .blog-content {
     margin: $spacingXLarge 0px;
 
@@ -94,6 +96,10 @@
         font-size: $fontSizeLarge;
         border: 2px solid rgba($green, 0.5);
         border-radius: $spacingSmall;
+
+        @media screen and (min-width: $mobileWidth) {
+            width: 80%;
+        }
     
         &.large {
             font-size: $fontSizeXLarge;
@@ -105,9 +111,6 @@
             font-size: $fontSizeMedium;
         }
     
-        @media screen and (min-width: $mobileWidth) {
-            width: 80%;
-        }
     }
 
     .text-input {

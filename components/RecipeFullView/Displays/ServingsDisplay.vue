@@ -37,6 +37,8 @@
 </template>
 
 <script>
+import { getDatabase, ref, get } from "firebase/database";
+
 import ServingsEdit from "./Editing/ServingsEdit.vue";
 
 export default {
@@ -92,7 +94,8 @@ export default {
 
       if (recipeKey && servings !== this.defaultServings) {
         this.loading = true;
-        let servingsRef = this.$fire.database.ref(`recipes/${recipeKey}/servings`);
+        const db = getDatabase();
+        let servingsRef = ref(db, `recipes/${recipeKey}/servings`);
         servingsRef
           .set(servings)
           .then(() => {

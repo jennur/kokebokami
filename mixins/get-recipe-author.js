@@ -1,25 +1,16 @@
+import { getDatabase, ref, get } from "firebase/database";
 import generatePath from "../helpers/generatePath";
 
-export default {
-  data(){
+export default async function useRecipeAuthor(ownerID){
+  const db = getDatabase();
+  const snapshot = await get(ref(db, `users/${ownerID}/displayName`));
+
+  if (snapshot.exists()) {
+    let author = snapshot.val();
     return {
-      author: {}
-    }
-  },
-  methods: {
-    getRecipeAuthor(ownerID){
-      this.$fire.database
-        .ref(`users/${ownerID}/displayName`)
-        .once("value", snapshot => {
-          if (snapshot.exists()) {
-            let author = snapshot.val();
-            this.author =  {
-              id: ownerID,
-              displayName: author || "Unknown",
-              path: author && generatePath(author, ownerID)
-            };
-          }
-        });
-    },
+      id: ownerID,
+      displayName: author || "Unknown",
+      path: author && generatePath(author, ownerID)
+    };
   }
 }

@@ -10,7 +10,7 @@
   </div>
 </template>
 <script>
-import ClickOutside from "vue-click-outside";
+ 
 import SelectComponent from "~/components/Input/SelectComponent.vue";
 export default {
   name: "language-edit",
@@ -25,7 +25,7 @@ export default {
   },
   computed: {
     languages() {
-      return this.$store.state.allCategories.languages;
+      return this.$store.allCategories.languages;
     }
   },
   methods: {
@@ -39,8 +39,6 @@ export default {
       this.$emit("close");
     }
   },
-  directives: {
-    ClickOutside
-  }
+  
 };
 </script>

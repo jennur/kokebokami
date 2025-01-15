@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import ClickOutside from "vue-click-outside";
+ 
 
 export default {
   name: "Tabs",
@@ -70,8 +70,6 @@ export default {
       this.$emit("switchTab", index);
     }
   },
-  directives: {
-    ClickOutside
-  }
+  
 };
 </script>

@@ -77,7 +77,8 @@
 </template>
 
 <script>
-import user from "~/mixins/user";
+import { getDatabase, ref, get } from "firebase/database";
+import user from "~/composables/user";
 import BlogImageInput from './Editing/BlogImageInput.vue';
 import BlogTextInput from './Editing/BlogTextInput.vue';
 import NewBlogElements from "./NewBlogElements.vue";
@@ -126,7 +127,7 @@ export default {
             // Delete from storage
             if (this.recipeKey) {
                 //remove image from blog content
-                var storageRef = this.$fire.storage.ref();
+                var storageRef = this.$fire.storageref(db, );
                 let imageRef = storageRef.child(`images/recipes/${this.recipeKey}/${key}.jpeg`);
 
                 imageRef.delete()
@@ -140,9 +141,10 @@ export default {
             }
         },
         deleteFromDB(key){
-            let blogRef = this.$fire.database.ref(`recipes/${this.recipeKey}/blog`);
+            const db = getDatabase();
+            let blogRef = ref(db, `recipes/${this.recipeKey}/blog`);
 
-            this.$fire.database.ref(`recipes/${this.recipeKey}/blog/${key}`)
+            ref(db, `recipes/${this.recipeKey}/blog/${key}`)
                 .remove()
                 .then(() =>  {
                     console.log("Deleted element from db");

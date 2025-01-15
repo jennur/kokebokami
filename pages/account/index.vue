@@ -1,6 +1,6 @@
 <template>
   <div>
-    <breadcrumbs :routes="breadcrumbs" />
+    <BreadCrumbs :routes="breadcrumbs" />
 
     <div class="flex-row margin-v-2xl">
       <gateway-link
@@ -53,7 +53,7 @@ export default {
       return [
         {
           title: this.$t("navigation.shoppingLists"),
-          link: this.localePath("/account/shopping-list/"),
+          link: $localePath("/account/shopping-list/"),
           description: this.$t("account.shoppingListsDescription"),
           graphic: {
             name: "shopping-list"
@@ -61,7 +61,7 @@ export default {
         },
         {
           title: this.$t("navigation.myCookbook"),
-          link: this.localePath("/account/my-cookbook/"),
+          link: $localePath("/account/my-cookbook/"),
           description: this.$t("account.myCookbookDescription"),
           graphic: {
             name: "cookbook"
@@ -69,7 +69,7 @@ export default {
         },
         {
           title: this.$t("navigation.accountDetails"),
-          link: this.localePath("/account/account-details/"),
+          link: $localePath("/account/account-details/"),
           description: this.$t("account.accountDetailsDescription"),
           graphic: {
             name: "account-details"
@@ -81,7 +81,7 @@ export default {
   methods: {
     logOut() {
       this.$store.dispatch("USER_SIGN_OUT");
-      this.$router.push(this.localePath("/"));
+      this.$router.push($localePath("/"));
     }
   }
 };

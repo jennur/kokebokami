@@ -1,6 +1,6 @@
 <template>
   <div class="container container--center">
-    <breadcrumbs :routes="breadcrumbs" />
+    <BreadCrumbs :routes="breadcrumbs" />
 
     <div class="mobile-width flex-row flex-center-container flex-row--nowrap margin-auto">
       <kokebokapen class="illustration illustration--kokebokapen" />

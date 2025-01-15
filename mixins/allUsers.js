@@ -1,7 +1,10 @@
+import { getDatabase, ref, get } from "firebase/database";
+import { useCurrentUser } from 'vuefire'
+
 export default {
   data() {
     return {
-      userAuth: !!this.$fire.auth.currentUser,
+      userAuth: !!useCurrentUser(),
       allUsers: [],
       errorMessage: ""
     };
@@ -10,9 +13,8 @@ export default {
     getAllUsers() {
       let componentThis = this;
       if (this.userAuth) {
-        this.$fire.database.ref("users").once(
-          "value",
-          users => {
+        const db = getDatabase();
+        get(ref(db, "users"), users => {
             if (users.exists()) {
               componentThis.allUsers = Object.entries(users.val())
                 .filter(user => !user[1].hiddenProfile)

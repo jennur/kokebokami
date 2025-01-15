@@ -1,3 +1,6 @@
+@use "sass:color";
+@use "../settings/variables.settings" as *;
+
 .recipe {
   text-align: left;
 
@@ -26,9 +29,18 @@
   }
 
   &_image {
+    position: relative;
+    display: block;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: 50%;
+
     &--edit {
       opacity: 0.8;
     }
+
     &-wrap {
       display: block;
       width: 100%;
@@ -39,19 +51,11 @@
       }
       @media screen and (min-width: 800px) {
         margin-top: $spacingXLarge;
-
         height: 350px;
         width: 50%;
         order: 1;
       }
     }
-    position: relative;
-    display: block;
-    width: 100%;
-    height: 100%;
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: 50%;
 
     &-edit-btn {
       position: absolute;
@@ -64,16 +68,6 @@
   }
 
   &_details {
-    &-wrap {
-      display: block;
-      @media screen and (min-width: 800px) {
-        display: flex;
-        flex-direction: row;
-        align-items: flex-start;
-        flex-wrap: nowrap;
-      }
-      position: relative;
-    }
     position: relative;
     width: 100%;
     box-sizing: border-box;
@@ -81,12 +75,24 @@
     padding: $spacingLarge;
     border-radius: 0px 0px $spacingMedium $spacingMedium;
     margin: 0px auto;
-
+    
     @media screen and (min-width: 800px) {
       width: 50%;
       order: 0;
       border-radius: $spacingMedium;
       min-height: 350px + 2 * $spacingXLarge;
+    }
+    
+    &-wrap {
+      display: block;
+      position: relative;
+
+      @media screen and (min-width: 800px) {
+        display: flex;
+        flex-direction: row;
+        align-items: flex-start;
+        flex-wrap: nowrap;
+      }
     }
 
     &--no-img {
@@ -114,12 +120,13 @@
   &_description {
     font-size: $fontSizeLargeMobile;
     margin-bottom: $spacingXXLarge;
-    @media screen and (min-width: $tabletWidth) {
-      font-size: $fontSizeLarge;
-    }
     color: $blue;
     width: max-content;
     max-width: 100%;
+
+    @media screen and (min-width: $tabletWidth) {
+      font-size: $fontSizeLarge;
+    }
 
     &--edit {
       resize: none;
@@ -184,7 +191,7 @@
         }
 
         &:hover, &:focus {
-          background-color: lighten($green, 10%);
+          background-color: color.adjust($green, $lightness: 10%);
         }
       }
     }

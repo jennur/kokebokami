@@ -1,3 +1,6 @@
+@use "../settings/variables.settings" as *;
+@use "sass:math" as math;
+
 .burger-menu {
   @media screen and (min-width: $tabletWidth) {
     display: none;
@@ -35,7 +38,7 @@
     }
 
     &::before {
-      transform: translateY(-$spacingSmall - 2);
+      transform: translateY(-($spacingSmall) - 2);
     }
     &::after {
       transform: translateY($spacingSmall + 2);

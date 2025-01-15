@@ -5,7 +5,7 @@
       website, you consent to cookies.
     </p>
     <div class="flex-row-container">
-      <nuxt-link :to="localePath('/cookies-policy/')">Learn more</nuxt-link>
+      <NuxtLink :to="$localePath('/cookies-policy/')">Learn more</NuxtLink>
       <button
         class="button button--green-border button-sm margin-left-lg"
         @click="

@@ -1,6 +1,6 @@
 <template>
   <section>
-    <breadcrumbs :routes="breadcrumbs" />
+    <BreadCrumbs :routes="breadcrumbs" />
 
     <foodclouds class="illustration illustration--food-clouds" />
 

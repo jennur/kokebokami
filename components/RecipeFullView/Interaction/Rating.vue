@@ -23,6 +23,7 @@
 </template>
 
 <script>
+import { getDatabase, ref, get } from "firebase/database";
 
 export default {
     name: "rating",
@@ -53,7 +54,8 @@ export default {
         setRating(rate) {
             if (this.recipeKey) {
                 let newRating = [rate];
-                let rateRef = this.$fire.database.ref(`recipes/${this.recipeKey}/rating`);
+                const db = getDatabase();
+                let rateRef = ref(db, `recipes/${this.recipeKey}/rating`);
 
                 rateRef.once('value', snapshot => {
                     if(snapshot.val()) {

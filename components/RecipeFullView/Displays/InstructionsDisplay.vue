@@ -34,6 +34,8 @@
   </div>
 </template>
 <script>
+import { getDatabase, ref, get } from "firebase/database";
+
 import InstructionsEdit from "./Editing/InstructionsEdit.vue";
 
 export default {
@@ -72,7 +74,8 @@ export default {
 
       if (recipeKey) {
         this.loading = true;
-        let instructionsRef = this.$fire.database.ref(
+        const db = getDatabase();
+        let instructionsRef = ref(db, 
           `recipes/${recipeKey}/instructions`
         );
         instructionsRef

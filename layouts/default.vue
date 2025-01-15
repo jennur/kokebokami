@@ -2,19 +2,13 @@
   <div>
     <header-component />
     <main class="tablet-width margin-auto padding-h-lg">
-      <nuxt />
+      <NuxtPage />
     </main>
     <footer-component />
     <scroll-button />
   </div>
 </template>
-<script>
-import ScrollButton from "~/components/ScrollButton.vue";
 
-export default {
-  name: "default-layout",
-  components: {
-    ScrollButton
-  }
-};
+<script setup lang="ts">
+import ScrollButton from "~/components/ScrollButton.vue";
 </script>

@@ -3,7 +3,10 @@
  * since the middleware only runs server side the first time.
  */
 import routerAuth from "~/middleware/router-auth.js";
+import { useRouter } from "vue-router";
 
-export default function(context) {
-  context.app.router.afterEach(() => routerAuth(context));
-}
+export default defineNuxtPlugin(nuxtApp => {
+  const router = useRouter();
+  console.log("NUXT APP:", router);
+  router.afterEach(() => routerAuth());
+})

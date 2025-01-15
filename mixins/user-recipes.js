@@ -1,9 +1,12 @@
+import { getDatabase, ref, get } from "firebase/database";
+import { useCurrentUser } from 'vuefire'
+
 import recipeModel from "../helpers/recipe-model";
 
 export default {
   data() {
     return {
-      currentUser: this.$fire.auth.currentUser,
+      currentUser: useCurrentUser(),
       userRecipes: [],
       errorMessage: "",
       loaded: false
@@ -13,8 +16,8 @@ export default {
     getUserRecipes() {
       if (this.currentUser) {
         try {
-          this.$fire.database
-          .ref("recipes")
+          const db = getDatabase();
+          ref(db, "recipes")
           .once("value", async snapshot => {
             if (snapshot.exists()) {
               let userRecipes = [];

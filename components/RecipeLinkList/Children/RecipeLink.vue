@@ -67,7 +67,9 @@
 </template>
 
 <script>
-import user from "~/mixins/user.js";
+import { getDatabase, ref, get } from "firebase/database";
+
+import user from "~/composables/user.js";
 import RecipeLinkEditForm from "./RecipeLinkEditForm.vue";
 import newTabIcon from "assets/graphics/icons/new-tab-icon.svg";
 import ExpandTransition from "~/components/Transitions/Expand.vue";
@@ -131,8 +133,8 @@ export default {
     deleteLink() {
       let linkID = this.link && this.link.id;
       if (linkID && this.user && this.user.id) {
-        this.$fire.database
-          .ref(`users/${this.user.id}/recipeLinks/${linkID}`)
+        const db = getDatabase();
+          ref(db, `users/${this.user.id}/recipeLinks/${linkID}`)
           .remove()
           .then(res => {
             this.showAlert = false;

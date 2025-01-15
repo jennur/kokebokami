@@ -1,6 +1,6 @@
 <template>
   <div>
-    <breadcrumbs :routes="breadcrumbs" />
+    <BreadCrumbs :routes="breadcrumbs" />
     <recipe-full-view
       v-if="recipe"
       :recipe="recipe"
@@ -11,8 +11,10 @@
 </template>
 
 <script>
+import { getDatabase, ref, get } from "firebase/database";
+
 import RecipeFullView from "~/components/RecipeFullView/RecipeFullView.vue";
-import user from "~/mixins/user.js";
+import user from "~/composables/user.js";
 
 export default {
   name: "addRecipe",
@@ -78,7 +80,8 @@ export default {
           datePublished: date,
           ownerID: this.user.id
         };
-        this.$fire.database.ref("recipes")
+        const db = getDatabase();
+        ref(db, "recipes")
           .push(recipeObj)
           .then(result => {
             console.log("Saved new recipe");
@@ -90,8 +93,8 @@ export default {
       }
       else {
         recipeObj = recipeObj || {};
-        this.$fire.database
-          .ref(`recipes/${recipeKey}`)
+        const db = getDatabase();
+          ref(db, `recipes/${recipeKey}`)
           .update(recipeObj)
           .then(() => {
             console.log("Successfully updated recipe:", recipeObj);
@@ -103,7 +106,8 @@ export default {
     },
     getRecipe() {
       if (this.user) {
-        let recipeRef = this.$fire.database.ref(`recipes/${this.recipeKey}`);
+        const db = getDatabase();
+        let recipeRef = ref(db, `recipes/${this.recipeKey}`);
         recipeRef
           .once("value", recipe => {
             if (recipe.exists()) {

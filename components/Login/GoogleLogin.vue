@@ -16,24 +16,24 @@
     </div>
   </button>
 </template>
-<script>
-import googleLogo from "~/assets/graphics/icons/btn_google_light_normal_ios.svg";
 
-export default {
-  name: "google-login",
-  components: {
-    googleLogo
-  },
-  methods: {
-    googleSignIn() {
-      this.$store.dispatch("SHOW_LOADING_SPLASH", true);
-      const GoogleProvider = new this.$fireModule.auth.GoogleAuthProvider();
-      this.$fire.auth.signInWithPopup(GoogleProvider)
-        .catch(error => {
-          console.error("[googleSignIn]", error)
-          this.$store.dispatch("SET_LOGIN_MESSAGE", error.message);
-        })
-    }
-  }
-};
+<script setup>
+import { getAuth, signInWithPopup, GoogleAuthProvider } from 'firebase/auth'
+import { useMainStore, useAuthStore } from '~/store';
+
+function googleSignIn() {
+  const mainStore = useMainStore();
+  mainStore.SHOW_LOADING_SPLASH(true);
+  
+  const googleAuthProvider = new GoogleAuthProvider()
+  const auth = getAuth()
+  signInWithPopup(auth, googleAuthProvider)
+    .catch(error => {
+      const credential = GoogleAuthProvider.credentialFromError(error);
+      console.error("[googleSignIn]", error);
+      console.error("[googleSignIn]", credential);
+      const authStore = useAuthStore();
+      authStore.SET_LOGIN_MESSAGE(error.message);
+    })
+}
 </script>

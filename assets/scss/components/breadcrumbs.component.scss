@@ -1,3 +1,5 @@
+@use "../settings/variables.settings" as *;
+
 .breadcrumbs {
   &_list {
     display: block;

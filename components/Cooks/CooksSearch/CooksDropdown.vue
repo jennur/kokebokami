@@ -1,8 +1,8 @@
 <template>
   <ul class="cooks_result-list padding-left-xl">
     <li v-for="cook in searchResult" :key="cook.id">
-      <nuxt-link
-        :to="localePath(`/cooks/${cook.path}/`)"
+      <NuxtLink
+        :to="$localePath(`/cooks/${cook.path}/`)"
         class="cooks_user-link"
       >
         <div
@@ -14,7 +14,7 @@
         />
         <span v-else class="cooks_user-photo" />
         {{ cook.displayName }}
-      </nuxt-link>
+      </NuxtLink>
     </li>
   </ul>
 </template>

@@ -1,3 +1,4 @@
+import { getDatabase, ref, get } from "firebase/database";
 import userModel from "../helpers/user-model";
 
 export default {
@@ -9,11 +10,11 @@ export default {
   },
   methods: {
     getFollowersAndFollowed(){
-      let currentUser = this.$store.state.user;
+      let currentUser = this.$store.user;
       if (currentUser) {
         try {
-          this.$fire.database
-          .ref("users")
+          const db = getDatabase();
+          ref(db, "users")
           .once("value", snapshot => {
             if (snapshot.exists()) {
               let users = snapshot.val();

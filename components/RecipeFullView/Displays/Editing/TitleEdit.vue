@@ -8,7 +8,7 @@
   />
 </template>
 <script>
-import ClickOutside from "vue-click-outside";
+ 
 
 export default {
   name: "title-edit",
@@ -26,8 +26,6 @@ export default {
       this.$emit("save", this.updatedTitle);
     }
   },
-  directives: {
-    ClickOutside
-  }
+  
 };
 </script>

@@ -16,8 +16,8 @@
       <p>If the problem continues, please contact us.</p>
     </div>
     <div class="container container--center">
-      <nuxt-link :to="localePath('/')"
-        >Take me back to the front page</nuxt-link
+      <NuxtLink :to="$localePath('/')"
+        >Take me back to the front page</NuxtLink
       >
     </div>
   </main>

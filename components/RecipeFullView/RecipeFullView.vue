@@ -135,11 +135,11 @@
 
             <div class="recipe_category-note">
               {{ $t("recipes.publishedBy") }}
-              <nuxt-link :to="localePath(`/cooks/${author && author.path}`)"
+              <NuxtLink :to="$localePath(`/cooks/${author && author.path}`)"
 
               >
               {{ author && author.displayName }}
-              </nuxt-link>
+              </NuxtLink>
             </div>
           </div>
         </div>
@@ -169,6 +169,8 @@
 </template>
 
 <script>
+import { getDatabase, ref, get } from "firebase/database";
+
 import htmlToPdfMake from "html-to-pdfmake";
 import pdfMake from "pdfmake/build/pdfmake";
 import pdfFonts from "assets/fonts/vfs_fonts";
@@ -323,9 +325,8 @@ export default {
         .download(`${documentTitle}_kokebokami.pdf`);
     },
     deleteRecipeImageFromStorage() {
-      return this.$fire.database
-        .ref(`recipes/${this.recipe.id}/photoURL`)
-        .once("value", snapshot => {
+      const db = getDatabase();
+        return get(ref(db, `recipes/${this.recipe.id}/photoURL`), snapshot => {
           if (snapshot.exists()) {
             let photoURL = snapshot.val();
             if (photoURL !== "") {
@@ -345,8 +346,8 @@ export default {
     deleteRecipe() {
       if (this.recipe.id) {
         this.deleteRecipeImageFromStorage().then(() => {
-          this.$fire.database
-            .ref(`recipes/${this.recipe.id}`)
+          const db = getDatabase();
+            ref(db, `recipes/${this.recipe.id}`)
             .remove()
             .then(() => {
               this.$router.push("/account/my-cookbook/");

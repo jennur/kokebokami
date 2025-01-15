@@ -35,7 +35,9 @@
 </template>
 
 <script>
-import user from "~/mixins/user.js";
+import { getDatabase, ref, get } from "firebase/database";
+
+import user from "~/composables/user.js";
 
 import SettingsDropdown from "~/components/SettingsDropdown.vue";
 import SubListTitle from "./SubList/SubListTitle.vue";
@@ -118,8 +120,8 @@ export default {
       let mainListKey = this.mainListKey;
       let subListKey = this.subListKey;
 
-      this.$fire.database
-        .ref(`shoppingLists/${mainListKey}/subLists/${subListKey}`)
+      const db = getDatabase();
+        ref(db, `shoppingLists/${mainListKey}/subLists/${subListKey}`)
         .remove()
         .then(() => {
           console.log("Succesfully deleted sublist");

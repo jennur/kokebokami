@@ -59,8 +59,9 @@
 </template>
 
 <script>
-import ClickOutside from "vue-click-outside";
-import user from "~/mixins/user.js";
+import { getDatabase, ref, get } from "firebase/database";
+
+import user from "~/composables/user.js";
 
 import IncrementButton from "~/components/Input/IncrementButton.vue";
 import DecrementButton from "~/components/Input/DecrementButton.vue";
@@ -117,7 +118,8 @@ export default {
       let listItems = this.updatedListItems;
       let subListKey = this.subListKey;
 
-      let mainListRef = this.$fire.database.ref(`shoppingLists/${mainListKey}`);
+      const db = getDatabase();
+      let mainListRef = ref(db, `shoppingLists/${mainListKey}`);
 
       if (mainListKey && subListKey !== "") {
         mainListRef
@@ -149,6 +151,5 @@ export default {
       }
     }
   },
-  directives: { ClickOutside }
 };
 </script>

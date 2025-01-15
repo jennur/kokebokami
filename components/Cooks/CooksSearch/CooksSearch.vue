@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import ClickOutside from "vue-click-outside";
+import { getDatabase, ref, get } from "firebase/database";
 import CooksDropdown from "./CooksDropdown.vue";
 import userIcon from "~/assets/graphics/icons/cook-silhouette.svg";
 import generatePath from "~/helpers/generatePath";
@@ -38,8 +38,8 @@ export default {
     },
     searchCooks() {
       let searchTerm = this.searchTerm.toLowerCase();
-      this.$fire.database
-        .ref("users")
+      const db = getDatabase();
+        ref(db, "users")
         .once("value", snapshot => {
           if(snapshot.exists()){
             let users = Object.entries(snapshot.val());
@@ -60,8 +60,6 @@ export default {
 
     }
   },
-  directives: {
-    ClickOutside
-  }
+  
 };
 </script>

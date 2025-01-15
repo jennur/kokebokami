@@ -1,13 +1,13 @@
 <template>
   <div>
-    <breadcrumbs :routes="breadcrumbs" />
+    <BreadCrumbs :routes="breadcrumbs" />
 
     <div class="flex-center-container flex-center-container--column">
       <h2 class="margin-bottom-lg">Goodbye</h2>
       <p>
         Your account was successfully deleted. You're welcome back at any time!
       </p>
-      <nuxt-link :to="localePath('/')">Back to home page</nuxt-link>
+      <NuxtLink :to="$localePath('/')">Back to home page</NuxtLink>
     </div>
   </div>
 </template>

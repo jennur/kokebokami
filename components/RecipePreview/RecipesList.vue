@@ -3,7 +3,7 @@
     <h3 class="recipes-list-container_headline" v-if="headline">
       {{ headline }}
     </h3>
-    <recipe-preview
+    <RecipePreview
       v-for="recipe in recipes"
       :key="recipe.id"
       :recipeID="recipe.id"
@@ -17,55 +17,48 @@
       >
         {{ emptyListMessage }}
       </p>
-      <nuxt-link v-if="addRecipeUrl" :to="addRecipeUrl"
-        >➔ {{ $t("addRecipeToList") }}👨‍🍳</nuxt-link
-      >
+      <NuxtLink v-if="addRecipeUrl" :to="addRecipeUrl">
+        ➔ {{ $t("addRecipeToList") }}👨‍🍳
+      </NuxtLink>
     </div>
   </section>
 </template>
 
-<script>
+<script setup>
 import RecipePreview from "./RecipePreview.vue";
 
-export default {
-  name: "recipes-list",
-  components: {
-    RecipePreview
+const props = defineProps({
+  recipeID: {
+    type: String,
+    default: null
   },
-  props: {
-    recipeID: {
-      type: String,
-      default: null
-    },
-    recipes: {
-      type: Array,
-      default: null
-    },
-    headline: {
-      type: String,
-      default: null
-    },
-    isPublicList: {
-      type: Boolean,
-      default: false
-    },
-    emptyListMessage: {
-      type: String,
-      default: "Looks like there is nothing here at the moment 😕"
-    },
-    addRecipeUrl: {
-      type: String,
-      default: ""
-    },
-    centerText: {
-      type: Boolean,
-      default: false
-    }
+  recipes: {
+    type: Array,
+    default: null
   },
-  computed: {
-    recipesLength() {
-      return this.recipes ? this.recipes.length : 0;
-    }
+  headline: {
+    type: String,
+    default: null
+  },
+  isPublicList: {
+    type: Boolean,
+    default: false
+  },
+  emptyListMessage: {
+    type: String,
+    default: "Looks like there is nothing here at the moment 😕"
+  },
+  addRecipeUrl: {
+    type: String,
+    default: ""
+  },
+  centerText: {
+    type: Boolean,
+    default: false
   }
-};
+});
+
+const recipesLength = computed(() => {
+  return props.recipes ? props.recipes.length : 0;
+});
 </script>
