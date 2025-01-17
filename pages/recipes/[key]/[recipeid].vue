@@ -4,11 +4,7 @@
     <div class="flex-center-container" v-if="!loaded">
       <span class="simple-loading-spinner" />
     </div>
-    <BreadCrumbs
-      v-if="loaded"
-      class="margin-bottom-lg"
-      :routes="breadcrumbs"
-    />
+    <BreadCrumbs v-if="loaded" class="margin-bottom-lg" :routes="breadcrumbs" />
 
     <div class="tablet-width margin-top-2xl margin-auto">
       <expand-transition :show="loaded" slower>
@@ -32,73 +28,63 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import { getDatabase, ref, get } from "firebase/database";
 
-import fbSharePlugin from "~/helpers/fbSharePlugin.js";
-import user from "~/composables/user.js";
-import getRecipe from "~/mixins/get-recipe.js";
-
+import useRecipeData from "../../../composables/recipeData";
 import ExpandTransition from "~/components/Transitions/Expand.vue";
 import RecipeFullView from "~/components/RecipeFullView/RecipeFullView.vue";
 import CommentsSection from "~/components/CommentsSection/CommentsSection.vue";
+import { onMounted } from "vue";
+import { useAuthStore } from "~/store";
+import { useRoute } from "vue-router";
 
-export default {
-  name: "recipe",
-  components: {
-    RecipeFullView,
-    CommentsSection,
-    ExpandTransition
-  },
-  head() {
-    let title = this.recipe.title || "";
-    return { ...this.headData, title: `${title} | Kokebokami` }; // from getRecipe
-  },
-  mixins: [user, getRecipe],
-  computed: {
-    path() {
-      return this.$route.path;
-    },
-    breadcrumbs() {
-      if (this.user && this.user.id === this.recipe.ownerID)
-        return [
-          { name: this.$t("navigation.home"), link: "/" },
-          {
-            name: this.$t("navigation.myAccount"),
-            link: "/account/"
-          },
-          {
-            name: this.$t("navigation.myCookbook"),
-            link: "/account/my-cookbook/"
-          },
-          { name: this.recipe.title }
-        ];
-      return [
-        { name: this.$t("navigation.recipes"), link: "/" },
-        { name: this.recipe.title }
-      ];
-    }
-  },
-  methods: {
-    handleUpdate() {
-      let date = new Date;
-      date = date.toISOString();
+const route = useRoute();
+const authStore = useAuthStore();
+const { t } = useI18n();
+const db = getDatabase();
 
-      if(!this.recipe.datePublished) {
-        const db = getDatabase();
-          ref(db, `recipes/${this.recipe.id}/datePublished`)
-          .set(date)
-      } else {
-        const db = getDatabase();
-          ref(db, `recipes/${this.recipe.id}/dateModified`)
-          .set(date)
-      }
+console.log("ROUTE PARAMS:", route.params);
+const { headData, recipe, author, loaded, userHasAccess } = useRecipeData(route.params);
 
-     this.getRecipe(this.recipe.id);
-    }
-  },
-  mounted(){
-    fbSharePlugin();
+useHead(() => ({
+  ...headData,
+  title: `${recipe.title || ""} | Kokebokami`,
+}));
+
+const breadcrumbs = computed(() => {
+  if (authStore.user.value?.id === recipe.ownerID)
+    return [
+      { name: t("navigation.home"), link: "/" },
+      {
+        name: t("navigation.myAccount"),
+        link: "/account/",
+      },
+      {
+        name: t("navigation.myCookbook"),
+        link: "/account/my-cookbook/",
+      },
+      { name: recipe.title },
+    ];
+  return [{ name: t("navigation.recipes"), link: "/" }, { name: recipe.title }];
+});
+
+function handleUpdate() {
+  let date = new Date();
+  date = date.toISOString();
+
+  if (!recipe.datePublished) {
+    set(ref(db, `recipes/${recipe.id}/datePublished`), date);
+  } else {
+    set(ref(db, `recipes/${recipe.id}/dateModified`));
   }
-};
+
+  useRecipeData()
+}
+onMounted(() => {
+  const router = useRouter();
+  if (recipe && !userHasAccess(recipe)) {
+    router.push($localePath("no-access"));
+  }
+});
 </script>

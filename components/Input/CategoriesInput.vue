@@ -12,72 +12,75 @@
         type="checkbox"
         :id="category"
         :value="category"
-        @change="event => handleCategory(event.target)"
+        @change="(event) => handleCategory(event.target)"
       />
       {{ category }}
     </label>
   </fieldset>
 </template>
-<script>
+
+<script setup>
 //Categories, FreeFrom, TypeOfMeal can be merged to one component
-export default {
-  name: "categories-input",
-  data() {
-    return { checkedCategories: [] };
-  },
-  props: {
-    existingCategories: {
-      type: Array,
-      default: () => []
-    }
-  },
-  computed: {
-    allCategoryObjects() {
-      return this.$store.allCategories;
-    },
-    categories() {
-      return Object.values(
-        this.allCategoryObjects.filter(object => {
-          return object.categories;
-        })[0]
-      )[0];
-    },
-    allTypesOfMeal() {
-      // Needed due to duplicate in previous categories
-      return Object.values(
-        this.allCategoryObjects.filter(object => {
-          return object.typeOfMeal;
-        })[0]
-      )[0];
-    }
-  },
-  methods: {
-    handleCategory(target) {
-      let checkedCategories = [].concat(this.checkedCategories);
-      let categoryIndex = checkedCategories.indexOf(target.value);
-      if (target.checked) {
-        checkedCategories.push(target.value);
-      } else if (!target.checked && categoryIndex !== -1) {
-        checkedCategories.splice(categoryIndex, 1);
-      }
+import { onMounted } from "vue";
+import { useRecipeStore } from "~/store";
+const recipeStore = useRecipeStore();
 
-      this.checkedCategories = checkedCategories;
-
-      this.$emit("update", this.checkedCategories);
-    }
+const emit = defineEmits(["update"])
+const props = defineProps({
+  existingCategories: {
+    type: Array,
+    default: () => [],
   },
-  mounted() {
-    let existingCategories = this.existingCategories;
-    if (existingCategories && existingCategories.length) {
-      existingCategories.forEach(category => {
-        if (this.allTypesOfMeal.indexOf(category) === -1) {
-          // ^ Needed due to duplicate of typeOfMeal in previous categories
-          let element = document.getElementById(category);
-          if (element) element.checked = true;
-        }
-      });
-      this.checkedCategories = this.existingCategories;
-    }
+});
+
+const checkedCategories = ref([]);
+
+const allCategories = computed(() => {
+  return recipeStore.allCategories;
+});
+const categories = computed(() => {
+  return Object.values(
+    allCategories.value.filter((obj) => {
+      return obj.categories;
+    })[0]
+  )[0];
+});
+
+const allTypesOfMeal = computed(() => {
+  // Needed due to duplicate in previous categories
+  return Object.values(
+    allCategories.value.filter((obj) => {
+      return obj.typeOfMeal;
+    })[0]
+  )[0];
+});
+
+function handleCategory(target) {
+  const checked = [].concat(checkedCategories.value);
+  const categoryIndex = checked.indexOf(target.value);
+
+  if (target.checked) {
+    checked.push(target.value);
+  } else if (!target.checked && categoryIndex !== -1) {
+    checked.splice(categoryIndex, 1);
   }
-};
+
+  checkedCategories.value = checked;
+
+  emit("update", checked);
+}
+
+onMounted(() => {
+  const existingCategories = props.existingCategories;
+  if (existingCategories && existingCategories.length) {
+    existingCategories.forEach((category) => {
+      if (allTypesOfMeal.value.indexOf(category) === -1) {
+        // ^ Needed due to duplicate of typeOfMeal in previous categories
+        const element = document.getElementById(category);
+        if (element) element.checked = true;
+      }
+    });
+    checkedCategories.value = props.existingCategories;
+  }
+});
 </script>

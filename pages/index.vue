@@ -28,13 +28,14 @@
 </template>
 
 <script setup>
-import useUser from "~/composables/user.js";
 import { useRecipeStore } from "../store/recipeStore";
 
 import CtaSection from "~/components/CTASection/CTASection.vue";
 import SignUpSection from "~/components/SignUpSection/SignUpSection.vue";
 import RecipesList from "~/components/RecipePreview/RecipesList.vue";
 import FilterSection from "~/components/Filter/FilterSection";
+import { useAuthStore } from "~/store";
+const authStore = useAuthStore();
 
 const initialFiltered = ref(true);
 const filteredRecipes = ref([]);
@@ -82,7 +83,7 @@ useHead(() => {
 
 const { publicRecipes, loaded } = useRecipeStore();
 
-const user = computed(() => useUser());
+const user = computed(() => authStore.user);
 
 const initialRecipes = computed(() => {
   const { locale } = useI18n();

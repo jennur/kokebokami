@@ -12,7 +12,7 @@
         :id="allergen"
         :value="allergen"
         @change="
-          event => {
+          (event) => {
             handleFreeFrom(event.target);
           }
         "
@@ -21,52 +21,53 @@
     </label>
   </fieldset>
 </template>
-<script>
-export default {
-  name: "free-from-input",
-  data() {
-    return { checkedFreeFrom: [] };
-  },
-  props: {
-    existingFreeFrom: {
-      type: Array,
-      default: () => []
-    }
-  },
-  computed: {
-    allergens() {
-      let allCategoryObjects = this.$store.allCategories;
-      return Object.values(
-        allCategoryObjects.filter(object => {
-          return object.allergens;
-        })[0]
-      )[0];
-    }
-  },
-  methods: {
-    handleFreeFrom(target) {
-      let categoryIndex = this.checkedFreeFrom.indexOf(target.value);
-      let freeFrom = [].concat(this.checkedFreeFrom);
+<script setup>
+import { onMounted } from "vue";
+import { useRecipeStore } from "~/store";
+const recipeStore = useRecipeStore();
 
-      if (target.checked) {
-        freeFrom.push(target.value);
-      } else if (!target.checked && categoryIndex !== -1) {
-        freeFrom.splice(categoryIndex, 1);
-      }
-      this.checkedFreeFrom = freeFrom;
-      this.$emit("update", this.checkedFreeFrom);
-    }
-  },
-  mounted() {
-    let existingFreeFrom = this.existingFreeFrom;
+const emit = defineEmits(["update"]);
 
-    if (existingFreeFrom && existingFreeFrom.length) {
-      existingFreeFrom.forEach(allergen => {
-        let element = document.getElementById(allergen);
-        if (element) element.checked = true;
-      });
-    }
-    this.checkedFreeFrom = this.existingFreeFrom;
+const props = defineProps({
+  existingFreeFrom: {
+    type: Array,
+    default: () => [],
+  },
+});
+
+const checkedFreeFrom = ref([]);
+
+const allergens = computed(() => {
+  const allCategories = recipeStore.allCategories;
+  return Object.values(
+    allCategories.filter((obj) => {
+      return obj.allergens;
+    })[0]
+  )[0];
+});
+
+function handleFreeFrom(target) {
+  const categoryIndex = checkedFreeFrom.value.indexOf(target.value);
+  const checked = [].concat(checkedFreeFrom.value);
+
+  if (target.checked) {
+    checked.push(target.value);
+  } else if (!target.checked && categoryIndex !== -1) {
+    checked.splice(categoryIndex, 1);
   }
-};
+  checkedFreeFrom.value = checked;
+  emit("update", checked);
+}
+
+onMounted(() => {
+  const existingFreeFrom = props.existingFreeFrom;
+
+  if (existingFreeFrom && existingFreeFrom.length) {
+    existingFreeFrom.forEach((allergen) => {
+      const element = document.getElementById(allergen);
+      if (element) element.checked = true;
+    });
+  }
+  checkedFreeFrom.value = props.existingFreeFrom;
+});
 </script>

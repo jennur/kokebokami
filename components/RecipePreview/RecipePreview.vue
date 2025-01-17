@@ -34,14 +34,15 @@
 
 <script setup>
 import recipeBackupImg from "assets/graphics/icons/recipe-backup-img.svg";
-import useUser from "~/composables/user.js";
-import useRecipeAuthor from "~/mixins/get-recipe-author.js";
+import useRecipeAuthor from "~/composables/recipeAuthor.js";
 import Rating from "~/components/RecipeFullView/Interaction/Rating";
 import AddToFavorites from '../RecipeFullView/Interaction/AddToFavorites.vue';
 import { computed } from "vue";
-import { useNuxtApp } from "nuxt/app";
+import { useAuthStore, useRecipeStore } from "~/store";
 
-const { $store } = useNuxtApp();
+const authStore = useAuthStore();
+const recipeStore = useRecipeStore();
+
 const { tm } = useI18n();
 
 const props = defineProps({
@@ -55,8 +56,8 @@ const props = defineProps({
   }
 })
 
-const author = await useRecipeAuthor(props.recipe.ownerID)
-const user = computed(() => useUser());
+const { content: author} = await useRecipeAuthor(props.recipe.ownerID)
+const user = computed(() => authStore.user);
 const showPublicNote = computed(() => (
   !props.inPublicList &&
   user &&
@@ -69,7 +70,7 @@ const recipeImage = computed(() => {
 });
 
 const categories = computed(() => {
-  const allCategories = $store.allCategories.categories;
+  const allCategories = recipeStore.allCategories.categories;
   const localeCategories = tm("recipes.allCategories.categories");
   const recipeCategories = props.recipe.categories;
 

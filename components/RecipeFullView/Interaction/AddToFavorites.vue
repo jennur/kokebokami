@@ -1,104 +1,113 @@
 <template>
-  <div class="favorite-icon" :class="{'selected': isUserFavorite}" title="Add to favorites" @click="event => handleFavorites(event)">
-  <favorite-icon class="icon" />
-  <span v-if="showCount" class="favorites-count">({{ favoritesCount || 0 }})</span>
+  <div
+    class="favorite-icon"
+    :class="{ selected: isUserFavorite }"
+    title="Add to favorites"
+    @click="(event) => handleFavorites(event)"
+  >
+    <FavoriteIcon class="icon" />
+    <span v-if="showCount" class="favorites-count"
+      >({{ favoritesCount || 0 }})</span
+    >
   </div>
 </template>
 
 <script setup>
 import { getDatabase, ref, get } from "firebase/database";
-import favoriteIcon from "~/assets/graphics/icons/favorites-icon.svg";
-import useUser from "~/composables/user";
+import FavoriteIcon from "~/assets/graphics/icons/favorites-icon.svg";
+import { useMainStore, useAuthStore } from "~/store";
 
-const { $store } = useNuxtApp();
+const db = getDatabase();
+const mainStore = useMainStore();
+const authStore = useAuthStore();
 
 const props = defineProps({
   recipeKey: {
     type: String,
-    default: ""
+    default: "",
   },
   favoritesCount: {
     type: Number,
-    default: 0
+    default: 0,
   },
   showCount: {
     type: Boolean,
-    default: false
-  }
-})
-const user = computed(() => useUser());
+    default: false,
+  },
+});
 
 const isUserFavorite = computed(() => {
-  if(user.value && user.value.id) {
-      const favorites = $store.user.favorites;
-      return favorites && Object.values(favorites).indexOf(props.recipeKey) > - 1;
+  if (authStore?.user?.id) {
+    const favorites = authStore.user.favorites;
+    return favorites && Object.values(favorites).some(key => key === props.recipeKey);
   }
   return false;
-})
+});
 
 function handleFavorites(event) {
   event && event.stopPropagation();
 
-  if (user.value && user.value.id) {
-      let favorites = $store.user.favorites;
-      let isFavorite = false;
-      for(let key in favorites) {
-      if(props.recipeKey === favorites[key]){
-          isFavorite = true;
-          removeFromFavorites(key);
+  if (authStore.user && authStore.user.id) {
+    const favorites = authStore.user.favorites;
+    let isFavorite = false;
+
+    for (const key in favorites) {
+      if (props.recipeKey === favorites[key]) {
+        isFavorite = true;
+        removeFromFavorites(key);
       }
-      }
-      if(!isFavorite) {
+    }
+    if (!isFavorite) {
       saveToFavorites();
-      }
+    }
   } else {
-      $store.SHOW_LOGIN_MODAL({open: true, headline: "Login to add to your favorites!"});
+    mainStore.SHOW_LOGIN_MODAL({
+      open: true,
+      headline: "Login to add to your favorites!",
+    });
   }
 }
 
 function saveToFavorites() {
-  const db = getDatabase();
-      ref(db, `users/${user.value.id}/favorites`)
-      .push(props.recipeKey)
-      .then(() => {
-      $store.UPDATE_USER_FAVORITES();
-      console.log("Successfully added to favorites");
+  push(ref(db, `users/${authStore.user.id}/favorites`), props.recipeKey)
+    .then(() => {
+      authStore.UPDATE_USER_FAVORITES();
+      console.info("[saveToFavorites] Successfully added to favorites");
 
-      const db = getDatabase();
-      get(ref(db, `recipes/${props.recipeKey}/favoritesCount`), snapshot => {
-        let count = 1;
-        if(snapshot.exists()){
-            count = snapshot.val();
-            count += 1;
+      get(ref(db, `recipes/${props.recipeKey}/favoritesCount`)).then(
+        (snapshot) => {
+          let count = 1;
+          if (snapshot.exists()) {
+            count = snapshot.val() + 1;
+          }
+
+          update(ref(db, `recipes/${props.recipeKey}`), {
+            favoritesCount: count,
+          });
         }
-        const db = getDatabase();
-        ref(db, `recipes/${props.recipeKey}`)
-        .update({ favoritesCount: count });
-        })
-      })
-      .catch(error => console.log("Error saving to favorites:", error));
+      );
+    })
+    .catch((error) => console.error("[saveToFavorites]", error.message));
 }
 
-function removeFromFavorites(key){
-  const db = getDatabase();
-      ref(db, `users/${user.value.id}/favorites/${key}`)
-      .remove()
-      .then(() => {
-          $store.UPDATE_USER_FAVORITES();
-          console.log("Successfully removed from favorites");
+function removeFromFavorites(key) {
+  remove(ref(db, `users/${authStore.user.id}/favorites/${key}`))
+    .then(() => {
+      authStore.UPDATE_USER_FAVORITES();
+      console.info("[removeFromFavorites] Successfully removed from favorites");
 
-          const db = getDatabase();
-          get(ref(db, `recipes/${props.recipeKey}/favoritesCount`), snapshot => {
-            if(snapshot.exists()){
-              let count = snapshot.val();
-              count -= 1;
+      get(ref(db, `recipes/${props.recipeKey}/favoritesCount`)).then(
+        (snapshot) => {
+          if (snapshot.exists()) {
+            const count = snapshot.val() - 1;
 
-              const db = getDatabase();
-              ref(db, `recipes/${props.recipeKey}`)
-              .update({ favoritesCount: count });
-            }
-          })
-      })
-      .catch(error => console.log("Error removing from favorites:", error));
+            update(ref(db, `recipes/${props.recipeKey}`), {
+              favoritesCount: count,
+            });
+          }
+        }
+      );
+    })
+    .catch((error) => console.error("[removeFromFavorites]", error.message));
 }
 </script>

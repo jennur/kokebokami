@@ -11,23 +11,18 @@
     </span>
   </div>
 </template>
-<script>
+
+<script setup>
 import BackupImg from "~/assets/graphics/icons/cook-silhouette-circle.svg";
 
-export default {
-  name: "user-image",
-  components: {
-    BackupImg
+const props = defineProps({
+  photoURL: {
+    type: String,
+    default: ""
   },
-  props: {
-    photoURL: {
-      type: String,
-      default: ""
-    },
-    username: {
-      type: String,
-      default: "My account"
-    }
+  username: {
+    type: String,
+    default: "My account"
   }
-};
+});
 </script>

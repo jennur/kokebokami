@@ -1,6 +1,6 @@
 <template>
   <div v-click-outside="closeEdit">
-    <select-component
+    <SelectComponent
       id="language"
       :options="languages"
       :preSelected="language"
@@ -9,36 +9,31 @@
     />
   </div>
 </template>
-<script>
- 
+<script setup>
 import SelectComponent from "~/components/Input/SelectComponent.vue";
-export default {
-  name: "language-edit",
-  components: {
-    SelectComponent
+import { useRecipeStore } from "~/store";
+const recipeStore = useRecipeStore();
+
+const emit = defineEmits(["update", "close"]);
+
+const props = defineProps({
+  language: {
+    type: String,
+    default: "",
   },
-  props: {
-    language: {
-      type: String,
-      default: ""
-    }
-  },
-  computed: {
-    languages() {
-      return this.$store.allCategories.languages;
-    }
-  },
-  methods: {
-    handleLanguage(language) {
-      if (language === "All languages") {
-        language = null;
-      }
-      this.$emit("update", language);
-    },
-    closeEdit() {
-      this.$emit("close");
-    }
-  },
-  
-};
+});
+
+const languages = computed(() => {
+  return recipeStore.allCategories.languages;
+});
+
+function handleLanguage(language) {
+  if (language === "All languages") {
+    language = null;
+  }
+  emit("update", language);
+}
+function closeEdit() {
+  emit("close");
+}
 </script>

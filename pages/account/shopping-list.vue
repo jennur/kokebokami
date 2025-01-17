@@ -2,22 +2,19 @@
   <div class="tablet-width margin-auto">
     <BreadCrumbs :routes="breadcrumbs" />
     <div class="flex-row flex-row--align-center">
-      <increment-button
-        class="margin-top-2xl"
-        @increment="addNewShoppingList"
-      >
-        {{$t('shoppingLists.newList')}}
-      </increment-button>
+      <IncrementButton class="margin-top-2xl" @increment="addNewShoppingList">
+        {{ $t("shoppingLists.newList") }}
+      </IncrementButton>
     </div>
     <div class="margin-v-2xl">
-      <shopping-list
+      <ShoppingList
         v-if="addingNewShoppingList"
         :list="{ key: '', title: $t('shoppingLists.newList'), subLists: [] }"
         @update="updateShoppingLists"
         @cancel="addingNewShoppingList = false"
       />
-      <shopping-list
-        v-for="(shoppingList, index) in shoppingLists"
+      <ShoppingList
+        v-for="(shoppingList, index) in shoppingListStore.shoppingLists"
         :key="`shopping-list-${index}`"
         :list="shoppingList"
         @update="updateShoppingLists"
@@ -26,60 +23,52 @@
   </div>
 </template>
 
-<script>
-import user from "~/composables/user.js";
-
-import shoppingLists from "~/mixins/shopping-lists.js";
-
+<script setup>
 import ShoppingList from "~/components/ShoppingList/ShoppingList.vue";
 import IncrementButton from "~/components/Input/IncrementButton.vue";
+import { useShoppingListStore } from "~/store";
 
-export default {
-  name: "addRecipe",
-  components: { ShoppingList, IncrementButton },
-  head() {
-    return {
-      title: `Shopping list | Kokebokami`,
-      meta: [
-        {
-          name: "robots" ,
-          content: "noindex"
-        }
-      ],
-      link: [
-        {
-          rel: "canonical",
-          href: "https://kokebokami.com/account/shopping-list/"
-        }
-      ]
-    };
-  },
-  mixins: [user, shoppingLists],
-  data() {
-    return {
-      addingNewShoppingList: false
-    };
-  },
-  computed: {
-    breadcrumbs() {
-      return [
-        { name: this.$t("navigation.home"), link: "/" },
-        {
-          name: this.$t("navigation.myAccount"),
-          link: "/account/"
-        },
-        { name: this.$t("navigation.shoppingLists") }
-      ];
-    }
-  },
-  methods: {
-    addNewShoppingList() {
-      this.addingNewShoppingList = true;
+const shoppingListStore = useShoppingListStore();
+
+const { t } = useI18n();
+
+useHead(() => {
+  return {
+    title: `Shopping list | Kokebokami`,
+    meta: [
+      {
+        name: "robots",
+        content: "noindex",
+      },
+    ],
+    link: [
+      {
+        rel: "canonical",
+        href: "https://kokebokami.com/account/shopping-list/",
+      },
+    ],
+  };
+});
+
+const addingNewShoppingList = ref(false);
+
+const breadcrumbs = computed(() => {
+  return [
+    { name: t("navigation.home"), link: "/" },
+    {
+      name: t("navigation.myAccount"),
+      link: "/account/",
     },
-    updateShoppingLists() {
-      this.addingNewShoppingList = false;
-      this.getShoppingLists();
-    }
-  }
-};
+    { name: t("navigation.shoppingLists") },
+  ];
+});
+
+function addNewShoppingList() {
+  addingNewShoppingList.value = true;
+}
+
+function updateShoppingLists() {
+  addingNewShoppingList.value = false;
+  shoppingListStore.REFRESH()
+}
 </script>

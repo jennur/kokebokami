@@ -1,135 +1,135 @@
 <template>
-  <modal-box :open="open" :dark-bg="false" @close="$emit('close-modal')">
-    <h4>{{`${$t("share")} '${listTitle}' ${$t("shoppingLists.share.withFollower")}` }}</h4>
+  <ModalBox :open="open" :dark-bg="false" @close="$emit('close-modal')">
+    <h4>
+      {{
+        `${$t("share")} '${listTitle}' ${$t(
+          "shoppingLists.share.withFollower"
+        )}`
+      }}
+    </h4>
 
     <form class="share-form" v-on:submit.prevent>
-      <fieldset class="flex-row flex-row--align-center flex-row--nowrap margin-bottom-md">
+      <fieldset
+        class="flex-row flex-row--align-center flex-row--nowrap margin-bottom-md"
+      >
         <label class="share-form_followers">
-          <select-component
+          <SelectComponent
             class="share-form_select margin-right-xl"
             :options="followerNames"
             defaultValue="Select a user"
-            @select="option => (selected = option)"
+            @select="(option) => (selected = option)"
           />
         </label>
 
-         <hover-info-box class="margin-left-sm margin-bottom-sm">
+        <HoverInfoBox class="margin-left-sm margin-bottom-sm">
           {{ $t("shoppingLists.share.shareWithFollowerNote") }}
-        </hover-info-box>
+        </HoverInfoBox>
       </fieldset>
 
       <button @click="shareShoppingList" class="button button-sm margin-top-md">
-        {{$t('share')}}
+        {{ $t("share") }}
       </button>
     </form>
 
-    <expand-transition :show="!!systemMessage">
+    <ExpandTransition :show="!!systemMessage">
       <div class="system-message margin-top-lg">
         {{ systemMessage }}
       </div>
-    </expand-transition>
-  </modal-box>
+    </ExpandTransition>
+  </ModalBox>
 </template>
-<script>
+
+<script setup>
 import { getDatabase, ref, get } from "firebase/database";
-
-import allUsers from "~/mixins/allUsers.js";
-import user from "~/composables/user.js";
-import connectedUsers from "~/mixins/followed-and-followers.js";
-
 import ExpandTransition from "~/components/Transitions/Expand.vue";
 import SelectComponent from "~/components/Input/SelectComponent.vue";
 import HoverInfoBox from "~/components/HoverInfoBox";
 import ModalBox from "~/components/ModalBox";
 
-export default {
-  name: "share-form",
-  components: {
-    ModalBox,
-    ExpandTransition,
-    SelectComponent,
-    HoverInfoBox
-  },
-  mixins: [user, allUsers, connectedUsers],
-  data() {
-    return {
-      searchTerm: "",
-      selected: "",
-      shareByEmail: false,
-      email: "",
-      systemMessage: ""
-    };
-  },
-  props: {
-    open: {
-      type: Boolean,
-      default: false
-    },
-    listKey: {
-      type: String,
-      default: ""
-    },
-    listTitle: {
-      type: String,
-      default: ""
-    }
-  },
-  computed: {
-    followerNames() {
-      return (
-        this.followers && this.followers.map(follower => follower.displayName)
-      );
-    },
-    selectedFollower() {
-      let follower = this.followers.filter(follower => follower.displayName === this.selected)[0];
-      return follower || [];
-    }
-  },
-  methods: {
-    shareShoppingList() {
-      let follower = this.selectedFollower;
+import { useAuthStore, useShoppingListStore } from "~/store";
 
-      if (follower && follower.id !== "") {
-        const db = getDatabase();
-        let ownersRef = ref(db, `shoppingLists/${this.listKey}/owners`);
+const db = getDatabase();
+const authStore = useAuthStore();
+const shoppingListStore = useShoppingListStore();
 
-        try {
-          ownersRef.once("value", snapshot => {
-            if (snapshot.exists()) {
-              let owners = Object.values(snapshot.val());
-              let shared = false;
-              owners.forEach(user => {
-                if (user.id === follower.id) {
-                  this.systemMessage = `This shopping list is already shared with ${follower.displayName} `;
-                  shared = true;
-                }
-              });
+const searchTerm = ref("");
+const selected = ref("");
+const shareByEmail = ref(false);
+const email = ref("");
+const systemMessage = ref("");
 
-              if (!shared) {
-                ownersRef
-                  .push({
-                    id: follower.id,
-                    displayName: follower.displayName,
-                    sharedFrom: { id: this.user.id, displayName: this.user.displayName }
-                  })
-                  .then(() => {
-                    this.systemMessage = `Successfully shared with ${follower.displayName}`;
-                    this.$emit("update");
-                    if (!follower.notificationsOff || !follower.notificationsOff.shoppingLists) {
-                      this.$emit('shared', follower);
-                    }
-                  });
-              }
-            }
-          });
-        } catch (error) {
-          console.log("Error while sharing:", error.message);
-          this.systemMessage = "An error occured while sharing";
-        }
-      } else {
-        this.systemMessage = "We were unable to find this user in the database";
+const props = defineProps({
+  open: {
+    type: Boolean,
+    default: false,
+  },
+  listKey: {
+    type: String,
+    default: "",
+  },
+  listTitle: {
+    type: String,
+    default: "",
+  },
+});
+
+const followerNames = computed(
+  () =>
+    authStore.followers &&
+    authStore.followers.map((follower) => follower.displayName)
+);
+
+const selectedFollower = computed(
+  () =>
+    authStore.followers.filter(
+      (follower) => follower.displayName === selected.value
+    )[0]
+);
+
+function shareShoppingList() {
+  const follower = selectedFollower.value;
+  const shoppingList = shoppingListStore.shoppingLists.filter(
+    (list) => list.key === props.listKey
+  );
+
+  if (follower.id && shoppingList) {
+    const owners = shoppingList.owners;
+    let shared = false;
+
+    owners.forEach((owner) => {
+      if (owner.id === follower.id) {
+        systemMessage.value = `This shopping list is already shared with ${follower.displayName} `;
+        shared = true;
+      }
+    });
+
+    if (!shared) {
+      try {
+        push(ref(db, `shoppingLists/${props.listKey}/owners`), {
+          id: follower.id,
+          displayName: follower.displayName,
+          sharedFrom: {
+            id: authStore.user.id,
+            displayName: authStore.user.displayName,
+          },
+        }).then(() => {
+          systemMessage.value = `Successfully shared with ${follower.displayName}`;
+          shoppingListStore.REFRESH();
+          emit("update");
+          if (
+            !follower.notificationsOff ||
+            !follower.notificationsOff.shoppingLists
+          ) {
+            emit("shared", follower);
+          }
+        });
+      } catch (error) {
+        console.error("[shareShoppingList]", error.message);
+        systemMessage.value = "An error occured while sharing";
       }
     }
+  } else {
+    systemMessage.value = "We were unable to find this user in the database";
   }
-};
+}
 </script>

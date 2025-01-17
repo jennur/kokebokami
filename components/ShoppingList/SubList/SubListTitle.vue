@@ -3,8 +3,10 @@
     <h3
       v-if="!editMode && title"
       class="heading--blue margin--none"
-      @click="event => toggleEditMode(event)"
-    >{{ updatedTitle }}</h3>
+      @click="(event) => toggleEditMode(event)"
+    >
+      {{ updatedTitle }}
+    </h3>
     <label v-if="editMode" class="flex-column">
       <input
         type="text"
@@ -12,131 +14,118 @@
         placeholder="Sublist title"
         v-click-outside="saveTitle"
         @keydown="
-            event => {
-              event.keyCode === 13 && saveTitle();
-            }
-          "
+          (event) => {
+            event.keyCode === 13 && saveTitle();
+          }
+        "
       />
     </label>
   </div>
 </template>
 
-<script>
-import { getDatabase, ref, get } from "firebase/database";
+<script setup>
+import { getDatabase, ref, push, update, child } from "firebase/database";
+import { useAuthStore } from "~/store";
 
-import user from "~/composables/user.js";
+const db = getDatabase();
+const { t } = useI18n();
+const authStore = useAuthStore();
 
-export default {
-  name: "sublist-title",
-  props: {
-    title: {
-      type: String,
-      default: ""
-    },
-    mainListKey: {
-      type: String,
-      default: ""
-    },
-    subListKey: {
-      type: String,
-      default: ""
-    }
+const props = defineProps({
+  title: {
+    type: String,
+    default: "",
   },
-  data() {
-    return {
-      editMode: false,
-      updatedTitle: this.title,
-      isNew: false
-    };
+  mainListKey: {
+    type: String,
+    default: "",
   },
-  mixins: [user],
-  watch: {
-    title: function(val) {
-      this.updatedTitle = val;
-    }
+  subListKey: {
+    type: String,
+    default: "",
   },
-  methods: {
-    toggleEditMode(event) {
-      event && event.stopPropagation();
-      this.editMode = !this.editMode;
-    },
-    saveTitle() {
-      if (this.isNew || this.title !== this.updatedTitle) {
-        this.isNew = false;
-        let componentThis = this;
-        let userID = this.user.id;
-        let username = this.user.displayName;
+});
 
-        let mainListKey = this.mainListKey;
-        let mainListTitle = this.mainListTitle || this.$t('shoppingLists.newList');
+const editMode = ref(false);
+const updatedTitle = ref(props.title);
+const isNew = ref(false);
 
-        let title = this.updatedTitle;
-        let subListKey = this.subListKey;
+watch(title, (value) => {
+  updatedTitle.value = value;
+});
 
-        const db = getDatabase();
-        let shoppingListsRef = ref(db, `shoppingLists`);
-        let mainListRef = ref(db, `shoppingLists/${mainListKey}`);
+function toggleEditMode(event) {
+  event && event.stopPropagation();
+  editMode.value = !editMode.value;
+}
 
-        if (mainListKey && subListKey !== "") {
-          mainListRef
-            .child("subLists")
-            .child(subListKey)
-            .update({ title })
-            .then(() => {
-              console.log("Sublist successfully updated");
-              componentThis.editMode = false;
-              componentThis.$emit("update");
-            })
-            .catch(error =>
-              console.log("Error updating subList:", error.message)
-            );
-        } else if (mainListKey && subListKey === "") {
-          console.log("Adding new sublist");
-          mainListRef
-            .child("subLists")
-            .push({ title })
-            .then(result => {
-              console.log("Successfully added new sublist");
-              componentThis.editMode = false;
-              componentThis.$emit("update");
-            })
-            .catch(error =>
-              console.log("Error setting subList:", error.message)
-            );
-        } else if (!mainListKey) {
-          console.log("Adding new main list");
-          let newMainListKey = shoppingListsRef
-            .push({
-              title: mainListTitle,
-              createdBy: { id: userID, displayName: username },
-              owners: [{ id: userID, displayName: username }]
-            })
-            .then(result => {
-              shoppingListsRef
-                .child(result.key)
-                .child("subLists")
-                .push({ title })
-                .then(result => {
-                  console.log("Successfully added new mainlist");
-                  componentThis.editMode = false;
-                  componentThis.$emit("update");
-                });
-            });
-        } else {
-          console.log(
-            "Something went wrong while trying to add/update sublist"
-          );
-        }
-      } else {
-        this.toggleEditMode();
-      }
+function saveTitle() {
+  if (isNew.value || props.title !== updatedTitle.value) {
+    isNew.value = false;
+
+    const mainListKey = props.mainListKey;
+
+    const title = updatedTitle.value;
+    const subListKey = props.subListKey;
+
+    const shoppingListsRef = ref(db, `shoppingLists`);
+    const mainListRef = ref(db, `shoppingLists/${mainListKey}`);
+
+    if (mainListKey && subListKey !== "") {
+      update(child(child(mainListRef, "subLists"), subListKey), { title })
+        .then(() => {
+          console.info("[saveTitle] Successfully updated sublist");
+          editMode.value = false;
+          emit("update");
+        })
+        .catch((error) =>
+          console.error("[saveTitle] Failed to update sublist:", error.message)
+        );
+    } else if (mainListKey && subListKey === "") {
+      console.info("[saveTitle] Adding new sublist");
+      push(child(mainListRef, "subLists"), { title })
+        .then((result) => {
+          console.info("[saveTitle] Successfully added new sublist");
+          editMode.value = false;
+          emit("update");
+        })
+        .catch((error) =>
+          console.error("[saveTitle] Failed to add sublist:", error.message)
+        );
+    } else if (!mainListKey) {
+      console.info("[saveTitle] Adding new main list");
+      push(shoppingListsRef, {
+        title: t("shoppingLists.newList"),
+        createdBy: {
+          id: authStore.user.id,
+          displayName: authStore.user.displayName,
+        },
+        owners: [
+          { id: authStore.user.id, displayName: authStore.user.displayName },
+        ],
+      }).then((result) => {
+        push(child(child(shoppingListsRef, "subLists"), result.key), {
+          title,
+        }).then((result) => {
+          console.info("[saveTitle] Successfully added new mainlist");
+          editMode.value = false;
+          emit("update");
+        });
+      });
+    } else {
+      console.error(
+        "[saveTitle] Something went wrong while trying to add/update sublist"
+      );
     }
-  },
-  mounted() {
-    if (this.subListKey === "") {
-      this.isNew = true;
-      this.saveTitle();
-    }
+  } else {
+    toggleEditMode();
   }
-};
+}
+
+onMounted(() => {
+  if (props.subListKey === "") {
+    isNew.value = true;
+    saveTitle();
+  }
+});
 </script>

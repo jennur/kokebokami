@@ -21,7 +21,7 @@
           <h2 class="heading--lg">{{ $t("recipes.typeOfMeal") }}</h2>
 
           <RadioPills  pillsTranslationCode="recipes.allCategories.typeOfMeal"
-                        :values="$store.allCategories.typeOfMeal"
+                        :values="recipeStore.allCategories.typeOfMeal"
                         @selected="setTypeOfMeal"
           />
         </div>
@@ -29,7 +29,7 @@
         <div>
           <h2 class="heading--lg">{{ $t("recipes.freeFrom") }}</h2>
           <RadioPills  pillsTranslationCode="recipes.allCategories.allergens"
-                        :values="$store.allCategories.allergens"
+                        :values="recipeStore.allCategories.allergens"
                         @selected="setAllergen"
           />
         </div>
@@ -37,7 +37,7 @@
         <div>
           <h2 class="heading--lg">{{ $t("recipes.category") }}</h2>
           <RadioPills  pillsTranslationCode="recipes.allCategories.categories"
-                        :values="$store.allCategories.categories"
+                        :values="recipeStore.allCategories.categories"
                         @selected="setCategory"
           />
         </div>
@@ -61,7 +61,9 @@ import RadioPills from "./RadioPills";
 import LanguageInput from "~/components/Input/LanguageInput";
 import Search from "./Search.vue";
 import Expand from '../Transitions/Expand.vue';
+import { useRecipeStore } from "~/store";
 
+const recipeStore = useRecipeStore();
 const { locale } = useI18n();
 
 const emit = defineEmits(["filter"]);

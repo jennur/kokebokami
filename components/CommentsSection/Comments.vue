@@ -12,7 +12,7 @@
     </div>
 
     <div v-if="!loading && comments.length" class="comments">
-      <comment
+      <Comment
         v-for="comment in comments"
         :key="comment[0]"
         :recipeKey="recipeKey"
@@ -21,7 +21,7 @@
         :isRecipeOwner="isRecipeOwner"
         class="padding-v-lg"
         @update="getComments"
-        @subCommentSubmitted="commentObj => $emit('send-email', commentObj)"
+        @subCommentSubmitted="(commentObj) => $emit('send-email', commentObj)"
       />
     </div>
 
@@ -35,110 +35,94 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import { getDatabase, ref, get } from "firebase/database";
-
+import { useAuthStore } from "~/store";
 import getDateString from "~/helpers/get-date-string";
-import user from "~/composables/user.js";
 import Comment from "./Comment.vue";
-import ExpandTransition from "~/components/Transitions/Expand.vue";
 
-export default {
-  name: "comments",
-  components: {
-    Comment,
-    ExpandTransition
-  },
-  props: {
-    recipeKey: {
-      type: String,
-      default: ""
-    },
-    isRecipeOwner: {
-      type: Boolean,
-      default: false
-    },
-    update: {
-      type: Number,
-      default: 0
-    }
-  },
-  data() {
-    return { loading: false, comments: [], cutOffComments: [], updated: 0 };
-  },
-  watch: {
-    update: function(val) {
-      if (val !== this.updated) {
-        this.getComments();
-        this.updated = val;
-      }
-    }
-  },
-  mixins: [user],
-  methods: {
-    loadMoreComments() {
-      let comments = this.comments;
-      let cutOffComments = this.cutOffComments;
-      this.comments = comments.concat(cutOffComments.splice(0, 3));
-      this.cutOffComments = cutOffComments;
-    },
-    getComments() {
-      let componentThis = this;
-      this.loading = true;
-      const db = getDatabase();
-      let commentsRef = ref(db, `recipes/${this.recipeKey}/comments`);
-      commentsRef
-        .once("value", comments => {
-          if (comments.exists()) {
-            comments = Object.entries(comments.val());
-            comments = comments.map(comment => {
-              //Handle comment
-              comment[1] = this.createCommentObj(comment[1]);
+const { t } = useI18n();
 
-              //Handle subcomments
-              if (comment[1].subComments) {
-                let subComments = Object.entries(comment[1].subComments);
-                comment[1].subComments = subComments.map(subComment => {
-                  subComment[1] = this.createCommentObj(subComment[1]);
-                  return subComment;
-                });
-              }
-              return comment;
-            });
-            if (comments.length > 2) {
-              componentThis.cutOffComments = comments.splice(
-                2,
-                comments.length - 1
-              );
-            }
-            componentThis.comments = comments;
-          } else {
-            componentThis.comments = [];
-          }
-        })
-        .then(() => {
-          componentThis.loading = false;
-        })
-        .catch(error => {
-          componentThis.loading = false;
-          console.log("Error loading comments:", error.message);
-        });
-    },
-    createCommentObj(comment) {
-      comment.isMyComment = comment.userId === this.user.id;
+const authStore = useAuthStore();
 
-      if (comment.isAnonymous) {
-        comment.username = this.$t("anonymous");
-        comment.photoURL = "";
-      }
+const user = computed(() => authStore.user);
 
-      let submitDate = comment.submitDate.replace(/"/g, '');
-      comment.submitDate = getDateString(submitDate);
-      return comment;
-    }
+const props = defineProps({
+  recipeKey: {
+    type: String,
+    default: "",
   },
-  mounted() {
-    this.getComments();
+  isRecipeOwner: {
+    type: Boolean,
+    default: false,
+  },
+  update: {
+    type: Number,
+    default: 0,
+  },
+});
+
+const loading = ref(false);
+const comments = ref([]);
+const cutOffComments = ref([]);
+const updated = ref(0);
+
+const { update } = toRefs(props);
+
+watch(update, (value) => {
+  if (value !== updated.value) {
+    getComments();
+    updated.value = value;
   }
-};
+});
+
+function loadMoreComments() {
+  comments.value = comments.value.concat(cutOffComments.value.splice(0, 3));
+}
+
+async function getComments() {
+  loading.value = true;
+  try {
+    const db = getDatabase();
+    const snapshot = await get(ref(db, `recipes/${props.recipeKey}/comments`));
+    if (snapshot.exists()) {
+      const dbComments = Object.entries(snapshot.val()).map((comment) => {
+        //Handle comment
+        comment[1] = createCommentObj(comment[1]);
+
+        //Handle subcomments
+        if (comment[1].subComments) {
+          const subComments = Object.entries(comment[1].subComments);
+          comment[1].subComments = subComments.map((subComment) => {
+            subComment[1] = createCommentObj(subComment[1]);
+            return subComment;
+          });
+        }
+        return comment;
+      });
+      if (dbComments.length > 2) {
+        cutOffComments.value = dbComments.splice(2, dbComments.length - 1);
+      }
+      comments.value = dbComments;
+    } else {
+      comments.value = [];
+    }
+  } catch (error) {
+    console.log("[getComments]", error.message);
+  }
+  loading.value = false;
+}
+
+function createCommentObj(comment) {
+  comment.isMyComment = comment.userId === user.value.id;
+
+  if (comment.isAnonymous) {
+    comment.username = t("anonymous");
+    comment.photoURL = "";
+  }
+
+  const submitDate = comment.submitDate.replace(/"/g, "");
+  comment.submitDate = getDateString(submitDate);
+  return comment;
+}
 </script>

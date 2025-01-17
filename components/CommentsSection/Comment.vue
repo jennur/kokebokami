@@ -1,6 +1,6 @@
 <template>
   <div v-if="isRecipeOwner || commentObj.approved" class="comment">
-    <delete-icon
+    <DeleteIcon
       tabindex="0"
       v-if="isRecipeOwner || commentObj.isMyComment"
       class="comment_delete-btn icon"
@@ -68,13 +68,13 @@
     </button>
 
     <!-- Subcomments -->
-    <expand-transition :show="formOpen">
+    <ExpandTransition :show="formOpen">
       <comment-form
         class="sub-comments-form margin-top-lg"
         :isRecipeOwner="isRecipeOwner"
         @addComment="subCommentObj => submitSubComment(subCommentObj)"
       />
-    </expand-transition>
+    </ExpandTransition>
     <transition name="fade">
       <div
         v-if="submitted && !isRecipeOwner"
@@ -92,7 +92,7 @@
       </div>
     </transition>
     <div v-if="subComments.length" class="comment_sub-comments">
-      <sub-comment
+      <SubComment
         v-for="subComment in subComments"
         :key="subComment[0]"
         :subComment="subComment"

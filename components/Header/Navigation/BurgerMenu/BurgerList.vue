@@ -61,9 +61,10 @@
 </template>
 <script setup>
 import UserImage from "../UserImage.vue";
-import useUser from "~/composables/user.js";
+import { useAuthStore } from "~/store";
+const authStore = useAuthStore();
 
-const user = computed(() => useUser());
+const user = computed(() => authStore.user);
 const emit = defineEmits("close-menu", "logout")
 
 const props = defineProps({

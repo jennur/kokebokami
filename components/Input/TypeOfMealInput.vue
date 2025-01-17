@@ -11,7 +11,7 @@
         :value="typeOfMeal"
         :id="typeOfMeal"
         @change="
-          event => {
+          (event) => {
             handleTypeOfMeal(event.target);
           }
         "
@@ -20,51 +20,52 @@
     </label>
   </fieldset>
 </template>
-<script>
-export default {
-  name: "type-of-meal-input",
-  data() {
-    return { typeOfMeal: [] };
-  },
-  props: {
-    existingTypeOfMeal: {
-      type: Array,
-      default: () => []
-    }
-  },
-  computed: {
-    allTypesOfMeal() {
-      let allCategoryObjects = this.$store.allCategories;
-      return Object.values(
-        allCategoryObjects.filter(object => {
-          return object.typeOfMeal;
-        })[0]
-      )[0];
-    }
-  },
-  methods: {
-    handleTypeOfMeal(target) {
-      let categoryIndex = this.typeOfMeal.indexOf(target.value);
-      let typeOfMeal = this.typeOfMeal;
+<script setup>
+import { onMounted } from "vue";
+import { useRecipeStore } from "~/store";
+const recipeStore = useRecipeStore();
 
-      if (target.checked) {
-        typeOfMeal.push(target.value);
-      } else if (!target.checked && categoryIndex !== -1) {
-        typeOfMeal.splice(categoryIndex, 1);
-      }
-      this.typeOfMeal = typeOfMeal;
-      this.$emit("update", this.typeOfMeal);
-    }
+const emit = defineEmits(["update"]);
+const typeOfMeal = ref([]);
+
+const props = defineProps({
+  existingTypeOfMeal: {
+    type: Array,
+    default: () => [],
   },
-  mounted() {
-    let existingTypeOfMeal = this.existingTypeOfMeal;
-    if (existingTypeOfMeal && existingTypeOfMeal.length) {
-      existingTypeOfMeal.forEach(type => {
-        let element = document.getElementById(type);
-        if (element) element.checked = true;
-      });
-      this.checkedTypeOfMeal = this.existingTypeOfMeal;
-    }
+});
+
+const allTypesOfMeal = computed(() => {
+  const allCategories = recipeStore.allCategories;
+  return Object.values(
+    allCategories.filter((object) => {
+      return object.typeOfMeal;
+    })[0]
+  )[0];
+});
+
+function handleTypeOfMeal(target) {
+  const typeOfMeal = typeOfMeal.value;
+  const categoryIndex = typeOfMeal.indexOf(target.value);
+
+  if (target.checked) {
+    typeOfMeal.push(target.value);
+  } else if (!target.checked && categoryIndex !== -1) {
+    typeOfMeal.splice(categoryIndex, 1);
   }
-};
+  typeOfMeal.value = typeOfMeal;
+  emit("update", typeOfMeal.value);
+}
+
+onMounted(() => {
+  const existingTypeOfMeal = props.existingTypeOfMeal;
+
+  if (existingTypeOfMeal && existingTypeOfMeal.length) {
+    existingTypeOfMeal.forEach((type) => {
+      const element = document.getElementById(type);
+      if (element) element.checked = true;
+    });
+    checkedTypeOfMeal.value = existingTypeOfMeal;
+  }
+});
 </script>

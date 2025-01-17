@@ -14,63 +14,65 @@
           {{ $t("accountDetails.personalData") }}
         </h3>
         <dl class="flex-row">
-          <account-detail
+          <AccountDetail
             :title="$t('accountDetails.profileImage')"
-            :systemMessage="removeProfileImgSystemMessage || updateProfileImgSystemMessage"
+            :systemMessage="
+              removeProfileImgSystemMessage || updateProfileImgSystemMessage
+            "
             :visibleToPublic="true"
             :editOption="true"
             :removeOption="true"
-            @update="value => compressImage(value)"
+            @update="(value) => compressImage(value)"
             @remove="removeProfileImg"
             :currentValue="photoURL"
             :isImage="true"
             :isLoading="isLoading"
           />
-          <account-detail
+          <AccountDetail
             :title="$t('accountDetails.biography')"
             :systemMessage="biographySystemMessage"
             :visibleToPublic="true"
             :editOption="true"
             inputType="textarea"
-            @update="value => updateBiography(value)"
+            @update="(value) => updateBiography(value)"
             :currentValue="biography"
           />
-          <account-detail
+          <AccountDetail
             :title="$t('accountDetails.username')"
             :systemMessage="usernameSystemMessage"
             :visibleToPublic="true"
             :editOption="true"
             autocompleteType="username"
-            @update="value => updateUsername(value)"
+            @update="(value) => updateUsername(value)"
             :validate="validateUsername"
             :currentValue="username && username.length ? username : 'User'"
           />
 
-          <account-detail
+          <AccountDetail
             :systemMessage="emailSystemMessage"
             :visibleToPublic="false"
             :editOption="false"
             :title="$t('accountDetails.email')"
             inputType="email"
             autocompleteType="email"
-            @update="value => updateEmail(value)"
+            @update="(value) => updateEmail(value)"
             :currentValue="email"
           />
         </dl>
 
         <h3>{{ $t("accountDetails.recipesConnectedToYourAccount") }}</h3>
         <dl class="flex-row">
-          <account-link-list
+          <AccountLinkList
             :title="`${$t('accountDetails.myRecipes')}:`"
-            :links="userRecipes"
+            :links="recipeStore.userRecipes"
             basePath="/recipes/"
           />
-          <account-link-list
+          <AccountLinkList
             :title="`${$t('accountDetails.recipesSharedWithMe')}:`"
-            :links="sharedRecipes"
+            :links="recipeStore.userSharedRecipes"
             basePath="/recipes/"
           />
-          <account-link-list
+          <AccountLinkList
             :title="`${$t('accountDetails.myRecipeLinks')}:`"
             :links="recipeLinks"
             :externalURL="true"
@@ -79,12 +81,12 @@
 
         <h3>{{ $t("accountDetails.cooksConnectedToYourAccount") }}</h3>
         <dl class="flex-row">
-          <account-link-list
+          <AccountLinkList
             :title="`${$t('accountDetails.following')}:`"
             :links="followed"
             basePath="/cooks/"
           />
-          <account-link-list
+          <AccountLinkList
             :title="`${$t('accountDetails.followers')}:`"
             :links="followers"
             basePath="/cooks/"
@@ -99,26 +101,32 @@
               {{ $t("accountDetails.emailNotifications.infoNote") }}
             </h4>
             <p>{{ $t("accountDetails.notifyMe") }}...</p>
-            <toggle-setting
+            <ToggleSetting
               :setting="{
                 title: `${$t('accountDetails.recipeSharing')}`,
-                status: user.notificationsOff && !user.notificationsOff.recipes
+                status: !authStore.user?.notificationsOff?.recipes,
               }"
-              @update-notification-status="status => updateNotificationStatus('recipes', status)"
+              @update-notification-status="
+                (status) => updateNotificationStatus('recipes', status)
+              "
             />
-            <toggle-setting
+            <ToggleSetting
               :setting="{
                 title: `${$t('accountDetails.shoppingListSharing')}`,
-                status: user.notificationsOff && !user.notificationsOff.shoppingLists
+                status: !authStore.user?.notificationsOff?.shoppingLists,
               }"
-              @update-notification-status="status => updateNotificationStatus('shoppingLists', status)"
+              @update-notification-status="
+                (status) => updateNotificationStatus('shoppingLists', status)
+              "
             />
-            <toggle-setting
+            <ToggleSetting
               :setting="{
                 title: `${$t('accountDetails.comments')}`,
-                status: user.notificationsOff && !user.notificationsOff.comments
+                status: !authStore.user?.notificationsOff?.comments,
               }"
-              @update-notification-status="status => updateNotificationStatus('comments', status)"
+              @update-notification-status="
+                (status) => updateNotificationStatus('comments', status)
+              "
             />
           </dt>
         </dl>
@@ -138,13 +146,13 @@
                 <strong
                   class="email-notifications_status"
                   :class="{
-                    'color--pink': user.hiddenProfile,
-                    'color--blue': !user.hiddenProfile
+                    'color--pink': authStore.user.hiddenProfile,
+                    'color--blue': !authStore.user.hiddenProfile,
                   }"
-                  >{{ user.hiddenProfile ? $t("closed") : $t("open") }}</strong
+                  >{{ authStore.user.hiddenProfile ? $t("closed") : $t("open") }}</strong
                 >
-                <toggle-switch
-                  :checked="!user.hiddenProfile"
+                <ToggleSwitch
+                  :checked="!authStore.user.hiddenProfile"
                   @toggle="updateHiddenProfileStatus"
                 />
               </p>
@@ -171,16 +179,12 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import { getDatabase, ref, get } from "firebase/database";
 
 const uuid = require("uuid");
 import Compressor from "compressorjs";
-import { useCurrentUser } from 'vuefire'
-
-import user from "~/composables/user.js";
-import connectedUsers from "~/mixins/followed-and-followers.js";
-import sharedRecipes from "~/mixins/shared-recipes.js";
+import { useConnectedUsers } from "~/composables";
 import userRecipes from "~/mixins/user-recipes.js";
 import recipeLinks from "~/mixins/user-recipe-links.js";
 // import validateUsername from "~/helpers/validate-username.js";
@@ -190,343 +194,310 @@ import AccountLinkList from "~/components/Account/Displays/AccountLinkList.vue";
 import Alert from "~/components/Alert.vue";
 import ToggleSetting from "~/components/Account/Displays/ToggleSetting.vue";
 import ToggleSwitch from "~/components/Input/ToggleSwitch.vue";
+import {
+  getStorage,
+  getDownloadURL,
+  uploadBytes,
+  ref as storageRef,
+  listAll,
+  deleteObject,
+} from "firebase/storage";
+import { useAuthStore, useRecipeStore } from "~/store";
+import { useRouter } from "vue-router";
+import { onMounted } from "vue";
+import { getAuth } from "firebase/auth";
 
-export default {
-  name: "account-details",
-  components: {
-    AccountDetail,
-    AccountLinkList,
-    Alert,
-    ToggleSetting,
-    ToggleSwitch
-  },
-  head() {
-    return {
-      title: `Account details | Kokebokami`,
-      meta: [
-        {
-          name: "robots" ,
-          content: "noindex"
-        }
-      ],
-      link: [
-        {
-          rel: "canonical",
-          href: "https://kokebokami.com/account/account-details/"
-        }
-      ]
-    };
-  },
-  data() {
-    return {
-      systemMessage: "",
-      updateProfileImgSystemMessage: "",
-      removeProfileImgSystemMessage: "",
-      emailSystemMessage: "",
-      usernameSystemMessage: "",
-      biographySystemMessage: "",
-      photoURL: "",
-      username: "",
-      email: "",
-      biography: "",
-      isLoading: false,
-      showAlert: false,
-      notificationsOff: {},
-      hiddenProfile: false
-    };
-  },
-  mixins: [
-    user,
-    connectedUsers,
-    userRecipes,
-    recipeLinks,
-    sharedRecipes,
-  ],
-  computed: {
-    breadcrumbs() {
-      return [
-        { name: this.$t("navigation.home"), link: "/" },
-        { name: this.$t("navigation.myAccount"), link: "/account/" },
-        { name: this.$t("navigation.accountDetails") }
-      ];
-    }
-  },
-  methods: {
-    toggleAlert() {
-      this.showAlert = !this.showAlert;
-    },
-    setProfileImgSystemMessage(message) {
-      this.updateProfileImgSystemMessage = message;
-    },
-    updateHiddenProfileStatus(checked) {
-      let hiddenProfile = !!this.hiddenProfile;
-      if (checked === hiddenProfile) {
-        const db = getDatabase();
-          ref(db, `users/${this.user.id}`)
-          .update({ hiddenProfile: !checked })
-          .then(() => {
-            console.log("Successfully updated hidden profile status");
-            this.updateUserDetailsInStore();
-            this.hiddenProfile = !checked;
-          })
-          .catch(error =>
-            console.log("Error updating hidden profile status:", error.message)
-          );
-      }
-    },
-    updateNotificationStatus(type, status) {
-      let notificationsOff = this.notificationsOff || {};
+const router = useRouter();
+const db = getDatabase();
+const { t } = useI18n();
 
-      if (status !== (notificationsOff && notificationsOff[type])) {
-        notificationsOff[type] = status;
-        const db = getDatabase();
-          ref(db, `users/${this.user.id}/notificationsOff`)
-          .set(notificationsOff)
-          .then(() => {
-            console.log(`Successfully updated ${type} notifications status`);
-            this.notificationsOff[type] = status;
-            this.updateUserDetailsInStore();
-          })
-          .catch(error =>
-            console.log(
-              "Error updating comment notification status:",
-              error.message
-            )
-          );
-      }
-    },
-    updateUserDetailsInStore() {
-      let userObj = {
-        id: this.user.id,
-        photoURL: this.photoURL,
-        displayName: this.username,
-        email: this.email,
-        biography: this.biography,
-        notificationsOff: this.notificationsOff
-      };
-      this.$store.dispatch("SET_USER", userObj);
-    },
-    compressImage(file) {
-      this.isLoading = true;
-      let componentThis = this;
-      const imageCompressor = new Compressor(file, {
-        checkOrientation: true,
-        maxWidth: 300,
-        maxHeight: 300,
-        quality: 0.6,
-        // Convert ALL PNG images to JPEG
-        convertSize: 0,
-        success(result) {
-          componentThis.updateProfileImg(result);
-        },
-        error(error) {
-          console.log("Error compressing image:", error.message);
-        }
-      });
-    },
-    async updateProfileImg(upload) {
-      this.removeProfileImg();
-      let imageName = uuid.v1();
-      try {
-        //save image
-        let file = upload;
-        var metadata = {
-          contentType: "image/png"
-        };
-        var storageRef = this.$fire.storageref(db, );
-        var imageRef = storageRef.child(
-          `images/users/${this.user.id}/profileImg/${imageName}.png`
+const authStore = useAuthStore();
+const recipeStore = useRecipeStore();
+const connectedUsers = useConnectedUsers();
+
+useHead(() => {
+  return {
+    title: `Account details | Kokebokami`,
+    meta: [
+      {
+        name: "robots",
+        content: "noindex",
+      },
+    ],
+    link: [
+      {
+        rel: "canonical",
+        href: "https://kokebokami.com/account/account-details/",
+      },
+    ],
+  };
+});
+
+const systemMessage = ref("");
+const updateProfileImgSystemMessage = ref("");
+const removeProfileImgSystemMessage = ref("");
+const emailSystemMessage = ref("");
+const usernameSystemMessage = ref("");
+const biographySystemMessage = ref("");
+const photoURL = ref("");
+const username = ref("");
+const email = ref("");
+const biography = ref("");
+const isLoading = ref(false);
+const showAlert = ref(false);
+const notificationsOff = ref({});
+const hiddenProfile = ref(fals);
+const followers = ref(connectedUsers.followers);
+const followed = ref(connectedUsers.followed);
+// mixins: [
+//   user,
+//   connectedUsers,
+//   userRecipes,
+//   recipeLinks,
+// ],
+
+const breadcrumbs = computed(() => {
+  return [
+    { name: t("navigation.home"), link: "/" },
+    { name: t("navigation.myAccount"), link: "/account/" },
+    { name: t("navigation.accountDetails") },
+  ];
+});
+
+function toggleAlert() {
+  showAlert.value = !showAlert.value;
+}
+
+function updateHiddenProfileStatus(checked) {
+  if (checked === hiddenProfile.value) {
+    ref(db, `users/${authStore.user.id}`)
+      .update({ hiddenProfile: !checked })
+      .then(() => {
+        console.ifo(
+          "[updateHiddenProfileStatus] Successfully updated hidden profile status"
         );
-        await imageRef.put(file, metadata);
-        let photoURL = await imageRef.getDownloadURL();
-        this.photoURL = photoURL;
+        updateUserDetailsInStore();
+        hiddenProfile.value = !checked;
+      })
+      .catch((error) =>
+        console.error("[updateHiddenProfileStatus]", error.message)
+      );
+  }
+}
 
-        const db = getDatabase();
-          ref(db, "/users/" + this.user.id)
-          .update({ photoURL })
-          .then(() => {
-            this.updateProfileImgSystemMessage = "";
-            this.updateUserDetailsInStore();
-          })
-          .then(() => {
-            this.isLoading = false;
-          })
-          .catch(error => {
-            this.removeProfileImgSystemMessage = error.message;
-            console.log(error.message);
-          });
-      } catch (error) {
-        console.log("Error updating profile image:", error.message);
-        this.updateProfileImgSystemMessage = error.message;
-      }
-    },
-    removeProfileImg() {
-      if (this.user.id) {
-        this.$fire.storage
-          ref(db, )
-          .child(`images/users/${this.user.id}/profileImg`)
-          .listAll()
-          .then((res) =>  {
-            res.items.forEach((itemRef) => {
-              itemRef.delete();
-            });
-          })
-          .then(() => {
-            this.removeProfileImageFromDb();
-          })
-          .catch((error) => {
-            console.log("Error deleting files:", error.message);
-            this.removeProfileImgSystemMessage =
-              "We're having trouble deleting your profile image. Please try again later or contact us.";
-          });
-      }
-    },
-    removeProfileImageFromDb() {
-      const db = getDatabase();
-        ref(db, "/users/" + this.user.id)
-        .update({
-          photoURL: ""
-        })
-        .then(() => {
-          this.removeProfileImgSystemMessage = "";
-          this.photoURL = "";
-          this.updateUserDetailsInStore();
-          console.log("Successfully deleted profile img");
-        })
-        .catch(error => {
-          console.log(error.message);
-        });
-    },
-    updateUsername(value) {
-      const db = getDatabase();
-        ref(db, "/users/" + this.user.id)
-        .update({
-          displayName: value
-        })
-        .then(() => {
-          this.username = value;
-          this.updateUserDetailsInStore();
-          this.usernameSystemMessage = "";
-          this.usernameEditOpen = false;
-        })
-        .catch(e => {
-          this.usernameSystemMessage = e.message;
-          console.log(e);
-        });
-    },
-    updateEmail(value) {
-      /* let componentThis = this;
-      const emailRegex = /^\S+@\S+\.\S+$/;
+function updateNotificationStatus(type, status) {
+  if (status !== notificationsOff?.value[type]) {
+    notificationsOff.value[type] = status;
+    set(
+      ref(db, `users/${authStore.user.id}/notificationsOff`),
+      notificationsOff.value
+    )
+      .then(() => {
+        console.info(
+          `[updateNotificationStatus] Successfully updated ${type} notifications status`
+        );
+        notificationsOff.value[type] = status;
+        updateUserDetailsInStore();
+      })
+      .catch((error) =>
+        console.error("[updateNotificationStatus]", error.message)
+      );
+  }
+}
+function updateUserDetailsInStore() {
+  authStore.SET_USER();
+}
 
-      if (!this.email.match(emailRegex)) {
-        validated = validated * 0;
-        this.emailSystemMessage = "Please enter a valid email address";
-      } else {
-        this.emailSystemMessage = "";
-        var user = this.$fire.auth().currentUser;
-        user.updateEmail(value)
-            .then(function() {
-              componentconst db = getDatabase();
-                ref(db, "/users/" + user.id)
-                .update({
-                  email: value
-                })
-                .then(() => {
-                  componentThis.email = value;
-                  componentThis.updateUserDetailsInStore();
-                  componentThis.emailSystemMessage = "";
-                })
-                .catch(e => {
-                  componentThis.emailSystemMessage = e.message;
-                  console.log(e);
-                });
-              // Update successful.
-            }).catch(function(error) {
-            // An error happened.
-              console.log("Error updating email:", error);
-              componentThis.emailSystemMessage = error.message;
-          });
-      } */
+function compressImage(file) {
+  isLoading.value = true;
+  const imageCompressor = new Compressor(file, {
+    checkOrientation: true,
+    maxWidth: 300,
+    maxHeight: 300,
+    quality: 0.6,
+    // Convert ALL PNG images to JPEG
+    convertSize: 0,
+    success(result) {
+      updateProfileImg(result);
     },
-    updateBiography(value) {
-      const db = getDatabase();
-        ref(db, "/users/" + this.user.id)
-        .update({
-          biography: value
-        })
-        .then(() => {
-          this.biography = value;
-          this.updateUserDetailsInStore();
-          this.biographySystemMessage = "";
-        })
-        .catch(e => {
-          this.biographySystemMessage = e.message;
-          console.log(e);
-        });
+    error(error) {
+      console.error("[compressImage]", error.message);
     },
-    deleteAccount() {
-      let user = useCurrentUser();
+  });
+}
 
+async function updateProfileImg(upload) {
+  removeProfileImg();
+  const imageName = uuid.v1();
+  try {
+    //save image
+    const file = upload;
+
+    const storage = getStorage();
+    const imageRef = storageRef(
+      storage,
+      `images/users/${authStore.user.id}/profileImg/${imageName}.png`
+    );
+
+    await uploadBytes(imageRef, file, {
+      contentType: "image/png",
+    });
+
+    const downloadURL = await getDownloadURL(imageRef);
+    photoURL.value = downloadURL;
+
+    update(ref(db, `/users/${authStore.user.id}`), { photoURL: downloadURL })
+      .then(() => {
+        updateProfileImgSystemMessage.value = "";
+        updateUserDetailsInStore();
+      })
+      .then(() => {
+        isLoading.value = false;
+      })
+      .catch((error) => {
+        removeProfileImgSystemMessage.value = error.message;
+        console.error("[updateProfileImg]", error.message);
+      });
+  } catch (error) {
+    console.error("[updateProfileImg]", error.message);
+    updateProfileImgSystemMessage.value = error.message;
+  }
+}
+
+function removeProfileImg() {
+  if (authStore.user.id) {
+    listAll(storageRef(db, `images/users/${authStore.user.id}/profileImg`))
+      .then((res) => {
+        res.items.forEach((itemRef) => {
+          deleteObject(itemRef);
+        });
+      })
+      .then(() => {
+        removeProfileImageFromDb();
+      })
+      .catch((error) => {
+        console.error("[removeProfileImg]", error.message);
+        removeProfileImgSystemMessage.value =
+          "We're having trouble deleting your profile image. Please try again later or contact us.";
+      });
+  }
+}
+
+function removeProfileImageFromDb() {
+  update(ref(db, `/users/${authStore.user.id}`), {
+    photoURL: "",
+  })
+    .then(() => {
+      removeProfileImgSystemMessage.value = "";
+      photoURL.value = "";
+      updateUserDetailsInStore();
+      console.info(
+        "[removeProfileImageFromDb] Successfully deleted profile img"
+      );
+    })
+    .catch((error) => {
+      console.error("[removeProfileImageFromDb]", error.message);
+    });
+}
+function updateUsername(value) {
+  update(ref(db, `/users/${authStore.user.id}`), {
+    displayName: value,
+  })
+    .then(() => {
+      username.value = value;
+      usernameSystemMessage.value = "";
+      updateUserDetailsInStore();
+    })
+    .catch((error) => {
+      usernameSystemMessage.value =
+        "Something went wrong while updating your username.";
+      console.error("[updateUsername]", error.message);
+    });
+}
+function updateBiography(value) {
+  update(ref(db, `/users/${authStore.user.id}`), {
+    biography: value,
+  })
+    .then(() => {
+      biography.value = value;
+      biographySystemMessage.value = "";
+      updateUserDetailsInStore();
+    })
+    .catch((e) => {
+      biographySystemMessage.value = e.message;
+      console.log(e);
+    });
+}
+function deleteAccount() {
+  get(ref(db, "recipes"))
+    .then((snapshot) => {
       //Remove user's recipes
-      const db = getDatabase();
-        ref(db, "recipes")
-        .orderByChild("ownerID")
-        .once("value", recipes => {
-          recipes.forEach(recipe => {
-            if (recipe.val().ownerID === user.uid) {
-              const db = getDatabase();
-                ref(db, "recipes/" + recipe.key)
-                .remove()
-                .then(() => {
-                  console.log("Success: Deleted recipe:", recipe.key);
-                })
-                .catch(error => {
-                  console.log("Error: Recipe removal failed:", error.message);
-                });
-            }
-          });
-        })
-        .then(() => {
-          if(user.uid) {
-            const db = getDatabase();
-              ref(db, "users/" + user.uid)
-              .remove()
-              .then(() => {
-                console.log("Success: User was removed from database");
-              })
-              .catch((error) => {
-                console.log("Error: User remove failed:", error.message);
-                this.systemMessage = error.message;
-              });
-          }
-        })
-        .then(() => {
-          user && user
-            .delete()
+      snapshot.forEach((recipe) => {
+        const key = recipe.key;
+        const content = recipe.val();
+
+        if (content.ownerID === authStore.user.id) {
+          remove(ref(db, "recipes/" + key))
             .then(() => {
-              this.systemMessage =
-                "Your account was deleted successfully.";
-              this.$store.dispatch("REMOVE_USER");
-              this.$router.push("/goodbye/");
+              console.info("[deleteAccount] Successfully deleted recipe:", key);
             })
             .catch((error) => {
-              this.systemMessage = error.message;
-              console.log("Error: User delete failed:", error.message);
+              console.error(
+                "[deleteAccount] Error on recipe removal:",
+                key,
+                error.message
+              );
             });
-        })
-        .catch((error) => {
-          this.systemMessage = error.message;
-          console.log("Error: Recipes reference failed:", error.message);
-        });
-    }
-  },
-  created() {
-    this.username = this.user.displayName;
-    this.email = this.user.email;
-    this.biography = this.user.biography;
-    this.photoURL = this.user.photoURL;
-    this.hiddenProfile = this.user.hiddenProfile;
-    this.notificationsOff = this.user.notificationsOff;
-  }
-};
+        }
+      });
+    })
+    .then(() => {
+      // Remove user from database
+      if (authStore.user.id) {
+        remove(ref(db, `users/${authStore.user.id}`))
+          .then(() => {
+            console.info(
+              "[deleteAccount] Successfully removed user from database"
+            );
+          })
+          .catch((error) => {
+            console.error(
+              "[deleteAccount] Failed to remove user from database:",
+              error.message
+            );
+            systemMessage.value = error.message;
+          });
+      }
+    })
+    .then(() => {
+      const auth = getAuth();
+      const user = auth.currentUser();
+      user &&
+        deleteUser(user)
+          .then(() => {
+            systemMessage.value = "Your account was deleted successfully.";
+            authStore.REMOVE_USER();
+            router.push("/goodbye/");
+          })
+          .catch((error) => {
+            systemMessage.value = error.message;
+            console.error(
+              "[deleteAccount] Failed to delete user",
+              error.message
+            );
+          });
+    })
+    .catch((error) => {
+      systemMessage.value = error.message;
+      console.error("[deleteAccount]", error.message);
+    });
+}
+onMounted(() => {
+  username.value = authStore.user.displayName;
+  email.value = authStore.user.email;
+  biography.value = authStore.user.biography;
+  photoURL.value = authStore.user.photoURL;
+  hiddenProfile.value = authStore.user.hiddenProfile;
+  notificationsOff.value = authStore.user.notificationsOff;
+});
 </script>

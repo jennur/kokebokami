@@ -3,14 +3,16 @@ import { useAuthStore } from "./authStore"
 import { useShoppingListStore } from "./shoppingListStore"
 import { useRecipeStore } from "./recipeStore";
 
-import allCategories from "~/helpers/all-categories";
 
 const useMainStore = defineStore('main', {
   
   state: () => {
     return {
-      allCategories,
-      showLoadingSplash: false
+      showLoadingSplash: false,
+      loginModal: {
+        open: false,
+        headline: "Login"
+      }
     };
   },
   
@@ -18,6 +20,10 @@ const useMainStore = defineStore('main', {
     SHOW_LOADING_SPLASH: function(payload) {
       this.showLoadingSplash = payload;
     },
+    SHOW_LOGIN_MODAL: function({ open, headline }) {
+      this.loginModal.open = open;
+      this.loginModal.headline = headline;
+    }
   }
 });
 

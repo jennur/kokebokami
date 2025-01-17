@@ -70,7 +70,7 @@ export default defineNuxtConfig({
 
   plugins: [
     "~/plugins/router-auth.client.js",
-    "~/plugins/firebase.js"
+    "~/plugins/firebase.client.js"
   ],
 
   router: {

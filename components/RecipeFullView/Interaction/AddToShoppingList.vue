@@ -4,12 +4,12 @@
       <button
         v-if="!addingToShoppingList && !addedToShoppingList"
         class="button--increment"
-        @click="event => openSelect(event)"
+        @click="(event) => openSelect(event)"
       >
         {{ $t("recipes.addToShoppingList") }}
       </button>
       <div v-if="addingToShoppingList" class="flex-row flex-row--align-center">
-        <select-component
+        <SelectComponent
           v-if="!addNewShoppingList"
           :options="options"
           @select="handleSelect"
@@ -35,144 +35,148 @@
         >{{ $t("recipes.addedToShoppingList") }}</span
       >
     </div>
-    <button v-else
-            class="button button-xs button--round button--green padding-h-lg margin-bottom-2xl"
-            @click="event => openModal(event)"
+
+    <button
+      v-else
+      class="button button-xs button--round button--green padding-h-lg margin-bottom-2xl"
+      @click="(event) => openModal(event)"
     >
       {{ $t("recipes.loginToAddToShoppingList") }}
     </button>
   </div>
 </template>
 
-<script>
-import { getDatabase, ref, get } from "firebase/database";
-
-import user from "~/composables/user.js";
-import shoppingLists from "~/mixins/shopping-lists.js";
+<script setup>
+import { getDatabase, ref, child, push } from "firebase/database";
 import SelectComponent from "~/components/Input/SelectComponent.vue";
+import { useMainStore, useShoppingListStore, useAuthStore } from "~/store";
 
-export default {
-  name: "add-to-shopping-list",
-  components: {
-    SelectComponent
+const db = getDatabase();
+const mainStore = useMainStore();
+const shoppingListStore = useShoppingListStore();
+const authStore = useAuthStore();
+
+const user = computed(() => authStore.user);
+
+const props = defineProps({
+  recipeTitle: {
+    type: String,
+    default: "",
   },
-  props: {
-    recipeTitle: {
-      type: String,
-      default: ""
-    },
-    ingredients: {
-      type: Array,
-      default: () => []
+  ingredients: {
+    type: Array,
+    default: () => [],
+  },
+});
+
+const chosenShoppingList = ref([]);
+const newListTitle = ref("");
+const addingToShoppingList = ref(false);
+const addedToShoppingList = ref(false);
+const addNewShoppingList = ref(false);
+
+const options = computed(() => {
+  const listTitles = shoppingLists.map((list) => {
+    return list.title || "Untitled list";
+  });
+
+  listTitles.push("Create new list");
+  return listTitles;
+});
+
+function openModal(event) {
+  event && event.stopPropagation();
+  mainStore.SHOW_LOGIN_MODAL({
+    open: true,
+    headline: "Log in to add to shopping list",
+  });
+}
+
+function openSelect(event) {
+  event && event.stopPropagation();
+  chosenShoppingList.value = shoppingLists?.key;
+  addingToShoppingList.value = true;
+}
+
+function handleSelect(option) {
+  let listFound = false;
+
+  shoppingListStore.shoppingLists.forEach((list) => {
+    if (list.title === option) {
+      chosenShoppingList.value = list;
+      listFound = true;
     }
-  },
-  mixins: [user, shoppingLists],
-  data() {
-    return {
-      chosenShoppingList: [],
-      newListTitle: "",
-      addingToShoppingList: false,
-      addedToShoppingList: false,
-      addNewShoppingList: false
-    };
-  },
-  computed: {
-    options() {
-      let shoppingLists = this.shoppingLists || [];
-      let options = shoppingLists.map(list => {
-        return list.title || "Untitled list";
-      });
-      options.push("Create new list");
-      return options;
-    }
-  },
-  methods: {
-    openModal(event) {
-      event && event.stopPropagation();
-      this.$store.dispatch('SHOW_LOGIN_MODAL', {open: true, headline: 'Log in to add to shopping list'});
-    },
-    openSelect(event) {
-      event && event.stopPropagation();
-      let shoppingLists = this.shoppingLists;
-      this.chosenShoppingList = shoppingLists && shoppingLists.key;
-      this.addingToShoppingList = true;
-    },
-    handleSelect(option) {
-      let shoppingLists = this.shoppingLists || [];
-      let listFound = false;
-      shoppingLists.forEach(list => {
-        if (list.title === option) {
-          this.chosenShoppingList = list;
-          listFound = true;
-        }
-      });
-      if (!listFound) {
-        this.addNewShoppingList = true;
-      }
-    },
-    addToShoppingList() {
-      let listItems = this.ingredients.map(ingredient => {
-        return {
-          text: `${ingredient.amount}  ${ingredient.item}`,
-          complete: false
-        };
-      });
-
-      if (this.newListTitle === "" && this.chosenShoppingList && this.chosenShoppingList.key) {
-
-        const db = getDatabase();
-          ref(db, `shoppingLists/${this.chosenShoppingList.key}`)
-          .child("subLists")
-          .push({
-            title: this.recipeTitle,
-            listItems
-          })
-          .then(() => {
-            console.log("Successfully added to shoppingList:", this.chosenShoppingList.title);
-            this.$store.dispatch("SET_SHOPPING_LIST_COUNT");
-            this.addedToShoppingList = true;
-            this.addingToShoppingList = false;
-          })
-          .catch(error =>
-            console.log("Failed to add to shopping list:", error.message)
-          );
-      }
-      else if (this.newListTitle !== "") {
-
-        let userObj = {
-          id: this.user.id,
-          displayName: this.user.displayName
-        }
-        const db = getDatabase();
-        let shoppingListRef = ref(db, `shoppingLists`);
-
-        shoppingListRef
-          .push({
-            title: this.newListTitle,
-            createdBy: userObj,
-            owners: [userObj]
-          })
-          .then(shoppingList => {
-            shoppingListRef
-              .child(shoppingList.key)
-              .child("subLists")
-              .push({
-                title: this.recipeTitle,
-                listItems
-              })
-              .then(() => {
-                console.log("Successfully added to shoppingList:", this.newListTitle);
-                this.$store.dispatch("SET_SHOPPING_LIST_COUNT");
-                this.addedToShoppingList = true;
-                this.addingToShoppingList = false;
-                this.addNewShoppingList = false;
-              })
-              .catch(error =>
-                console.log("Failed to add to shopping list:", error.message)
-              );
-          });
-      }
-    }
+  });
+  if (!listFound) {
+    addNewShoppingList.value = true;
   }
-};
+}
+
+function addToShoppingList() {
+  const listItems = props.ingredients.map((ingredient) => {
+    return {
+      text: `${ingredient.amount}  ${ingredient.item}`,
+      complete: false,
+    };
+  });
+
+  if (
+    newListTitle.value === "" &&
+    chosenShoppingList.value &&
+    chosenShoppingList.value.key
+  ) {
+    push(
+      child(
+        ref(db, `shoppingLists/${chosenShoppingList.value.key}`),
+        "subLists",
+        {
+          title: props.recipeTitle,
+          listItems,
+        }
+      )
+    )
+      .then(() => {
+        console.log(
+          "Successfully added to shoppingList:",
+          chosenShoppingList.value.title
+        );
+        shoppingListStore.REFRESH();
+        addedToShoppingList.value = true;
+        addingToShoppingList.value = false;
+      })
+      .catch((error) =>
+        console.log("Failed to add to shopping list:", error.message)
+      );
+  } else if (newListTitle.value !== "") {
+    const userObj = {
+      id: user.value.id,
+      displayName: user.value.displayName,
+    };
+    const shoppingListRef = ref(db, `shoppingLists`);
+
+    push(shoppingListRef, {
+      title: newListTitle.value,
+      createdBy: userObj,
+      owners: [userObj],
+    }).then((shoppingList) => {
+      push(child(child(shoppingListRef), shoppingList.key), "subLists", {
+        title: props.recipeTitle,
+        listItems,
+      })
+        .then(() => {
+          console.log(
+            "Successfully added to shoppingList:",
+            newListTitle.value
+          );
+          shoppingListStore.REFRESH();
+          addedToShoppingList.value = true;
+          addingToShoppingList.value = false;
+          addNewShoppingList.value = false;
+        })
+        .catch((error) =>
+          console.log("Failed to add to shopping list:", error.message)
+        );
+    });
+  }
+}
 </script>

@@ -45,7 +45,12 @@
     <section v-else class="comment-form">
       <button
         class="button button-sm button--green margin-right-sm"
-        @click="$store.dispatch('SHOW_LOGIN_MODAL', {open: true, headline: 'Log in to comment on this recipe'})"
+        @click="
+          mainStore.SHOW_LOGIN_MODAL({
+            open: true,
+            headline: 'Log in to comment on this recipe',
+          })
+        "
       >
         {{ $t("loginText") }}
       </button>
@@ -53,64 +58,63 @@
     </section>
 
     <transition name="fade">
-      <div v-if="submitted && !isRecipeOwner" class="comment-form_success padding-v-md padding-h-lg margin-v-lg">
+      <div
+        v-if="submitted && !isRecipeOwner"
+        class="comment-form_success padding-v-md padding-h-lg margin-v-lg"
+      >
         🎉{{ $t("comments.awaitingApproval") }}
       </div>
     </transition>
 
     <transition name="fade">
-      <div v-if="error" class="comment-form_error padding-v-md padding-h-lg margin-v-lg">
+      <div
+        v-if="error"
+        class="comment-form_error padding-v-md padding-h-lg margin-v-lg"
+      >
         🌧{{ $t("comments.errorSubmitting") }}
       </div>
     </transition>
   </div>
 </template>
 
-<script>
-import user from "~/composables/user.js";
+<script setup>
 import CookSilhouette from "~/assets/graphics/icons/cook-silhouette-circle.svg";
+import { useMainStore, useAuthStore } from "~/store";
 
-export default {
-  name: "comment-form",
-  components: { CookSilhouette },
-  props: {
-    submitted: {
-      type: Boolean,
-      default: false
-    },
-    error: {
-      type: Boolean,
-      default: false
-    },
-    isRecipeOwner: {
-      type: Boolean,
-      deafult: false
-    }
-  },
-  data() {
-    return {
-      anonymous: false,
-      comment: "",
-      showingPreview: false,
-      showingPreviewModal: false
-    };
-  },
-  mixins: [user],
-  methods: {
-    handleSubmit() {
-      let submitDate = JSON.stringify(new Date());
+const authStore = useAuthStore();
+const mainStore = useMainStore();
 
-      let commentObj = {
-        userId: this.user.id,
-        username: this.user.displayName,
-        photoURL: this.user.photoURL && this.user.photoURL || "",
-        isAnonymous: this.anonymous,
-        comment: this.comment,
-        submitDate,
-        approved: this.isRecipeOwner
-      };
-      this.$emit("addComment", commentObj);
-    }
-  }
-};
+const user = computed(() => authStore.user);
+
+const props = defineProps({
+  submitted: {
+    type: Boolean,
+    default: false,
+  },
+  error: {
+    type: Boolean,
+    default: false,
+  },
+  isRecipeOwner: {
+    type: Boolean,
+    deafult: false,
+  },
+});
+const anonymous = ref(false);
+const comment = ref("");
+
+function handleSubmit() {
+  const submitDate = JSON.stringify(new Date());
+
+  const commentObj = {
+    userId: user.value.id,
+    username: user.value.displayName,
+    photoURL: (user.value.photoURL && user.value.photoURL) || "",
+    isAnonymous: anonymous.value,
+    comment: comment.value,
+    submitDate,
+    approved: props.isRecipeOwner,
+  };
+  emit("addComment", commentObj);
+}
 </script>

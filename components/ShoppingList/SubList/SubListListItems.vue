@@ -9,14 +9,14 @@
       >
         <label
           :class="{
-            complete: listItems[index].complete
+            complete: listItems[index].complete,
           }"
         >
           <input
             tabindex="0"
             type="checkbox"
             :checked="listItems[index].complete"
-            @change="event => handleComplete(index)"
+            @change="(event) => handleComplete(index)"
           />
           {{ item.text }}
         </label>
@@ -29,127 +29,118 @@
         class="margin-top-sm"
       >
         <input type="text" v-model="updatedListItems[index].text" />
-        <decrement-button @decrement="removeListItem(index)" />
+        <DecrementButton @decrement="removeListItem(index)" />
       </li>
     </ul>
-    <button v-if="!editMode"
-            @click="toggleEditMode" 
-            class="button button-xs button--green-border button--round"
-            tabindex="0"
+    <button
+      v-if="!editMode"
+      @click="toggleEditMode"
+      class="button button-xs button--green-border button--round"
+      tabindex="0"
     >
-      {{$t('editList')}}
-      <edit-icon class="icon margin-left-sm"/>
+      {{ $t("editList") }}
+      <edit-icon class="icon margin-left-sm" />
     </button>
-    
+
     <div v-if="editMode" class="flex-row flex-row--align-center">
-      <increment-button
+      <IncrementButton
         class="margin-right-md margin-v-lg"
         @increment="addNewListItem"
-        >{{$t('addItem')}}</increment-button
+        >{{ $t("addItem") }}</IncrementButton
       >
       <button
         v-if="listItems.length"
         class="button button-xs button--round padding-h-lg margin-v-lg"
         @click="saveListItems"
       >
-        {{$t('save')}}
+        {{ $t("save") }}
       </button>
     </div>
   </div>
 </template>
 
-<script>
+<script setup>
 import { getDatabase, ref, get } from "firebase/database";
-
-import user from "~/composables/user.js";
-
 import IncrementButton from "~/components/Input/IncrementButton.vue";
 import DecrementButton from "~/components/Input/DecrementButton.vue";
 
-export default {
-  name: "sublist-list-items",
-  components: {
-    IncrementButton,
-    DecrementButton
+const emit = defineEmits(["update"]);
+const props = defineProps({
+  mainListKey: {
+    type: String,
+    default: "",
   },
-  props: {
-    mainListKey: {
-      type: String,
-      default: ""
-    },
-    subListKey: {
-      type: String,
-      default: ""
-    },
-    listItems: {
-      type: Array,
-      default: () => []
-    }
+  subListKey: {
+    type: String,
+    default: "",
   },
-  data() {
-    return {
-      editMode: !this.listItems.length,
-      updatedListItems: this.listItems || []
-    };
+  listItems: {
+    type: Array,
+    default: () => [],
   },
-  mixins: [user],
-  watch: {
-    listItems: function(val) {
-      this.updatedListItems = val;
-    }
-  },
-  methods: {
-    toggleEditMode() {
-      this.editMode = !this.editMode;
-    },
-    addNewListItem() {
-      this.updatedListItems.push({ text: "", complete: false });
-    },
-    removeListItem(index) {
-      this.updatedListItems.splice(index, 1);
-    },
-    handleComplete(index) {
-      let complete = this.updatedListItems[index].complete;
-      this.updatedListItems[index].complete = !complete;
-      this.saveListItems();
-    },
-    saveListItems() {
-      let mainListKey = this.mainListKey;
-      let listItems = this.updatedListItems;
-      let subListKey = this.subListKey;
+});
 
-      const db = getDatabase();
-      let mainListRef = ref(db, `shoppingLists/${mainListKey}`);
+const editMode = ref(!props.listItems.length);
+const updatedListItems = ref(props.listItems || []);
 
-      if (mainListKey && subListKey !== "") {
-        mainListRef
-          .child("subLists")
-          .child(subListKey)
-          .update({ listItems })
-          .then(() => {
-            //console.log("Sublist successfully updated");
-            this.editMode = false;
-            this.$emit("update");
-          })
-          .catch(error =>
-            console.log("Error updating subList:", error.message)
-          );
-      } else if (mainListKey && subListKey === "") {
-        console.log("Adding new sublist");
-        mainListRef
-          .child("subLists")
-          .push({ listItems })
-          .then(result => {
-            console.log("Successfully added new sublist");
-            this.editMode = false;
-            this.$emit("update");
-          })
-          .catch(error => console.log("Error setting subList:", error.message));
-      }
-      else {
-        console.log("Something went wrong while trying to add/update sublist");
-      }
-    }
-  },
-};
+watch(listItems, (value) => {
+  props.updatedListItems = value;
+});
+
+function toggleEditMode() {
+  editMode.value = !editMode.value;
+}
+
+function addNewListItem() {
+  updatedListItems.value.push({ text: "", complete: false });
+}
+
+function removeListItem(index) {
+  updatedListItems.value.splice(index, 1);
+}
+
+function handleComplete(index) {
+  let complete = updatedListItems.value[index].complete;
+  updatedListItems.value[index].complete = !complete;
+  saveListItems();
+}
+
+function saveListItems() {
+  const mainListKey = props.mainListKey;
+  const listItems = updatedListItems.value;
+  const subListKey = props.subListKey;
+
+  const db = getDatabase();
+  const mainListRef = ref(db, `shoppingLists/${mainListKey}`);
+
+  if (mainListKey && subListKey !== "") {
+    update(child(child(mainListRef, "subLists"), subListKey), { listItems })
+      .then(() => {
+        //console.log("Sublist successfully updated");
+        editMode.value = false;
+        emit("update");
+      })
+      .catch((error) =>
+        console.error(
+          "[saveListItems] Failed to update sublist:",
+          error.message
+        )
+      );
+  } else if (mainListKey && subListKey === "") {
+    console.info("[saveListItems] Adding new sublist");
+    push(child(mainListRef, "subLists"), { listItems })
+      .then(() => {
+        console.info("[saveListItems] Successfully added new sublist");
+        editMode.value = false;
+        emit("update");
+      })
+      .catch((error) =>
+        console.error("[saveListItems] Failed to add sublist:", error.message)
+      );
+  } else {
+    console.error(
+      "[saveListItems] Something went wrong while trying to add/update sublist"
+    );
+  }
+}
 </script>

@@ -7,68 +7,59 @@
     </div>
     <comment-form
       class="margin-bottom-xl"
-      @addComment="commentObj => submitComment(commentObj)"
+      @addComment="(commentObj) => submitComment(commentObj)"
       :isRecipeOwner="user && user.id === recipeOwnerID"
       :submitted="submitted"
-      :error="error"
+      :error="hasError"
     />
     <comments
       :recipeKey="recipeKey"
       :isRecipeOwner="user && user.id === recipeOwnerID"
       :update="updateComments"
-      @send-email="commentObj => sendEmail(commentObj)"
+      @send-email="(commentObj) => sendEmail(commentObj)"
     />
   </div>
 </template>
 
-<script>
-import { getDatabase, ref, get } from "firebase/database";
-
+<script setup>
 import axios from "axios";
-import user from "~/composables/user.js";
-
+import { getDatabase, ref, get } from "firebase/database";
 import CommentForm from "./CommentForm.vue";
 import Comments from "./Comments.vue";
+import { useAuthStore } from "~/store";
 
-export default {
-  name: "comments-section",
-  components: {
-    CommentForm,
-    Comments
-  },
-  props: {
-    recipeKey: {
-      type: String,
-      default: ""
-    },
-    recipeOwnerID: {
-      type: String,
-      default: ""
-    },
-    recipeTitle: {
-      type: String,
-      default: ""
-    }
-  },
-  data() {
-    return {
-      submitted: false,
-      error: false,
-      updateComments: 0
-    };
-  },
-  mixins: [user],
-  methods: {
-    async sendEmail(commentObj) {
-      let username = commentObj.isAnonymous
-        ? `${this.$t("anonymous")}`
-        : commentObj.username;
+const authStore = useAuthStore();
+const { t } = useI18n();
 
-      let message = `<div style="display:block;width:100%;height:100%;padding-bottom:20px;padding-left:50px;padding-right:50px;background-color:#fffdf8;color:#063c60;">
+const props = defineProps({
+  recipeKey: {
+    type: String,
+    default: "",
+  },
+  recipeOwnerID: {
+    type: String,
+    default: "",
+  },
+  recipeTitle: {
+    type: String,
+    default: "",
+  },
+});
+
+const submitted = ref(false);
+const hasError = ref(false);
+const updateComments = ref(0);
+
+async function sendEmail(commentObj) {
+  const username = commentObj.isAnonymous
+    ? `${t("anonymous")}`
+    : commentObj.username;
+
+  const message = `<div style="display:block;width:100%;height:100%;padding-bottom:20px;padding-left:50px;padding-right:50px;background-color:#fffdf8;color:#063c60;">
                       <p style="color:#063c60;">
                         <br>
                             <span style="color:#063c60;">
-                              ${username} just commented on your recipe '${this.recipeTitle}':
+                              ${username} just commented on your recipe '${props.recipeTitle}':
                             </span>
                         <br>
                             <blockquote style="color:#063c60;font-size:18px;width:100%;max-width:500px;">«${commentObj.comment}»</blockquote>
@@ -91,42 +82,45 @@ export default {
                         </span>
                       </p>
                     </div>`;
-      const db = getDatabase();
-        ref(db, `users/${this.recipeOwnerID}/notificationsOff/comments`)
-        .once("value", snapshot => {
-          let commentNotificationsOff = snapshot.exists() && snapshot.val();
-          if (!commentNotificationsOff) {
-            axios
-              .post("/api/send-email", {
-                receiverID: this.recipeOwnerID,
-                subject: `${username} just commented on your recipe 🧑‍💻`,
-                message
-              })
-              .catch(error =>
-                console.log("Error sending notification email:", error)
-              );
-          }
-        });
-    },
-    submitComment(commentObj) {
-      if(this.recipeKey){
-        const db = getDatabase();
-          ref(db, `recipes/${this.recipeKey}/comments`)
-          .push(commentObj)
-          .then(() => {
-            this.submitted = true;
-            this.error = false;
-            this.updateComments++;
-            if (this.user && this.user.id !== this.recipeOwnerID) {
-              this.sendEmail(commentObj);
-            }
-          })
-          .catch(error => {
-            this.error = true;
-            console.log("Error submitting comment:", error.message);
-          });
-      }
+
+  try {
+    const db = getDatabase();
+    const snapshot = await get(
+      ref(db, `users/${props.recipeOwnerID}/notificationsOff/comments`)
+    );
+    const commentNotificationsOff = snapshot.exists() && snapshot.val();
+    if (!commentNotificationsOff) {
+      axios
+        .post("/api/send-email", {
+          receiverID: props.recipeOwnerID,
+          subject: `${username} just commented on your recipe 🧑‍💻`,
+          message,
+        })
+        .catch((hasE) =>
+          console.log("Error sending notification email:", hasE)
+        );
     }
+  } catch (hasE) {
+    console.hasE("[sendEmail]", hasE.message);
   }
-};
+}
+
+function submitComment(commentObj) {
+  if (props.recipeKey) {
+    const db = getDatabase();
+    push(ref(db, `recipes/${props.recipeKey}/comments`), commentObj)
+      .then(() => {
+        submitted.value = true;
+        hasError.value = false;
+        updateComments.value++;
+        if (authStore.user?.id !== props.recipeOwnerID) {
+          sendEmail(commentObj);
+        }
+      })
+      .catch((hasE) => {
+        hasError.value = true;
+        console.log("Error submitting comment:", hasE.message);
+      });
+  }
+}
 </script>

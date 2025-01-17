@@ -16,11 +16,13 @@
 <script setup>
 import GoogleLogin from "~/components/Login/GoogleLogin.vue";
 import UserImage from "~/components/Header/Navigation/UserImage.vue";
-import useUser from "~/composables/user.js";
+import { useAuthStore } from "~/store";
+const authStore = useAuthStore();
+
 
 const { $localePath } = useNuxtApp();
 
-const user = computed(() => useUser());
+const user = computed(() => authStore.user);
 
 const accountMenu = computed(() => {
   return {

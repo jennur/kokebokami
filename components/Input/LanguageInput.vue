@@ -6,31 +6,25 @@
       :options="languages"
       :preSelected="existingLanguage"
       defaultValue="All languages"
-      @select="language => $emit('selected', language)"
+      @select="(language) => $emit('selected', language)"
     />
   </fieldset>
 </template>
-<script>
+<script setup>
 import SelectComponent from "./SelectComponent.vue";
-export default {
-  name: "language-input",
-  components: {
-    SelectComponent
+import { useRecipeStore } from "../../store";
+
+const recipeStore = useRecipeStore();
+
+const props = defineProps({
+  existingLanguage: {
+    type: String,
+    default: "",
   },
-  props: {
-    existingLanguage: {
-      type: String,
-      default: ""
-    },
-    naked: {
-      type: Boolean,
-      default: false
-    }
+  naked: {
+    type: Boolean,
+    default: false,
   },
-  computed: {
-    languages() {
-      return this.$store.allCategories.languages;
-    }
-  }
-};
+});
+const languages = computed(() => recipeStore.allCategories.languages);
 </script>

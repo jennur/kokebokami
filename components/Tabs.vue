@@ -22,7 +22,7 @@
         >
       </div>
     </div>
-    <slot />
+    <slot></slot>
   </div>
 </template>
 
@@ -49,7 +49,7 @@ export default {
   },
   computed: {
     isTablet() {
-      let width = window.innerWidth > 0 ? window.innerWidth : screen.width;
+      let width = window?.innerWidth > 0 ? window?.innerWidth : screen.width;
       return width < 800;
     },
     activeTitle() {

@@ -6,14 +6,14 @@
         v-if="!editMode && !loading"
         class="recipe_type-of-meal"
         :class="{ editable: isRecipeOwner }"
-        @click="event => toggleEditMode(event)"
+        @click="(event) => toggleEditMode(event)"
         >{{ typeOfMealList }}</span
       >
       <edit-icon
         tabindex="0"
         v-if="isRecipeOwner && !typeOfMealList && !editMode"
         class="icon"
-        @click="event => toggleEditMode(event)"
+        @click="(event) => toggleEditMode(event)"
       />
       <category-edit
         v-if="editMode"
@@ -25,81 +25,74 @@
     </p>
   </div>
 </template>
-<script>
-import { getDatabase, ref, get } from "firebase/database";
-
+<script setup>
+import { getDatabase, ref } from "firebase/database";
 import CategoryEdit from "./Editing/CategoryEdit.vue";
+import { useRecipeStore } from "~/store";
 
-export default {
-  name: "type-of-meal-display",
-  components: {
-    CategoryEdit
-  },
-  props: {
-    typeOfMeal: {
-      type: Array,
-      default: () => []
-    },
-    isRecipeOwner: {
-      type: Boolean,
-      default: false
-    },
-    recipeKey: {
-      type: String,
-      default: ""
-    }
-  },
-  data() {
-    return {
-      editMode: false,
-      loading: false
-    };
-  },
-  computed: {
-    typeOfMealList() {
-      let allTypesOfMeal = this.$store.allCategories.typeOfMeal;
-      let localetypeOfMeal = this.$t("recipes.allCategories.typeOfMeal");
-      return this.typeOfMeal
-        .map(type => {
-          let index = allTypesOfMeal.indexOf(type);
-          type = localetypeOfMeal[index];
-          return type.charAt(0).toUpperCase() + type.slice(1, type.length);
-        })
-        .join(", ");
-    },
-    allTypesOfMeal() {
-      return this.$store.allCategories.typeOfMeal;
-    }
-  },
-  methods: {
-    toggleEditMode(event) {
-      event && event.stopPropagation();
-      if (this.isRecipeOwner) {
-        this.editMode = !this.editMode;
-      }
-    },
-    saveTypesOfMeal(types) {
-      this.editMode = false;
-      let recipeKey = this.recipeKey;
+const recipeStore = useRecipeStore();
+const { tm } = useI18n();
 
-      if (recipeKey) {
-        this.loading = true;
-        const db = getDatabase();
-        let typeOfMealRef = ref(db, `recipes/${recipeKey}/typeOfMeal`);
-        typeOfMealRef
-          .set(types)
-          .then(() => {
-            console.log("Successfully updated type of meal");
-            this.loading = false;
-            this.$emit("update");
-          })
-          .catch(error =>
-            console.log("Error setting type of meal:", error.message)
-          );
-      } else {
-        this.$emit("update", { typeOfMeal: types });
-      }
-    }
+const emit = defineEmits(["update"]);
+
+const props = defineProps({
+  typeOfMeal: {
+    type: Array,
+    default: () => [],
+  },
+  isRecipeOwner: {
+    type: Boolean,
+    default: false,
+  },
+  recipeKey: {
+    type: String,
+    required: true
+  },
+});
+
+const editMode = ref(false);
+const loading = ref(false);
+
+const typeOfMealList = computed(() => {
+  let allTypesOfMeal = recipeStore.allCategories.typeOfMeal;
+  let localetypeOfMeal = tm("recipes.allCategories.typeOfMeal");
+
+  return props.typeOfMeal
+    .map((type) => {
+      let index = allTypesOfMeal.indexOf(type);
+      type = localetypeOfMeal[index].body.static;
+      return type.charAt(0).toUpperCase() + type.slice(1, type.length);
+    })
+    .join(", ");
+});
+
+const allTypesOfMeal = computed(() => {
+  return recipeStore.allCategories.typeOfMeal;
+});
+
+function toggleEditMode(event) {
+  event && event.stopPropagation();
+  if (props.isRecipeOwner) {
+    editMode.value = !editMode.value;
   }
-};
+}
+
+function saveTypesOfMeal(types) {
+  editMode.value = false;
+
+  if (props.recipeKey) {
+    loading.value = true;
+    const db = getDatabase();
+
+    set(db, ref(db, `recipes/${props.recipeKey}/typeOfMeal`), types)
+      .then(() => {
+        console.info("[saveTypesOfMeal] Successfully updated type of meal");
+        loading.value = false;
+        emit("update");
+      })
+      .catch((error) => console.error("[saveTypesOfMeal]", error.message));
+  } else {
+    emit("update", { typeOfMeal: types });
+  }
+}
 </script>

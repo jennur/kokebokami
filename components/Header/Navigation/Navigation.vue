@@ -26,19 +26,19 @@
 </template>
 
 <script setup>
-
 import Logo from "./Logo.vue";
-import useUser from "~/composables/user.js";
 import BurgerMenu from "./BurgerMenu/BurgerMenu.vue";
 import DesktopMenu from "./DesktopMenu/DesktopMenu.vue";
 import Shortcuts from "./Shortcuts.vue";
+import { useAuthStore } from "~/store";
 
-const { $localePath, $switchLocalePath, $store, $router } = useNuxtApp();
+const authStore = useAuthStore();
+const { $switchLocalePath } = useNuxtApp();
 
 const burgerMenuOpen = ref(false);
 const emit = defineEmits(["toggle-menu"]);
 
-const user = computed(() => useUser());
+const user = computed(() => authStore.user);
 
 function toggleMenu() {
   burgerMenuOpen.value = !burgerMenuOpen.value;
@@ -49,8 +49,7 @@ function closeMenu() {
   emit("toggle-menu", false);
 }
 function logOut() {
-  $store.dispatch("USER_SIGN_OUT");
-  $router.push($localePath("/"));
+  authStore.SIGN_OUT();
   burgerMenuOpen.value = false;
 }
 

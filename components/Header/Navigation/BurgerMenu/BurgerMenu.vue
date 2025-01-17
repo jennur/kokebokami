@@ -17,7 +17,10 @@
 <script setup>
 import BurgerIcon from "./BurgerIcon.vue";
 import BurgerList from "./BurgerList.vue";
-import useUser from "~/composables/user.js";
+import { useAuthStore } from "~/store";
+const authStore = useAuthStore();
+
+const user = computed(() => authStore.user);
 
 const { $localePath } = useNuxtApp();
 const { t } = useI18n();
@@ -36,14 +39,8 @@ const props = defineProps({
   open: {
     type: Boolean,
     default: false
-  },
-  user: {
-    type: Object,
-    default: () => {}
   }
 });
-
-const user = computed(() => useUser());
 
 const menuItems = computed(() => {
   let links = [];

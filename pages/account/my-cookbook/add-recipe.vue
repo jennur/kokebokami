@@ -1,7 +1,7 @@
 <template>
   <div>
     <BreadCrumbs :routes="breadcrumbs" />
-    <recipe-full-view
+    <RecipeFullView
       v-if="recipe"
       :recipe="recipe"
       :isRecipeOwner="true"
@@ -10,115 +10,104 @@
   </div>
 </template>
 
-<script>
-import { getDatabase, ref, get } from "firebase/database";
-
+<script setup>
+import { getDatabase, ref, get, update } from "firebase/database";
 import RecipeFullView from "~/components/RecipeFullView/RecipeFullView.vue";
-import user from "~/composables/user.js";
+import { useAuthStore } from "~/store";
 
-export default {
-  name: "addRecipe",
-  head() {
-    return {
-      title: `Add new recipe | Kokebokami`,
-      meta: [
-        {
-          name: "robots" ,
-          content: "noindex"
-        }
-      ],
-      link: [
-        {
-          rel: "canonical",
-          href: "https://kokebokami.com/account/add-recipe/"
-        }
-      ]
-    };
-  },
-  components: { RecipeFullView },
-  mixins: [user],
-  data() {
-    return {
-      recipeKey: null,
-      recipe: {
-        public: false,
-        title: "",
-        description: "",
-        ingredients: [],
-        instructions: [],
-        categories: [],
-        typeOfMeal: [],
-        freeFrom: [],
-      }
-    };
-  },
-  computed: {
-    breadcrumbs() {
-      return [
-        { name: this.$t("navigation.home"), link: "/" },
-        {
-          name: this.$t("navigation.myAccount"),
-          link: "/account/"
-        },
-        {
-          name: this.$t("navigation.myCookbook"),
-          link: "/account/my-cookbook/"
-        },
-        { name: this.$t("navigation.addRecipe") }
-      ];
-    }
-  },
-  methods: {
-    saveRecipe(recipeObj) {
-      let recipeKey = this.recipeKey;
-      let date = new Date;
-      date = date.toISOString();
+const authStore = useAuthStore();
 
-      if (!recipeKey) {
-        recipeObj = {
-          ...recipeObj,
-          datePublished: date,
-          ownerID: this.user.id
-        };
-        const db = getDatabase();
-        ref(db, "recipes")
-          .push(recipeObj)
-          .then(result => {
-            console.log("Saved new recipe");
-            this.recipeKey = result.key;
-          })
-          .then(() => {
-            this.getRecipe();
-          });
-      }
-      else {
-        recipeObj = recipeObj || {};
-        const db = getDatabase();
-          ref(db, `recipes/${recipeKey}`)
-          .update(recipeObj)
-          .then(() => {
-            console.log("Successfully updated recipe:", recipeObj);
-          })
-          .then(() => {
-            this.getRecipe();
-          });
-      }
+const db = getDatabase();
+
+useHead(() => {
+  return {
+    title: `Add new recipe | Kokebokami`,
+    meta: [
+      {
+        name: "robots",
+        content: "noindex",
+      },
+    ],
+    link: [
+      {
+        rel: "canonical",
+        href: "https://kokebokami.com/account/add-recipe/",
+      },
+    ],
+  };
+});
+
+const recipeKey = ref(null);
+const recipe = reactive({
+  public: false,
+  title: "",
+  description: "",
+  ingredients: [],
+  instructions: [],
+  categories: [],
+  typeOfMeal: [],
+  freeFrom: [],
+});
+
+const user = computed(() => authStore.user);
+const breadcrumbs = computed(() => {
+  return [
+    { name: this.$t("navigation.home"), link: "/" },
+    {
+      name: this.$t("navigation.myAccount"),
+      link: "/account/",
     },
-    getRecipe() {
-      if (this.user) {
-        const db = getDatabase();
-        let recipeRef = ref(db, `recipes/${this.recipeKey}`);
-        recipeRef
-          .once("value", recipe => {
-            if (recipe.exists()) {
-              this.recipe = recipe.val();
-            }
-          })
-          .catch(error =>
-            console.log("Error: Failed getting recipe:", error.message)
-          );
+    {
+      name: this.$t("navigation.myCookbook"),
+      link: "/account/my-cookbook/",
+    },
+    { name: this.$t("navigation.addRecipe") },
+  ];
+});
+
+function saveRecipe(recipeObj) {
+  let date = new Date();
+  date = date.toISOString();
+
+  if (!recipeKey.value) {
+    recipeObj = {
+      ...recipeObj,
+      datePublished: date,
+      ownerID: user.value.id,
+    };
+
+    push(ref(db, "recipes"), recipeObj)
+      .then((result) => {
+        console.log("[saveRecipe] Successfully saved new recipe");
+        recipeKey.value = result.key;
+      })
+      .then(() => {
+        getRecipe();
+      });
+  } else {
+    recipeObj = recipeObj || {};
+
+    update(ref(db, `recipes/${recipeKey}`), recipeObj)
+      .then(() => {
+        console.log("Successfully updated recipe:", recipeObj);
+      })
+      .then(() => {
+        getRecipe();
+      });
+  }
+}
+
+async function getRecipe() {
+  if (user.value) {
+    try {
+      const snapshot = await get(ref(db, `recipes/${recipeKey.value}`));
+
+      if (snapshot.exists()) {
+        recipe.value = snapshot.val();
       }
+    } catch (error) {
+      console.log("Error: Failed getting recipe:", error.message);
     }
   }
-};
+}
 </script>

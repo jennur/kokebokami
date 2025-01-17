@@ -1,7 +1,7 @@
 <template>
   <div class="container container--center margin-auto margin-bottom-xl">
 
-    <div v-if="$store.user && hidden">
+    <div v-if="authStore.user && hidden">
       <cook-silhouette class="illustration--cook-bubble" />
       <div>
         <h3> Hmmm... </h3>
@@ -14,32 +14,26 @@
 
     <div v-else class="flex-center-container flex-column margin-top-xl">
       <h3> Login to discover cooks </h3>
-      <cook-silhouette class="illustration--cook-bubble" />
+      <CookSilhouette class="illustration--cook-bubble" />
 
       <div class="margin-auto">
-        <login-container class="margin-top-xl" @update="$emit('update')" />
+        <LoginContainer class="margin-top-xl" @update="$emit('update')" />
       </div>
     </div>
   </div>
 </template>
 
-<script>
-import cookSilhouette from "~/assets/graphics/icons/cook-silhouette-circle.svg";
-import user from "~/composables/user";
+<script setup>
+import CookSilhouette from "~/assets/graphics/icons/cook-silhouette-circle.svg";
 import LoginContainer from "~/components/Login/LoginContainer";
+import { useAuthStore } from "~/store";
 
-export default {
-  name: "cook-hidden",
-  components: {
-    cookSilhouette,
-    LoginContainer
-  },
-  props: {
-    hidden: {
-      type: Boolean,
-      default: false
-    }
-  },
-  mixins: [user]
-}
+const authStore = useAuthStore();
+
+const props = defineProps({
+  hidden: {
+    type: Boolean,
+    default: false
+  }
+})
 </script>

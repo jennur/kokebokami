@@ -5,7 +5,7 @@
       <Navigation @toggle-menu="handleMenu" />
     </div>
 
-    <LoadingSplash v-if="$store.showLoadingSplash" />
+    <LoadingSplash v-if="mainStore.showLoadingSplash" />
   </header>
 </template>
 
@@ -13,6 +13,9 @@
 import { onMounted, onUnmounted } from "vue";
 import Navigation from "./Navigation/Navigation.vue";
 import LoadingSplash from "~/components/Login/LoadingSplash";
+
+import { useMainStore } from "~/store";
+const mainStore = useMainStore();
 
 const previousScrollValue = ref(0);
 const scrollDown = ref(false);
