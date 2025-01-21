@@ -126,7 +126,7 @@
 </template>
 
 <script setup>
-import { getDatabase, ref, get } from "firebase/database";
+import { getDatabase, ref as dbRef, get, update, push } from "firebase/database";
 import axios from "axios";
 import ShareIcon from "~/assets/graphics/icons/shareicon.svg";
 
@@ -134,7 +134,6 @@ import SettingsDropdown from "~/components/SettingsDropdown.vue";
 import Alert from "~/components/Alert.vue";
 import ShareBox from "./ShareBox.vue";
 import IncrementButton from "~/components/Input/IncrementButton.vue";
-import DecrementButton from "~/components/Input/DecrementButton.vue";
 import SubList from "./SubList.vue";
 
 import generatePath from "~/helpers/generatePath";
@@ -207,7 +206,7 @@ function saveTitle() {
     const title = updatedTitle.value;
 
     if (mainListKey) {
-      update(ref(db, `shoppingLists/${mainListKey}`), { title })
+      update(dbRef(db, `shoppingLists/${mainListKey}`), { title })
         .then(() => {
           console.info("[saveTitle] Successfully updated main title");
           toggleEditTitle();
@@ -224,7 +223,7 @@ function saveTitle() {
         id: authStore.user.id,
         displayName: authStore.user.displayName,
       };
-      push(ref(db, `shoppingLists`), {
+      push(dbRef(db, `shoppingLists`), {
         title,
         createdBy: currentUserObj,
         owners: [currentUserObj],
@@ -272,8 +271,8 @@ function sendEmail(receiver) {
 }
 
 function deleteShoppingList() {
-  const mainListRef = ref(db, `shoppingLists/${props.list.key}`);
-  const ownersRef = ref(db, `shoppingLists/${props.list.key}/owners`);
+  const mainListRef = dbRef(db, `shoppingLists/${props.list.key}`);
+  const ownersRef = dbRef(db, `shoppingLists/${props.list.key}/owners`);
 
   const owners = props.list.owners && Object.values(props.list.owners);
 

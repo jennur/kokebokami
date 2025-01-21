@@ -31,7 +31,7 @@
 </template>
 
 <script>
-import { getDatabase, ref, get } from "firebase/database";
+import { getDatabase, ref as dbRef, get } from "firebase/database";
 
 import PrepTimeEdit from "./Editing/PrepTimeEdit";
 import getTotalTime from "~/helpers/get-total-time.js";
@@ -69,7 +69,7 @@ export default {
         savePrepTime(path, time) {
             if(this.recipeKey){
                 const db = getDatabase();
-                ref(db, `recipes/${this.recipeKey}/${path}`)
+                dbRef(db, `recipes/${this.recipeKey}/${path}`)
                 .set(time)
                 .then(() => {
                     console.log(`Successfully updated ${path} time`);

@@ -9,7 +9,7 @@
         class="profile_img margin-right-xl"
         :style="`background-image: url(${user.photoURL});`"
         :aria-label="user.displayName + '´s profile picture'"
-      />
+      ></div>
       <div v-else class="profile_img--backup margin-right-xl">
         <backupImg />
       </div>
@@ -30,19 +30,14 @@
     </p>
   </div>
 </template>
-<script>
+
+<script setup>
 import backupImg from "~/assets/graphics/icons/cook-silhouette-circle.svg";
 
-export default {
-  name: "profile-view",
-  components: {
-    backupImg
-  },
-  props: {
-    user: {
-      type: Object,
-      default: () => {}
-    }
+const props = defineProps({
+  user: {
+    type: Object,
+    default: () => {}
   }
-};
+});
 </script>

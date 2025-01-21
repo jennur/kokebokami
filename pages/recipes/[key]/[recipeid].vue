@@ -29,7 +29,7 @@
 </template>
 
 <script setup>
-import { getDatabase, ref, get } from "firebase/database";
+import { getDatabase, ref as dbRef, get } from "firebase/database";
 
 import useRecipeData from "../../../composables/recipeData";
 import ExpandTransition from "~/components/Transitions/Expand.vue";
@@ -74,9 +74,9 @@ function handleUpdate() {
   date = date.toISOString();
 
   if (!recipe.datePublished) {
-    set(ref(db, `recipes/${recipe.id}/datePublished`), date);
+    set(dbRef(db, `recipes/${recipe.id}/datePublished`), date);
   } else {
-    set(ref(db, `recipes/${recipe.id}/dateModified`));
+    set(dbRef(db, `recipes/${recipe.id}/dateModified`));
   }
 
   useRecipeData()

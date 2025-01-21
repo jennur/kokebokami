@@ -84,7 +84,7 @@ function saveTypesOfMeal(types) {
     loading.value = true;
     const db = getDatabase();
 
-    set(db, ref(db, `recipes/${props.recipeKey}/typeOfMeal`), types)
+    set(db, dbRef(db, `recipes/${props.recipeKey}/typeOfMeal`), types)
       .then(() => {
         console.info("[saveTypesOfMeal] Successfully updated type of meal");
         loading.value = false;

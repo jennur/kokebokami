@@ -1,4 +1,4 @@
-import { getDatabase, ref, get } from "firebase/database";
+import { getDatabase, ref as dbRef, get } from "firebase/database";
 
 import generatePath from "./generatePath";
 import recipeModel from "./recipe-model";
@@ -16,7 +16,7 @@ export default async function getRecipeWithMetadata(recipePath) {
   };
 
   try {
-    const snapshot = get(ref(db, "recipes"));
+    const snapshot = get(dbRef(db, "recipes"));
     if (snapshot.exists()) {
       const recipes = snapshot.val();
       for (const key in recipes) {

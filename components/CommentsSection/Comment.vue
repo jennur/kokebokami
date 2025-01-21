@@ -113,7 +113,7 @@
 </template>
 
 <script>
-import { getDatabase, ref, get } from "firebase/database";
+import { getDatabase, ref as dbRef, get } from "firebase/database";
 
 import CookSilhouette from "~/assets/graphics/icons/cook-silhouette-circle.svg";
 import SubComment from "./SubComment.vue";
@@ -213,7 +213,7 @@ export default {
       const db = getDatabase();
       let recipeKey = this.recipeKey;
       let commentKey = this.comment[0];
-      let subCommentsRef = ref(db, 
+      let subCommentsRef = dbRef(db, 
         `recipes/${recipeKey}/comments/${commentKey}/subComments`
       );
       subCommentsRef
@@ -241,7 +241,7 @@ export default {
 
       if (this.isSubComment) {
         const db = getDatabase();
-        let subCommentRef = ref(db, 
+        let subCommentRef = dbRef(db, 
           `recipes/${recipeKey}/comments/${mainCommentKey}/subComments/${commentKey}`
         );
         subCommentRef
@@ -255,7 +255,7 @@ export default {
           });
       } else {
         const db = getDatabase();
-        let commentRef = ref(db, 
+        let commentRef = dbRef(db, 
           `recipes/${recipeKey}/comments/${commentKey}`
         );
         commentRef
@@ -277,7 +277,7 @@ export default {
 
       if (this.isSubComment) {
         const db = getDatabase();
-        let subCommentRef = ref(db, 
+        let subCommentRef = dbRef(db, 
           `recipes/${recipeKey}/comments/${mainCommentKey}/subComments/${commentKey}`
         );
         subCommentRef
@@ -291,7 +291,7 @@ export default {
           });
       } else {
         const db = getDatabase();
-        let commentRef = ref(db, 
+        let commentRef = dbRef(db, 
           `recipes/${recipeKey}/comments/${commentKey}`
         );
         commentRef

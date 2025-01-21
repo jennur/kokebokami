@@ -1,8 +1,7 @@
 <template>
-  <section
-    class="add-recipe-from-url padding-h-lg padding-v-xl"
-  >
+  <section class="add-recipe-from-url padding-h-lg padding-v-xl">
     <h3 class="add-recipe-from-url_heading">Add new recipe from URL</h3>
+
     <form class="form mobile-width margin-auto">
       <fieldset class="flex-column">
         <label for="url">Recipe URL</label>
@@ -17,9 +16,11 @@
         />
         <span class="form--required">*</span>
       </fieldset>
-      <expand-transition :show="!!systemMessage">
+
+      <ExpandTransition :show="!!systemMessage">
         <div class="system-message">{{ systemMessage }}</div>
-      </expand-transition>
+      </ExpandTransition>
+
       <fieldset class="flex-column">
         <label for="title">Title</label>
         <input
@@ -32,17 +33,18 @@
           class="form_title"
         />
       </fieldset>
+
       <fieldset class="flex-column">
         <label for="category">Category</label>
         <div class="flex-row flex-row--align-center">
-          <select-component
+          <SelectComponent
             ref="categorySelect"
             id="category-select"
             name="category-select"
             class="select--green margin-right-md"
             :options="categories"
             defaultValue="No category"
-            @select="option => handleSelect(option)"
+            @select="(option) => handleSelect(option)"
           />
           <button
             v-if="!newCategory"
@@ -54,7 +56,7 @@
           <input
             v-if="newCategory"
             v-model="category"
-            ref="category"
+            ref="categoryInput"
             type="text"
             name="category"
             id="category"
@@ -63,6 +65,7 @@
           />
         </div>
       </fieldset>
+
       <fieldset class="flex-column">
         <label for="labels">Labels (separate with comma)</label>
         <input
@@ -75,6 +78,7 @@
           class="form_labels"
         />
       </fieldset>
+
       <fieldset class="flex-column">
         <label for="comment">Comment</label>
         <textarea
@@ -85,8 +89,9 @@
           id="comment"
           placeholder="Write a note to self about the recipe .."
           class="form_comment"
-        />
+        ></textarea>
       </fieldset>
+
       <fieldset class="container container--center margin-top-2xl">
         <button
           class="button button-sm button--cancel"
@@ -108,98 +113,85 @@
   </section>
 </template>
 
-<script>
-import { getDatabase, ref, get } from "firebase/database";
-
-import user from "~/composables/user.js";
-import recipeLinks from "~/mixins/user-recipe-links.js";
+<script setup>
+// TODO: Merge with RecipeLinkEditForm ?
+import { getDatabase, ref as dbRef, push } from "firebase/database";
 
 import ExpandTransition from "~/components/Transitions/Expand.vue";
 import SelectComponent from "~/components/Input/SelectComponent.vue";
-export default {
-  name: "add-recipe-from-url-form",
-  components: {
-    ExpandTransition,
-    SelectComponent
-  },
-  data() {
-    let regex = /-/gi;
-    let title = this.getDefaultTitle();
-    return {
-      newCategory: false,
-      selectedCategory: "",
-      systemMessage: "",
-      url: "",
-      title,
-      category: "",
-      labels: "",
-      comment: ""
-    };
-  },
-  mixins: [user, recipeLinks],
-  computed: {
-    categories() {
-      let links = this.recipeLinks;
-      let categories = [];
-      links && links.forEach(link => {
-        if (link.category) {
-          if (categories.indexOf(link.category) === -1)
-            categories.push(link.category);
-        }
-      });
-      return categories;
-    }
-  },
-  methods: {
-    getDefaultTitle() {
-      let url = this.url;
-      if (url) {
-        let urlItems = url
-          .split("/")
-          .filter(item => {
-          return item.length;
-        });
-        return urlItems.pop().replace(/-/g, " ");
-      }
-      return "";
-    },
-    addNewCategory() {
-      this.newCategory = true;
-    },
-    handleSelect(option) {
-      this.selectedCategory = option;
-    },
-    handleFormSubmit() {
-      let url = this.url || "";
-      let title = this.title || this.getDefaultTitle();
-      let category = this.category || this.selectedCategory || "";
-      let labels = this.labels || "";
-      let comment = this.comment || "";
+import { useAuthStore, useRecipeStore } from "~/store";
 
-      let urlCheck = /(?:http(s)?:\/\/)[\w.-]+(?:\.[\w.-]+)+[\w\-._~:\?#[\]@!$&'()*+,;=.]+/;
-      console.log("Valid url:", urlCheck.test(url));
+const db = getDatabase();
+const authStore = useAuthStore();
+const recipeStore = useRecipeStore();
 
-      if (urlCheck.test(url)) {
-        this.systemMessage = "";
-        let dataObject = {
-          url,
-          title,
-          category,
-          labels,
-          comment
-        };
-        try {
-          const db = getDatabase();
-          ref(db, `users/${this.user.id}/recipeLinks`).push(dataObject);
-          this.$emit("save");
-        } catch (error) {
-          console.log("Error saving recipe link:", error.message);
-        }
-      } else {
-        console.log("Url wrong format:", url);
-        this.systemMessage = "The URL is not the correct format.";
-      }
+const emit = defineEmits(["save"]);
+
+const newCategory = ref(false);
+const selectedCategory = ref("");
+const systemMessage = ref("");
+const url = ref("");
+const title = ref(getDefaultTitle());
+const category = ref("");
+const labels = ref("");
+const comment = ref("");
+
+const categories = computed(() => {
+  const linkCategories = [];
+
+  recipeStore?.userLinks.forEach((link) => {
+    if (link.category) {
+      if (linkCategories.indexOf(link.category) === -1)
+        linkCategories.push(link.category);
     }
+  });
+  return linkCategories;
+});
+
+function getDefaultTitle() {
+  if (url.value) {
+    const urlItems = url.value.split("/").filter((item) => {
+      return item.length;
+    });
+    return urlItems.pop().replace(/-/g, " ");
   }
-};
+  return "";
+}
+
+function addNewCategory() {
+  newCategory.value = true;
+}
+
+function handleSelect(option) {
+  selectedCategory.value = option;
+}
+
+function handleFormSubmit() {
+  const urlCheck =
+    /(?:http(s)?:\/\/)[\w.-]+(?:\.[\w.-]+)+[\w\-._~:\?#[\]@!$&'()*+,;=.]+/;
+  console.info("[handleFormSubmit] Valid url:", urlCheck.test(url.value));
+
+  if (urlCheck.test(url.value)) {
+    systemMessage.value = "";
+
+    const dataObject = {
+      url: url.value,
+      title: title.value,
+      category: category.value || selectedCategory.value || "",
+      labels: labels.value,
+      comment: comment.value,
+    };
+
+    push(dbRef(db, `users/${authStore.user.id}/recipeLinks`), dataObject)
+      .then(() => {
+        emit("save");
+      })
+      .catch((error) => {
+        console.error("[handleFormSubmit]", error.message);
+      });
+  } else {
+    console.log("[handleFormSubmit] Wrong URL format:", url);
+    systemMessage.value = "The URL is not the correct format.";
+  }
+}
 </script>

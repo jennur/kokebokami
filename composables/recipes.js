@@ -1,11 +1,10 @@
-import { getDatabase, ref, get } from "firebase/database";
+import { getDatabase, ref as dbRef, get } from "firebase/database";
 
 export default async function useRecipes(){
   try {
     console.info("[useRecipes] Getting recipes")
     const db = getDatabase();
-    const dbRef = ref(db, "recipes");
-    const snapshot = await get(dbRef);
+    const snapshot = await get(dbRef(db, "recipes"));
 
     
     console.info("[useRecipes] Loaded")

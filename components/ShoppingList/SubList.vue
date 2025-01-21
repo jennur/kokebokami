@@ -20,7 +20,7 @@
 </template>
 
 <script setup>
-import { getDatabase, ref, get } from "firebase/database";
+import { getDatabase, ref as dbRef, get } from "firebase/database";
 import { randomWords } from "~/helpers/shopping-list-random-words";
 
 import SettingsDropdown from "~/components/SettingsDropdown.vue";
@@ -53,7 +53,7 @@ function createBackupTitle() {
 
 function deleteSubList() {
   const db = getDatabase();
-  remove(ref(db, `shoppingLists/${props.mainListKey}/subLists/${props.subListKey}`))
+  remove(dbRef(db, `shoppingLists/${props.mainListKey}/subLists/${props.subListKey}`))
     .then(() => {
       console.info("[deleteSubList] Succesfully deleted sublist");
       editListItems.value = false;

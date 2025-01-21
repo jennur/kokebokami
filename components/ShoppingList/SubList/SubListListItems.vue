@@ -60,9 +60,11 @@
 </template>
 
 <script setup>
-import { getDatabase, ref, get } from "firebase/database";
+import { getDatabase, ref as dbRef, update, child, push } from "firebase/database";
 import IncrementButton from "~/components/Input/IncrementButton.vue";
 import DecrementButton from "~/components/Input/DecrementButton.vue";
+
+const db = getDatabase();
 
 const emit = defineEmits(["update"]);
 const props = defineProps({
@@ -83,8 +85,10 @@ const props = defineProps({
 const editMode = ref(!props.listItems.length);
 const updatedListItems = ref(props.listItems || []);
 
-watch(listItems, (value) => {
-  props.updatedListItems = value;
+const propListItems = toRef(props, "listItems");
+
+watch(propListItems, (value) => {
+  updatedListItems.value = value;
 });
 
 function toggleEditMode() {
@@ -110,8 +114,7 @@ function saveListItems() {
   const listItems = updatedListItems.value;
   const subListKey = props.subListKey;
 
-  const db = getDatabase();
-  const mainListRef = ref(db, `shoppingLists/${mainListKey}`);
+  const mainListRef = dbRef(db, `shoppingLists/${mainListKey}`);
 
   if (mainListKey && subListKey !== "") {
     update(child(child(mainListRef, "subLists"), subListKey), { listItems })

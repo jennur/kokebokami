@@ -36,13 +36,13 @@
       >
         <CooksList
           v-if="activeTabIndex == 0"
-          :cooks="followed"
+          :cooks="authStore.followed"
           :emptyListMessage="$t('cooks.followedEmptyListMessage')"
           class="margin-top-lg"
         />
         <CooksList
           v-if="activeTabIndex == 1"
-          :cooks="followers"
+          :cooks="authStore.followers"
           :emptyListMessage="$t('cooks.followersEmptyListMessage')"
           class="margin-top-lg"
         />
@@ -55,16 +55,12 @@ import Tabs from "~/components/Tabs.vue";
 import CooksSearch from "~/components/Cooks/CooksSearch/CooksSearch.vue";
 import CooksList from "~/components/Cooks/CooksList.vue";
 import CooksSilhouettes from "~/assets/graphics/illustrations/cooks.svg";
-import { useConnectedUsers } from "~/composables";
 import { useMainStore, useAuthStore } from "~/store";
 
 const { t } = useI18n();
 
 const authStore = useAuthStore();
 const mainStore = useMainStore();
-
-const { getConnectedUsers } = useConnectedUsers();
-const connectedUsers = await getConnectedUsers();
 
 
 useHead(() => {
@@ -80,8 +76,6 @@ useHead(() => {
 });
 
 const activeTabIndex = ref(0);
-const followed = ref(connectedUsers.followed);
-const followers = ref(connectedUsers.followers);
 
 const user = computed(() => authStore.user);
 const breadcrumbs = computed(() => {
@@ -93,10 +87,5 @@ const breadcrumbs = computed(() => {
 
 async function handleTabSwitch(index) {
   activeTabIndex.value = index;
-  if (!followed.length && !followers.length) {
-    const connectedUsers = await getConnectedUsers();
-    followed.value = connectedUsers.followed;
-    followers.value = connectedUsers.followers;
-  }
 }
 </script>

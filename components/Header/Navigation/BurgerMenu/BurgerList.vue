@@ -65,7 +65,7 @@ import { useAuthStore } from "~/store";
 const authStore = useAuthStore();
 
 const user = computed(() => authStore.user);
-const emit = defineEmits("close-menu", "logout")
+const emit = defineEmits(["close-menu", "logout"])
 
 const props = defineProps({
   open: {

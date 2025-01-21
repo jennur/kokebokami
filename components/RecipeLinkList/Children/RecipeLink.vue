@@ -1,46 +1,41 @@
 <template>
   <div class="recipe-link-wrap">
     <div
-      class="recipe-link padding-h-xl"
-      :class="{ 'recipe-link--no-link': editMode }"
+      :class="['recipe-link padding-h-xl', editMode && 'recipe-link--no-link']"
     >
-      <expand-transition :show="editMode" class="recipe-link_edit-form-wrap">
-        <recipe-link-edit-form
+      <ExpandTransition :show="editMode" class="recipe-link_edit-form-wrap">
+        <RecipeLinkEditForm
           class="padding-lg"
-          :recipeLinkID="link && link.id"
+          :recipeLinkID="link?.id"
           :recipeLink="link"
           :addingToCategory="addingToCategory"
-          @update="update"
+          @update="updateLink"
           @close-edit-mode="cancelEdit"
         />
-      </expand-transition>
+      </ExpandTransition>
       <div
         v-if="!editMode"
         class="padding-h-xl"
-        @click="event => openLink(event)"
+        @click="(event) => openLink(event)"
       >
         <div class="recipe-link_settings">
-          <settings-dropdown v-if="!editMode && link && link.id">
-            <span @click="event => toggleEditMode(event)">
+          <SettingsDropdown v-if="!editMode && link?.id">
+            <span @click="(event) => toggleEditMode(event)">
               <edit-icon class="icon margin-right-md" />
               Edit link
             </span>
-            <span class="system-message" @click="event => toggleAlert(event)"
-              ><delete-icon
-                tabindex="0"
-                class="icon margin-right-md"
-              />Delete link</span
+            <span class="system-message" @click="(event) => toggleAlert(event)"
+              ><delete-icon tabindex="0" class="icon margin-right-md" />Delete
+              link</span
             >
-          </settings-dropdown>
+          </SettingsDropdown>
         </div>
         <new-tab-icon class="recipe-link_new-tab-icon" />
-        <h3
-          class="recipe-link_title margin-top-lg margin-bottom-md"
-        >
-          {{ link && link.title }}
+        <h3 class="recipe-link_title margin-top-lg margin-bottom-md">
+          {{ link?.title }}
         </h3>
         <div class="recipe-link_description margin-bottom-lg">
-          {{ link && link.comment }}
+          {{ link?.comment }}
         </div>
         <div v-if="labels" class="margin-bottom-2xl">
           <span
@@ -51,14 +46,12 @@
           >
         </div>
         <div class="recipe-link_published-by">
-          {{ link && link.hostName }}
+          {{ link?.hostName }}
         </div>
       </div>
     </div>
     <Alert
-      :alertMessage="
-        `Are you sure you want to delete this link: '${link.title}'? `
-      "
+      :alertMessage="`Are you sure you want to delete this link: '${link?.title}'? `"
       :showAlert="showAlert"
       @confirmed="deleteLink"
       @cancel="toggleAlert"
@@ -66,91 +59,92 @@
   </div>
 </template>
 
-<script>
-import { getDatabase, ref, get } from "firebase/database";
+<script setup>
+import { getDatabase, ref as dbRef, get, remove } from "firebase/database";
+import { onMounted } from "vue";
 
-import user from "~/composables/user.js";
 import RecipeLinkEditForm from "./RecipeLinkEditForm.vue";
 import newTabIcon from "assets/graphics/icons/new-tab-icon.svg";
 import ExpandTransition from "~/components/Transitions/Expand.vue";
 import SettingsDropdown from "~/components/SettingsDropdown.vue";
 import Alert from "~/components/Alert.vue";
 
-export default {
-  name: "recipe-link",
-  components: {
-    RecipeLinkEditForm,
-    newTabIcon,
-    SettingsDropdown,
-    ExpandTransition,
-    Alert
+import { useAuthStore } from "~/store";
+
+const authStore = useAuthStore();
+const db = getDatabase();
+
+const emit = defineEmits(["cancel", "update"]);
+
+const props = defineProps({
+  link: {
+    type: Object,
+    default: () => ({
+      id: null,
+      labels: null,
+      url: null,
+      title: null,
+      hostName: null,
+      comment: null,
+    }),
   },
-  props: {
-    link: {
-      type: Object,
-      default: () => {}
-    },
-    addingToCategory: {
-      type: String,
-      default: null
-    }
+  addingToCategory: {
+    type: String,
+    default: null,
   },
-  data() {
-    return {
-      editMode: false,
-      showAlert: false
-    };
-  },
-  mixins: [user],
-  computed: {
-    labels() {
-      let labels = this.link && this.link.labels;
-      return labels && labels.split(",");
-    }
-  },
-  methods: {
-    cancelEdit() {
-      this.editMode = false;
-      this.$emit("cancel");
-    },
-    toggleEditMode(event) {
-      event && event.stopPropagation();
-      this.editMode = !this.editMode;
-    },
-    update() {
-      this.$emit("update");
-      this.toggleEditMode();
-    },
-    toggleAlert(event) {
-      event && event.stopPropagation();
-      this.showAlert = !this.showAlert;
-    },
-    openLink(event) {
-      event && event.stopPropagation();
-      let url = this.link && this.link.url;
-      if (url) window.open(url, "_blank");
-    },
-    deleteLink() {
-      let linkID = this.link && this.link.id;
-      if (linkID && this.user && this.user.id) {
-        const db = getDatabase();
-          ref(db, `users/${this.user.id}/recipeLinks/${linkID}`)
-          .remove()
-          .then(res => {
-            this.showAlert = false;
-            this.update();
-          })
-          .catch(error => {
-            this.submitSystemMessage = error.message;
-            console.log("Error deleting recipe:", error.message);
-          });
-      }
-    }
-  },
-  mounted() {
-    if (this.link && !this.link.url) {
-      this.editMode = true;
-    }
+});
+
+const editMode = ref(false);
+const showAlert = ref(false);
+const systemMessage = ref(null);
+
+const labels = computed(() => {
+  return props.link?.labels?.split(",");
+});
+
+function cancelEdit() {
+  editMode.value = false;
+  emit("cancel");
+}
+
+function toggleEditMode(event) {
+  event && event.stopPropagation();
+  editMode.value = !editMode.value;
+}
+
+function updateLink() {
+  emit("update");
+  toggleEditMode();
+}
+
+function toggleAlert(event) {
+  event && event.stopPropagation();
+  showAlert.value = !showAlert.value;
+}
+
+function openLink(event) {
+  event && event.stopPropagation();
+  const url = props.link?.url;
+  if (url) window.open(url, "_blank");
+}
+
+function deleteLink() {
+  if (props.link?.id && authStore.user?.id) {
+    remove(dbRef(db, `users/${authStore.user.id}/recipeLinks/${props.link.id}`))
+      .then(() => {
+        showAlert.value = false;
+        updateLink();
+      })
+      .catch((error) => {
+        systemMessage.value = error.message;
+        console.error("[deleteLink]", error.message);
+      });
   }
-};
+}
+
+onMounted(() => {
+  if (props.link && !props.link.url) {
+    editMode.value = true;
+  }
+});
 </script>

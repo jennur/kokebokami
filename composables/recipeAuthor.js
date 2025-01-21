@@ -1,9 +1,9 @@
-import { getDatabase, ref, get } from "firebase/database";
+import { getDatabase, ref as dbRef, get } from "firebase/database";
 import generatePath from "../helpers/generatePath";
 
 export default async function useRecipeAuthor(ownerID){
   const db = getDatabase();
-  const snapshot = await get(ref(db, `users/${ownerID}/displayName`));
+  const snapshot = await get(dbRef(db, `users/${ownerID}/displayName`));
 
   const author = {
     id: ownerID,

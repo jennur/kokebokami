@@ -4,72 +4,60 @@
     <div class="system-message system-message--with-bg margin-v-lg">
       {{ $t("accountDetails.publicProfileViewNote") }}
     </div>
-    <profile-view :user="user && !user.hiddenProfile ? user : null" />
+    <ProfileView :user="user && !user.hiddenProfile ? user : null" />
     <h3>{{ $t("cooks.checkOutMyRecipes") }}</h3>
-    <recipes-list
-      :recipes="currentUsersPublicRecipes ? currentUsersPublicRecipes : []"
+    <RecipesList
+      :recipes="publicUserRecipes"
     />
   </section>
 </template>
 
-<script>
-import user from "~/composables/user.js";
-import publicRecipes from "~/composables/publicRecipes.js";
-
+<script setup>
 import ProfileView from "~/components/ProfileView.vue";
 import RecipesList from "~/components/RecipePreview/RecipesList";
+import { useAuthStore, useRecipeStore } from "~/store";
 
-export default {
-  name: "profile",
-  head() {
-    return {
-      title: `Profile preview | Kokebokami`,
-      meta: [
-        {
-          name: "robots" ,
-          content: "noindex"
-        }
-      ],
-      link: [
-        {
-          rel: "canonical",
-          href: "https://kokebokami.com/account/public-profile-view/"
-        }
-      ]
-    };
-  },
-  components: { ProfileView, RecipesList },
-  data(){
-    return {
-      publicRecipes: []
-    }
-  },
-  async asyncData({app}){
-    return await publicRecipes(app)
-  },
-  mixins: [user],
-  computed: {
-    breadcrumbs() {
-      return [
-        { name: this.$t("navigation.home"), link: "/" },
-        {
-          name: this.$t("navigation.myAccount"),
-          link: "/account/"
-        },
-        {
-          name: this.$t("navigation.accountDetails"),
-          link: "/account/account-details/"
-        },
-        { name: this.$t("navigation.publicProfileView") }
-      ];
+const authStore = useAuthStore();
+const recipeStore = useRecipeStore();
+
+const { t } = useI18n();
+
+useHead(() => {
+  return {
+    title: `Profile preview | Kokebokami`,
+    meta: [
+      {
+        name: "robots",
+        content: "noindex",
+      },
+    ],
+    link: [
+      {
+        rel: "canonical",
+        href: "https://kokebokami.com/account/public-profile-view/",
+      },
+    ],
+  };
+});
+
+const breadcrumbs = computed(() => {
+  return [
+    { name: t("navigation.home"), link: "/" },
+    {
+      name: t("navigation.myAccount"),
+      link: "/account/",
     },
-    currentUsersPublicRecipes() {
-      let currentUsersPublicRecipes = this.publicRecipes.filter(recipe => {
-        return recipe.ownerID === this.user.id;
-      });
+    {
+      name: t("navigation.accountDetails"),
+      link: "/account/account-details/",
+    },
+    { name: t("navigation.publicProfileView") },
+  ];
+});
 
-      return currentUsersPublicRecipes;
-    }
-  }
-};
+const publicUserRecipes = computed(() => {
+  return recipeStore.publicRecipes.filter((recipe) => {
+    return recipe.ownerID === authStore.user.id;
+  }) || [];
+});
 </script>

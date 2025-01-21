@@ -4,7 +4,7 @@
   </div>
 </template>
 <script>
-import { getDatabase, ref, get } from "firebase/database";
+import { getDatabase, ref as dbRef, get } from "firebase/database";
 
 const uuid = require("uuid");
 import ImageInput from "~/components/Input/ImageInput.vue";
@@ -52,7 +52,7 @@ export default {
       let recipeKey = this.recipeKey;
       if (recipeKey) {
         const db = getDatabase();
-        let photoRef = ref(db, `recipes/${recipeKey}/photoURL`);
+        let photoRef = dbRef(db, `recipes/${recipeKey}/photoURL`);
         photoRef.once("value", snapshot => {
           if (snapshot.exists()) {
             let photoURL = snapshot.val();

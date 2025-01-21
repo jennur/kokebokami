@@ -56,10 +56,10 @@
         <RecipeLinkList
           class="margin-top-2xl"
           :hiddenCategories="hiddenCategories"
-          :links="recipeLinks"
+          :links="recipeStore.userLinks"
           :emptyListMessage="emptyListMessage"
           @open-form="toggleRecipeForm"
-          @update="getRecipeLinks"
+          @update="recipeStore.REFRESH_USER_LINKS"
         />
       </div>
     </Tabs>
@@ -67,16 +67,16 @@
 </template>
 
 <script setup>
-// import recipeLinks from "~/mixins/user-recipe-links.js";
-
 import ExpandTransition from "~/components/Transitions/Expand.vue";
 import AddRecipeFromUrlForm from "~/components/AddRecipeForm/AddRecipeFromUrlForm.vue";
 import Tabs from "~/components/Tabs.vue";
 import RecipesList from "~/components/RecipePreview/RecipesList.vue";
 import RecipeLinkList from "~/components/RecipeLinkList/RecipeLinkList.vue";
-import { useAuthStore } from "~/store";
+import { useAuthStore, useRecipeStore } from "~/store";
+import { onMounted } from "vue";
 
 const authStore = useAuthStore();
+const recipeStore = useRecipeStore();
 const { t } = useI18n();
 
 useHead(() => {
@@ -102,7 +102,6 @@ const dropdown = ref(false);
 const addRecipeFromUrl = ref(false);
 const hiddenCategories = ref([]);
 
-// mixins: [user, userRecipes, recipeLinks, favoriteRecipes],
 const breadcrumbs = computed(() => {
   return [
     { name: t("navigation.home"), link: "/" },
@@ -137,12 +136,12 @@ const headlineText = computed(() => {
 });
 
 const visibleRecipes = computed(() => {
-  if (activeTabIndex.value === 0) return this.userRecipes;
-  if (activeTabIndex.value === 2) return this.favoriteRecipes;
+  if (activeTabIndex.value === 0) return recipeStore.userRecipes;
+  if (activeTabIndex.value === 2) return recipeStore.userFavorites;
 });
 
 function handleLinkSave() {
-  getRecipeLinks();
+  recipeStore.REFRESH_USER_LINKS();
   activeTabIndex.value = 1;
   addRecipeFromUrl.value = false;
 }
@@ -159,4 +158,8 @@ function toggleRecipeForm() {
 function handleTabSwitch(index) {
   activeTabIndex.value = index;
 }
+
+onMounted(() => {
+  recipeStore.REFRESH_USER_LINKS();
+})
 </script>

@@ -89,7 +89,7 @@
 </template>
 
 <script setup>
-import { getDatabase, ref, get } from "firebase/database";
+import { getDatabase, ref as dbRef, get } from "firebase/database";
 import { ref as storageRef, getStorage } from "firebase/storage";
 import BlogImageInput from "./Editing/BlogImageInput.vue";
 import BlogTextInput from "./Editing/BlogTextInput.vue";
@@ -157,9 +157,9 @@ function deleteBlogImage(key) {
 
 function deleteBlogElementFromDB(key) {
   const db = getDatabase();
-  const blogRef = ref(db, `recipes/${props.recipeKey}/blog`);
+  const blogRef = dbRef(db, `recipes/${props.recipeKey}/blog`);
 
-  remove(ref(db, `recipes/${props.recipeKey}/blog/${key}`))
+  remove(dbRef(db, `recipes/${props.recipeKey}/blog/${key}`))
     .then(() => {
       console.log(`[deleteBlogElementFromDB] Deleted ${key} from db`);
       query(blogRef, orderByChild("position"))

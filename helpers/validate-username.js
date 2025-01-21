@@ -1,4 +1,4 @@
-import { getDatabase, ref, get } from "firebase/database";
+import { getDatabase, ref as dbRef, get } from "firebase/database";
 
 export default async function validateUsername(username) {
   console.log("Username:", username);
@@ -11,7 +11,7 @@ export default async function validateUsername(username) {
     }
   } else {
     const db = getDatabase();
-    const snapshot = await get(ref(db, "users"));
+    const snapshot = await get(dbRef(db, "users"));
 
     if(snapshot.val()){
       let users = snapshot.val();

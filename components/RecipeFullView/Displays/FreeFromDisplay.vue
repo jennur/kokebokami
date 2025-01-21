@@ -26,7 +26,7 @@
   </div>
 </template>
 <script setup>
-import { getDatabase, ref, get } from "firebase/database";
+import { getDatabase, ref as dbRef, get } from "firebase/database";
 import CategoryEdit from "./Editing/CategoryEdit.vue";
 import { useRecipeStore } from "~/store";
 const recipeStore = useRecipeStore();
@@ -80,7 +80,7 @@ function saveFreeFrom(allergens) {
   if (recipeKey) {
     loading.value = true;
     const db = getDatabase();
-    setImmediate(ref(db, `recipes/${recipeKey}/freeFrom`), allergens)
+    setImmediate(dbRef(db, `recipes/${recipeKey}/freeFrom`), allergens)
       .then(() => {
         console.log("Successfully updated free from");
         loading.value = false;

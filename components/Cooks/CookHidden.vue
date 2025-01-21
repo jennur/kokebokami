@@ -2,7 +2,7 @@
   <div class="container container--center margin-auto margin-bottom-xl">
 
     <div v-if="authStore.user && hidden">
-      <cook-silhouette class="illustration--cook-bubble" />
+      <CookSilhouette class="illustration--cook-bubble" />
       <div>
         <h3> Hmmm... </h3>
         <p> The profile you're trying to access seems to be hidden or not existing </p>

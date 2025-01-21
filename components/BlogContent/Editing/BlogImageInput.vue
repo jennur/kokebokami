@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import { getDatabase, ref, get } from "firebase/database";
+import { getDatabase, ref as dbRef, get } from "firebase/database";
 
 import ImageInput from "../../Input/ImageInput.vue";
 import DecrementButton from '../../Input/DecrementButton.vue';
@@ -49,7 +49,7 @@ export default {
             const db = getDatabase();
             let key = this.element[0];
             if(this.recipeKey) {
-              ref(db, `recipes/${this.recipeKey}/blog/${key}/caption`)
+              dbRef(db, `recipes/${this.recipeKey}/blog/${key}/caption`)
                 .set(this.caption)
                 .then(() =>  {
                     console.log("Saved caption to element");
@@ -83,7 +83,7 @@ export default {
                     this.imageURL = result;
                     if(this.recipeKey){
                         const db = getDatabase();
-                        ref(db, `recipes/${this.recipeKey}/blog/${key}`)
+                        dbRef(db, `recipes/${this.recipeKey}/blog/${key}`)
                         .set({
                             position: content.position,
                             type: 'image',

@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import { getDatabase, ref, get } from "firebase/database";
+import { getDatabase, ref as dbRef, get } from "firebase/database";
 
 import DecrementButton from "../../Input/DecrementButton.vue";
 
@@ -56,7 +56,7 @@ export default {
           console.log("Saving text");
           if (content.new) delete content.new;
           const db = getDatabase();
-            ref(db, `recipes/${this.recipeKey}/blog/${key}`)
+            dbRef(db, `recipes/${this.recipeKey}/blog/${key}`)
             .set(content)
             .then(() => {
               console.log("Saved content to db");

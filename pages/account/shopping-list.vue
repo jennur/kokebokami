@@ -69,6 +69,6 @@ function addNewShoppingList() {
 
 function updateShoppingLists() {
   addingNewShoppingList.value = false;
-  shoppingListStore.REFRESH()
+  shoppingListStore.REFRESH_LISTS()
 }
 </script>

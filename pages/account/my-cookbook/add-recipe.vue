@@ -11,7 +11,7 @@
 </template>
 
 <script setup>
-import { getDatabase, ref, get, update } from "firebase/database";
+import { getDatabase, ref as dbRef, get, update, push } from "firebase/database";
 import RecipeFullView from "~/components/RecipeFullView/RecipeFullView.vue";
 import { useAuthStore } from "~/store";
 
@@ -76,7 +76,7 @@ function saveRecipe(recipeObj) {
       ownerID: user.value.id,
     };
 
-    push(ref(db, "recipes"), recipeObj)
+    push(dbRef(db, "recipes"), recipeObj)
       .then((result) => {
         console.log("[saveRecipe] Successfully saved new recipe");
         recipeKey.value = result.key;
@@ -87,7 +87,7 @@ function saveRecipe(recipeObj) {
   } else {
     recipeObj = recipeObj || {};
 
-    update(ref(db, `recipes/${recipeKey}`), recipeObj)
+    update(dbRef(db, `recipes/${recipeKey}`), recipeObj)
       .then(() => {
         console.log("Successfully updated recipe:", recipeObj);
       })
@@ -100,7 +100,7 @@ function saveRecipe(recipeObj) {
 async function getRecipe() {
   if (user.value) {
     try {
-      const snapshot = await get(ref(db, `recipes/${recipeKey.value}`));
+      const snapshot = await get(dbRef(db, `recipes/${recipeKey.value}`));
 
       if (snapshot.exists()) {
         recipe.value = snapshot.val();

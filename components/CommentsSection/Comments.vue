@@ -36,7 +36,7 @@
 </template>
 
 <script setup>
-import { getDatabase, ref, get } from "firebase/database";
+import { getDatabase, ref as dbRef, get } from "firebase/database";
 import { useAuthStore } from "~/store";
 import getDateString from "~/helpers/get-date-string";
 import Comment from "./Comment.vue";
@@ -84,7 +84,7 @@ async function getComments() {
   loading.value = true;
   try {
     const db = getDatabase();
-    const snapshot = await get(ref(db, `recipes/${props.recipeKey}/comments`));
+    const snapshot = await get(dbRef(db, `recipes/${props.recipeKey}/comments`));
     if (snapshot.exists()) {
       const dbComments = Object.entries(snapshot.val()).map((comment) => {
         //Handle comment

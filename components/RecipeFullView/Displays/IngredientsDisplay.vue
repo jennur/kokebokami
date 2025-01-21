@@ -77,7 +77,7 @@
 </template>
 
 <script setup>
-import { getDatabase, ref, set } from "firebase/database";
+import { getDatabase, ref as dbRef, set } from "firebase/database";
 import ServingsDisplay from "./ServingsDisplay.vue";
 import IngredientsEdit from "./Editing/IngredientsEdit.vue";
 import AddToShoppingList from "../Interaction/AddToShoppingList.vue";
@@ -178,7 +178,7 @@ function saveIngredients(ingredients) {
   if (recipeKey) {
     loading.value = true;
     const db = getDatabase();
-    set(ref(db, `recipes/${recipeKey}/ingredients`), ingredients)
+    set(dbRef(db, `recipes/${recipeKey}/ingredients`), ingredients)
       .then(() => {
         console.info("[saveIngredients] Successfully updated ingredients");
         emit("update");

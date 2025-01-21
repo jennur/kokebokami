@@ -4,7 +4,7 @@
   </span>
 </template>
 <script>
-import { getDatabase, ref, get } from "firebase/database";
+import { getDatabase, ref as dbRef, get } from "firebase/database";
 
 export default {
   name: "public-note",
@@ -30,7 +30,7 @@ export default {
 
       if (recipeKey) {
         const db = getDatabase();
-        let publicRef = ref(db, `recipes/${recipeKey}/public`);
+        let publicRef = dbRef(db, `recipes/${recipeKey}/public`);
         publicRef
           .set(isPublic)
           .then(() => {

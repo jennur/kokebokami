@@ -1,4 +1,4 @@
-import { getDatabase, ref, get } from "firebase/database";
+import { getDatabase, ref as dbRef, get } from "firebase/database";
 import { useCurrentUser } from 'vuefire'
 
 import recipeModel from "../helpers/recipe-model";
@@ -17,7 +17,7 @@ export default {
       if (this.currentUser) {
         try {
           const db = getDatabase();
-          ref(db, "recipes")
+          dbRef(db, "recipes")
           .once("value", async snapshot => {
             if (snapshot.exists()) {
               let userRecipes = [];

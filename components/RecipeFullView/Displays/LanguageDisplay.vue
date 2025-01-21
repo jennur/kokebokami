@@ -25,7 +25,7 @@
   </div>
 </template>
 <script>
-import { getDatabase, ref, get } from "firebase/database";
+import { getDatabase, ref as dbRef, get } from "firebase/database";
 
 import LanguageEdit from "./Editing/LanguageEdit.vue";
 
@@ -65,7 +65,7 @@ export default {
       let recipeKey = this.recipeKey;
       if (recipeKey) {
         const db = getDatabase();
-        let languageRef = ref(db, `recipes/${recipeKey}/language`);
+        let languageRef = dbRef(db, `recipes/${recipeKey}/language`);
         languageRef
           .set(language)
           .then(() => {

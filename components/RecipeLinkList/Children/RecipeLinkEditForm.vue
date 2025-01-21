@@ -14,9 +14,9 @@
         />
         <span class="recipe-link-edit-form--required">*</span>
       </fieldset>
-      <expand-transition :show="!!errorSystemMessage">
-        <div class="system-message">{{ errorSystemMessage }}</div>
-      </expand-transition>
+      <ExpandTransition :show="!!errorMessage">
+        <div class="system-message">{{ errorMessage }}</div>
+      </ExpandTransition>
       <fieldset class="flex-column">
         <label for="title">Title</label>
         <input
@@ -32,7 +32,7 @@
       <fieldset class="flex-column">
         <label for="category">Category</label>
         <div class="flex-row flex-row--align-center">
-          <select-component
+          <SelectComponent
             ref="categorySelect"
             id="category-select"
             name="category-select"
@@ -40,7 +40,7 @@
             :options="categories"
             defaultValue="No category"
             :preSelected="selectedCategory"
-            @select="option => handleSelect(option)"
+            @select="(option) => handleSelect(option)"
           />
           <button
             v-if="!newCategory"
@@ -52,7 +52,7 @@
           <input
             v-if="newCategory"
             v-model="category"
-            ref="category"
+            ref="categoryInput"
             type="text"
             name="category"
             id="category"
@@ -83,7 +83,7 @@
           id="comment"
           placeholder="Write a note to self about the recipe .."
           class="recipe-link-edit-form_comment"
-        />
+        ></textarea>
       </fieldset>
       <fieldset>
         <div
@@ -104,143 +104,129 @@
             Save
           </button>
         </div>
-        <expand-transition :show="!!submitSystemMessage">
+        <ExpandTransition :show="!!submitError">
           <div class="system-message margin-top-sm">
-            {{ submitSystemMessage }}
+            {{ submitError }}
           </div>
-        </expand-transition>
+        </ExpandTransition>
       </fieldset>
     </form>
   </div>
 </template>
-<script>
-import { getDatabase, ref, get } from "firebase/database";
 
-import user from "~/composables/user.js";
+<script setup>
+import { getDatabase, ref as dbRef, update, push, child } from "firebase/database";
+
 import SelectComponent from "~/components/Input/SelectComponent.vue";
 import ExpandTransition from "~/components/Transitions/Expand.vue";
-import recipeLinks from "~/mixins/user-recipe-links";
-export default {
-  name: "recipe-link-edit-form",
-  components: {
-    SelectComponent,
-    ExpandTransition
+
+import { useAuthStore, useRecipeStore } from "~/store";
+
+const db = getDatabase();
+const authStore = useAuthStore();
+const recipeStore = useRecipeStore();
+
+const emit = defineEmits(["update"]);
+
+const props = defineProps({
+  recipeLink: {
+    type: Object,
+    default: {},
   },
-  props: {
-    recipeLink: {
-      type: Object,
-      default: {}
-    },
-    addingToCategory: {
-      type: String,
-      default: null
-    }
+  addingToCategory: {
+    type: String,
+    default: null,
   },
-  data() {
-    let recipeLink = this.recipeLink;
-    return {
-      url: (recipeLink && recipeLink.url) || "",
-      title: (recipeLink && recipeLink.title) || "",
-      category: "",
-      labels: (recipeLink && recipeLink.labels) || "",
-      comment: (recipeLink && recipeLink.comment) || "",
-      errorSystemMessage: "",
-      submitSystemMessage: "",
-      newCategory: false,
-      selectedCategory:
-        (recipeLink && recipeLink.category) || this.addingToCategory || ""
-    };
-  },
-  mixins: [user, recipeLinks],
-  computed: {
-    categories() {
-      let links = this.recipeLinks;
-      let categories = [];
-      links && links.forEach(link => {
-        if (link.category) {
-          if (categories.indexOf(link.category) === -1)
-            categories.push(link.category);
-        }
-      });
-      return categories;
-    }
-  },
-  methods: {
-    getDefaultTitle() {
-      let url = this.url;
-      if (url) {
-        let urlItems = url.split("/");
-        urlItems = urlItems.filter(item => {
-          return item.length;
-        });
-        return urlItems.pop().replace(/-/g, " ");
+});
+
+const url = ref(props.recipeLink?.url || "");
+const title = ref(props.recipeLink?.title || getDefaultTitle());
+const category = ref("");
+const labels = ref(props.recipeLink?.labels || "");
+const comment = ref(props.recipeLink?.comment || "");
+const errorMessage = ref("");
+const submitError = ref("");
+const newCategory = ref(false);
+const selectedCategory = ref(
+  props.recipeLink?.category || this.addingToCategory || ""
+);
+
+const categories = computed(() => {
+  const linkCategories = [];
+
+  recipeStore.userLinks?.forEach((link) => {
+      if (link.category) {
+        if (linkCategories.indexOf(link.category) === -1)
+          linkCategories.push(link.category);
       }
-      return "No title";
-    },
-    saveLink() {
-      let url = this.url || "";
-      let title = this.title || this.getDefaultTitle();
-      let category = this.category || this.selectedCategory || "";
-      let labels = this.labels || "";
-      let comment = this.comment || "";
+    });
+  return linkCategories;
+});
 
-      let urlCheck = /(?:http(s)?:\/\/)[\w.-]+(?:\.[\w.-]+)+[\w\-._~:\?#[\]@!$&'()*+,;=.]+/;
-      console.log("URL Test:", urlCheck.test(url));
+function getDefaultTitle() {
+  if (url.value) {
+    let urlItems = url.value.split("/");
 
-      if (urlCheck.test(url)) {
-        this.errorSystemMessage = "";
-        let dataObject = {
-          url,
-          title,
-          category,
-          labels,
-          comment
-        };
+    urlItems = urlItems.filter((item) => {
+      return item.length;
+    });
 
-        try {
-          if (this.recipeLink.id) {
-            const db = getDatabase();
-            const recipeLinkRef = ref(db, 
-              `users/${this.user.id}/recipeLinks/${this.recipeLink.id}`
-            );
-            recipeLinkRef
-              .update(dataObject)
-              .then(() => {
-                console.log("Successfully updated recipe link");
-                this.$emit("update");
-              })
-              .catch(error => {
-                this.submitSystemMessage = error.message;
-                console.log("Error saving recipe", error.message);
-              });
-          } else {
-            let userRef = ref(db, `users/${this.user.id}`);
-            userRef
-              .child("recipeLinks")
-              .push(dataObject)
-              .then(() => {
-                console.log("Successfully saved recipe link");
-                this.$emit("update");
-              })
-              .catch(error => {
-                this.submitSystemMessage = error.message;
-                console.log("Error saving recipe", error.message);
-              });
-          }
-        } catch (error) {
-          console.log("Error saving recipe link:", error.message);
-        }
-      } else {
-        console.log("Error in url:", url);
-        this.errorSystemMessage = "The URL is not the correct format.";
-      }
-    },
-    addNewCategory() {
-      this.newCategory = true;
-    },
-    handleSelect(option) {
-      this.selectedCategory = option;
-    }
+    return urlItems.pop().replace(/-/g, " ");
   }
-};
+  return "No title";
+}
+
+function saveLink() {
+  const urlCheck =
+    /(?:http(s)?:\/\/)[\w.-]+(?:\.[\w.-]+)+[\w\-._~:\?#[\]@!$&'()*+,;=.]+/;
+  console.info("[saveLink] URL test:", urlCheck.test(url.value));
+
+  if (urlCheck.test(url.value)) {
+    errorMessage.value = "";
+
+    const dataObject = {
+      url: url.value || "",
+      title: title.value,
+      category: category.value || selectedCategory.value || "",
+      labels: labels.value,
+      comment: comment.value,
+    };
+
+    if (props.recipeLink.id) {
+      update(dbRef(
+        db,
+        `users/${authStore.user.id}/recipeLinks/${props.recipeLink.id}`
+      ), dataObject)
+        .then(() => {
+          console.info("[saveLink] Successfully updated recipe link");
+          emit("update");
+        })
+        .catch((error) => {
+          submitError.value = error.message;
+          console.error("[saveLink]", error.message);
+        });
+    } else {
+      push(child(dbRef(db, `users/${authStore.user.id}`), "recipeLinks"), dataObject)
+        .then(() => {
+          console.info("[saveLink] Successfully saved recipe link");
+          emit("update");
+        })
+        .catch((error) => {
+          submitError.value = error.message;
+          console.error("[saveLink]", error.message);
+        });
+    }
+  } else {
+    console.error("[saveLink] Error in url:", url);
+    errorMessage.value = "The URL is not the correct format.";
+  }
+}
+
+function addNewCategory() {
+  newCategory.value = true;
+}
+
+function handleSelect(option) {
+  selectedCategory.value = option;
+}
 </script>

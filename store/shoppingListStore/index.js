@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { getDatabase, ref, get, set, update } from "firebase/database";
+import { getDatabase, ref as dbRef, get, set, update } from "firebase/database";
 import { getAuth } from "firebase/auth";
 
 export const useShoppingListStore = defineStore("shoppingList", {
@@ -29,13 +29,13 @@ export const useShoppingListStore = defineStore("shoppingList", {
       });
       this.count = count;
     },
-    REFRESH: function () {
+    REFRESH_LISTS: function () {
       const auth = getAuth();
       this.loaded = false;
 
       if (auth.currentUser) {
         const db = getDatabase();
-        get(ref(db, `shoppingLists`))
+        get(dbRef(db, `shoppingLists`))
           .then((snapshot) => {
             const userShoppingLists = [];
 
@@ -60,7 +60,7 @@ export const useShoppingListStore = defineStore("shoppingList", {
             }
           })
           .catch((error) => {
-            console.error("[REFRESH]", error.message);
+            console.error("[REFRESH_LISTS]", error.message);
             this.loaded = true;
           });
       }

@@ -12,6 +12,9 @@ export default defineNuxtConfig({
       pathPrefix: false
     }
   ],
+  experimental: {
+    restoreState: true,
+  },
   head: {
     title: "Kokebokami",
     meta: [

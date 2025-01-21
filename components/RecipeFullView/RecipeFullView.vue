@@ -187,7 +187,7 @@
 </template>
 
 <script setup>
-import { getDatabase, ref, remove } from "firebase/database";
+import { getDatabase, ref as dbRef, remove } from "firebase/database";
 import { ref as storageRef, getStorage } from "firebase/storage";
 import { useRouter } from "vue-router";
 import pdfExport from "~/helpers/pdfExport";
@@ -256,7 +256,7 @@ function deleteRecipe() {
     deleteRecipeImage()
       .then(() => {
         const db = getDatabase();
-        remove(ref(db, `recipes/${props.recipe.id}`))
+        remove(dbRef(db, `recipes/${props.recipe.id}`))
           .then(() => {
             router.push("/account/my-cookbook/");
           })

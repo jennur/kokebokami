@@ -40,7 +40,7 @@
 </template>
 
 <script setup>
-import { getDatabase, ref, get } from "firebase/database";
+import { getDatabase, ref as dbRef, get } from "firebase/database";
 import ExpandTransition from "~/components/Transitions/Expand.vue";
 import SelectComponent from "~/components/Input/SelectComponent.vue";
 import HoverInfoBox from "~/components/HoverInfoBox";
@@ -105,7 +105,7 @@ function shareShoppingList() {
 
     if (!shared) {
       try {
-        push(ref(db, `shoppingLists/${props.listKey}/owners`), {
+        push(dbRef(db, `shoppingLists/${props.listKey}/owners`), {
           id: follower.id,
           displayName: follower.displayName,
           sharedFrom: {
@@ -114,7 +114,7 @@ function shareShoppingList() {
           },
         }).then(() => {
           systemMessage.value = `Successfully shared with ${follower.displayName}`;
-          shoppingListStore.REFRESH();
+          shoppingListStore.REFRESH_LISTS();
           emit("update");
           if (
             !follower.notificationsOff ||

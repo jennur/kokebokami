@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import { getDatabase, ref, get } from "firebase/database";
+import { getDatabase, ref as dbRef, get } from "firebase/database";
 import CooksDropdown from "./CooksDropdown.vue";
 import userIcon from "~/assets/graphics/icons/cook-silhouette.svg";
 import generatePath from "~/helpers/generatePath";
@@ -39,7 +39,7 @@ export default {
     searchCooks() {
       let searchTerm = this.searchTerm.toLowerCase();
       const db = getDatabase();
-        ref(db, "users")
+        dbRef(db, "users")
         .once("value", snapshot => {
           if(snapshot.exists()){
             let users = Object.entries(snapshot.val());

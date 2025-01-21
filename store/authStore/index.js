@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { getDatabase, ref, get, set, update } from "firebase/database";
+import { getDatabase, ref as dbRef, get, set, update } from "firebase/database";
 import { getAuth, signOut } from "firebase/auth";
 import { useMainStore, useRecipeStore, useShoppingListStore } from "..";
 import userModel from "~/helpers/user-model";
@@ -15,22 +15,7 @@ export const useAuthStore = defineStore("auth", {
     },
   }),
 
-  getters: {
-    userFavorites: (state) => {
-      const recipeStore = useRecipeStore();
-      const favoriteRecipes = [];
-
-      const favoriteRecipeKeys = state.user.favorites;
-      for (const key in recipeStore.recipes) {
-        if (favoriteRecipeKeys.some((favoriteKey) => favoriteKey === key)) {
-          const recipe = recipeStore.recipes[key];
-          favoriteRecipes.push(recipeModel(recipe, key));
-        }
-      }
-
-      return favoriteRecipes;
-    },
-  },
+  getters: {},
   actions: {
     LOGIN_SUCCESS: function () {
       const auth = getAuth();
@@ -49,7 +34,7 @@ export const useAuthStore = defineStore("auth", {
       const auth = getAuth();
       try {
         const db = getDatabase();
-        const snapshot = await get(ref(db, `users/${auth.currentUser.uid}/favorites`));
+        const snapshot = await get(dbRef(db, `users/${auth.currentUser.uid}/favorites`));
 
         if (snapshot.exists()) {
           this.user.favorites = snapshot.val();
@@ -64,7 +49,7 @@ export const useAuthStore = defineStore("auth", {
       const auth = getAuth();
       if (this.user) {
         const db = getDatabase();
-        get(ref(db, "users"))
+        get(dbRef(db, "users"))
           .then((snapshot) => {
             if (snapshot.exists()) {
               const users = snapshot.val();
@@ -114,7 +99,7 @@ export const useAuthStore = defineStore("auth", {
           emailVerified: authUser.value.emailVerified,
         };
 
-        const userRef = ref(db, `users/${authUser.value.uid}`);
+        const userRef = dbRef(db, `users/${authUser.value.uid}`);
 
         const snapshot = await get(userRef);
 
@@ -159,7 +144,7 @@ export const useAuthStore = defineStore("auth", {
 
         this.user = loggedinUser;
         const shoppingListStore = useShoppingListStore()
-        shoppingListStore.REFRESH();
+        shoppingListStore.REFRESH_LISTS();
         this.SET_CONNECTED_USERS();
       } catch (error) {
         console.error("[SET_USER]", error.message);

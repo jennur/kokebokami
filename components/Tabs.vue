@@ -27,10 +27,13 @@
 </template>
 
 <script>
- 
+import downArrow from "assets/graphics/icons/down-arrow.svg";
 
 export default {
   name: "Tabs",
+  components: {
+    downArrow
+  },
   props: {
     tabTitles: {
       type: Array,

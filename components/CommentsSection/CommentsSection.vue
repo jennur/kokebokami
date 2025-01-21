@@ -23,7 +23,7 @@
 
 <script setup>
 import axios from "axios";
-import { getDatabase, ref, get } from "firebase/database";
+import { getDatabase, ref as dbRef, get } from "firebase/database";
 import CommentForm from "./CommentForm.vue";
 import Comments from "./Comments.vue";
 import { useAuthStore } from "~/store";
@@ -86,7 +86,7 @@ async function sendEmail(commentObj) {
   try {
     const db = getDatabase();
     const snapshot = await get(
-      ref(db, `users/${props.recipeOwnerID}/notificationsOff/comments`)
+      dbRef(db, `users/${props.recipeOwnerID}/notificationsOff/comments`)
     );
     const commentNotificationsOff = snapshot.exists() && snapshot.val();
     if (!commentNotificationsOff) {
@@ -108,7 +108,7 @@ async function sendEmail(commentObj) {
 function submitComment(commentObj) {
   if (props.recipeKey) {
     const db = getDatabase();
-    push(ref(db, `recipes/${props.recipeKey}/comments`), commentObj)
+    push(dbRef(db, `recipes/${props.recipeKey}/comments`), commentObj)
       .then(() => {
         submitted.value = true;
         hasError.value = false;

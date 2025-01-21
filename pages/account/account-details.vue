@@ -74,7 +74,7 @@
           />
           <AccountLinkList
             :title="`${$t('accountDetails.myRecipeLinks')}:`"
-            :links="recipeLinks"
+            :links="recipeStore.userLinks"
             :externalURL="true"
           />
         </dl>
@@ -83,12 +83,12 @@
         <dl class="flex-row">
           <AccountLinkList
             :title="`${$t('accountDetails.following')}:`"
-            :links="followed"
+            :links="authStore.followed"
             basePath="/cooks/"
           />
           <AccountLinkList
             :title="`${$t('accountDetails.followers')}:`"
-            :links="followers"
+            :links="authStore.followers"
             basePath="/cooks/"
           />
         </dl>
@@ -180,15 +180,10 @@
 </template>
 
 <script setup>
-import { getDatabase, ref, get } from "firebase/database";
+import { getDatabase, ref as dbRef, get, update, child, push } from "firebase/database";
 
 const uuid = require("uuid");
 import Compressor from "compressorjs";
-import { useConnectedUsers } from "~/composables";
-import userRecipes from "~/mixins/user-recipes.js";
-import recipeLinks from "~/mixins/user-recipe-links.js";
-// import validateUsername from "~/helpers/validate-username.js";
-
 import AccountDetail from "~/components/Account/Displays/AccountDetail.vue";
 import AccountLinkList from "~/components/Account/Displays/AccountLinkList.vue";
 import Alert from "~/components/Alert.vue";
@@ -213,7 +208,6 @@ const { t } = useI18n();
 
 const authStore = useAuthStore();
 const recipeStore = useRecipeStore();
-const connectedUsers = useConnectedUsers();
 
 useHead(() => {
   return {
@@ -247,15 +241,6 @@ const isLoading = ref(false);
 const showAlert = ref(false);
 const notificationsOff = ref({});
 const hiddenProfile = ref(fals);
-const followers = ref(connectedUsers.followers);
-const followed = ref(connectedUsers.followed);
-// mixins: [
-//   user,
-//   connectedUsers,
-//   userRecipes,
-//   recipeLinks,
-// ],
-
 const breadcrumbs = computed(() => {
   return [
     { name: t("navigation.home"), link: "/" },
@@ -270,7 +255,7 @@ function toggleAlert() {
 
 function updateHiddenProfileStatus(checked) {
   if (checked === hiddenProfile.value) {
-    ref(db, `users/${authStore.user.id}`)
+    dbRef(db, `users/${authStore.user.id}`)
       .update({ hiddenProfile: !checked })
       .then(() => {
         console.ifo(
@@ -289,7 +274,7 @@ function updateNotificationStatus(type, status) {
   if (status !== notificationsOff?.value[type]) {
     notificationsOff.value[type] = status;
     set(
-      ref(db, `users/${authStore.user.id}/notificationsOff`),
+      dbRef(db, `users/${authStore.user.id}/notificationsOff`),
       notificationsOff.value
     )
       .then(() => {
@@ -346,7 +331,7 @@ async function updateProfileImg(upload) {
     const downloadURL = await getDownloadURL(imageRef);
     photoURL.value = downloadURL;
 
-    update(ref(db, `/users/${authStore.user.id}`), { photoURL: downloadURL })
+    update(dbRef(db, `/users/${authStore.user.id}`), { photoURL: downloadURL })
       .then(() => {
         updateProfileImgSystemMessage.value = "";
         updateUserDetailsInStore();
@@ -384,7 +369,7 @@ function removeProfileImg() {
 }
 
 function removeProfileImageFromDb() {
-  update(ref(db, `/users/${authStore.user.id}`), {
+  update(dbRef(db, `/users/${authStore.user.id}`), {
     photoURL: "",
   })
     .then(() => {
@@ -400,7 +385,7 @@ function removeProfileImageFromDb() {
     });
 }
 function updateUsername(value) {
-  update(ref(db, `/users/${authStore.user.id}`), {
+  update(dbRef(db, `/users/${authStore.user.id}`), {
     displayName: value,
   })
     .then(() => {
@@ -415,7 +400,7 @@ function updateUsername(value) {
     });
 }
 function updateBiography(value) {
-  update(ref(db, `/users/${authStore.user.id}`), {
+  update(dbRef(db, `/users/${authStore.user.id}`), {
     biography: value,
   })
     .then(() => {
@@ -429,7 +414,7 @@ function updateBiography(value) {
     });
 }
 function deleteAccount() {
-  get(ref(db, "recipes"))
+  get(dbRef(db, "recipes"))
     .then((snapshot) => {
       //Remove user's recipes
       snapshot.forEach((recipe) => {
@@ -437,7 +422,7 @@ function deleteAccount() {
         const content = recipe.val();
 
         if (content.ownerID === authStore.user.id) {
-          remove(ref(db, "recipes/" + key))
+          remove(dbRef(db, "recipes/" + key))
             .then(() => {
               console.info("[deleteAccount] Successfully deleted recipe:", key);
             })
@@ -454,7 +439,7 @@ function deleteAccount() {
     .then(() => {
       // Remove user from database
       if (authStore.user.id) {
-        remove(ref(db, `users/${authStore.user.id}`))
+        remove(dbRef(db, `users/${authStore.user.id}`))
           .then(() => {
             console.info(
               "[deleteAccount] Successfully removed user from database"

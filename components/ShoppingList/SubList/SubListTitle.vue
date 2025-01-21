@@ -24,7 +24,7 @@
 </template>
 
 <script setup>
-import { getDatabase, ref, push, update, child } from "firebase/database";
+import { getDatabase, ref as dbRef, push, update, child } from "firebase/database";
 import { useAuthStore } from "~/store";
 
 const db = getDatabase();
@@ -50,7 +50,9 @@ const editMode = ref(false);
 const updatedTitle = ref(props.title);
 const isNew = ref(false);
 
-watch(title, (value) => {
+const propTitle = toRef(props, "title");
+
+watch(propTitle, (value) => {
   updatedTitle.value = value;
 });
 
@@ -68,8 +70,8 @@ function saveTitle() {
     const title = updatedTitle.value;
     const subListKey = props.subListKey;
 
-    const shoppingListsRef = ref(db, `shoppingLists`);
-    const mainListRef = ref(db, `shoppingLists/${mainListKey}`);
+    const shoppingListsRef = dbRef(db, `shoppingLists`);
+    const mainListRef = dbRef(db, `shoppingLists/${mainListKey}`);
 
     if (mainListKey && subListKey !== "") {
       update(child(child(mainListRef, "subLists"), subListKey), { title })

@@ -1,4 +1,4 @@
-import { getDatabase, ref, get } from "firebase/database";
+import { getDatabase, ref as dbRef, get } from "firebase/database";
 import getRecipeWithMetadata from "~/helpers/get-recipe-with-metadata.js";
 import recipeModel from "~/helpers/recipe-model";
 import { useCurrentUser } from 'vuefire'

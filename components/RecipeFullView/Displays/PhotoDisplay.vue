@@ -35,7 +35,7 @@
   </div>
 </template>
 <script>
-import { getDatabase, ref, get } from "firebase/database";
+import { getDatabase, ref as dbRef, get } from "firebase/database";
 
 import PhotoEdit from "./Editing/PhotoEdit.vue";
 
@@ -81,7 +81,7 @@ export default {
       let recipeKey = this.recipeKey;
       if (recipeKey) {
         const db = getDatabase();
-        let imageRef = ref(db, `recipes/${recipeKey}/photoURL`);
+        let imageRef = dbRef(db, `recipes/${recipeKey}/photoURL`);
         imageRef
           .set(fileURL)
           .then(() => {

@@ -47,7 +47,7 @@
 </template>
 
 <script setup>
-import { getDatabase, ref, child, push } from "firebase/database";
+import { getDatabase, ref as dbRef, child, push } from "firebase/database";
 import SelectComponent from "~/components/Input/SelectComponent.vue";
 import { useMainStore, useShoppingListStore, useAuthStore } from "~/store";
 
@@ -127,7 +127,7 @@ function addToShoppingList() {
   ) {
     push(
       child(
-        ref(db, `shoppingLists/${chosenShoppingList.value.key}`),
+        dbRef(db, `shoppingLists/${chosenShoppingList.value.key}`),
         "subLists",
         {
           title: props.recipeTitle,
@@ -140,7 +140,7 @@ function addToShoppingList() {
           "Successfully added to shoppingList:",
           chosenShoppingList.value.title
         );
-        shoppingListStore.REFRESH();
+        shoppingListStore.REFRESH_LISTS();
         addedToShoppingList.value = true;
         addingToShoppingList.value = false;
       })
@@ -152,7 +152,7 @@ function addToShoppingList() {
       id: user.value.id,
       displayName: user.value.displayName,
     };
-    const shoppingListRef = ref(db, `shoppingLists`);
+    const shoppingListRef = dbRef(db, `shoppingLists`);
 
     push(shoppingListRef, {
       title: newListTitle.value,
@@ -168,7 +168,7 @@ function addToShoppingList() {
             "Successfully added to shoppingList:",
             newListTitle.value
           );
-          shoppingListStore.REFRESH();
+          shoppingListStore.REFRESH_LISTS();
           addedToShoppingList.value = true;
           addingToShoppingList.value = false;
           addNewShoppingList.value = false;

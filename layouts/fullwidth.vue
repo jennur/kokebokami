@@ -2,7 +2,7 @@
   <div>
     <header-component />
     <main class="full-width margin-auto">
-      <NuxtPage />
+      <slot></slot>
     </main>
     <footer-component />
     <scroll-button />

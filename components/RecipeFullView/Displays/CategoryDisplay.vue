@@ -34,7 +34,7 @@
   </div>
 </template>
 <script setup>
-import { getDatabase, ref, get } from "firebase/database";
+import { getDatabase, ref as dbRef, get } from "firebase/database";
 import CategoryEdit from "./Editing/CategoryEdit.vue";
 import { useRecipeStore } from "~/store";
 
@@ -93,7 +93,7 @@ function saveCategories(categories) {
   if (recipeKey) {
     loading.value = true;
     const db = getDatabase();
-    set(ref(db, `recipes/${recipeKey}/categories`), categories)
+    set(dbRef(db, `recipes/${recipeKey}/categories`), categories)
       .then(() => {
         console.info("[saveCategories] Successfully updated categories");
         loading.value = false;

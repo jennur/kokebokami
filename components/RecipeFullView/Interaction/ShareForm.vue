@@ -75,7 +75,6 @@ import {
   kokebokamiUsersTemplate,
 } from "~/helpers/email-templates";
 
-import { useConnectedUsers } from "~/composables";
 import ExpandTransition from "~/components/Transitions/Expand.vue";
 import SelectComponent from "~/components/Input/SelectComponent.vue";
 import ModalBox from "~/components/ModalBox";
@@ -85,8 +84,6 @@ import { useRouter } from "vue-router";
 const router = useRouter();
 const authStore = useAuthStore();
 const { t } = useI18n();
-const { getConnectedUsers } = useConnectedUsers();
-const connectedUsers = await getConnectedUsers();
 
 const props = defineProps({
   open: {
@@ -115,10 +112,9 @@ const selected = ref("");
 const sharedByEmail = ref(nul);
 const systemMessage = ref("");
 const useEmail = ref(fals);
-const followers = ref(connectedUsers.followers);
 
 const followerNames = computed(() => {
-  return followers.value.map((follower) => {
+  return authStore.followers.value.map((follower) => {
     return follower.displayName;
   });
 });
@@ -167,9 +163,9 @@ function shareRecipe() {
   const selectedDisplayName = selected.value;
 
   const db = getDatabase();
-  const sharesRef = ref(db, `recipes/${props.recipeKey}/sharedWith`);
+  const sharesRef = dbRef(db, `recipes/${props.recipeKey}/sharedWith`);
 ;
-  const selectedFollower = followers.value.filter((follower) => {
+  const selectedFollower = authStore.followers.value.filter((follower) => {
     return follower.displayName === selectedDisplayName;
   })[0];
 
