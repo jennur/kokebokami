@@ -7,7 +7,7 @@ import getTotalTime from "./get-total-time";
 const backupImg =
   "https://firebasestorage.googleapis.com/v0/b/kokebokami-e788f.appspot.com/o/images%2Fglobals%2FrecipeImage%2Frecipe-backup-img.png?alt=media&token=67cb87a6-78ae-4b45-bdec-44b8e702b842";
 
-export default async function getRecipeWithMetadata(recipePath) {
+export default async function getRecipeWithMetadata(recipeFullPath) {
   const db = getDatabase();
   const recipeData = {
     content: { ownerID: null },
@@ -16,15 +16,15 @@ export default async function getRecipeWithMetadata(recipePath) {
   };
 
   try {
-    const snapshot = get(dbRef(db, "recipes"));
+    const snapshot = await get(dbRef(db, "recipes"));
     if (snapshot.exists()) {
       const recipes = snapshot.val();
       for (const key in recipes) {
         const recipe = recipes[key];
         const title = (recipe && recipe.title) || "untitled-recipe";
         const path = generatePath(title, key);
-
-        if (path === recipePath) {
+        
+        if (path === recipeFullPath) {
           // Format instructions
           const instructions =
             recipe.instructions &&

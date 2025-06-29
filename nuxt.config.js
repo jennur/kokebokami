@@ -1,10 +1,10 @@
 // TODO: Implement SSL redirect
-import path from 'path'
+import path from "path"
 
 import { defineNuxtConfig } from "nuxt/config";
-// console.log("PATH:", import.meta.resolve("~/assets/scss/main.scss"))
+
 export default defineNuxtConfig({
-  ssr: true,
+  ssr: false,
   pages: true,
   components: [
     {
@@ -98,12 +98,14 @@ export default defineNuxtConfig({
     "nuxt-vuefire",
     "@pinia/nuxt",
     "@nuxtjs/i18n",
-    "nuxt-svgo-loader",
+    "nuxt-svgo",
     "@vesp/nuxt-fontawesome"
   ],
 
-  svgoLoader: {
-    // Options here will be passed to `vite-svg-loader`
+  svgo: {
+    autoImportPath: "~/assets/graphics/icons",
+    componentPrefix: "i",
+    defaultImport: "component"
   },
 
   i18n: {
@@ -147,9 +149,9 @@ export default defineNuxtConfig({
   fontawesome: {
     component: "fa",
     icons: {
-      regular: ['faStar', 'faClock'],
-      solid: ['faSlidersH', 'faStar', 'faSearch'],
-      brands: ['faFacebookSquare', 'faFacebookF']
+      regular: ["faStar", "faClock"],
+      solid: ["faSlidersH", "faStar", "faSearch"],
+      brands: ["faFacebookSquare", "faFacebookF"]
     }
   },
 
@@ -158,7 +160,7 @@ export default defineNuxtConfig({
   //     preprocessorOptions: {
   //       scss: {
   //         // api: "modern-compiler",
-  //         additionalData: '@use "~/assets/scss/settings/variables.settings.scss" as *;',
+  //         additionalData: "@use "~/assets/scss/settings/variables.settings.scss" as *;",
   //       },
   //     },
   //   },

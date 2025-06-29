@@ -1,6 +1,6 @@
 <template>
   <div class="settings-dropdown" :class="{ 'settings-dropdown--right': right }">
-    <settings-icon
+    <i-settings-icon
       tabindex="0"
       class="icon"
       @click="event => toggleDropdown(event)"

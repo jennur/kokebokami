@@ -7,6 +7,5 @@ import { useRouter } from "vue-router";
 
 export default defineNuxtPlugin(nuxtApp => {
   const router = useRouter();
-  console.log("NUXT APP:", router);
   router.afterEach(() => routerAuth());
 })

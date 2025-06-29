@@ -1,8 +1,7 @@
 import { getDatabase, ref as dbRef, get } from "firebase/database";
 
 export default async function validateUsername(username) {
-  console.log("Username:", username);
-  let usernameRegex = /^[a-zA-Z\s]+$/;
+  const usernameRegex = /^[a-zA-Z\s]+$/;
 
   if(!usernameRegex.test(username)) {
     return {

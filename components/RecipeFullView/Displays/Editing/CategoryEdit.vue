@@ -12,55 +12,47 @@
   </div>
 </template>
 
-<script>
- 
+<script setup>
+const emit = defineEmits(["save"]);
 
-export default {
-  name: "category-edit",
-  props: {
-    existingTypes: {
-      type: Array,
-      default: () => []
-    },
-    allTypes: {
-      type: Array,
-      default: () => []
-    },
-    orange: {
-      type: Boolean,
-      default: false
-    }
+const props = defineProps({
+  existingTypes: {
+    type: Array,
+    default: () => [],
   },
-  data() {
+  allTypes: {
+    type: Array,
+    default: () => [],
+  },
+  orange: {
+    type: Boolean,
+    default: false,
+  },
+});
+
+const selectedTypes = ref(props.existingTypes);
+
+const convertedTypes = computed(() =>
+  props.allTypes.map((type) => {
+    let checked = false;
+    if (selectedTypes.value.indexOf(type) > -1) checked = true;
     return {
-      selectedTypes: this.existingTypes
+      text: type,
+      checked,
     };
-  },
-  computed: {
-    convertedTypes() {
-      return this.allTypes.map(type => {
-        let checked = false;
-        if (this.selectedTypes.indexOf(type) > -1) checked = true;
-        return {
-          text: type,
-          checked
-        };
-      });
-    }
-  },
-  methods: {
-    selectType(type) {
-      let indexOfType = this.selectedTypes.indexOf(type);
-      if (indexOfType > -1) {
-        this.selectedTypes.splice(indexOfType, 1);
-      } else {
-        this.selectedTypes.push(type);
-      }
-    },
-    saveTypes() {
-      this.$emit("save", this.selectedTypes);
-    }
-  },
-  
-};
+  })
+);
+
+function selectType(type) {
+  const indexOfType = selectedTypes.value.indexOf(type);
+  if (indexOfType > -1) {
+    selectedTypes.value.splice(indexOfType, 1);
+  } else {
+    selectedTypes.value.push(type);
+  }
+}
+
+function saveTypes() {
+  emit("save", selectedTypes.value);
+}
 </script>

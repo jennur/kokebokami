@@ -5,31 +5,26 @@
     v-model="updatedDescription"
     v-click-outside="handleUpdate"
     @keydown="
-      event => {
+      (event) => {
         event.keyCode === 13 && handleUpdate;
       }
     "
   ></textarea>
 </template>
-<script>
- 
 
-export default {
-  name: "description-edit",
-  props: {
-    description: {
-      type: String,
-      default: ""
-    }
+<script setup>
+const emit = defineEmits("save");
+
+const props = defineProps({
+  description: {
+    type: String,
+    default: "",
   },
-  data() {
-    return { updatedDescription: this.description };
-  },
-  methods: {
-    handleUpdate() {
-      this.$emit("save", this.updatedDescription);
-    }
-  },
-  
-};
+});
+
+const updatedDescription = ref(props.description);
+
+function handleUpdate() {
+  emit("save", updatedDescription.value);
+}
 </script>

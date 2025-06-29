@@ -4,17 +4,17 @@
       {{ $t("recipes.writtenIn") }}
       <span
         v-if="language && !editMode"
-        @click="event => toggleEditMode(event)"
+        @click="toggleEditMode"
         :class="{ editable: isRecipeOwner }"
         class="margin-left-sm"
         >{{ language }}</span
       >
-      <edit-icon
+      <i-edit-icon
         v-if="!language && isRecipeOwner && !editMode"
         class="icon margin-left-sm"
-        @click="event => toggleEditMode(event)"
+        @click="toggleEditMode"
       />
-      <language-edit
+      <LanguageEdit
         class="margin-left-sm"
         v-if="editMode"
         :language="language"
@@ -24,63 +24,54 @@
     </div>
   </div>
 </template>
-<script>
-import { getDatabase, ref as dbRef, get } from "firebase/database";
-
+<script setup>
+import { getDatabase, ref as dbRef, set } from "firebase/database";
 import LanguageEdit from "./Editing/LanguageEdit.vue";
 
-export default {
-  name: "language-display",
-  components: {
-    LanguageEdit
+const db = getDatabase();
+
+const emit = defineEmits(["update"]);
+
+const props = defineProps({
+  language: {
+    type: String,
+    default: "",
   },
-  props: {
-    language: {
-      type: String,
-      default: ""
-    },
-    recipeKey: {
-      type: String,
-      default: ""
-    },
-    isRecipeOwner: {
-      type: Boolean,
-      default: false
-    }
+  recipeKey: {
+    type: String,
+    default: "",
   },
-  data() {
-    return {
-      editMode: false
-    };
+  isRecipeOwner: {
+    type: Boolean,
+    default: false,
   },
-  methods: {
-    toggleEditMode(event) {
-      event && event.stopPropagation();
-      if (this.isRecipeOwner) {
-        this.editMode = !this.editMode;
-      }
-    },
-    setLanguage(language) {
-      language = language === "Not set" ? null : language;
-      let recipeKey = this.recipeKey;
-      if (recipeKey) {
-        const db = getDatabase();
-        let languageRef = dbRef(db, `recipes/${recipeKey}/language`);
-        languageRef
-          .set(language)
-          .then(() => {
-            console.log("Successfully updated language");
-            this.editMode = false;
-            this.$emit("update");
-          })
-          .catch(error =>
-            console.log("Error updating language:", error.message)
-          );
-      } else {
-        this.$emit("update", { language });
-        this.editMode = false;
-      }
-    }
+});
+
+const editMode = ref(false);
+
+function toggleEditMode(event) {
+  event && event.stopPropagation();
+  if (props.isRecipeOwner) {
+    editMode.value = !editMode.value;
   }
-};
+}
+
+function setLanguage(language) {
+  language = language === "Not set" ? null : language;
+
+  if (props.recipeKey) {
+    set(dbRef(db, `recipes/${props.recipeKey}/language`), language)
+      .then(() => {
+        console.info("[setLanguage] Successfully updated language");
+        editMode.value = false;
+        emit("update");
+      })
+      .catch((error) =>
+        console.error("[setLanguage] Error updating language:", error.message)
+      );
+  } else {
+    emit("update", { language });
+    editMode.value = false;
+  }
+}
 </script>

@@ -4,28 +4,24 @@
     type="text"
     v-model="updatedTitle"
     v-click-outside="handleUpdate"
-    @keydown="event => { event.keyCode === 13 && handleUpdate }"
+    @keydown="
+      (event) => {
+        event.keyCode === 13 && handleUpdate;
+      }
+    "
   />
 </template>
-<script>
- 
+<script setup>
+const props = defineProps({
+  title: {
+    type: String,
+    default: "",
+  },
+});
+const emit = defineEmits(["save"]);
+const updatedTitle = ref(props.title);
 
-export default {
-  name: "title-edit",
-  props: {
-    title: {
-      type: String,
-      default: ""
-    }
-  },
-  data() {
-    return { updatedTitle: this.title };
-  },
-  methods: {
-    handleUpdate() {
-      this.$emit("save", this.updatedTitle);
-    }
-  },
-  
-};
+function handleUpdate() {
+  emit("save", updatedTitle.value);
+}
 </script>

@@ -1,9 +1,7 @@
 <template>
-  <div>
     <NuxtLayout>
       <NuxtPage :page-key="route => $localePath(route.fullPath)"/>
     </NuxtLayout>
-  </div>
 </template>
 
 <script setup>

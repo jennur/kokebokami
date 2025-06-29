@@ -11,7 +11,13 @@
 </template>
 
 <script setup>
-import { getDatabase, ref as dbRef, get, update, push } from "firebase/database";
+import {
+  getDatabase,
+  ref as dbRef,
+  get,
+  update,
+  push,
+} from "firebase/database";
 import RecipeFullView from "~/components/RecipeFullView/RecipeFullView.vue";
 import { useAuthStore } from "~/store";
 
@@ -49,7 +55,6 @@ const recipe = reactive({
   freeFrom: [],
 });
 
-const user = computed(() => authStore.user);
 const breadcrumbs = computed(() => {
   return [
     { name: this.$t("navigation.home"), link: "/" },
@@ -73,41 +78,39 @@ function saveRecipe(recipeObj) {
     recipeObj = {
       ...recipeObj,
       datePublished: date,
-      ownerID: user.value.id,
+      ownerID: authStore.user.id,
     };
 
     push(dbRef(db, "recipes"), recipeObj)
       .then((result) => {
-        console.log("[saveRecipe] Successfully saved new recipe");
+        console.info("[saveRecipe] Successfully saved new recipe");
         recipeKey.value = result.key;
       })
       .then(() => {
         getRecipe();
-      });
+      })
+      .catch((error) => console.error("[saveRecipe]", error.message));
   } else {
     recipeObj = recipeObj || {};
 
     update(dbRef(db, `recipes/${recipeKey}`), recipeObj)
       .then(() => {
-        console.log("Successfully updated recipe:", recipeObj);
+        console.info("[saveRecipe] Successfully updated recipe:", recipeObj);
       })
       .then(() => {
         getRecipe();
-      });
+      })
+      .catch((error) => console.error("[saveRecipe]", error.message));
   }
 }
 
-async function getRecipe() {
-  if (user.value) {
-    try {
-      const snapshot = await get(dbRef(db, `recipes/${recipeKey.value}`));
-
-      if (snapshot.exists()) {
-        recipe.value = snapshot.val();
-      }
-    } catch (error) {
-      console.log("Error: Failed getting recipe:", error.message);
-    }
+function getRecipe() {
+  if (authStore.user?.id) {
+    get(dbRef(db, `recipes/${recipeKey.value}`))
+      .then((snapshot) => {
+        if (snapshot.exists()) recipe.value = snapshot.val();
+      })
+      .catch((error) => console.error("[getRecipe]", error.message));
   }
 }
 </script>

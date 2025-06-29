@@ -54,7 +54,6 @@ export const useShoppingListStore = defineStore("shoppingList", {
                 });
               }
               this.shoppingLists = userShoppingLists;
-              console.log("SHOPPINGLISTS:", userShoppingLists);
               this.loaded = true;
               this.SET_COUNT();
             }

@@ -2,7 +2,7 @@
   <div>
     <div class="flex-row flex-row--align-center flex-row--nowrap">
       <h3 class="margin-v-md">{{ $t("recipes.instructions") }}</h3>
-      <edit-icon
+      <i-edit-icon
         tabindex="0"
         v-if="isRecipeOwner && !editMode"
         class="icon margin-md"
@@ -16,7 +16,7 @@
       <li
         tabindex="0"
         class="recipe_instructions-step"
-        :class="{'focused': focusedIndex === index}"
+        :class="{ focused: focusedIndex === index }"
         v-for="(step, index) in instructions"
         :key="`instruction-${index}`"
         :id="`step${index + 1}`"
@@ -26,74 +26,66 @@
       </li>
     </ol>
     <span v-if="loading" class="simple-loading-spinner"></span>
-    <instructions-edit
+    <InstructionsEdit
       v-if="editMode"
       :instructions="instructions"
       @save="saveInstructions"
     />
   </div>
 </template>
-<script>
-import { getDatabase, ref as dbRef, get } from "firebase/database";
+<script setup>
+import { getDatabase, ref as dbRef, set } from "firebase/database";
 
 import InstructionsEdit from "./Editing/InstructionsEdit.vue";
 
-export default {
-  name: "instructions-display",
-  components: {
-    InstructionsEdit
+const db = getDatabase();
+const props = defineProps({
+  instructions: {
+    type: Array,
+    default: () => [],
   },
-  props: {
-    instructions: {
-      type: Array,
-      default: () => []
-    },
-    isRecipeOwner: {
-      type: Boolean,
-      default: false
-    },
-    recipeKey: {
-      type: String,
-      default: ""
-    }
+  isRecipeOwner: {
+    type: Boolean,
+    default: false,
   },
-  data() {
-    return {
-      editMode: false,
-      loading: false,
-      focusedIndex: null
-    };
+  recipeKey: {
+    type: String,
+    default: "",
   },
-  methods: {
-    toggleEditMode() {
-      this.editMode = !this.editMode;
-    },
-    saveInstructions(instructions) {
-      this.editMode = false;
-      let recipeKey = this.recipeKey;
+});
 
-      if (recipeKey) {
-        this.loading = true;
-        const db = getDatabase();
-        let instructionsRef = dbRef(db, 
-          `recipes/${recipeKey}/instructions`
-        );
-        instructionsRef
-          .set(instructions)
-          .then(() => {
-            console.log("Successfully updated instructions");
-            this.$emit("update");
-          })
-          .then(() => {
-            this.loading = false;
-          })
-          .catch(error =>
-            console.log("Error setting instructions:", error.message)
-          );
-      } else {
-        this.$emit("update", { instructions });
-      }
-    }
+const emit = defineEmits("update");
+
+const editMode = ref(false);
+const loading = ref(false);
+const focusedIndex = ref(null);
+
+function toggleEditMode() {
+  editMode.value = !editMode.value;
+}
+
+function saveInstructions(instructions) {
+  editMode.value = false;
+
+  if (props.recipeKey) {
+    loading.value = true;
+
+    set(dbRef(db, `recipes/${props.recipeKey}/instructions`), instructions)
+      .then(() => {
+        console.info("[saveInstructions] Successfully updated instructions");
+        emit("update");
+      })
+      .catch((error) =>
+        console.error(
+          "[saveInstructions] Error setting instructions:",
+          error.message
+        )
+      )
+      .finally(() => {
+        loading.value = false;
+      });
+  } else {
+    emit("update", { instructions });
   }
-};
+}
 </script>

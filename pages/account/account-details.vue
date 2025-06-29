@@ -7,7 +7,7 @@
       </h1>
       <NuxtLink :to="$localePath('/account/public-profile-view/')">
         {{ $t("accountDetails.seeYourPublicProfile") }}
-        <right-arrow class="icon icon--blue" />
+        <i-right-arrow class="icon icon--blue" />
       </NuxtLink>
       <div>
         <h3 class="margin-top-2xl">
@@ -149,7 +149,9 @@
                     'color--pink': authStore.user.hiddenProfile,
                     'color--blue': !authStore.user.hiddenProfile,
                   }"
-                  >{{ authStore.user.hiddenProfile ? $t("closed") : $t("open") }}</strong
+                  >{{
+                    authStore.user.hiddenProfile ? $t("closed") : $t("open")
+                  }}</strong
                 >
                 <ToggleSwitch
                   :checked="!authStore.user.hiddenProfile"
@@ -163,7 +165,7 @@
           class="button button-sm button--trans button--trans-red margin-top-lg"
           @click="toggleAlert"
         >
-          <delete-icon class="icon margin-right-sm" />{{
+          <i-delete-icon class="icon margin-right-sm" />{{
             $t("accountDetails.deleteMyAccount")
           }}
         </button>
@@ -180,10 +182,11 @@
 </template>
 
 <script setup>
-import { getDatabase, ref as dbRef, get, update, child, push } from "firebase/database";
-
-const uuid = require("uuid");
+import { getDatabase, ref as dbRef, get, update, set } from "firebase/database";
+import { v4 as uuidv4 } from "uuid";
 import Compressor from "compressorjs";
+
+import validateUsername from "~/helpers/validate-username";
 import AccountDetail from "~/components/Account/Displays/AccountDetail.vue";
 import AccountLinkList from "~/components/Account/Displays/AccountLinkList.vue";
 import Alert from "~/components/Alert.vue";
@@ -240,7 +243,8 @@ const biography = ref("");
 const isLoading = ref(false);
 const showAlert = ref(false);
 const notificationsOff = ref({});
-const hiddenProfile = ref(fals);
+const hiddenProfile = ref(false);
+
 const breadcrumbs = computed(() => {
   return [
     { name: t("navigation.home"), link: "/" },
@@ -253,12 +257,15 @@ function toggleAlert() {
   showAlert.value = !showAlert.value;
 }
 
+function updateUserDetailsInStore() {
+  authStore.SET_USER();
+}
+
 function updateHiddenProfileStatus(checked) {
   if (checked === hiddenProfile.value) {
-    dbRef(db, `users/${authStore.user.id}`)
-      .update({ hiddenProfile: !checked })
+    update(dbRef(db, `users/${authStore.user.id}`), { hiddenProfile: !checked })
       .then(() => {
-        console.ifo(
+        console.info(
           "[updateHiddenProfileStatus] Successfully updated hidden profile status"
         );
         updateUserDetailsInStore();
@@ -289,9 +296,6 @@ function updateNotificationStatus(type, status) {
       );
   }
 }
-function updateUserDetailsInStore() {
-  authStore.SET_USER();
-}
 
 function compressImage(file) {
   isLoading.value = true;
@@ -313,7 +317,7 @@ function compressImage(file) {
 
 async function updateProfileImg(upload) {
   removeProfileImg();
-  const imageName = uuid.v1();
+  const fileName = uuidv4();
   try {
     //save image
     const file = upload;
@@ -321,7 +325,7 @@ async function updateProfileImg(upload) {
     const storage = getStorage();
     const imageRef = storageRef(
       storage,
-      `images/users/${authStore.user.id}/profileImg/${imageName}.png`
+      `images/users/${authStore.user.id}/profileImg/${fileName}.png`
     );
 
     await uploadBytes(imageRef, file, {
@@ -408,9 +412,9 @@ function updateBiography(value) {
       biographySystemMessage.value = "";
       updateUserDetailsInStore();
     })
-    .catch((e) => {
-      biographySystemMessage.value = e.message;
-      console.log(e);
+    .catch((error) => {
+      biographySystemMessage.value = error.message;
+      console.error("[updateBiography]", error.message);
     });
 }
 function deleteAccount() {
@@ -484,5 +488,6 @@ onMounted(() => {
   photoURL.value = authStore.user.photoURL;
   hiddenProfile.value = authStore.user.hiddenProfile;
   notificationsOff.value = authStore.user.notificationsOff;
+  recipeStore.REFRESH_USER_LINKS();
 });
 </script>

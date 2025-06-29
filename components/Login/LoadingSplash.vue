@@ -12,16 +12,16 @@
 </template>
 
 <script setup>
-import { useAuthStore } from '../../store';
+import { useAuthStore } from "../../store";
 const authStore = useAuthStore();
 
 const loginError = computed(() => {
   const error = authStore.loginMessage;
   if (error.length) {
-    console.log("Login error:", error.message);
+    console.error("[loginError]", error.message);
     authStore.SET_LOGIN_MESSAGE("");
     return "We were not able to log you in. Please try again later or use a different provider.";
   }
   return "";
-})
+});
 </script>

@@ -1,21 +1,24 @@
 import { getDatabase, ref as dbRef, get } from "firebase/database";
 import generatePath from "../helpers/generatePath";
 
-export default async function useRecipeAuthor(ownerID){
-  const db = getDatabase();
-  const snapshot = await get(dbRef(db, `users/${ownerID}/displayName`));
-
+export default async function useRecipeAuthor(ownerID){  
   const author = {
     id: ownerID,
     displayName: "",
     path: ""
   }
 
-  if (snapshot.exists()) {
-    const displayName = snapshot.val();
-    author.displayName = displayName || "unknown";
-    author.path = generatePath(displayName, ownerID);
+  if(ownerID) {
+    const db = getDatabase();
+    const snapshot = await get(dbRef(db, `users/${ownerID}/displayName`));
+    
+    if (snapshot.exists()) {
+      const displayName = snapshot.val();
+      author.displayName = displayName || "unknown";
+      author.path = generatePath(displayName, ownerID);
+    }
   }
+  
   return {
     content: author,
     structuredData: {

@@ -125,7 +125,7 @@ const db = getDatabase();
 const authStore = useAuthStore();
 const recipeStore = useRecipeStore();
 
-const emit = defineEmits(["save"]);
+const emit = defineEmits(["save", "cancel"]);
 
 const newCategory = ref(false);
 const selectedCategory = ref("");
@@ -190,7 +190,7 @@ function handleFormSubmit() {
         console.error("[handleFormSubmit]", error.message);
       });
   } else {
-    console.log("[handleFormSubmit] Wrong URL format:", url);
+    console.error("[handleFormSubmit] Wrong URL format:", url);
     systemMessage.value = "The URL is not the correct format.";
   }
 }

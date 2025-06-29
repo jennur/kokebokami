@@ -8,7 +8,7 @@
         @click="handlePdfExport"
         title="Download as PDF"
       >
-        <download-icon class="icon icon-sm" />
+        <i-download-icon class="icon icon-sm" />
       </button>
 
       <!--   Email share   -->
@@ -17,18 +17,8 @@
         class="button button--w-icon-round margin-left-lg"
         title="Share recipe by e-mail"
       >
-        <email-icon class="icon icon-md" />
+        <i-email-icon class="icon icon-md" />
       </button>
-
-      <!--   Facebook share   -->
-      <a v-if="recipePublic"
-         class="button button--w-icon-round margin-left-lg"
-         target="_blank"
-         title="Share recipe on facebook"
-         :href="`https://www.facebook.com/sharer/sharer.php?u=https://kokebokami.com/recipes/${sharePath}&amp;src=sdkpreparse`"
-      >
-        <fa :icon="['fab', 'facebook-f']" style="font-size: 20px; color: black;" class="icon icon-sm"/>
-      </a>
     </div>
 
     <share-form

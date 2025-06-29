@@ -192,11 +192,10 @@ function saveLink() {
       comment: comment.value,
     };
 
+    const recipeLinksRef = dbRef(db, `users/${authStore.user.id}/recipeLinks`);
+
     if (props.recipeLink.id) {
-      update(dbRef(
-        db,
-        `users/${authStore.user.id}/recipeLinks/${props.recipeLink.id}`
-      ), dataObject)
+      update(child(recipeLinksRef, props.recipeLink.id), dataObject)
         .then(() => {
           console.info("[saveLink] Successfully updated recipe link");
           emit("update");
@@ -206,7 +205,7 @@ function saveLink() {
           console.error("[saveLink]", error.message);
         });
     } else {
-      push(child(dbRef(db, `users/${authStore.user.id}`), "recipeLinks"), dataObject)
+      push(recipeLinksRef, dataObject)
         .then(() => {
           console.info("[saveLink] Successfully saved recipe link");
           emit("update");

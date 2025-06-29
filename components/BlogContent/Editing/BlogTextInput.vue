@@ -53,22 +53,20 @@ export default {
       );
       if (this.recipeKey) {
         if (hasChanged) {
-          console.log("Saving text");
+          console.info("[saveText] Saving text");
           if (content.new) delete content.new;
           const db = getDatabase();
-            dbRef(db, `recipes/${this.recipeKey}/blog/${key}`)
+          dbRef(db, `recipes/${this.recipeKey}/blog/${key}`)
             .set(content)
             .then(() => {
-              console.log("Saved content to db");
+              console.info("Saved content to db");
               this.$emit("close", key);
               this.$emit("update");
             })
-            .catch((error) =>
-              console.log("Error saving content to db:", error.message)
-            );
+            .catch((error) => console.error("[saveText]", error.message));
         } else {
           if (!content.new) {
-            console.log("Not new. No change, closing text edit");
+            console.info("[saveText] Not new. No change, closing text edit");
             this.$emit("close", key);
           }
         }

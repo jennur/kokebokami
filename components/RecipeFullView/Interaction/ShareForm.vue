@@ -66,7 +66,7 @@
 </template>
 
 <script setup>
-import { getDatabase, ref } from "firebase/database";
+import { getDatabase, ref as dbRef } from "firebase/database";
 
 import axios from "axios";
 
@@ -109,9 +109,9 @@ const props = defineProps({
 });
 
 const selected = ref("");
-const sharedByEmail = ref(nul);
+const sharedByEmail = ref(null);
 const systemMessage = ref("");
-const useEmail = ref(fals);
+const useEmail = ref(false);
 
 const followerNames = computed(() => {
   return authStore.followers.value.map((follower) => {

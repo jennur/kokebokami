@@ -68,9 +68,9 @@
 
 <script setup>
 import ExpandTransition from "~/components/Transitions/Expand.vue";
-import AddRecipeFromUrlForm from "~/components/AddRecipeForm/AddRecipeFromUrlForm.vue";
+import AddRecipeFromUrlForm from "~/components/AddRecipeFromUrlForm.vue";
 import Tabs from "~/components/Tabs.vue";
-import RecipesList from "~/components/RecipePreview/RecipesList.vue";
+import RecipesList from "~/components/RecipesList.vue";
 import RecipeLinkList from "~/components/RecipeLinkList/RecipeLinkList.vue";
 import { useAuthStore, useRecipeStore } from "~/store";
 import { onMounted } from "vue";

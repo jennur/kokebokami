@@ -39,7 +39,7 @@
       tabindex="0"
     >
       {{ $t("editList") }}
-      <edit-icon class="icon margin-left-sm" />
+      <i-edit-icon class="icon margin-left-sm" />
     </button>
 
     <div v-if="editMode" class="flex-row flex-row--align-center">
@@ -60,7 +60,13 @@
 </template>
 
 <script setup>
-import { getDatabase, ref as dbRef, update, child, push } from "firebase/database";
+import {
+  getDatabase,
+  ref as dbRef,
+  update,
+  child,
+  push,
+} from "firebase/database";
 import IncrementButton from "~/components/Input/IncrementButton.vue";
 import DecrementButton from "~/components/Input/DecrementButton.vue";
 
@@ -104,22 +110,22 @@ function removeListItem(index) {
 }
 
 function handleComplete(index) {
-  let complete = updatedListItems.value[index].complete;
+  const complete = updatedListItems.value[index].complete;
   updatedListItems.value[index].complete = !complete;
   saveListItems();
 }
 
 function saveListItems() {
   const mainListKey = props.mainListKey;
-  const listItems = updatedListItems.value;
   const subListKey = props.subListKey;
 
   const mainListRef = dbRef(db, `shoppingLists/${mainListKey}`);
 
   if (mainListKey && subListKey !== "") {
-    update(child(child(mainListRef, "subLists"), subListKey), { listItems })
+    update(child(child(mainListRef, "subLists"), subListKey), {
+      listItems: updatedListItems.value,
+    })
       .then(() => {
-        //console.log("Sublist successfully updated");
         editMode.value = false;
         emit("update");
       })
@@ -131,7 +137,7 @@ function saveListItems() {
       );
   } else if (mainListKey && subListKey === "") {
     console.info("[saveListItems] Adding new sublist");
-    push(child(mainListRef, "subLists"), { listItems })
+    push(child(mainListRef, "subLists"), { listItems: updatedListItems.value })
       .then(() => {
         console.info("[saveListItems] Successfully added new sublist");
         editMode.value = false;

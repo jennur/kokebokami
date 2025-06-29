@@ -7,24 +7,26 @@
         :class="{ editable: isRecipeOwner, edit: beforeEdit === index }"
         :key="`category-${index}`"
       >
-        <span @click="toggleEditClass(index)">{{ categoryNames[index] }}</span>
+        <span @click="() => toggleEditClass(index)">{{
+          categoryNames[index]
+        }}</span>
 
-        <edit-icon
+        <i-edit-icon
           tabindex="0"
           class="icon recipe_category-edit-icon"
-          @click="(event) => toggleEditMode(event)"
+          @click="toggleEditMode"
         />
       </span>
 
       <button
         v-if="!categories.length"
         class="button button-xs button--round"
-        @click="(event) => toggleEditMode(event)"
+        @click="toggleEditMode"
       >
         {{ $t("recipes.addCategory") }}
       </button>
     </div>
-    <category-edit
+    <CategoryEdit
       v-if="editMode"
       :allTypes="allCategories"
       :existingTypes="categories"
@@ -33,10 +35,13 @@
     />
   </div>
 </template>
+
 <script setup>
-import { getDatabase, ref as dbRef, get } from "firebase/database";
-import CategoryEdit from "./Editing/CategoryEdit.vue";
+import { getDatabase, ref as dbRef, set } from "firebase/database";
 import { useRecipeStore } from "~/store";
+import CategoryEdit from "./Editing/CategoryEdit.vue";
+
+const { tm } = useI18n();
 
 const recipeStore = useRecipeStore();
 
@@ -66,12 +71,12 @@ const allCategories = computed(() => {
 });
 const categoryNames = computed(() => {
   const allCategories = recipeStore.allCategories.categories;
-  const localeCategories = t("recipes.allCategories.categories");
+  const localeCategories = tm("recipes.allCategories.categories");
   return (
     props.categories &&
     props.categories.map((category) => {
       const index = allCategories.indexOf(category);
-      return localeCategories[index];
+      return localeCategories[index].body.static;
     })
   );
 });
@@ -88,12 +93,12 @@ function toggleEditMode(event) {
 
 function saveCategories(categories) {
   editMode.value = false;
-  const recipeKey = props.recipeKey;
 
-  if (recipeKey) {
+  if (props.recipeKey) {
     loading.value = true;
     const db = getDatabase();
-    set(dbRef(db, `recipes/${recipeKey}/categories`), categories)
+
+    set(dbRef(db, `recipes/${props.recipeKey}/categories`), categories)
       .then(() => {
         console.info("[saveCategories] Successfully updated categories");
         loading.value = false;

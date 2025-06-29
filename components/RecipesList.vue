@@ -25,7 +25,7 @@
 </template>
 
 <script setup>
-import RecipePreview from "./RecipePreview.vue";
+import RecipePreview from "~/components/RecipePreview.vue";
 
 const props = defineProps({
   recipeID: {

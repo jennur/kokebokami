@@ -3,7 +3,7 @@
     <!-- Share action -->
     <div class="flex-row flex-row--align-center margin-bottom-lg">
       <div v-if="list && list.key">
-        <ShareIcon class="icon icon--blue" @click="toggleShareBox" />
+        <i-share-icon class="icon icon--blue" @click="toggleShareBox" />
 
         <ShareBox
           :open="sharing"
@@ -19,7 +19,7 @@
     <div class="shopping-list_cancel-action">
       <SettingsDropdown v-if="list.key" :right="true">
         <span class="system-message" @click="toggleAlert">
-          <delete-icon tabindex="0" class="icon margin-right-md" />
+          <i-delete-icon tabindex="0" class="icon margin-right-md" />
           {{ $t("shoppingLists.deleteCollection") }}
         </span>
       </SettingsDropdown>
@@ -57,7 +57,7 @@
         <span v-if="shared" class="shopping-list_shared">
           {{ $t("shoppingLists.sharedBy") }}:
           <NuxtLink :to="`/cooks/${createdByCookPath}`">
-            {{ list.createdBy.displayName }}
+            {{ list.createdBy?.displayName }}
           </NuxtLink>
         </span>
 
@@ -126,9 +126,15 @@
 </template>
 
 <script setup>
-import { getDatabase, ref as dbRef, get, update, push } from "firebase/database";
+import {
+  getDatabase,
+  ref as dbRef,
+  get,
+  update,
+  push,
+  remove,
+} from "firebase/database";
 import axios from "axios";
-import ShareIcon from "~/assets/graphics/icons/shareicon.svg";
 
 import SettingsDropdown from "~/components/SettingsDropdown.vue";
 import Alert from "~/components/Alert.vue";
@@ -158,13 +164,14 @@ const sharing = ref(false);
 const showAlert = ref(false);
 
 const createdByCookPath = computed(() => {
-  const createdBy = props.list.createdBy;
-  return generatePath(createdBy.displayName, createdBy.id);
+  const createdBy = props.list?.createdBy;
+  if (createdBy) return generatePath(createdBy.displayName, createdBy.id);
+  return "";
 });
 
 const shared = computed(() => {
   const createdByID = props.list?.createdBy?.id;
-  return createdByID !== authStore.user.id;
+  return createdByID && createdByID !== authStore.user.id;
 });
 const sharedWith = computed(() => {
   const createdByID = props.list?.createdBy?.id;
@@ -213,7 +220,7 @@ function saveTitle() {
           emit("update");
         })
         .catch((error) => {
-          console.log(
+          console.error(
             "[saveTitle] Title update failed for main list:",
             error.message
           );

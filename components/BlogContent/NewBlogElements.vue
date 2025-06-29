@@ -54,7 +54,7 @@
 </template>
 
 <script setup>
-const uuid = require("uuid");
+import { v4 as uuidv4 } from 'uuid';
 
 import BlogTextInput from "./Editing/BlogTextInput.vue";
 import BlogImageInput from "./Editing/BlogImageInput.vue";
@@ -76,7 +76,7 @@ const newContent = ref([]);
 const selectingHeadline = ref(false);
 
 function selectHeadline(size) {
-  const key = uuid.v1();
+  const key = uuidv4();
 
   newContent.value.push([
     key,
@@ -98,7 +98,7 @@ function addImage() {
   );
 
   if (!openImageInput.length) {
-    let key = uuid.v1();
+    const key = uuidv4();
     newContent.value.push([
       key,
       {
@@ -114,7 +114,7 @@ function addImage() {
 
 function addText() {
   selectingHeadline.value = false;
-  const key = uuid.v1();
+  const key = uuidv4();
   newContent.value.push([
     key,
     {

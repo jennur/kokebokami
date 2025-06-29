@@ -32,8 +32,8 @@
 
     &:hover {
       .icon path {
-        fill: $blue;
-        stroke: $blue
+        fill: $blue !important;
+        stroke: $blue !important;
       }
     }
 
@@ -45,8 +45,8 @@
     }
 
     &.selected {
-      .icon path {
-        fill: $blue;
+      svg.icon path {
+        fill: $blue !important;
       }
     }
   }

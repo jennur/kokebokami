@@ -1,7 +1,7 @@
 <template>
   <div>
     <div v-if="user && !user.id">
-      <CtaSection />
+      <CTASection />
     </div>
 
     <div class="desktop-width padding-h-lg margin-top-2xl margin-auto">
@@ -28,13 +28,12 @@
 </template>
 
 <script setup>
-import { useRecipeStore } from "../store/recipeStore";
-
-import CtaSection from "~/components/CTASection/CTASection.vue";
-import SignUpSection from "~/components/SignUpSection/SignUpSection.vue";
-import RecipesList from "~/components/RecipePreview/RecipesList.vue";
+import CTASection from "~/components/CTASection.vue";
+import SignUpSection from "~/components/SignUpSection.vue";
+import RecipesList from "~/components/RecipesList.vue";
 import FilterSection from "~/components/Filter/FilterSection";
-import { useAuthStore } from "~/store";
+import { useAuthStore, useRecipeStore } from "~/store";
+
 const authStore = useAuthStore();
 
 const initialFiltered = ref(true);

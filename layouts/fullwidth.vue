@@ -1,11 +1,11 @@
 <template>
   <div>
-    <header-component />
+    <HeaderComponent />
     <main class="full-width margin-auto">
       <slot></slot>
     </main>
-    <footer-component />
-    <scroll-button />
+    <FooterComponent />
+    <ScrollButton />
   </div>
 </template>
 <script>

@@ -37,7 +37,7 @@
   </footer>
 </template>
 <script setup>
-import LanguageNavigation from "../LanguageNavigation.vue";
+import LanguageNavigation from "~/components/LanguageNavigation.vue";
 
 const year = new Date().getFullYear();
 </script>

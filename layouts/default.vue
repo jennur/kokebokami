@@ -1,10 +1,10 @@
 <template>
   <div>
-    <header-component />
+    <HeaderComponent />
     <main class="tablet-width margin-auto padding-h-lg">
       <slot></slot>
     </main>
-    <footer-component />
+    <FooterComponent />
     <scroll-button />
   </div>
 </template>

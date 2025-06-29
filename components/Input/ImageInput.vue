@@ -18,7 +18,7 @@ import Compressor from "compressorjs";
 export default {
   name: "image-input",
   components: {
-    Dropzone
+    Dropzone,
   },
   data() {
     return {
@@ -28,15 +28,15 @@ export default {
         dictDefaultMessage: `<p class='text-default'><i class='fa fa-cloud-upload mr-2'></i> Drag image or Click here</p>
           <p class="form-text">Allowed Files: .jpg, .jpeg, .png</p>
           `,
-        maxFiles: 1
-      }
+        maxFiles: 1,
+      },
     };
   },
   methods: {
     handlePictureUpload(file) {
       this.isLoading = true;
       let componentThis = this;
-      const imageCompressor = new Compressor(file, {
+      new Compressor(file, {
         checkOrientation: true,
         maxWidth: 1000,
         maxHeight: 800,
@@ -48,10 +48,10 @@ export default {
           componentThis.$refs.dropImage.removeFile(file);
         },
         error(error) {
-          console.log("Error compressing image:", error.message);
-        }
+          console.error("[handlePictureUpload]", error.message);
+        },
       });
-    }
-  }
+    },
+  },
 };
 </script>

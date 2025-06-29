@@ -1,61 +1,61 @@
-import { getDatabase, ref as dbRef, get } from "firebase/database";
 import getRecipeWithMetadata from "~/helpers/get-recipe-with-metadata.js";
-import recipeModel from "~/helpers/recipe-model";
-import { useCurrentUser } from 'vuefire'
+import { getAuth } from "firebase/auth";
 import useRecipeAuthor from "./recipeAuthor";
 
-// Parameters: recipes/[key].vue/[recipeid].vue
+// Parameters: recipes/[key].vue/[recipepath].vue
 export default async function useRecipeData(params) {
-    const user = useCurrentUser();
+  const auth = getAuth();
+    const user = auth.currentUser;
 
-    const recipeData = {
-      headData: {},
-      recipe: {},
-      author: {},
-      loaded: true,
-      userHasAccess,
-      sharedWithUser
-    }
+    const headData = ref(null);
+    const recipe = ref(null);
+    const author = ref(null);
+    const loaded = ref(false);
 
-    try {
-      console.log("[useRecipeData] GETTING RECIPE DATA")
-      const { key, recipeid } = params;
-      const recipePath = `${key}/${recipeid}/`;
-      console.log("RECIPE PATH:", recipePath);
-      const recipeWithMetadata = getRecipeWithMetadata(recipePath);
+     async function loadRecipe() {
+      try {
+        const { key, recipepath } = params;
+        const recipeFullPath = `${key}/${recipepath}/`;
 
-      const author = recipeWithMetadata?.content?.ownerID && useRecipeAuthor(recipeWithMetadata.content.ownerID);
+        const recipeWithMetadata = await getRecipeWithMetadata(recipeFullPath);
 
-      if (recipeWithMetadata.structuredData && author) {
-        recipeWithMetadata.structuredData.author = author.structuredData;
+        console.log("RecipeWithMetadata:", recipeWithMetadata)
+        const recipeAuthor = await useRecipeAuthor(recipeWithMetadata.content?.ownerID);
+        if (recipeWithMetadata.structuredData && author) {
+          recipeWithMetadata.structuredData.author = author.structuredData;
+        }
+
+        headData.value = {
+            ...recipeWithMetadata?.metadata,
+            script: [
+              {
+                type: "application/ld+json",
+                json: recipeWithMetadata.structuredData
+              }
+            ]
+          };
+        recipe.value = recipeWithMetadata.content,
+        author.value = recipeAuthor.content;
+
+        console.info("[useRecipeData] Successfully updated")
+      } catch(error) {
+        console.error("[useRecipeData] Error loading recipe:", error);
       }
-
-      recipeData.headData = {
-          ...recipeWithMetadata.metadata,
-          script: [
-            {
-              type: "application/ld+json",
-              json: recipeWithMetadata.structuredData
-            }
-          ]
-        };
-      recipeData.recipe = recipeModel(recipeWithMetadata.content),
-      recipeData.author = author.content;
-
-    } catch(error) {
-      console.error("Error loading recipe:", error);
+      finally {
+        loaded.value = true;
+      }
     }
 
-    return recipeData
+    loadRecipe();
 
     function userHasAccess() {
-      const recipe = recipeData.recipe;
-      if(!recipe.public){
-        if(user.value && user.value.uid === recipe.ownerID){
+      if(!recipe.value.public){
+        console.log("USER:", user.uid, recipe.value)
+        if(user && user.uid === recipe.value.ownerID){
           return true;
         }
 
-        if(!user.value || (user.value && !this.sharedWithUser(recipe))){
+        if(!user || (user && !sharedWithUser())){
           return false;
         }
       }
@@ -63,13 +63,22 @@ export default async function useRecipeData(params) {
     }
 
     function sharedWithUser() {
-      const recipe = recipeData.recipe;
-      if ((recipe.ownerID === user.value?.uid)) {
+      if ((recipe.value.ownerID === user?.uid)) {
         return true;
       }
-      else if (user.value && recipe.sharedWith) {
-        return Object.values(recipe.sharedWith).indexOf(user.value?.uid) > -1;
+      else if (user && recipe.value.sharedWith) {
+        return Object.values(recipe.value.sharedWith).indexOf(user?.uid) > -1;
       }
       return false;
+    }
+
+    return {
+      recipe,
+      headData,
+      author,
+      loaded,
+      userHasAccess,
+      sharedWithUser,
+      refresh: loadRecipe
     }
   }

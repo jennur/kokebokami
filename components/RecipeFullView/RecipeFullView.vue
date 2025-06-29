@@ -12,7 +12,7 @@
             @update="(payload) => emit('update', payload)"
           />
           <span v-if="recipe.id" class="system-message" @click="toggleAlert">
-            <delete-icon tabindex="0" class="icon margin-right-sm" />{{
+            <i-delete-icon tabindex="0" class="icon margin-right-sm" />{{
               $t("recipes.deleteRecipe")
             }}
           </span>
@@ -172,7 +172,6 @@
         :isRecipeOwner="isRecipeOwner"
         :recipeKey="recipe.id"
         @update="(payload) => emit('update', payload)"
-        @calculated-ingredients="setCalculatedIngredients"
       />
 
       <InstructionsDisplay
@@ -192,7 +191,6 @@ import { ref as storageRef, getStorage } from "firebase/storage";
 import { useRouter } from "vue-router";
 import pdfExport from "~/helpers/pdfExport";
 
-import Rating from "./Interaction/Rating.vue";
 import SettingsDropdown from "~/components/SettingsDropdown.vue";
 import PublicNote from "./Displays/PublicNote.vue";
 import LanguageDisplay from "./Displays/LanguageDisplay.vue";
@@ -207,8 +205,9 @@ import IngredientsDisplay from "./Displays/IngredientsDisplay.vue";
 import InstructionsDisplay from "./Displays/InstructionsDisplay.vue";
 
 import ActionBar from "./Interaction/ActionBar.vue";
+import Rating from "~/components/Rating.vue";
 import Alert from "~/components/Alert.vue";
-import AddToFavorites from "./Interaction/AddToFavorites.vue";
+import AddToFavorites from "~/components/AddToFavorites.vue";
 import BlogContent from "../BlogContent/BlogContent.vue";
 
 const emit = defineEmits(["update"]);
@@ -229,11 +228,6 @@ const props = defineProps({
 });
 
 const showAlert = ref(false);
-const calculatedIngredients = ref({});
-
-function setCalculatedIngredients(ingredientsObj) {
-  calculatedIngredients.value = ingredientsObj;
-}
 
 function toggleAlert() {
   showAlert.value = !showAlert.value;

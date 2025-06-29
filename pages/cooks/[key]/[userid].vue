@@ -52,7 +52,7 @@
 import { getDatabase, ref as dbRef, get, push, remove, child } from "firebase/database";
 
 import ProfileView from "~/components/ProfileView.vue";
-import RecipesList from "~/components/RecipePreview/RecipesList";
+import RecipesList from "~/components/RecipesList";
 import CookHidden from "~/components/Cooks/CookHidden.vue";
 
 import generatePath from "~/helpers/generatePath";

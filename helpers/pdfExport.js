@@ -1,9 +1,9 @@
 import htmlToPdfMake from "html-to-pdfmake";
 import pdfMake from "pdfmake/build/pdfmake";
-import pdfFonts from "assets/fonts/vfs_fonts";
+import { vfs_fonts } from "assets/fonts/vfs_fonts";
 
 export default function pdfExport(recipe, calcValues) {
-  pdfMake.vfs = pdfFonts.pdfMake.vfs;
+  pdfMake.vfs = vfs_fonts;
   const categories = Array.isArray(recipe.categories)
     ? recipe.categories.join(", ")
     : recipe.categories;

@@ -4,12 +4,12 @@
       v-if="!editTitle && !loading"
       class="recipe_title margin-bottom-xl"
       :class="{ editable: isRecipeOwner }"
-      @click="event => toggleEditTitle(event)"
+      @click="(event) => toggleEditTitle(event)"
     >
-      {{ recipeTitle }}
+      {{ title }}
     </h2>
     <span v-if="loading" class="simple-loading-spinner"></span>
-    <title-edit
+    <TitleEdit
       class="margin-bottom-xl"
       v-if="isRecipeOwner && editTitle"
       :title="title"
@@ -18,72 +18,58 @@
   </div>
 </template>
 
-<script>
-import { getDatabase, ref as dbRef, get } from "firebase/database";
+<script setup>
+import { getDatabase, ref as dbRef, set } from "firebase/database";
 
 import TitleEdit from "./Editing/TitleEdit.vue";
 
-export default {
-  name: "title-display",
-  components: {
-    TitleEdit
+const db = getDatabase();
+const emit = defineEmits(["update"]);
+const props = defineProps({
+  title: {
+    type: String,
+    default: "Recipe has no title",
   },
-  props: {
-    title: {
-      type: String,
-      default: ""
-    },
-    isRecipeOwner: {
-      type: Boolean,
-      default: false
-    },
-    recipeKey: {
-      type: String,
-      default: ""
-    }
+  isRecipeOwner: {
+    type: Boolean,
+    default: false,
   },
-  data() {
-    return {
-      editTitle: false,
-      loading: false
-    };
+  recipeKey: {
+    type: String,
+    default: "",
   },
-  computed: {
-    recipeTitle() {
-      return this.title ? this.title : "Recipe has no title";
-    }
-  },
-  methods: {
-    toggleEditTitle(event) {
-      event && event.stopPropagation();
-      if (this.isRecipeOwner) {
-        this.editTitle = !this.editTitle;
-      }
-      return false;
-    },
-    saveTitle(updatedTitle) {
-      this.editTitle = false;
-      let recipeKey = this.recipeKey;
+});
 
-      if (recipeKey && updatedTitle !== this.title) {
-        this.loading = true;
-        const db = getDatabase();
-        let titleRef = dbRef(db, `recipes/${recipeKey}/title`);
-        titleRef
-          .set(updatedTitle)
-          .then(() => {
-            console.log("Successfully updated title");
-            this.$emit("update");
-          })
-          .then(() => {
-            this.loading = false;
-          })
-          .catch(error => console.log("Error setting title:", error.message));
-      } else if (!recipeKey) {
-        console.log("Saving new title", updatedTitle);
-        this.$emit("update", { title: updatedTitle });
-      }
-    }
+const editTitle = ref(false);
+const loading = ref(false);
+
+function toggleEditTitle(event) {
+  event && event.stopPropagation();
+  if (props.isRecipeOwner) {
+    editTitle.value = !editTitle.value;
   }
-};
+  return false;
+}
+
+function saveTitle(newTitle) {
+  editTitle.value = false;
+  const recipeKey = props.recipeKey;
+
+  if (recipeKey && newTitle !== props.title) {
+    loading.value = true;
+    const titleRef = dbRef(db, `recipes/${recipeKey}/title`);
+    set(titleRef, newTitle)
+      .then(() => {
+        console.info("[saveTitle] Successfully updated title");
+        emit("update");
+      })
+      .catch((error) => console.error("[saveTitle]", error.message))
+      .finally(() => {
+        loading.value = false;
+      });
+  } else if (!recipeKey) {
+    console.info("[saveTitle] Saving new title", newTitle);
+    emit("update", { title: newTitle });
+  }
+}
 </script>

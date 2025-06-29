@@ -31,6 +31,8 @@ const db = getDatabase();
 const { t } = useI18n();
 const authStore = useAuthStore();
 
+const emit = defineEmits(["update"]);
+
 const props = defineProps({
   title: {
     type: String,
@@ -50,9 +52,9 @@ const editMode = ref(false);
 const updatedTitle = ref(props.title);
 const isNew = ref(false);
 
-const propTitle = toRef(props, "title");
+const title = toRef(props, "title");
 
-watch(propTitle, (value) => {
+watch(title, (value) => {
   updatedTitle.value = value;
 });
 
@@ -62,19 +64,17 @@ function toggleEditMode(event) {
 }
 
 function saveTitle() {
-  if (isNew.value || props.title !== updatedTitle.value) {
+  if (isNew.value || title.value !== updatedTitle.value) {
     isNew.value = false;
 
     const mainListKey = props.mainListKey;
-
-    const title = updatedTitle.value;
     const subListKey = props.subListKey;
 
     const shoppingListsRef = dbRef(db, `shoppingLists`);
     const mainListRef = dbRef(db, `shoppingLists/${mainListKey}`);
 
     if (mainListKey && subListKey !== "") {
-      update(child(child(mainListRef, "subLists"), subListKey), { title })
+      update(child(mainListRef, `subLists/${subListKey}`), { title: updatedTitle.value })
         .then(() => {
           console.info("[saveTitle] Successfully updated sublist");
           editMode.value = false;
@@ -85,7 +85,7 @@ function saveTitle() {
         );
     } else if (mainListKey && subListKey === "") {
       console.info("[saveTitle] Adding new sublist");
-      push(child(mainListRef, "subLists"), { title })
+      push(child(mainListRef, "subLists"), { title: updatedTitle.value })
         .then((result) => {
           console.info("[saveTitle] Successfully added new sublist");
           editMode.value = false;
@@ -96,23 +96,25 @@ function saveTitle() {
         );
     } else if (!mainListKey) {
       console.info("[saveTitle] Adding new main list");
+      const currentUserObj = {
+        id: authStore.user.id,
+        displayName: authStore.user.displayName,
+      };
+
       push(shoppingListsRef, {
         title: t("shoppingLists.newList"),
-        createdBy: {
-          id: authStore.user.id,
-          displayName: authStore.user.displayName,
-        },
-        owners: [
-          { id: authStore.user.id, displayName: authStore.user.displayName },
-        ],
-      }).then((result) => {
-        push(child(child(shoppingListsRef, "subLists"), result.key), {
-          title,
+        createdBy: currentUserObj,
+        owners: [currentUserObj],
+      })
+      .then((result) => {
+        console.info(`[saveTitle] Successfully added new mainlist: ${result.key}`);
+        push(child(shoppingListsRef, `${result.key}/subLists`), {
+          title: updatedTitle.value,
         }).then((result) => {
-          console.info("[saveTitle] Successfully added new mainlist");
+          console.info(`[saveTitle] Successfully added sublist: ${result.key}`);
           editMode.value = false;
           emit("update");
-        });
+        })
       });
     } else {
       console.error(

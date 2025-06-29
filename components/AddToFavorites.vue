@@ -1,10 +1,9 @@
 <template>
   <ClientOnly>
     <div
-      class="favorite-icon"
-      :class="{ selected: isUserFavorite }"
+      :class="['favorite-icon', isUserFavorite ? 'selected' : '']"
       title="Add to favorites"
-      @click="(event) => handleFavorites(event)"
+      @click="toggleFavorite"
     >
       <FavoriteIcon class="icon" />
       <span v-if="showCount" class="favorites-count"
@@ -15,7 +14,14 @@
 </template>
 
 <script setup>
-import { getDatabase, ref as dbRef, get, update, push } from "firebase/database";
+import {
+  getDatabase,
+  ref as dbRef,
+  get,
+  update,
+  push,
+  remove
+} from "firebase/database";
 import FavoriteIcon from "~/assets/graphics/icons/favorites-icon.svg";
 import { useMainStore, useAuthStore } from "~/store";
 
@@ -39,29 +45,29 @@ const props = defineProps({
 });
 
 const isUserFavorite = computed(() => {
-  if (authStore?.user?.id) {
-    const favorites = authStore.user.favorites;
-    return (
-      favorites &&
-      Object.values(favorites).some((key) => key === props.recipeKey)
-    );
+  if (authStore.user?.favorites) {
+    const favorites = Object.values(authStore.user.favorites);
+    return favorites.some((favoriteID) => favoriteID === props.recipeKey);
   }
   return false;
 });
 
-function handleFavorites(event) {
+function toggleFavorite(event) {
   event && event.stopPropagation();
 
   if (authStore.user && authStore.user.id) {
-    const favorites = authStore.user.favorites;
+    const favorites = Object.entries(authStore.user.favorites);
     let isFavorite = false;
 
-    for (const key in favorites) {
-      if (props.recipeKey === favorites[key]) {
+    favorites.forEach((favorite) => {
+      const key = favorite[0];
+      const recipeid = favorite[1];
+      if (props.recipeKey === recipeid) {
         isFavorite = true;
         removeFromFavorites(key);
       }
-    }
+    });
+
     if (!isFavorite) {
       saveToFavorites();
     }
@@ -96,7 +102,7 @@ function saveToFavorites() {
 }
 
 function removeFromFavorites(key) {
-  remove(dbRef(db, `users/${authStore.user.id}/favorites/${key}`))
+  return remove(dbRef(db, `users/${authStore.user.id}/favorites/${key}`))
     .then(() => {
       authStore.UPDATE_USER_FAVORITES();
       console.info("[removeFromFavorites] Successfully removed from favorites");

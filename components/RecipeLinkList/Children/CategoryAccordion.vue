@@ -1,13 +1,16 @@
 <template>
   <div class="accordion">
-    <div class="accordion_tab margin-bottom-md" @click="$emit('toggle')" >
-          <span class="recipe-link-list_headline margin--none">
-            <downArrow v-if="open" class="icon icon-sm margin-right-md"/>
-            <rightArrow v-else class="icon icon-sm margin-right-md" />
-            {{ title }}
-          </span>
+    <div class="accordion_tab margin-bottom-md" @click="$emit('toggle')">
+      <span class="recipe-link-list_headline margin--none">
+        <downArrow v-if="open" class="icon icon-sm margin-right-md" />
+        <rightArrow v-else class="icon icon-sm margin-right-md" />
+        {{ title }}
+      </span>
 
-      <button class="button--increment button--increment-small margin-left-md" @click="event => addNewLink(event)">
+      <button
+        class="button--increment button--increment-small margin-left-md"
+        @click="(event) => addNewLink(event)"
+      >
         Add link
       </button>
     </div>
@@ -15,7 +18,6 @@
     <expand-transition :show="open">
       <slot></slot>
     </expand-transition>
-
   </div>
 </template>
 
@@ -29,24 +31,24 @@ export default {
   components: {
     rightArrow,
     downArrow,
-    ExpandTransition
+    ExpandTransition,
   },
   props: {
     title: {
       type: String,
-      default: ""
+      default: "",
     },
     open: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   methods: {
-    addNewLink(event){
+    addNewLink(event) {
       event && event.stopPropagation();
-      console.log("Adding new");
-      this.$emit('add-link')
-    }
-  }
-}
+      console.info("[addNewLink] Adding new");
+      this.$emit("add-link");
+    },
+  },
+};
 </script>

@@ -1,9 +1,9 @@
 <template>
-    <sign-up-section :darkBg="false" :signUpPage="true" />
+    <SignUpSection :darkBg="false" :signUpPage="true" />
 </template>
 
 <script>
-import SignUpSection from "~/components/SignUpSection/SignUpSection.vue";
+import SignUpSection from "~/components/SignUpSection.vue";
 
 export default {
   name: "sign-up",

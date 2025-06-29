@@ -1,89 +1,72 @@
 <template>
   <div>
     <div
-      v-if="!editDescription && !loading"
+      v-if="!editMode && !loading"
       class="recipe_description"
       :class="{ editable: isRecipeOwner }"
-      @click="event => toggleEditDescription(event)"
+      @click="toggleEditMode"
     >
-      {{ recipeDescription }}
+      {{ description }}
     </div>
-    <description-edit
-      v-if="isRecipeOwner && editDescription"
+    <DescriptionEdit
+      v-if="isRecipeOwner && editMode"
       :description="description"
       @save="saveDescription"
     />
     <span v-if="loading" class="simple-loading-spinner"></span>
   </div>
 </template>
-<script>
-import { getDatabase, ref as dbRef, get } from "firebase/database";
+<script setup>
+import { getDatabase, ref as dbRef, set } from "firebase/database";
 
 import DescriptionEdit from "./Editing/DescriptionEdit.vue";
 
-export default {
-  name: "description-display",
-  components: {
-    DescriptionEdit
-  },
-  props: {
-    description: {
-      type: String,
-      default: ""
-    },
-    isRecipeOwner: {
-      type: Boolean,
-      default: false
-    },
-    recipeKey: {
-      type: String,
-      default: ""
-    }
-  },
-  data() {
-    return {
-      editDescription: false,
-      loading: false
-    };
-  },
-  computed: {
-    recipeDescription() {
-      return this.description ? this.description : "Recipe has no description";
-    }
-  },
-  methods: {
-    toggleEditDescription(event) {
-      event && event.stopPropagation();
-      if (this.isRecipeOwner) {
-        this.editDescription = !this.editDescription;
-      }
-    },
-    saveDescription(updatedDescription) {
-      this.editDescription = false;
-      let recipeKey = this.recipeKey;
+const db = getDatabase();
 
-      if (recipeKey && updatedDescription !== this.description) {
-        this.loading = true;
-        const db = getDatabase();
-        let descriptionRef = dbRef(db, 
-          `recipes/${recipeKey}/description`
-        );
-        descriptionRef
-          .set(updatedDescription)
-          .then(() => {
-            console.log("Successfully updated Description");
-            this.$emit("update");
-          })
-          .then(() => {
-            this.loading = false;
-          })
-          .catch(error =>
-            console.log("Error setting Description:", error.message)
-          );
-      } else if (!recipeKey) {
-        this.$emit("update", { description: updatedDescription });
-      }
-    }
+const emit = defineEmits(["update"]);
+
+const props = defineProps({
+  description: {
+    type: String,
+    default: "Recipe has no description",
+  },
+  isRecipeOwner: {
+    type: Boolean,
+    default: false,
+  },
+  recipeKey: {
+    type: String,
+    default: "",
+  },
+});
+
+const editMode = ref(false);
+const loading = ref(false);
+
+function toggleEditMode(event) {
+  event && event.stopPropagation();
+  if (props.isRecipeOwner) {
+    editMode.value = !editMode.value;
   }
-};
+}
+
+function saveDescription(newDescription) {
+  editMode.value = false;
+
+  if (props.recipeKey && newDescription !== props.description) {
+    loading.value = true;
+
+    set(dbRef(db, `recipes/${props.recipeKey}/description`), newDescription)
+      .then(() => {
+        console.info("[saveDescription] Successfully updated Description");
+        emit("update");
+      })
+      .then(() => {
+        loading.value = false;
+      })
+      .catch((error) => console.error("[saveDescription]", error.message));
+  } else if (!props.recipeKey) {
+    emit("update", { description: newDescription });
+  }
+}
 </script>

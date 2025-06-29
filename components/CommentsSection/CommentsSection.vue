@@ -8,13 +8,13 @@
     <comment-form
       class="margin-bottom-xl"
       @addComment="(commentObj) => submitComment(commentObj)"
-      :isRecipeOwner="user && user.id === recipeOwnerID"
+      :isRecipeOwner="authStore.user && authStore.user.id === recipeOwnerID"
       :submitted="submitted"
       :error="hasError"
     />
     <comments
       :recipeKey="recipeKey"
-      :isRecipeOwner="user && user.id === recipeOwnerID"
+      :isRecipeOwner="authStore.user && authStore.user.id === recipeOwnerID"
       :update="updateComments"
       @send-email="(commentObj) => sendEmail(commentObj)"
     />
@@ -96,12 +96,10 @@ async function sendEmail(commentObj) {
           subject: `${username} just commented on your recipe 🧑‍💻`,
           message,
         })
-        .catch((hasE) =>
-          console.log("Error sending notification email:", hasE)
-        );
+        .catch((error) => console.error("[sendEmail]", error));
     }
-  } catch (hasE) {
-    console.hasE("[sendEmail]", hasE.message);
+  } catch (error) {
+    console.error("[sendEmail]", error.message);
   }
 }
 
@@ -117,9 +115,9 @@ function submitComment(commentObj) {
           sendEmail(commentObj);
         }
       })
-      .catch((hasE) => {
+      .catch((error) => {
         hasError.value = true;
-        console.log("Error submitting comment:", hasE.message);
+        console.error("[submitComment]", error.message);
       });
   }
 }

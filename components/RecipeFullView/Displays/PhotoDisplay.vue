@@ -14,19 +14,19 @@
       class="recipe_image"
       :style="`background-image: url(${photoURL || backupImage})`"
     >
-      <edit-icon
+      <i-edit-icon
         tabindex="0"
         v-if="isRecipeOwner && !editMode"
         class="icon recipe_image-edit-btn"
         @click="toggleEditMode"
       />
-      <photo-edit
+      <PhotoEdit
         class="recipe_image--edit"
         v-if="editMode && !loading"
         :photoURL="photoURL"
         :recipeKey="recipeKey"
         @loading="setLoading"
-        @save="fileURL => saveImage(fileURL)"
+        @save="saveImage"
       />
     </div>
     <div v-if="loading" class="flex-center-container">
@@ -34,71 +34,61 @@
     </div>
   </div>
 </template>
-<script>
-import { getDatabase, ref as dbRef, get } from "firebase/database";
+
+<script setup>
+import { getDatabase, ref as dbRef, set } from "firebase/database";
 
 import PhotoEdit from "./Editing/PhotoEdit.vue";
 
-export default {
-  name: "photo-display",
-  components: {
-    PhotoEdit
+const db = getDatabase();
+const emit = defineEmits(["update"]);
+
+const props = defineProps({
+  photoURL: {
+    type: String,
+    default: "",
   },
-  props: {
-    photoURL: {
-      type: String,
-      default: ""
-    },
-    isRecipeOwner: {
-      type: Boolean,
-      default: false
-    },
-    recipeKey: {
-      type: String,
-      default: ""
-    }
+  isRecipeOwner: {
+    type: Boolean,
+    default: false,
   },
-  data() {
-    return {
-      editMode: false,
-      loading: false
-    };
+  recipeKey: {
+    type: String,
+    default: "",
   },
-  computed: {
-    backupImage() {
-      return require("assets/images/recipe-backup-img.png");
-    }
-  },
-  methods: {
-    toggleEditMode() {
-      this.editMode = !this.editMode;
-    },
-    setLoading() {
-      this.loading = true;
-    },
-    saveImage(fileURL) {
-      this.editMode = false;
-      let recipeKey = this.recipeKey;
-      if (recipeKey) {
-        const db = getDatabase();
-        let imageRef = dbRef(db, `recipes/${recipeKey}/photoURL`);
-        imageRef
-          .set(fileURL)
-          .then(() => {
-            console.log("Successfully updated recipe photo");
-            this.$emit("update");
-          })
-          .then(() => {
-            this.loading = false;
-          })
-          .catch(error =>
-            console.log("Error updating recipe photo:", error.message)
-          );
-      } else {
-        this.loading = false;
-        this.$emit("update", { photoURL: fileURL });
-      }
-    }
+});
+
+const editMode = ref(false);
+const loading = ref(false);
+
+const backupImage = computed(() => {
+  return new URL("@/assets/images/recipe-backup-img.png", import.meta.url).href;
+});
+
+function toggleEditMode() {
+  editMode.value = !editMode.value;
+}
+
+function setLoading() {
+  loading.value = true;
+}
+
+function saveImage(fileURL) {
+  editMode.value = false;
+
+  if (props.recipeKey) {
+    set(dbRef(db, `recipes/${props.recipeKey}/photoURL`), fileURL)
+      .then(() => {
+        console.info("[saveImage] Successfully updated recipe photo");
+        emit("update");
+      })
+      .then(() => {
+        loading.value = false;
+      })
+      .catch((error) => console.error("[saveImage]", error.message));
+  } else {
+    loading.value = false;
+    emit("update", { photoURL: fileURL });
   }
-};
+}
 </script>

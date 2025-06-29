@@ -1,6 +1,6 @@
 <template>
   <div class="desktop-menu">
-    <div v-if="user && !user.id" class="login-menu">
+    <div v-if="!user || !user?.id" class="login-menu">
       <GoogleLogin tabindex="0" />
     </div>
 

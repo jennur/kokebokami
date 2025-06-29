@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import { getDatabase, ref as dbRef, get, set, update } from "firebase/database";
 import { getAuth, signOut } from "firebase/auth";
-import { useMainStore, useRecipeStore, useShoppingListStore } from "..";
+import { useMainStore, useShoppingListStore } from "..";
 import userModel from "~/helpers/user-model";
 
 export const useAuthStore = defineStore("auth", {
@@ -19,7 +19,6 @@ export const useAuthStore = defineStore("auth", {
   actions: {
     LOGIN_SUCCESS: function () {
       const auth = getAuth();
-      console.log("CURRENT USER:", auth.currentUser);
       if (auth.currentUser) {
         this.SET_USER();
         const mainStore = useMainStore();

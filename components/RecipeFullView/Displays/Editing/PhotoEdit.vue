@@ -3,80 +3,77 @@
     <image-input class="recipe-photo" @uploaded="uploadImage" />
   </div>
 </template>
-<script>
-import { getDatabase, ref as dbRef, get } from "firebase/database";
 
-const uuid = require("uuid");
+<script setup>
+import { getDatabase, ref as dbRef, get, set } from "firebase/database";
+import {
+  getStorage,
+  getDownloadURL,
+  uploadBytes,
+  ref as storageRef,
+  deleteObject,
+} from "firebase/storage";
+import { v4 as uuidv4 } from "uuid";
 import ImageInput from "~/components/Input/ImageInput.vue";
 
-export default {
-  name: "photo-edit",
-  components: {
-    ImageInput
-  },
-  props: {
-    photoURL: {
-      type: String,
-      default: ""
-    },
-    recipeKey: {
-      type: String,
-      default: ""
-    }
-  },
-  methods: {
-    async uploadImage(upload) {
-      this.removeRecipeImg();
-      var imageKey = uuid.v1();
-      let recipeKey = this.recipeKey;
+const db = getDatabase();
+const storage = getStorage();
 
-      //Upload image
-      let file = upload;
-      var metadata = {
-        contentType: "image/jpeg"
-      };
-      var storageRef = this.$fire.storage.ref();
-      var imageRef = storageRef.child(`images/recipes/${recipeKey}/${imageKey}.jpeg`);
-      await imageRef.put(file, metadata);
-      await imageRef
-        .getDownloadURL()
-        .then(result => {
-          console.log("Uploaded image", result);
-          this.$emit("loading");
+const emit = defineEmits(["save", "loading"]);
 
-          this.$emit("save", result);
-        })
-        .catch(error => console.log("Error uploading image:", error.message));
-    },
-    removeRecipeImg() {
-      let recipeKey = this.recipeKey;
-      if (recipeKey) {
-        const db = getDatabase();
-        let photoRef = dbRef(db, `recipes/${recipeKey}/photoURL`);
-        photoRef.once("value", snapshot => {
-          if (snapshot.exists()) {
-            let photoURL = snapshot.val();
-            if (photoURL !== "") {
-              var fileRef = this.$fire.storage.refFromURL(photoURL);
-              fileRef
-                .delete()
-                .then(() => {
-                  console.log("Successfully deleted image");
-                  photoRef
-                    .set("")
-                    .then(() => console.log("Updated photoURL in db"))
-                    .catch(error =>
-                      console.log("Error updating image in db:", error.message)
-                    );
-                })
-                .catch(error =>
-                  console.log("Error deleting file:", error.message)
-                );
-            }
-          }
-        });
+const props = defineProps({
+  photoURL: {
+    type: String,
+    default: "",
+  },
+  recipeKey: {
+    type: String,
+    default: "",
+  },
+});
+
+async function uploadImage(file) {
+  try {
+    await removeRecipeImg();
+    const fileName = uuidv4();
+    const recipeKey = props.recipeKey;
+
+    const imageRef = storageRef(
+      storage,
+      `images/recipes/${recipeKey}/${fileName}.jpeg`
+    );
+    await uploadBytes(imageRef, file, {
+      contentType: "image/png",
+    });
+    const downLoadUrl = await getDownloadURL(imageRef);
+
+    console.info("[uploadImage] Uploaded image", downLoadUrl);
+    emit("loading");
+    emit("save", downLoadUrl);
+  } catch (error) {
+    console.error("[uploadImage]", error.message);
+  }
+}
+
+async function removeRecipeImg() {
+  const recipeKey = props.recipeKey;
+  if (recipeKey) {
+    try {
+      const dbImageRef = dbRef(db, `recipes/${recipeKey}/photoURL`);
+      const snapshot = await get(dbRef(db, `recipes/${recipeKey}/photoURL`));
+      if (snapshot.exists()) {
+        const photoURL = snapshot.val();
+
+        if (photoURL !== "") {
+          await deleteObject(storageRef(storage, photoURL));
+          console.info("[removeRecipeImg] Successfully deleted image");
+          await set(dbImageRef, "");
+          console.info("[removeRecipeImg] Updated photoURL in db");
+        }
       }
+    } catch (error) {
+      console.error("[removeRecipeImg]", error.message);
     }
   }
-};
+}
 </script>

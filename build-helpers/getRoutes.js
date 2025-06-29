@@ -29,5 +29,5 @@ module.exports = () => {
       }
       return links;
     })
-    .catch(error => console.log("Error generating routes:", error.message));
+    .catch(error => console.error("[getRoutes]", error.message));
 };

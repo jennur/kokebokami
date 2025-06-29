@@ -2,32 +2,26 @@
   <div class="servings">
     <input type="number" min="0" step="1" v-model="updatedServings" /><button
       class="button button--dynamic-small button--round padding-v-sm margin-h-lg"
-      @click="event => handleClick(event)"
+      @click="handleClick"
     >
       Save
     </button>
   </div>
 </template>
 
-<script>
-export default {
-  name: "servings-edit",
-  props: {
-    servings: {
-      type: String,
-      default: ""
-    }
+<script setup>
+const props = defineProps({
+  servings: {
+    type: String,
+    default: "",
   },
-  data() {
-    return {
-      updatedServings: this.servings
-    };
-  },
-  methods: {
-    handleClick(event) {
-      event && event.stopPropagation();
-      this.$emit('save', this.updatedServings)
-    }
-  }
-};
+});
+
+const emit = defineEmits(["save"]);
+const updatedServings = ref(props.servings);
+
+function handleClick(event) {
+  event.even.stopPropagation();
+  emit("save", updatedServings.value);
+}
 </script>

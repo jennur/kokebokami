@@ -1,7 +1,7 @@
 import generatePath from "./generatePath";
 
 export default function userModel(user, key) {
-  let hidden = user.hiddenProfile;
+  const hidden = user.hiddenProfile;
 
   return {
     hidden,

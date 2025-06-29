@@ -115,7 +115,7 @@ function handleSelect(option) {
 function addToShoppingList() {
   const listItems = props.ingredients.map((ingredient) => {
     return {
-      text: `${ingredient.amount}  ${ingredient.item}`,
+      text: `${ingredient.amount} ${ingredient.item}`,
       complete: false,
     };
   });
@@ -125,47 +125,40 @@ function addToShoppingList() {
     chosenShoppingList.value &&
     chosenShoppingList.value.key
   ) {
-    push(
-      child(
-        dbRef(db, `shoppingLists/${chosenShoppingList.value.key}`),
-        "subLists",
-        {
-          title: props.recipeTitle,
-          listItems,
-        }
-      )
-    )
+    push(dbRef(db, `shoppingLists/${chosenShoppingList.value.key}/subLists`), {
+      title: props.recipeTitle,
+      listItems,
+    })
       .then(() => {
-        console.log(
-          "Successfully added to shoppingList:",
+        console.info(
+          "[addToShoppingList] Successfully added to shoppingList:",
           chosenShoppingList.value.title
         );
         shoppingListStore.REFRESH_LISTS();
         addedToShoppingList.value = true;
         addingToShoppingList.value = false;
       })
-      .catch((error) =>
-        console.log("Failed to add to shopping list:", error.message)
-      );
+      .catch((error) => console.error("[addToShoppingList]", error.message));
   } else if (newListTitle.value !== "") {
     const userObj = {
       id: user.value.id,
       displayName: user.value.displayName,
     };
+
     const shoppingListRef = dbRef(db, `shoppingLists`);
 
     push(shoppingListRef, {
       title: newListTitle.value,
       createdBy: userObj,
       owners: [userObj],
-    }).then((shoppingList) => {
-      push(child(child(shoppingListRef), shoppingList.key), "subLists", {
+    }).then((mainList) => {
+      push(child(shoppingListRef, `${mainList.key}/subLists`), {
         title: props.recipeTitle,
         listItems,
       })
         .then(() => {
-          console.log(
-            "Successfully added to shoppingList:",
+          console.info(
+            "[addToShoppingList] Successfully added to shoppingList:",
             newListTitle.value
           );
           shoppingListStore.REFRESH_LISTS();
@@ -173,9 +166,7 @@ function addToShoppingList() {
           addingToShoppingList.value = false;
           addNewShoppingList.value = false;
         })
-        .catch((error) =>
-          console.log("Failed to add to shopping list:", error.message)
-        );
+        .catch((error) => console.error("[addToShoppingList]", error.message));
     });
   }
 }

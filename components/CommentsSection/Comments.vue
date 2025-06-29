@@ -84,7 +84,9 @@ async function getComments() {
   loading.value = true;
   try {
     const db = getDatabase();
-    const snapshot = await get(dbRef(db, `recipes/${props.recipeKey}/comments`));
+    const snapshot = await get(
+      dbRef(db, `recipes/${props.recipeKey}/comments`)
+    );
     if (snapshot.exists()) {
       const dbComments = Object.entries(snapshot.val()).map((comment) => {
         //Handle comment
@@ -108,7 +110,7 @@ async function getComments() {
       comments.value = [];
     }
   } catch (error) {
-    console.log("[getComments]", error.message);
+    console.error("[getComments]", error.message);
   }
   loading.value = false;
 }

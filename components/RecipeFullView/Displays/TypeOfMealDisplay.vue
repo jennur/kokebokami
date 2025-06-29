@@ -6,14 +6,14 @@
         v-if="!editMode && !loading"
         class="recipe_type-of-meal"
         :class="{ editable: isRecipeOwner }"
-        @click="(event) => toggleEditMode(event)"
+        @click="toggleEditMode"
         >{{ typeOfMealList }}</span
       >
-      <edit-icon
+      <i-edit-icon
         tabindex="0"
         v-if="isRecipeOwner && !typeOfMealList && !editMode"
         class="icon"
-        @click="(event) => toggleEditMode(event)"
+        @click="toggleEditMode"
       />
       <category-edit
         v-if="editMode"
@@ -26,10 +26,11 @@
   </div>
 </template>
 <script setup>
-import { getDatabase, ref } from "firebase/database";
+import { getDatabase, ref as dbRef, set } from "firebase/database";
 import CategoryEdit from "./Editing/CategoryEdit.vue";
 import { useRecipeStore } from "~/store";
 
+const db = getDatabase();
 const recipeStore = useRecipeStore();
 const { tm } = useI18n();
 
@@ -46,28 +47,27 @@ const props = defineProps({
   },
   recipeKey: {
     type: String,
-    required: true
+    required: true,
   },
 });
 
 const editMode = ref(false);
 const loading = ref(false);
 
+const allTypesOfMeal = computed(() => {
+  return recipeStore.allCategories.typeOfMeal;
+});
+
 const typeOfMealList = computed(() => {
-  let allTypesOfMeal = recipeStore.allCategories.typeOfMeal;
-  let localetypeOfMeal = tm("recipes.allCategories.typeOfMeal");
+  const localetypeOfMeal = tm("recipes.allCategories.typeOfMeal");
 
   return props.typeOfMeal
     .map((type) => {
-      let index = allTypesOfMeal.indexOf(type);
+      const index = allTypesOfMeal.value.indexOf(type);
       type = localetypeOfMeal[index].body.static;
       return type.charAt(0).toUpperCase() + type.slice(1, type.length);
     })
     .join(", ");
-});
-
-const allTypesOfMeal = computed(() => {
-  return recipeStore.allCategories.typeOfMeal;
 });
 
 function toggleEditMode(event) {
@@ -82,15 +82,22 @@ function saveTypesOfMeal(types) {
 
   if (props.recipeKey) {
     loading.value = true;
-    const db = getDatabase();
 
-    set(db, dbRef(db, `recipes/${props.recipeKey}/typeOfMeal`), types)
-      .then(() => {
-        console.info("[saveTypesOfMeal] Successfully updated type of meal");
-        loading.value = false;
-        emit("update");
-      })
-      .catch((error) => console.error("[saveTypesOfMeal]", error.message));
+    try {
+      set(dbRef(db, `recipes/${props.recipeKey}/typeOfMeal`), types)
+        .then(() => {
+          console.info("[saveTypesOfMeal] Successfully updated type of meal");
+          emit("update");
+        })
+        .catch((error) => {
+          console.error("[saveTypesOfMeal]", error.message);
+        })
+        .finally(() => {
+          loading.value = false;
+        });
+    } catch (error) {
+      console.error("[saveTypesOfMeal]", error.message);
+    }
   } else {
     emit("update", { typeOfMeal: types });
   }

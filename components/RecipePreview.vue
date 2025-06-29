@@ -1,12 +1,15 @@
 <template>
   <div  class="recipe-preview">
     <!-- Image -->
-    <div :style="`background-image: url(${recipeImage})`" class="recipe-preview_image"></div>
+    <div class="recipe-preview_image">
+      <img v-if="recipe?.photoURL" :src="recipe.photoURL" />
+      <RecipeBackupImg v-else filled />
+    </div>
 
-    <AddToFavorites :recipe-key="recipe.id" :favorites-count="recipe.favoritesCount"/>
+    <AddToFavorites :recipeKey="recipe.id" :favoritesCount="recipe.favoritesCount"/>
 
     <span class="recipe-preview_published-by" v-if="inPublicList">
-      {{ `${$t("recipes.publishedBy")} ${author && author.displayName || '...'}` }}
+      {{ `${$t("recipes.publishedBy")} ${author?.displayName || '...'}` }}
     </span>
 
     <span class="recipe-preview_public-note" v-if="showPublicNote">
@@ -19,7 +22,7 @@
       
       <!-- Title -->
       <h3 class="recipe-preview_title margin--none margin-bottom-md">
-        {{ recipe.title ? recipe.title : $t("recipes.noTitle") }}
+        {{ recipe?.title || $t("recipes.noTitle") }}
       </h3>
       
       <!-- Categories -->
@@ -33,11 +36,10 @@
 </template>
 
 <script setup>
-import recipeBackupImg from "assets/graphics/icons/recipe-backup-img.svg";
+import RecipeBackupImg from "~/assets/graphics/illustrations/recipe-backup-img.svg";
 import useRecipeAuthor from "~/composables/recipeAuthor.js";
-import Rating from "~/components/RecipeFullView/Interaction/Rating";
-import AddToFavorites from '../RecipeFullView/Interaction/AddToFavorites.vue';
-import { computed } from "vue";
+import Rating from "~/components/Rating";
+import AddToFavorites from '~/components/AddToFavorites.vue';
 import { useAuthStore, useRecipeStore } from "~/store";
 
 const authStore = useAuthStore();
@@ -57,12 +59,12 @@ const props = defineProps({
 })
 
 const { content: author} = await useRecipeAuthor(props.recipe.ownerID)
-const user = computed(() => authStore.user);
+
 const showPublicNote = computed(() => (
   !props.inPublicList &&
-  user &&
-  user.id === props.recipe.ownerID &&
-  props.recipe.public
+  authStore.user &&
+  authStore.user.id === props.recipe.ownerID &&
+  props.recipe?.public
 ));
 
 const recipeImage = computed(() => {

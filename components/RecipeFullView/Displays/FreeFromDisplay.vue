@@ -9,7 +9,7 @@
         @click="(event) => toggleEditMode(event)"
         >{{ freeFromList }}</span
       >
-      <EditIcon
+      <i-edit-icon
         tabindex="0"
         v-if="isRecipeOwner && !freeFromList && !editMode"
         class="icon"
@@ -26,11 +26,13 @@
   </div>
 </template>
 <script setup>
-import { getDatabase, ref as dbRef, get } from "firebase/database";
+import { getDatabase, ref as dbRef, set } from "firebase/database";
 import CategoryEdit from "./Editing/CategoryEdit.vue";
 import { useRecipeStore } from "~/store";
-const recipeStore = useRecipeStore();
 
+const db = getDatabase();
+const recipeStore = useRecipeStore();
+const { tm } = useI18n();
 const emit = defineEmits(["update"]);
 
 const props = defineProps({
@@ -51,12 +53,12 @@ const editMode = ref(false);
 const loading = ref(false);
 
 const freeFromList = computed(() => {
-  let allAllergens = recipeStore.allCategories.allergens;
-  let localeAllergens = this.$t("recipes.allCategories.allergens");
-  return this.freeFrom
+  const allAllergens = recipeStore.allCategories.allergens;
+  const localeAllergens = tm("recipes.allCategories.allergens");
+  return props.freeFrom
     .map((type) => {
       let index = allAllergens.indexOf(type);
-      type = localeAllergens[index];
+      type = localeAllergens[index].body.static;
       return type.charAt(0).toUpperCase() + type.slice(1, type.length);
     })
     .join(", ");
@@ -75,18 +77,17 @@ function toggleEditMode(event) {
 
 function saveFreeFrom(allergens) {
   editMode.value = false;
-  const recipeKey = props.recipeKey;
 
-  if (recipeKey) {
+  if (props.recipeKey) {
     loading.value = true;
-    const db = getDatabase();
-    setImmediate(dbRef(db, `recipes/${recipeKey}/freeFrom`), allergens)
+
+    set(dbRef(db, `recipes/${props.recipeKey}/freeFrom`), allergens)
       .then(() => {
-        console.log("Successfully updated free from");
+        console.info("[saveFreeFrom] Successfully updated free from");
         loading.value = false;
         emit("update");
       })
-      .catch((error) => console.log("Error setting free from:", error.message));
+      .catch((error) => console.error("[saveFreeFrom]", error.message));
   } else {
     emit("update", { freeFrom: allergens });
   }

@@ -3,49 +3,42 @@
     {{ isPublic ? $t("recipes.makePrivate") : $t("recipes.makePublic") }}
   </span>
 </template>
-<script>
-import { getDatabase, ref as dbRef, get } from "firebase/database";
+<script setup>
+import { getDatabase, ref as dbRef, set } from "firebase/database";
+const db = getDatabase();
 
-export default {
-  name: "public-note",
-  props: {
-    isPublic: {
-      type: Boolean,
-      default: false
-    },
-    recipeKey: {
-      type: String,
-      default: ""
-    }
-  },
-  data() {
-    return {
-      updated: 1
-    };
-  },
-  methods: {
-    togglePublic() {
-      let isPublic = !this.isPublic;
-      let recipeKey = this.recipeKey;
+const emit = defineEmits(["update"]);
 
-      if (recipeKey) {
-        const db = getDatabase();
-        let publicRef = dbRef(db, `recipes/${recipeKey}/public`);
-        publicRef
-          .set(isPublic)
-          .then(() => {
-            console.log("Successfully updated public status");
-            this.$emit("update");
-            this.updated++;
-          })
-          .catch(error =>
-            console.log("Error updating public status:", error.message)
-          );
-      } else {
-        this.$emit("update", { public: isPublic });
-        this.updated++;
-      }
-    }
+const props = defineProps({
+  isPublic: {
+    type: Boolean,
+    default: false,
+  },
+  recipeKey: {
+    type: String,
+    default: "",
+  },
+});
+
+const updated = ref(1);
+
+function togglePublic() {
+  const isPublic = !props.isPublic;
+  const recipeKey = props.recipeKey;
+
+  if (recipeKey) {
+    set(dbRef(db, `recipes/${recipeKey}/public`), isPublic)
+      .then(() => {
+        console.info("[togglePublic] Successfully updated public status");
+        emit("update");
+        updated.value++;
+      })
+      .catch((error) =>
+        console.error("[togglePublic]", error.message)
+      );
+  } else {
+    emit("update", { public: isPublic });
+    updated.value++;
   }
-};
+}
 </script>

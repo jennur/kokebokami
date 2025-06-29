@@ -40,7 +40,7 @@
 </template>
 
 <script setup>
-import { getDatabase, ref as dbRef, get } from "firebase/database";
+import { getDatabase, ref as dbRef, update } from "firebase/database";
 import ExpandTransition from "~/components/Transitions/Expand.vue";
 import SelectComponent from "~/components/Input/SelectComponent.vue";
 import HoverInfoBox from "~/components/HoverInfoBox";
@@ -52,11 +52,7 @@ const db = getDatabase();
 const authStore = useAuthStore();
 const shoppingListStore = useShoppingListStore();
 
-const searchTerm = ref("");
-const selected = ref("");
-const shareByEmail = ref(false);
-const email = ref("");
-const systemMessage = ref("");
+const emit = defineEmits(["update", "shared", "close-modal"]);
 
 const props = defineProps({
   open: {
@@ -72,6 +68,9 @@ const props = defineProps({
     default: "",
   },
 });
+
+const selected = ref("");
+const systemMessage = ref("");
 
 const followerNames = computed(
   () =>
@@ -90,7 +89,7 @@ function shareShoppingList() {
   const follower = selectedFollower.value;
   const shoppingList = shoppingListStore.shoppingLists.filter(
     (list) => list.key === props.listKey
-  );
+  )?.[0];
 
   if (follower.id && shoppingList) {
     const owners = shoppingList.owners;
@@ -105,13 +104,18 @@ function shareShoppingList() {
 
     if (!shared) {
       try {
-        push(dbRef(db, `shoppingLists/${props.listKey}/owners`), {
-          id: follower.id,
-          displayName: follower.displayName,
-          sharedFrom: {
-            id: authStore.user.id,
-            displayName: authStore.user.displayName,
-          },
+        update(dbRef(db, `shoppingLists/${props.listKey}`), {
+          owners: [
+            ...owners,
+            {
+              id: follower.id,
+              displayName: follower.displayName,
+              sharedFrom: {
+                id: authStore.user.id,
+                displayName: authStore.user.displayName,
+              },
+            },
+          ],
         }).then(() => {
           systemMessage.value = `Successfully shared with ${follower.displayName}`;
           shoppingListStore.REFRESH_LISTS();

@@ -26,10 +26,11 @@
     "html-to-pdfmake": "^2.5.20",
     "nuxt": "^3.15.1",
     "nuxt-dropzone": "^1.0.4",
-    "nuxt-svgo-loader": "^0.4.1",
+    "nuxt-svgo": "^4.0.12",
     "nuxt-vuefire": "^1.0.5",
     "pdfmake": "^0.2.18",
     "pinia": "^2.3.0",
+    "uuid": "^11.0.5",
     "vue": "^3.5.13",
     "vue-router": "^4.5.0",
     "vuefire": "^3.2.1"

@@ -4,7 +4,7 @@
     <div class="system-message system-message--with-bg margin-v-lg">
       {{ $t("accountDetails.publicProfileViewNote") }}
     </div>
-    <ProfileView :user="user && !user.hiddenProfile ? user : null" />
+    <ProfileView :user="!authStore.user?.hiddenProfile ? authStore.user : null" />
     <h3>{{ $t("cooks.checkOutMyRecipes") }}</h3>
     <RecipesList
       :recipes="publicUserRecipes"
@@ -14,7 +14,7 @@
 
 <script setup>
 import ProfileView from "~/components/ProfileView.vue";
-import RecipesList from "~/components/RecipePreview/RecipesList";
+import RecipesList from "~/components/RecipesList";
 import { useAuthStore, useRecipeStore } from "~/store";
 
 const authStore = useAuthStore();

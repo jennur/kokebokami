@@ -21,7 +21,7 @@
         <div class="recipe-link_settings">
           <SettingsDropdown v-if="!editMode && link?.id">
             <span @click="(event) => toggleEditMode(event)">
-              <edit-icon class="icon margin-right-md" />
+              <i-edit-icon class="icon margin-right-md" />
               Edit link
             </span>
             <span class="system-message" @click="(event) => toggleAlert(event)"

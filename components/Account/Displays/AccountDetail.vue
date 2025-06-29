@@ -88,7 +88,7 @@
       <div class="system-message margin-top-md">{{ systemMessage }}</div>
     </expand-transition>
     <div v-if="!editMode" class="flex-row">
-      <edit-icon
+      <i-edit-icon
         tabindex="0"
         v-if="editOption"
         @click="toggleEditMode"

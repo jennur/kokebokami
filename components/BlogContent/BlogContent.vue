@@ -98,21 +98,21 @@ import NewBlogElements from "./NewBlogElements.vue";
 const props = defineProps({
   recipeTitle: {
     type: String,
-    default: ""
+    default: "",
   },
   blog: {
     type: Object,
-    default: () => {}
+    default: () => {},
   },
   isRecipeOwner: {
     type: Boolean,
-    default: false
+    default: false,
   },
   recipeKey: {
     type: String,
-    required: true
+    required: true,
   },
-})
+});
 
 const addingNewBlog = ref(false);
 const editHeadline = ref(null);
@@ -145,7 +145,9 @@ function deleteBlogImage(key) {
   if (props.recipeKey) {
     const storage = getStorage();
     // Delete from storage
-    deleteObject(storageRef(storage, `images/recipes/${props.recipeKey}/${key}.jpeg`))
+    deleteObject(
+      storageRef(storage, `images/recipes/${props.recipeKey}/${key}.jpeg`)
+    )
       .then(() => {
         console.info("[deleteBlogImage] Successfully deleted image");
         // Remove image from blog content
@@ -161,24 +163,23 @@ function deleteBlogElementFromDB(key) {
 
   remove(dbRef(db, `recipes/${props.recipeKey}/blog/${key}`))
     .then(() => {
-      console.log(`[deleteBlogElementFromDB] Deleted ${key} from db`);
-      query(blogRef, orderByChild("position"))
-      .then((snapshot) => {
-          //Reindex elements
-          let reIndexedElems = {};
-          let index = 0;
-          snapshot &&
-            snapshot.forEach((elem) => {
-              reIndexedElems[elem.key] = {
-                ...elem.val(),
-                position: index,
-              };
-              index++;
-            });
-          console.info("[deleteBlogElementFromDB] Reindexed elements");
-          set(blogRef, reIndexedElems);
-        })
-        emit("update");
+      console.info(`[deleteBlogElementFromDB] Deleted ${key} from db`);
+      query(blogRef, orderByChild("position")).then((snapshot) => {
+        //Reindex elements
+        const reIndexedElems = {};
+        let index = 0;
+        snapshot &&
+          snapshot.forEach((elem) => {
+            reIndexedElems[elem.key] = {
+              ...elem.val(),
+              position: index,
+            };
+            index++;
+          });
+        console.info("[deleteBlogElementFromDB] Reindexed elements");
+        set(blogRef, reIndexedElems);
+      });
+      emit("update");
     })
     .catch((error) =>
       console.error("[deleteBlogElementFromDB]", error.message)

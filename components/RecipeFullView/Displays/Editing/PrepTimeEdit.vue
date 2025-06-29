@@ -1,21 +1,31 @@
 <template>
-    <div class="prep-time-edit-wrapper">
-        <input type="number" min="0" class="hour" v-model="newTime.h"><span>h</span>
-        <input type="number" min="0" class="minutes" v-model="newTime.min"><span>min</span>
-        <button class="button button-xs margin-left-md" @click="$emit('save-time', newTime)">Save</button>
-    </div>
+  <div class="prep-time-edit-wrapper">
+    <input type="number" min="0" class="hour" v-model="newTime.h" /><span
+      >h</span
+    >
+    <input type="number" min="0" class="minutes" v-model="newTime.min" /><span
+      >min</span
+    >
+    <button class="button button-xs margin-left-md" @click="handleSave">
+      Save
+    </button>
+  </div>
 </template>
 
-<script>
-export default {
-    name: "prep-time-edit",
-    props: {
-        time: Object
-    },
-    data() {
-        return {
-            newTime: this.time || { h: null, min: null }
-        }
-    }
+<script setup>
+const emit = defineEmits(["save-time"]);
+const props = defineProps({
+  time: Object,
+});
+
+const newTime = ref(
+  props.time || {
+    h: null,
+    min: null,
+  }
+);
+
+function handleSave() {
+  emit("save-time", newTime.value);
 }
 </script>

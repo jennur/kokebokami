@@ -5,9 +5,9 @@
         v-for="cook in cooks"
         :key="cook.id"
         :cook="cook"
-        :photoURL="cook.hiddenProfile ? '' : cook.photoURL"
-        :displayName="cook.hiddenProfile ? 'User' : cook.displayName"
-        :biography="cook.hiddenProfile ? '' : cook.biography"
+        :photoURL="cook.hiddenProfile ? '' : cook?.photoURL"
+        :displayName="cook.hiddenProfile ? 'User' : cook?.displayName"
+        :biography="cook.hiddenProfile ? '' : cook?.biography"
       />
     </div>
     <div v-if="!cooksLength" class="container container--center">

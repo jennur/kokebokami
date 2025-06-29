@@ -28,7 +28,7 @@
       <div>
         <div class="flex-row flex-row--align-center flex-row--nowrap">
           <h3 class="margin-v-md">{{ $t("recipes.ingredients") }}</h3>
-          <EditIcon
+          <i-edit-icon
             tabindex="0"
             v-if="isRecipeOwner && !editMode"
             @click="(event) => toggleEditMode(event)"
@@ -38,7 +38,7 @@
         <ul v-if="!editMode && !loading" class="recipe_ingredients">
           <li
             v-for="(ingredient, index) in calculatedIngredients"
-            :key="`ingredient-${index}`"
+            :key="`ingredient-${ingredient.id}`"
             @click="handleCheck(index)"
           >
             <span
@@ -82,7 +82,8 @@ import ServingsDisplay from "./ServingsDisplay.vue";
 import IngredientsEdit from "./Editing/IngredientsEdit.vue";
 import AddToShoppingList from "../Interaction/AddToShoppingList.vue";
 
-const emit = defineEmits(["calculated-ingredients", "update"]);
+const db = getDatabase();
+const emit = defineEmits(["update"]);
 
 const props = defineProps({
   servings: {
@@ -107,7 +108,6 @@ const props = defineProps({
   },
 });
 
-const { servings } = toRefs(props);
 const updatedServings = ref(props.servings);
 const editMode = ref(false);
 const loading = ref(false);
@@ -115,34 +115,47 @@ const updated = ref(0);
 const checkedIngredients = ref([]);
 const open = ref(false);
 
-watch(servings, () => {
-  updatedServings.value = props.servings;
-});
-
 const convertedIngredients = computed(() => {
-  return convertIngredients(props.ingredients);
+  const numberRegex = /[\d.,\/\s]+/;
+  const fractionRegex = /^\s*\d+\s*\/\s*\d+\s*$/;
+  const wholeFractionRegex = /^\s*\d+\s+\d+\s*\/\s*\d+\s*$/;
+
+  return props.ingredients.map((ingredient, index) => {
+    let amount = ingredient.match(numberRegex);
+    amount = amount && amount[amount.index];
+
+    const item = ingredient.replace(amount, "");
+    amount && amount.split(" ").join("");
+
+    if (fractionRegex.test(amount)) {
+      amount = fractionToDecimal(amount);
+    } else if (wholeFractionRegex.test(amount)) {
+      amount = amount.split(" ");
+      const fraction = amount.filter((elem) => {
+        return fractionRegex.test(elem);
+      });
+      const decimal = fractionToDecimal(fraction[0]);
+      amount = parseInt(amount[0]) + decimal;
+    } else amount = parseFloat(amount);
+
+    return {
+      amount,
+      item: item && item.replace("NaN", ""),
+      id: index,
+    };
+  });
 });
 
 const calculatedIngredients = computed(() => {
-  const ingredients = JSON.parse(JSON.stringify(convertedIngredients.value));
-  const updatedServings = updatedServings.value;
-  const servings = props.servings;
-
-  ingredients = ingredients.map((ingredient) => {
+  return structuredClone(convertedIngredients.value).map((ingredient) => {
     const amount = ingredient.amount;
-    if (amount && servings && updatedServings !== servings) {
-      const oneServing = amount / servings;
-      ingredient.amount = Math.round(oneServing * updatedServings * 100) / 100;
+    if (amount && props.servings && updatedServings.value !== props.servings) {
+      const oneServing = amount / props.servings;
+      ingredient.amount =
+        Math.round(oneServing * updatedServings.value * 100) / 100;
     }
     return ingredient;
   });
-
-  emit("calculated-ingredients", {
-    ingredients,
-    servings: updatedServings,
-  });
-
-  return ingredients;
 });
 
 function closeSideBar(event) {
@@ -170,15 +183,15 @@ function toggleEditMode(event) {
 
 function saveIngredients(ingredients) {
   editMode.value = false;
-  const recipeKey = props.recipeKey;
+
   ingredients = ingredients.map((ingredient) => {
     return `${ingredient.amount} ${ingredient.item}`;
   });
 
-  if (recipeKey) {
+  if (props.recipeKey) {
     loading.value = true;
-    const db = getDatabase();
-    set(dbRef(db, `recipes/${recipeKey}/ingredients`), ingredients)
+
+    set(dbRef(db, `recipes/${props.recipeKey}/ingredients`), ingredients)
       .then(() => {
         console.info("[saveIngredients] Successfully updated ingredients");
         emit("update");
@@ -186,41 +199,10 @@ function saveIngredients(ingredients) {
       .then(() => {
         loading.value = false;
       })
-      .catch((error) =>
-        console.error("[saveIngredients]", error.message)
-      );
+      .catch((error) => console.error("[saveIngredients]", error.message));
   } else {
     emit("update", { ingredients });
   }
-}
-
-function convertIngredients(ingredients) {
-  const numberRegex = /[\d.,\/\s]+/;
-  const fractionRegex = /^\s*\d+\s*\/\s*\d+\s*$/;
-  const wholeFractionRegex = /^\s*\d+\s+\d+\s*\/\s*\d+\s*$/;
-
-  return ingredients.map((ingredient, index) => {
-    let amount = ingredient.match(numberRegex);
-    amount = amount && amount[amount.index];
-    let item = ingredient.replace(amount, "");
-    amount && amount.split(" ").join("");
-
-    if (fractionRegex.test(amount)) {
-      amount = fractionToDecimal(amount);
-    } else if (wholeFractionRegex.test(amount)) {
-      amount = amount.split(" ");
-      let fraction = amount.filter((elem) => {
-        return fractionRegex.test(elem);
-      });
-      let decimal = fractionToDecimal(fraction[0]);
-      amount = parseInt(amount[0]) + decimal;
-    } else amount = parseFloat(amount);
-    return {
-      amount,
-      item: item && item.replace("NaN", ""),
-      id: index,
-    };
-  });
 }
 
 function fractionToDecimal(number) {

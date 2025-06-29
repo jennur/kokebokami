@@ -1,7 +1,7 @@
 import { getDatabase } from "firebase/database";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { useRouter } from "vue-router";
-import { useNuxtApp } from "nuxt/app";
+import { navigateTo, useNuxtApp } from "nuxt/app";
 import { useAuthStore } from "~/store";
 
 export default defineNuxtPlugin(async (nuxtApp) => {
@@ -13,7 +13,6 @@ export default defineNuxtPlugin(async (nuxtApp) => {
     return new Promise((resolve, reject) => {
       onAuthStateChanged(auth, (user) => {
         if (user) {
-          console.log("USER:", user);
           const authStore = useAuthStore();
           authStore.LOGIN_SUCCESS();
           performAdminRedirect();
@@ -43,11 +42,9 @@ export default defineNuxtPlugin(async (nuxtApp) => {
   }
 
   function performAdminRedirect() {
-    console.log("\n\nRouter:", route);
     const unAuthPaths = ["login", "sign-up", "goodbye"];
     if (unAuthPaths.some((path) => route.value.path.indexOf(path) > -1)) {
-      console.log("REDIRECTING");
-      push($localePath("account"));
+      navigateTo($localePath("account"));
     }
   }
   // Make Firebase's database available globally in the app
