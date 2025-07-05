@@ -6,7 +6,7 @@
       :options="languages"
       :preSelected="existingLanguage"
       defaultValue="All languages"
-      @select="(language) => $emit('selected', language)"
+      @select="(language) => emit('selected', language)"
     />
   </fieldset>
 </template>
@@ -15,6 +15,8 @@ import SelectComponent from "./SelectComponent.vue";
 import { useRecipeStore } from "../../store";
 
 const recipeStore = useRecipeStore();
+
+const emit = defineEmits(["selected"]);
 
 const props = defineProps({
   existingLanguage: {

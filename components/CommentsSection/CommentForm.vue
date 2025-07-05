@@ -84,6 +84,7 @@ import { useMainStore, useAuthStore } from "~/store";
 const authStore = useAuthStore();
 const mainStore = useMainStore();
 
+const emit = defineEmits(["addComment"]);
 const user = computed(() => authStore.user);
 
 const props = defineProps({

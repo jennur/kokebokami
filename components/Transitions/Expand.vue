@@ -1,74 +1,72 @@
 <template>
   <transition
-    :name="slower ? 'expand-slower': 'expand'"
+    :name="slower ? 'expand-slower' : 'expand'"
     @enter="enter"
     @after-enter="afterEnter"
     @leave="leave"
   >
     <div v-show="show">
-      <slot />
+      <slot></slot>
     </div>
   </transition>
 </template>
 
-<script>
-export default {
-  name: "expand-transition",
-  props: {
-    show: {
-      type: Boolean,
-      default: false
-    },
-    slower: {
-      type: Boolean,
-      default: false
-    }
+<script setup>
+const props = defineProps({
+  show: {
+    type: Boolean,
+    default: false,
   },
-  methods: {
-    enter(element) {
-      const width = getComputedStyle(element).width;
+  slower: {
+    type: Boolean,
+    default: false,
+  },
+});
 
-      element.style.width = width;
-      element.style.position = "absolute";
-      element.style.visibility = "hidden";
-      element.style.height = "auto";
+function enter(element) {
+  const width = getComputedStyle(element).width;
 
-      const height = getComputedStyle(element).height;
+  element.style.width = width;
+  element.style.position = "absolute";
+  element.style.visibility = "hidden";
+  element.style.height = "auto";
 
-      element.style.width = null;
-      element.style.position = null;
-      element.style.visibility = null;
-      element.style.height = 0;
+  const height = getComputedStyle(element).height;
 
-      // Force repaint to make sure the
-      // animation is triggered correctly.
-      getComputedStyle(element).height;
+  element.style.width = null;
+  element.style.position = null;
+  element.style.visibility = null;
+  element.style.height = 0;
 
-      // Trigger the animation.
-      // We use `requestAnimationFrame` because we need
-      // to make sure the browser has finished
-      // painting after setting the `height`
-      // to `0` in the line above.
-      requestAnimationFrame(() => {
-        element.style.height = height;
-      });
-    },
-    afterEnter(element) {
-      element.style.height = "auto";
-    },
-    leave(element) {
-      const height = getComputedStyle(element).height;
+  // Force repaint to make sure the
+  // animation is triggered correctly.
+  getComputedStyle(element).height;
 
-      element.style.height = height;
+  // Trigger the animation.
+  // We use `requestAnimationFrame` because we need
+  // to make sure the browser has finished
+  // painting after setting the `height`
+  // to `0` in the line above.
+  requestAnimationFrame(() => {
+    element.style.height = height;
+  });
+}
 
-      // Force repaint to make sure the
-      // animation is triggered correctly.
-      getComputedStyle(element).height;
+function afterEnter(element) {
+  element.style.height = "auto";
+}
 
-      requestAnimationFrame(() => {
-        element.style.height = 0;
-      });
-    }
-  }
-};
+function leave(element) {
+  const height = getComputedStyle(element).height;
+
+  element.style.height = height;
+
+  // Force repaint to make sure the
+  // animation is triggered correctly.
+  getComputedStyle(element).height;
+
+  requestAnimationFrame(() => {
+    element.style.height = 0;
+  });
+}
 </script>

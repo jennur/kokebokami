@@ -33,67 +33,53 @@
     <clouds class="illustration illustration--clouds" />
   </section>
 </template>
-<script>
+
+<script setup>
 import foodclouds from "../assets/graphics/illustrations/cookbook-clouds.svg";
 import clouds from "../assets/graphics/illustrations/clouds.svg";
-export default {
-  name: "about",
-  head() {
-    return {
-      title: `About | Kokebokami`,
-      link: [
-        {
-          rel: "canonical",
-          href: "https://kokebokami.com/about/"
-        }
-      ]
-    };
-  },
-  components: {
-    foodclouds,
-    clouds
-  },
-  computed: {
-    breadcrumbs() {
-      return [
-        { name: this.$t("navigation.home"), link: "/" },
-        { name: this.$t("navigation.about") }
-      ];
-    }
-  }
-};
+
+const { t } = useI18n();
+
+useHead({
+  title: `About | Kokebokami`,
+  link: [
+    {
+      rel: "canonical",
+      href: "https://kokebokami.com/about/",
+    },
+  ],
+});
+
+const breadcrumbs = computed(() => {
+  return [
+    { name: t("navigation.home"), link: "/" },
+    { name: t("navigation.about") },
+  ];
+});
 </script>
 
 <style lang="scss">
-#leftCloud {
-  animation: passingCloud infinite;
+.illustration {
+  animation: bouncing infinite;
   animation-duration: 10s;
 }
-#right-cloud {
-  animation: passingCloud infinite;
-  animation-duration: 7s;
-}
-#middle-cloud {
-  animation: passingCloud infinite;
-  animation-duration: 5s;
-}
 
-@keyframes passingCloud {
+@keyframes bouncing {
   0%,
   100% {
-    -moz-transform: translate(0px, 0px);
-    -webkit-transform: translate(0px, 0px);
-    -o-transform: translate(0px, 0px);
-    -ms-transform: translate(0px, 0px);
-    transform: translate(0px, 0px);
+    -moz-transform: translateY(-0.5rem);
+    -webkit-transform: translateY(-0.5rem);
+    -o-transform: translateY(-0.5rem);
+    -ms-transform: translateY(-0.5rem);
+    transform: translateY(-0.5rem);
   }
 
   50% {
-    -moz-transform: translate(0px, -20px);
-    -webkit-transform: translate(0px, -20px);
-    -o-transform: translate(0px, -20px);
-    -ms-transform: translate(0px, -20px);
-    transform: translate(0px, -20px);
+    -moz-transform: translateY(0.5rem);
+    -webkit-transform: translateY(0.5rem);
+    -o-transform: translateY(0.5rem);
+    -ms-transform: translateY(0.5rem);
+    transform: translateY(0.5rem);
   }
 }
 </style>

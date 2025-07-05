@@ -7,11 +7,11 @@
           <div class="alert-box_buttons flex-row flex-row--align-center">
             <button
               class="button button-sm button--red-border margin-right-lg"
-              @click="$emit('confirmed')"
+              @click="emit('confirmed')"
             >
               {{ $t("confirm") }}
             </button>
-            <button class="button button-sm" @click="$emit('cancel')">
+            <button class="button button-sm" @click="emit('cancel')">
               {{ $t("cancel") }}
             </button>
           </div>
@@ -21,39 +21,35 @@
   </transition>
 </template>
 
-<script>
-export default {
-  name: "alert",
-  props: {
-    alertMessage: {
-      type: String,
-      default: ""
-    },
-    showAlert: {
-      type: Boolean,
-      default: false
-    }
+<script setup>
+const emit = defineEmits(["confirmed", "cancel"]);
+const props = defineProps({
+  alertMessage: {
+    type: String,
+    default: "",
   },
-  data() {
-    return {
-      showAlertWrap: false,
-      showAlertBox: false
-    };
+  showAlert: {
+    type: Boolean,
+    default: false,
   },
-  watch: {
-    showAlert: function(val) {
-      if (val === true) {
-        this.showAlertWrap = true;
-        setTimeout(() => {
-          this.showAlertBox = true;
-        }, 10);
-      } else {
-        this.showAlertBox = false;
-        setTimeout(() => {
-          this.showAlertWrap = false;
-        }, 200);
-      }
-    }
+});
+
+const showAlertWrap = ref(false);
+const showAlertBox = ref(false);
+
+const { showAlert } = toRefs(props);
+
+watch(showAlert, (value) => {
+  if (value === true) {
+    showAlertWrap.value = true;
+    setTimeout(() => {
+      showAlertBox.value = true;
+    }, 10);
+  } else {
+    showAlertBox.value = false;
+    setTimeout(() => {
+      showAlertWrap.value = false;
+    }, 200);
   }
-};
+});
 </script>

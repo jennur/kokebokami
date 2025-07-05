@@ -27,7 +27,7 @@
       <button
         v-if="!list.key"
         class="button button--dynamic button--cancel"
-        @click="$emit('cancel')"
+        @click="emit('cancel')"
       >
         ✕
       </button>
@@ -149,7 +149,7 @@ import { useAuthStore } from "~/store";
 const db = getDatabase();
 const authStore = useAuthStore();
 
-const emit = defineEmits(["update"]);
+const emit = defineEmits(["update", "cancel"]);
 const props = defineProps({
   list: {
     type: Object,

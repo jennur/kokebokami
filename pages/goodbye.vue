@@ -12,33 +12,24 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: "goodbye",
-  head() {
-    return {
-      title: `Goodbye | Kokebokami`,
-      meta: [
-        {
-          name: "robots" ,
-          content: "noindex"
-        }
-      ],
-      link: [
-        {
-          rel: "canonical",
-          href: "https://kokebokami.com/goodbye/"
-        }
-      ]
-    };
-  },
-  computed: {
-    breadcrumbs() {
-      return [
-        { name: this.$t("navigation.home"), link: "/" },
-        { name: "Goodbye" }
-      ];
-    }
-  }
-};
+<script setup>
+const breadcrumbs = computed(() => {
+  return [{ name: this.$t("navigation.home"), link: "/" }, { name: "Goodbye" }];
+});
+
+useHead({
+  title: `Goodbye | Kokebokami`,
+  meta: [
+    {
+      name: "robots",
+      content: "noindex",
+    },
+  ],
+  link: [
+    {
+      rel: "canonical",
+      href: "https://kokebokami.com/goodbye/",
+    },
+  ],
+});
 </script>

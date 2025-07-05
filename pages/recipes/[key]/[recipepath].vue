@@ -26,6 +26,7 @@
         :recipeKey="recipe?.id"
         :recipeOwnerID="recipe?.ownerID"
         :recipeTitle="recipe?.title"
+        :comments="recipe?.comments"
       />
     </div>
   </div>

@@ -1,13 +1,13 @@
 <template>
   <div class="burger-icon">
-    <span :class="'burger-icon_slice ' + (open ? 'burger-icon_slice--open' : '') " />
+    <span
+      :class="'burger-icon_slice ' + (open ? 'burger-icon_slice--open' : '')"
+    ></span>
   </div>
 </template>
-<script>
-export default {
-  name: "burger-icon",
-  props: {
-    open: { type: Boolean, default: false }
-  }
-};
+
+<script setup>
+const props = defineProps({
+  open: { type: Boolean, default: false },
+});
 </script>

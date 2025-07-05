@@ -76,7 +76,7 @@ const categoryNames = computed(() => {
     props.categories &&
     props.categories.map((category) => {
       const index = allCategories.indexOf(category);
-      return localeCategories[index].body.static;
+      return localeCategories[index];
     })
   );
 });

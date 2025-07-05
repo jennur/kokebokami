@@ -22,7 +22,7 @@
             :visibleToPublic="true"
             :editOption="true"
             :removeOption="true"
-            @update="(value) => compressImage(value)"
+            @update="(value) => updateProfileImg(value)"
             @remove="removeProfileImg"
             :currentValue="photoURL"
             :isImage="true"
@@ -207,6 +207,7 @@ import { getAuth } from "firebase/auth";
 
 const router = useRouter();
 const db = getDatabase();
+const storage = getStorage();
 const { t } = useI18n();
 
 const authStore = useAuthStore();
@@ -297,32 +298,34 @@ function updateNotificationStatus(type, status) {
   }
 }
 
-function compressImage(file) {
-  isLoading.value = true;
-  const imageCompressor = new Compressor(file, {
-    checkOrientation: true,
-    maxWidth: 300,
-    maxHeight: 300,
-    quality: 0.6,
-    // Convert ALL PNG images to JPEG
-    convertSize: 0,
-    success(result) {
-      updateProfileImg(result);
-    },
-    error(error) {
-      console.error("[compressImage]", error.message);
-    },
-  });
-}
-
 async function updateProfileImg(upload) {
   removeProfileImg();
-  const fileName = uuidv4();
-  try {
-    //save image
-    const file = upload;
 
-    const storage = getStorage();
+  try {
+    isLoading.value = true;
+    new Compressor(upload, {
+      checkOrientation: true,
+      maxWidth: 300,
+      maxHeight: 300,
+      quality: 0.6,
+      // Convert ALL PNG images to JPEG
+      convertSize: 0,
+      success(result) {
+        saveImageToStorage(result);
+      },
+      error(error) {
+        console.error("[compressImage]", error.message);
+      },
+    });
+  } catch (error) {
+    console.error("[updateProfileImg]", error.message);
+    updateProfileImgSystemMessage.value = error.message;
+  } finally {
+    isLoading.value = false;
+  }
+
+  async function saveImageToStorage(file) {
+    const fileName = uuidv4();
     const imageRef = storageRef(
       storage,
       `images/users/${authStore.user.id}/profileImg/${fileName}.png`
@@ -333,29 +336,26 @@ async function updateProfileImg(upload) {
     });
 
     const downloadURL = await getDownloadURL(imageRef);
-    photoURL.value = downloadURL;
+    saveImageURLToDb(downloadURL);
+  }
 
-    update(dbRef(db, `/users/${authStore.user.id}`), { photoURL: downloadURL })
+  function saveImageURLToDb(url) {
+    update(dbRef(db, `/users/${authStore.user.id}`), { photoURL: url })
       .then(() => {
         updateProfileImgSystemMessage.value = "";
+        photoURL.value = url;
         updateUserDetailsInStore();
-      })
-      .then(() => {
-        isLoading.value = false;
       })
       .catch((error) => {
         removeProfileImgSystemMessage.value = error.message;
         console.error("[updateProfileImg]", error.message);
       });
-  } catch (error) {
-    console.error("[updateProfileImg]", error.message);
-    updateProfileImgSystemMessage.value = error.message;
   }
 }
 
 function removeProfileImg() {
   if (authStore.user.id) {
-    listAll(storageRef(db, `images/users/${authStore.user.id}/profileImg`))
+    listAll(storageRef(storage, `images/users/${authStore.user.id}/profileImg`))
       .then((res) => {
         res.items.forEach((itemRef) => {
           deleteObject(itemRef);
@@ -388,6 +388,7 @@ function removeProfileImageFromDb() {
       console.error("[removeProfileImageFromDb]", error.message);
     });
 }
+
 function updateUsername(value) {
   update(dbRef(db, `/users/${authStore.user.id}`), {
     displayName: value,

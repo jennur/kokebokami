@@ -91,7 +91,7 @@
         >
           <button
             class="button button--dynamic button--dynamic-small button--cancel margin-v-md"
-            @click.prevent="$emit('close-edit-mode')"
+            @click.prevent="emit('close-edit-mode')"
           >
             ✕ {{ $t("cancel") }}
           </button>
@@ -115,7 +115,13 @@
 </template>
 
 <script setup>
-import { getDatabase, ref as dbRef, update, push, child } from "firebase/database";
+import {
+  getDatabase,
+  ref as dbRef,
+  update,
+  push,
+  child,
+} from "firebase/database";
 
 import SelectComponent from "~/components/Input/SelectComponent.vue";
 import ExpandTransition from "~/components/Transitions/Expand.vue";
@@ -126,7 +132,7 @@ const db = getDatabase();
 const authStore = useAuthStore();
 const recipeStore = useRecipeStore();
 
-const emit = defineEmits(["update"]);
+const emit = defineEmits(["update", "close-edit-mode"]);
 
 const props = defineProps({
   recipeLink: {
@@ -155,11 +161,11 @@ const categories = computed(() => {
   const linkCategories = [];
 
   recipeStore.userLinks?.forEach((link) => {
-      if (link.category) {
-        if (linkCategories.indexOf(link.category) === -1)
-          linkCategories.push(link.category);
-      }
-    });
+    if (link.category) {
+      if (linkCategories.indexOf(link.category) === -1)
+        linkCategories.push(link.category);
+    }
+  });
   return linkCategories;
 });
 

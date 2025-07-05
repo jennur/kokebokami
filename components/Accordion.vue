@@ -8,14 +8,11 @@
   </section>
 </template>
 
-<script>
-export default {
-  name: "accordion",
-  props: {
-    accordions: {
-      type: Array,
-      default: () => []
-    }
-  }
-};
+<script setup>
+const props = defineProps({
+  accordions: {
+    type: Array,
+    default: () => [],
+  },
+});
 </script>

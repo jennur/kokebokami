@@ -1,7 +1,6 @@
 <template>
   <div>
     <div id="actionBar" class="flex-row">
-
       <!--   PDF download   -->
       <button
         class="button button--w-icon-round"
@@ -31,65 +30,52 @@
     />
   </div>
 </template>
-<script>
+<script setup>
 import ShareForm from "./ShareForm.vue";
-import generatePath from "~/helpers/generatePath.js";
 
-export default {
-  name: "action-bar",
-  components: {
-    ShareForm
+const emit = defineEmits(["download"]);
+const props = defineProps({
+  editMode: {
+    type: Boolean,
+    default: false,
   },
-  data() {
-    return {
-      sharing: false
-    };
+  isRecipeOwner: {
+    type: Boolean,
+    default: false,
   },
-  props: {
-    editMode: {
-      type: Boolean,
-      default: false
-    },
-    isRecipeOwner: {
-      type: Boolean,
-      default: false
-    },
-    recipeKey: {
-      type: String,
-      default: ""
-    },
-    recipeOwnerID: {
-      type: String,
-      default: ""
-    },
-    recipeTitle: {
-      type: String,
-      default: ""
-    },
-    recipeDescription: {
-      type: String,
-      default: ""
-    },
-    recipePublic: {
-      type: Boolean,
-      default: false
-    }
+  recipeKey: {
+    type: String,
+    default: "",
   },
-  computed: {
-    sharePath() {
-      return generatePath(this.recipeTitle, this.recipeKey);
-    }
+  recipeOwnerID: {
+    type: String,
+    default: "",
   },
-  methods: {
-    openShareModal() {
-      this.sharing = true;
-    },
-    closeShareModal() {
-      this.sharing = false;
-    },
-    handlePdfExport() {
-      this.$emit("download");
-    }
-  }
-};
+  recipeTitle: {
+    type: String,
+    default: "",
+  },
+  recipeDescription: {
+    type: String,
+    default: "",
+  },
+  recipePublic: {
+    type: Boolean,
+    default: false,
+  },
+});
+
+const sharing = ref(false);
+
+function openShareModal() {
+  sharing.value = true;
+}
+
+function closeShareModal() {
+  sharing.value = false;
+}
+
+function handlePdfExport() {
+  emit("download");
+}
 </script>

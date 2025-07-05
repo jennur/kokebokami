@@ -163,34 +163,31 @@
     </section>
   </div>
 </template>
-<script>
-export default {
-  name: "terms-and-conditions",
-  head() {
-    return {
-      title: `Terms and conditions | Kokebokami`,
-      meta: [
-        {
-          name: "robots" ,
-          content: "noindex"
-        }
-      ],
-      link: [
-        {
-          rel: "canonical",
-          href: "https://kokebokami.com/terms-and-conditions/"
-        }
-      ]
-    };
+
+<script setup>
+const props = defineProps({
+  breadcrumbs: {
+    type: Array,
+    default: () => [
+      { name: "Home", link: "/" },
+      { name: "Terms and Conditions" },
+    ],
   },
-  props: {
-    breadcrumbs: {
-      type: Array,
-      default: () => [
-        { name: "Home", link: "/" },
-        { name: "Terms and Conditions" }
-      ]
-    }
-  }
-};
+});
+
+useHead({
+  title: `Terms and conditions | Kokebokami`,
+  meta: [
+    {
+      name: "robots",
+      content: "noindex",
+    },
+  ],
+  link: [
+    {
+      rel: "canonical",
+      href: "https://kokebokami.com/terms-and-conditions/",
+    },
+  ],
+});
 </script>

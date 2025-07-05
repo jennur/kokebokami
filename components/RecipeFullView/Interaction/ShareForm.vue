@@ -1,5 +1,5 @@
 <template>
-  <ModalBox :dark-bg="false" :open="open" @close="$emit('close-modal')">
+  <ModalBox :dark-bg="false" :open="open" @close="emit('close-modal')">
     <h3>{{ $t("share") }} '{{ recipeTitle }}'</h3>
 
     <form v-if="user && user.id" class="share-form margin-v-lg" @submit.prevent>
@@ -85,6 +85,7 @@ const router = useRouter();
 const authStore = useAuthStore();
 const { t } = useI18n();
 
+const emit = defineEmits(["close-modal"]);
 const props = defineProps({
   open: {
     type: Boolean,
@@ -164,7 +165,6 @@ function shareRecipe() {
 
   const db = getDatabase();
   const sharesRef = dbRef(db, `recipes/${props.recipeKey}/sharedWith`);
-;
   const selectedFollower = authStore.followers.value.filter((follower) => {
     return follower.displayName === selectedDisplayName;
   })[0];
@@ -197,9 +197,7 @@ function shareRecipe() {
           });
         }
       })
-      .catch((error) =>
-        console.error("[shareRecipe]", error.message)
-      );
+      .catch((error) => console.error("[shareRecipe]", error.message));
     systemMessage.value = `Successfully shared with ${username}`;
   });
 }

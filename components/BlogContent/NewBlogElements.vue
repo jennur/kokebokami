@@ -54,7 +54,7 @@
 </template>
 
 <script setup>
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 
 import BlogTextInput from "./Editing/BlogTextInput.vue";
 import BlogImageInput from "./Editing/BlogImageInput.vue";
@@ -93,7 +93,7 @@ function selectHeadline(size) {
 
 function addImage() {
   selectingHeadline.value = false;
-  let openImageInput = newContent.value.filter(
+  const openImageInput = newContent.value.filter(
     (elem) => elem[1].type === "image"
   );
 

@@ -1,17 +1,8 @@
 <template>
-  <button
-    class="button--increment"
-    @click="
-      () => {
-        this.$emit('increment');
-      }
-    "
-  >
-    <slot />
+  <button class="button--increment" @click="() => emit('increment')">
+    <slot></slot>
   </button>
 </template>
-<script>
-export default {
-  name: "increment-button"
-};
+<script setup>
+const emit = defineEmits(["increment"]);
 </script>

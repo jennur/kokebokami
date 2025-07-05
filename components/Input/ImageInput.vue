@@ -1,57 +1,49 @@
 <template>
   <div class="image-upload">
-    <dropzone
-      id="dropImage"
-      ref="dropImage"
-      :options="options"
-      :destroyDropzone="true"
-      @vdropzone-complete="handlePictureUpload"
-    />
+    <SixDropzone
+      v-if="!url"
+      id="six-dropzone"
+      v-model="image"
+      @change="handlePictureUpload"
+      :accept="['image/png', 'image/jpeg']"
+    ></SixDropzone>
+    <img v-else :src="url" class="uploaded-image" />
   </div>
 </template>
 
-<script>
-import Dropzone from "nuxt-dropzone";
-import "nuxt-dropzone/dropzone.css";
+<script setup>
 import Compressor from "compressorjs";
 
-export default {
-  name: "image-input",
-  components: {
-    Dropzone,
+const emit = defineEmits(["uploaded"]);
+
+const props = defineProps({
+  url: {
+    type: String,
+    default: "",
   },
-  data() {
-    return {
-      options: {
-        url: "https://httpbin.org/post",
-        acceptedFiles: ".jpg, .jpeg, .png",
-        dictDefaultMessage: `<p class='text-default'><i class='fa fa-cloud-upload mr-2'></i> Drag image or Click here</p>
-          <p class="form-text">Allowed Files: .jpg, .jpeg, .png</p>
-          `,
-        maxFiles: 1,
-      },
-    };
-  },
-  methods: {
-    handlePictureUpload(file) {
-      this.isLoading = true;
-      let componentThis = this;
-      new Compressor(file, {
-        checkOrientation: true,
-        maxWidth: 1000,
-        maxHeight: 800,
-        quality: 0.8,
-        // Convert ALL PNG images to JPEG
-        convertSize: 0,
-        success(result) {
-          componentThis.$emit("uploaded", result);
-          componentThis.$refs.dropImage.removeFile(file);
-        },
-        error(error) {
-          console.error("[handlePictureUpload]", error.message);
-        },
-      });
-    },
-  },
-};
+});
+
+const image = ref(null);
+
+function handlePictureUpload(file) {
+  emit("uploaded", file);
+  // new Compressor(file, {
+  //   checkOrientation: true,
+  //   maxWidth: 1000,
+  //   maxHeight: 800,
+  //   quality: 0.8,
+  //   // Convert ALL PNG images to JPEG
+  //   convertSize: 0,
+  //   success(result) {
+  //     console.log(
+  //       "[handlePictureUpload] Image successfully compressed",
+  //       result
+  //     );
+  //     emit("uploaded", result);
+  //   },
+  //   error(error) {
+  //     console.error("[handlePictureUpload]", error.message);
+  //   },
+  // });
+}
 </script>

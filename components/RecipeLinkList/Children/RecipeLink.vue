@@ -25,7 +25,7 @@
               Edit link
             </span>
             <span class="system-message" @click="(event) => toggleAlert(event)"
-              ><delete-icon tabindex="0" class="icon margin-right-md" />Delete
+              ><i-delete-icon tabindex="0" class="icon margin-right-md" />Delete
               link</span
             >
           </SettingsDropdown>

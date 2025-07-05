@@ -58,7 +58,7 @@ const freeFromList = computed(() => {
   return props.freeFrom
     .map((type) => {
       let index = allAllergens.indexOf(type);
-      type = localeAllergens[index].body.static;
+      type = localeAllergens[index];
       return type.charAt(0).toUpperCase() + type.slice(1, type.length);
     })
     .join(", ");

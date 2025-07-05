@@ -1,34 +1,23 @@
 <template>
   <div class="hover-info-box">
-    <info-icon class="icon" @click="event => toggleBox(event)" />
+    <info-icon class="icon" @click="(event) => toggleBox(event)" />
     <div v-if="boxVisible" class="hover-box" v-click-outside="closeBox">
-      <slot />
+      <slot></slot>
     </div>
   </div>
 </template>
 
-<script>
+<script setup>
 import infoIcon from "~/assets/graphics/icons/info-icon.svg";
- 
 
-export default {
-  name: "hover-info-box",
-  components: {
-    infoIcon,
-  },
-  data() {
-    return {
-      boxVisible: false,
-    };
-  },
-  methods: {
-    toggleBox(event) {
-      event && event.stopPropagation();
-      this.boxVisible = !this.boxVisible;
-    },
-    closeBox() {
-      this.boxVisible = false;
-    },
-  }
-};
+const boxVisible = ref(false);
+
+function toggleBox(event) {
+  event && event.stopPropagation();
+  boxVisible.value = !boxVisible.value;
+}
+
+function closeBox() {
+  boxVisible.value = false;
+}
 </script>

@@ -7,14 +7,11 @@
     </ul>
   </div>
 </template>
-<script>
-export default {
-  name: "recipes-list-preview",
-  props: {
-    recipes: {
-      type: Array,
-      default: () => []
-    }
-  }
-};
+<script setup>
+const props = defineProps({
+  recipes: {
+    type: Array,
+    default: () => [],
+  },
+});
 </script>

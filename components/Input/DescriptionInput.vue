@@ -5,24 +5,16 @@
       placeholder="Say something about the recipe."
       name="description"
       v-model="description"
-    />
+    ></textarea>
   </label>
 </template>
 <script>
-export default {
-  name: "description-input",
-  data() {
-    let descriptionValue = "";
-    if (this.existingDescription) {
-      descriptionValue = this.existingDescription;
-    }
-    return { description: descriptionValue };
+const props = defineProps({
+  existingDescription: {
+    type: String,
+    default: "",
   },
-  props: {
-    existingDescription: {
-      type: String,
-      default: ""
-    }
-  }
-};
+});
+
+const description = ref(props.existingDescription || "");
 </script>

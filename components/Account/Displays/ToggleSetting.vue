@@ -6,32 +6,27 @@
         class="email-notifications_status"
         :class="{
           'color--pink': !setting.status,
-          'color--blue': setting.status
+          'color--blue': setting.status,
         }"
       >
         {{ setting.status ? $t("on") : $t("off") }}
       </strong>
-      <toggle-switch
+      <ToggleSwitch
         :checked="setting.status"
-        @toggle="status => $emit('update-notification-status', !status)"
+        @toggle="(status) => emit('update-notification-status', !status)"
       />
     </p>
   </div>
 </template>
 
-<script>
+<script setup>
 import ToggleSwitch from "~/components/Input/ToggleSwitch.vue";
+const emit = defineEmits(["update-notification-status"]);
 
-export default {
-  name: "toggle-setting",
-  components: {
-    ToggleSwitch
+const props = defineProps({
+  setting: {
+    type: Object,
+    default: () => ({}),
   },
-  props: {
-    setting: {
-      type: Object,
-      default: () => {}
-    }
-  }
-};
+});
 </script>

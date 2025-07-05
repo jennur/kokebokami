@@ -19,7 +19,6 @@ export default async function useRecipeData(params) {
 
         const recipeWithMetadata = await getRecipeWithMetadata(recipeFullPath);
 
-        console.log("RecipeWithMetadata:", recipeWithMetadata)
         const recipeAuthor = await useRecipeAuthor(recipeWithMetadata.content?.ownerID);
         if (recipeWithMetadata.structuredData && author) {
           recipeWithMetadata.structuredData.author = author.structuredData;
@@ -50,7 +49,6 @@ export default async function useRecipeData(params) {
 
     function userHasAccess() {
       if(!recipe.value.public){
-        console.log("USER:", user.uid, recipe.value)
         if(user && user.uid === recipe.value.ownerID){
           return true;
         }

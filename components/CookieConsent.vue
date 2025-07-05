@@ -10,7 +10,7 @@
         class="button button--green-border button-sm margin-left-lg"
         @click="
           () => {
-            this.$emit('cookieAccept');
+            emit('cookieAccept');
           }
         "
       >
@@ -19,8 +19,6 @@
     </div>
   </section>
 </template>
-<script>
-export default {
-  name: "cookie-consent"
-};
+<script setup>
+const emit = defineEmits(["cookieAccept"]);
 </script>

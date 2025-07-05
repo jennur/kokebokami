@@ -19,18 +19,19 @@
       </div>
 
       <div v-if="editMode && isImage" class="account_detail-edit">
-        <dropzone
+        <ImageInput @uploaded="handlePictureUpload" />
+        <!-- <Dropzone
           id="dropImage"
-          ref="dropImage"
+          ref="drop-image"
           :options="options"
           :destroyDropzone="true"
           @vdropzone-complete="handlePictureUpload"
-        />
+        /> -->
         <div class="flex-row">
           <button
             class="button button--w-icon-left button-sm button--cancel account_detail-warning-btn margin-top-md margin-left-sm"
           >
-            <delete-icon
+            <i-delete-icon
               tabindex="0"
               v-if="removeOption && currentValue"
               @click="toggleAlert"
@@ -53,6 +54,7 @@
         </div>
       </div>
     </div>
+
     <form
       v-if="editMode && !isImage"
       v-on:submit.prevent
@@ -69,6 +71,7 @@
           />
         </label>
       </fieldset>
+
       <fieldset>
         <div class="flex-row flex-row--nowrap margin-top-lg">
           <button @click="handleSave" class="button button--round button-sm">
@@ -84,9 +87,10 @@
       </fieldset>
     </form>
 
-    <expand-transition :show="!!systemMessage">
+    <ExpandTransition :show="!!systemMessage">
       <div class="system-message margin-top-md">{{ systemMessage }}</div>
-    </expand-transition>
+    </ExpandTransition>
+
     <div v-if="!editMode" class="flex-row">
       <i-edit-icon
         tabindex="0"
@@ -97,108 +101,90 @@
     </div>
   </dt>
 </template>
-<script>
-import Dropzone from "nuxt-dropzone";
-import "nuxt-dropzone/dropzone.css";
-import Compressor from "compressorjs";
 
+<script setup>
 import Alert from "~/components/Alert.vue";
 import ExpandTransition from "~/components/Transitions/Expand.vue";
+import ImageInput from "../../Input/ImageInput.vue";
 
-export default {
-  name: "account-detail",
-  components: {
-    ExpandTransition,
-    Dropzone,
-    Alert
+const emit = defineEmits(["update", "remove"]);
+const props = defineProps({
+  title: {
+    type: String,
+    default: "",
   },
-  props: {
-    title: {
-      type: String,
-      default: ""
-    },
-    visibleToPublic: {
-      type: Boolean,
-      default: false
-    },
-    removeOption: {
-      type: Boolean,
-      default: false
-    },
-    editOption: {
-      type: Boolean,
-      default: false
-    },
-    inputType: {
-      type: String,
-      default: "text"
-    },
-    autocompleteType: {
-      type: String,
-      default: ""
-    },
-    systemMessage: {
-      type: String,
-      default: ""
-    },
-    currentValue: {
-      type: String,
-      default: ""
-    },
-    isImage: {
-      type: Boolean,
-      default: false
-    },
-    isLoading: {
-      type: Boolean,
-      default: false
-    },
-    validate: {
-      type: Function,
-      default: () => true
-    }
+  visibleToPublic: {
+    type: Boolean,
+    default: false,
   },
-  data() {
-    return {
-      editMode: this.editOpen,
-      inputValue: this.currentValue,
-      options: {
-        url: "https://httpbin.org/post",
-        acceptedFiles: ".jpg, .jpeg, .png",
-        dictDefaultMessage: `<p class='text-default'><i class='fa fa-cloud-upload mr-2'></i> Drag image or Click here</p>
-          <p class="form-text">Allowed Files: .jpg, .jpeg, .png</p>
-          `,
-        maxFiles: 1
-      },
-      showAlert: false
-    };
+  removeOption: {
+    type: Boolean,
+    default: false,
   },
-  methods: {
-    toggleAlert() {
-      this.showAlert = !this.showAlert;
-    },
-    toggleEditMode() {
-      this.editMode = !this.editMode;
-    },
-    async handleSave() {
-      let valid = await this.validate(this.inputValue);
-      if(valid){
-        this.toggleEditMode();
-        this.$emit("update", this.inputValue);
-      }
-    },
-    handleRemoval() {
-      this.showAlert = false;
-      this.$emit("remove");
-      setTimeout(() => {
-        this.editMode = false;
-      }, 300);
-    },
-    handlePictureUpload(upload) {
-      this.toggleEditMode();
-      this.$emit("update", upload);
-      this.$refs.dropImage.removeFile(upload);
-    }
+  editOption: {
+    type: Boolean,
+    default: false,
+  },
+  inputType: {
+    type: String,
+    default: "text",
+  },
+  autocompleteType: {
+    type: String,
+    default: "",
+  },
+  systemMessage: {
+    type: String,
+    default: "",
+  },
+  currentValue: {
+    type: String,
+    default: "",
+  },
+  isImage: {
+    type: Boolean,
+    default: false,
+  },
+  isLoading: {
+    type: Boolean,
+    default: false,
+  },
+  validate: {
+    type: Function,
+    default: () => true,
+  },
+});
+
+const editMode = ref(false);
+const inputValue = ref(props.currentValue);
+const showAlert = ref(false);
+
+function toggleAlert() {
+  showAlert.value = !showAlert.value;
+}
+
+function toggleEditMode() {
+  editMode.value = !editMode.value;
+}
+
+async function handleSave() {
+  const valid = await props.validate(inputValue.value);
+  if (valid) {
+    toggleEditMode();
+    emit("update", inputValue.value);
   }
-};
+}
+
+function handleRemoval() {
+  showAlert.value = false;
+  emit("remove");
+  setTimeout(() => {
+    editMode.value = false;
+  }, 300);
+}
+
+function handlePictureUpload(upload) {
+  toggleEditMode();
+  emit("update", upload);
+}
 </script>

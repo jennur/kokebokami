@@ -15,7 +15,7 @@
         class="icon"
         @click="toggleEditMode"
       />
-      <category-edit
+      <CategoryEdit
         v-if="editMode"
         :existingTypes="typeOfMeal"
         :allTypes="allTypesOfMeal"
@@ -64,7 +64,7 @@ const typeOfMealList = computed(() => {
   return props.typeOfMeal
     .map((type) => {
       const index = allTypesOfMeal.value.indexOf(type);
-      type = localetypeOfMeal[index].body.static;
+      type = localetypeOfMeal[index];
       return type.charAt(0).toUpperCase() + type.slice(1, type.length);
     })
     .join(", ");

@@ -2,47 +2,40 @@
   <div class="scroll-button">
     <transition name="pop">
       <button v-show="showButton" @click="scrollToTop" tabindex="0">
-        <upArrow />
+        <UpArrow />
       </button>
     </transition>
   </div>
 </template>
 
-<script>
-import upArrow from "~/assets/graphics/icons/up-arrow.svg";
-export default {
-  name: "scroll-button",
-  components: {
-    upArrow
-  },
-  data() {
-    return {
-      showButton: false
-    };
-  },
-  methods: {
-    handleScroll() {
-      if (process.browser) {
-        if (window.pageYOffset > 500) this.showButton = true;
-        else this.showButton = false;
-      }
-    },
-    scrollToTop() {
-      if (process.browser) {
-        document.documentElement.scrollTop = 0;
-        document.body.scrollTop = 0;
-      }
-    }
-  },
-  mounted() {
-    if (process.browser) {
-      window.addEventListener("scroll", this.handleScroll);
-    }
-  },
-  destroyed() {
-    if (process.browser) {
-      window.removeEventListener("scroll", this.handleScroll);
-    }
+<script setup>
+import { onUnmounted } from "vue";
+import UpArrow from "~/assets/graphics/icons/up-arrow.svg";
+
+const showButton = ref(false);
+
+function handleScroll() {
+  if (import.meta.client) {
+    if (window.pageYOffset > 500) showButton.value = true;
+    else showButton.value = false;
   }
-};
+}
+function scrollToTop() {
+  if (import.meta.client) {
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+  }
+}
+
+onMounted(() => {
+  if (import.meta.client) {
+    window.addEventListener("scroll", handleScroll);
+  }
+});
+
+onUnmounted(() => {
+  if (import.meta.client) {
+    window.removeEventListener("scroll", handleScroll);
+  }
+});
 </script>

@@ -99,7 +99,8 @@ export default defineNuxtConfig({
     "@pinia/nuxt",
     "@nuxtjs/i18n",
     "nuxt-svgo",
-    "@vesp/nuxt-fontawesome"
+    "@vesp/nuxt-fontawesome",
+    "six-dropzone",
   ],
 
   svgo: {

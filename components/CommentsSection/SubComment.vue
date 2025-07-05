@@ -1,38 +1,36 @@
 <template>
   <comment
     :recipeKey="recipeKey"
-    :mainCommentKey="mainCommentKey"
+    :parentKey="parentKey"
     :comment="subComment"
     :isSubComment="true"
     :isRecipeOwner="isRecipeOwner"
     class="sub-comment padding-v-lg"
-    @update="$emit('update')"
+    @update="emit('update')"
   />
 </template>
 
-<script>
-export default {
-  name: "sub-comment",
-  components: {
-    Comment: () => import("./Comment.vue")
+<script setup>
+import Comment from "./Comment.vue";
+
+const emit = defineEmits(["update"]);
+
+const props = defineProps({
+  recipeKey: {
+    type: String,
+    default: "",
   },
-  props: {
-    recipeKey: {
-      type: String,
-      default: ""
-    },
-    subComment: {
-      type: Array,
-      default: () => []
-    },
-    mainCommentKey: {
-      type: String,
-      default: ""
-    },
-    isRecipeOwner: {
-      type: Boolean,
-      deafult: false
-    }
-  }
-};
+  subComment: {
+    type: Object,
+    default: () => {},
+  },
+  parentKey: {
+    type: String,
+    default: "",
+  },
+  isRecipeOwner: {
+    type: Boolean,
+    deafult: false,
+  },
+});
 </script>

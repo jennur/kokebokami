@@ -1,8 +1,8 @@
 <template>
-  <div v-if="isRecipeOwner || commentObj.approved" class="comment">
-    <DeleteIcon
+  <div v-if="isRecipeOwner || comment.approved" class="comment">
+    <i-delete-icon
       tabindex="0"
-      v-if="isRecipeOwner || commentObj.isMyComment"
+      v-if="isRecipeOwner || comment.isMyComment"
       class="comment_delete-btn icon"
       @click="confirmDelete"
     />
@@ -14,7 +14,7 @@
     />
     <!-- Approval -->
     <div
-      v-if="!commentObj.approved"
+      v-if="!comment.approved"
       class="comment_approval margin-bottom-lg"
       @click="approveComment"
     >
@@ -33,11 +33,11 @@
     <!-- Comment info -->
     <div class="flex-row flex-row--align-center">
       <div
-        v-if="commentObj.photoURL"
+        v-if="comment.photoURL"
         class="comment_user-img"
         role="img"
-        :aria-label="`${commentObj.username}'s profile image`"
-        :style="`background-image: url(${commentObj.photoURL});`"
+        :aria-label="`${comment.username}'s profile image`"
+        :style="`background-image: url(${comment.photoURL});`"
       ></div>
 
       <CookSilhouette v-else class="comment_user-img" />
@@ -48,20 +48,18 @@
         :class="{
           'no-link': isAnonymous,
         }"
-        >{{ commentObj.username }}</component
+        >{{ comment.username }}</component
       >
-      <span class="comment_date margin-left-md">{{
-        commentObj.submitDate
-      }}</span>
+      <span class="comment_date margin-left-md">{{ comment.submitDate }}</span>
     </div>
 
     <!-- Comment -->
-    <div class="comment_comment margin-top-sm">{{ commentObj.comment }}</div>
+    <div class="comment_comment margin-top-sm">{{ comment.comment }}</div>
     <button
       v-if="!isSubComment && !formOpen"
       class="comment_reply-btn button button-sm button--dynamic button--trans margin-top-lg"
       :class="{
-        'margin-bottom-lg': commentObj.subComments,
+        'margin-bottom-lg': comment.subComments,
       }"
       @click="openCommentForm"
     >
@@ -70,12 +68,13 @@
 
     <!-- Subcomments -->
     <ExpandTransition :show="formOpen">
-      <comment-form
+      <CommentForm
         class="sub-comments-form margin-top-lg"
         :isRecipeOwner="isRecipeOwner"
-        @addComment="(subCommentObj) => submitSubComment(subCommentObj)"
+        @addComment="submitSubComment"
       />
     </ExpandTransition>
+
     <transition name="fade">
       <div
         v-if="submitted && !isRecipeOwner"
@@ -84,6 +83,7 @@
         🎉{{ $t("comments.awaitingApproval") }}
       </div>
     </transition>
+
     <transition name="fade">
       <div
         v-if="error"
@@ -92,15 +92,16 @@
         🌧{{ $t("comments.errorSubmitting") }}
       </div>
     </transition>
+
     <div v-if="subComments.length" class="comment_sub-comments">
       <SubComment
         v-for="subComment in subComments"
-        :key="subComment[0]"
+        :key="subComment.key"
         :subComment="subComment"
-        :mainCommentKey="comment[0]"
+        :parentKey="comment.key"
         :recipeKey="recipeKey"
         :isRecipeOwner="isRecipeOwner"
-        @update="$emit('update')"
+        @update="emit('update')"
       />
       <button
         v-if="cutOffSubComments.length"
@@ -113,217 +114,177 @@
   </div>
 </template>
 
-<script>
-import { getDatabase, ref as dbRef, get } from "firebase/database";
+<script setup>
+import {
+  getDatabase,
+  ref as dbRef,
+  update,
+  remove,
+  push,
+} from "firebase/database";
 
 import CookSilhouette from "~/assets/graphics/icons/cook-silhouette-circle.svg";
 import SubComment from "./SubComment.vue";
 import ExpandTransition from "~/components/Transitions/Expand.vue";
 import Alert from "~/components/Alert.vue";
 import generatePath from "../../helpers/generatePath";
+import { onMounted } from "vue";
+import CommentForm from "./CommentForm.vue";
 
-export default {
-  name: "comment",
-  components: {
-    CommentForm: () => import("./CommentForm.vue"),
-    CookSilhouette,
-    SubComment,
-    ExpandTransition,
-    Alert,
+const { t } = useI18n();
+
+const emit = defineEmits(["update", "subCommentSubmitted"]);
+
+const props = defineProps({
+  comment: {
+    type: Object,
+    default: () => {},
   },
-  props: {
-    comment: {
-      type: Array,
-      default: () => [],
-    },
-    isSubComment: {
-      type: Boolean,
-      default: false,
-    },
-    mainCommentKey: {
-      type: String,
-      default: "",
-    },
-    recipeKey: {
-      type: String,
-      default: "",
-    },
-    recipeOwner: {
-      type: Array,
-      default: () => [],
-    },
-    isRecipeOwner: {
-      type: Boolean,
-      deafult: false,
-    },
+  isSubComment: {
+    type: Boolean,
+    default: false,
   },
-  data() {
-    return {
-      formOpen: false,
-      submitted: false,
-      error: false,
-      alertMessage: "",
-      showAlert: false,
-      subComments: [],
-      cutOffSubComments: [],
-    };
+  parentKey: {
+    type: String,
+    default: "",
   },
-  computed: {
-    commentKey() {
-      return this.comment[0];
-    },
-    commentObj() {
-      return this.comment[1];
-    },
-    isAnonymous() {
-      return this.comment[1].isAnonymous;
-    },
-    userPath() {
-      let [userid, username] = [
-        this.commentObj.userId,
-        this.commentObj.username,
-      ];
-      return generatePath(username, userid);
-    },
+  recipeKey: {
+    type: String,
+    default: "",
   },
-  methods: {
-    loadMoreSubComments() {
-      let subComments = this.subComments;
-      let cutOffSubComments = this.cutOffSubComments;
-      this.subComments = subComments.concat(cutOffSubComments.splice(0, 5));
-      this.cutOffSubComments = cutOffSubComments;
-    },
-    getSubComments() {
-      if (!this.isSubComment) {
-        let subComments = this.commentObj.subComments || [];
-        if (subComments.length > 2) {
-          this.cutOffSubComments = subComments.splice(
-            2,
-            subComments.length - 1
-          );
-        }
-        this.subComments = subComments;
-      }
-    },
-    confirmDelete() {
-      this.alertMessage = `${this.$t("comments.deleteAlertNote")} '${
-        this.commentObj.comment
-      }'?`;
-      this.showAlert = true;
-    },
-    closeAlert() {
-      this.alertMessage = "";
-      this.showAlert = false;
-    },
-    openCommentForm() {
-      this.formOpen = true;
-    },
-    submitSubComment(subCommentObj) {
-      const db = getDatabase();
-      let recipeKey = this.recipeKey;
-      let commentKey = this.comment[0];
-      let subCommentsRef = dbRef(
-        db,
-        `recipes/${recipeKey}/comments/${commentKey}/subComments`
+  recipeOwner: {
+    type: Array,
+    default: () => [],
+  },
+  isRecipeOwner: {
+    type: Boolean,
+    deafult: false,
+  },
+});
+
+const formOpen = ref(false);
+const submitted = ref(false);
+const error = ref(false);
+const alertMessage = ref("");
+const showAlert = ref(false);
+const subComments = ref([]);
+const cutOffSubComments = ref([]);
+
+const isAnonymous = computed(() => {
+  return props.comment.isAnonymous;
+});
+
+const userPath = computed(() => {
+  let [userid, username] = [props.comment.userId, props.comment.username];
+  return generatePath(username, userid);
+});
+
+function loadMoreSubComments() {
+  subComments.value = subComments.value.concat(
+    cutOffSubComments.value.splice(0, 5)
+  );
+}
+
+function getSubComments() {
+  if (!props.isSubComment) {
+    subComments.value = props.comment.subComments || [];
+    if (subComments.length > 2) {
+      cutOffSubComments.value = subComments.value.splice(
+        2,
+        subComments.value.length - 1
       );
-      subCommentsRef
-        .push(subCommentObj)
-        .then(() => {
-          console.info("[submitSubComment] Subcomment was added successfully");
-          this.submitted = true;
-          this.formOpen = false;
-          this.error = false;
-          if (this.isRecipeOwner) {
-            this.$emit("update");
-          } else {
-            this.$emit("subCommentSubmitted", subCommentObj);
-          }
-        })
-        .catch((error) => {
-          this.error = true;
-          console.error("[submitSubComment]", error.message);
-        });
-    },
-    approveComment() {
-      let recipeKey = this.recipeKey;
-      let mainCommentKey = this.mainCommentKey;
-      let commentKey = this.comment[0];
+    }
+  }
+}
 
-      if (this.isSubComment) {
-        const db = getDatabase();
-        let subCommentRef = dbRef(
-          db,
-          `recipes/${recipeKey}/comments/${mainCommentKey}/subComments/${commentKey}`
-        );
-        subCommentRef
-          .update({ approved: true })
-          .then(() => {
-            console.info(
-              "[approveComment] Subcomment was updated successfully "
-            );
-            this.$emit("update");
-          })
-          .catch((error) => {
-            console.error("[approveComment]", error.message);
-          });
-      } else {
-        const db = getDatabase();
-        let commentRef = dbRef(
-          db,
-          `recipes/${recipeKey}/comments/${commentKey}`
-        );
-        commentRef
-          .update({ approved: true })
-          .then(() => {
-            console.info("[approveComment] Comment was updated successfully ");
-            this.$emit("update");
-          })
-          .catch((error) => {
-            console.error("[approveComment]", error.message);
-          });
-      }
-    },
-    deleteComment() {
-      let componentThis = this;
-      let recipeKey = this.recipeKey;
-      let mainCommentKey = this.mainCommentKey;
-      let commentKey = this.comment[0];
+function confirmDelete() {
+  alertMessage.value = `${t("comments.deleteAlertNote")} '${
+    props.comment.comment
+  }'?`;
+  showAlert.value = true;
+}
 
-      if (this.isSubComment) {
-        const db = getDatabase();
-        let subCommentRef = dbRef(
-          db,
-          `recipes/${recipeKey}/comments/${mainCommentKey}/subComments/${commentKey}`
-        );
-        subCommentRef
-          .remove()
-          .then(() => {
-            console.info("[deleteComment] Successfully deleted subComment");
-            componentThis.$emit("update");
-          })
-          .catch((error) => {
-            console.error("[deleteComment]", error.message);
-          });
-      } else {
-        const db = getDatabase();
-        let commentRef = dbRef(
-          db,
-          `recipes/${recipeKey}/comments/${commentKey}`
-        );
-        commentRef
-          .remove()
-          .then(() => {
-            console.info("[deleteComment] Successfully deleted comment");
-            componentThis.$emit("update");
-          })
-          .catch((error) => {
-            console.error("[deleteComment]", error.message);
-          });
-      }
-    },
-  },
-  mounted() {
-    this.getSubComments();
-  },
-};
+function closeAlert() {
+  alertMessage.value = "";
+  showAlert.value = false;
+}
+
+function openCommentForm() {
+  formOpen.value = true;
+}
+
+function submitSubComment(subCommentObj) {
+  const db = getDatabase();
+  const subCommentsRef = dbRef(
+    db,
+    `recipes/${props.recipeKey}/comments/${props.comment.key}/subComments`
+  );
+  push(subCommentsRef, subCommentObj)
+    .then(() => {
+      console.info("[submitSubComment] Subcomment was added successfully");
+      submitted.value = true;
+      formOpen.value = false;
+      error.value = false;
+
+      emit("update");
+    })
+    .catch((error) => {
+      error.value = true;
+      console.error("[submitSubComment]", error.message);
+    });
+}
+
+function approveComment() {
+  const db = getDatabase();
+
+  const pathEnd = props.isSubComment
+    ? `${props.parentKey}/subComments/${props.comment.key}`
+    : `${props.comment.key}`;
+
+  const commentRef = dbRef(
+    db,
+    `recipes/${props.recipeKey}/comments/${pathEnd}`
+  );
+
+  update(commentRef, { approved: true })
+    .then(() => {
+      console.info(
+        `[approveComment] ${
+          props.isSubComment ? "Sub-comment" : "Comment"
+        } was updated successfully`
+      );
+      emit("update");
+    })
+    .catch((error) => {
+      console.error("[approveComment]", error.message);
+    });
+}
+
+function deleteComment() {
+  const db = getDatabase();
+
+  const pathEnd = props.isSubComment
+    ? `${props.parentKey}/subComments/${props.comment.key}`
+    : `${props.comment.key}`;
+
+  const commentRef = dbRef(
+    db,
+    `recipes/${props.recipeKey}/comments/${pathEnd}`
+  );
+
+  remove(commentRef)
+    .then(() => {
+      console.info(
+        `[deleteComment] Successfully deleted ${
+          props.isSubComment ? "sub-comment" : "comment"
+        }`
+      );
+      emit("update");
+    })
+    .catch((error) => {
+      console.error("[deleteComment]", error.message);
+    });
+}
+
+onMounted(() => getSubComments());
 </script>

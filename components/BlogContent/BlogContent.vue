@@ -25,7 +25,7 @@
           :element="element"
           :recipe-key="recipeKey"
           @close="editHeadline = null"
-          @update="$emit('update')"
+          @update="emit('update')"
           @delete="(key) => deleteBlogElementFromDB(key)"
         />
       </div>
@@ -48,7 +48,7 @@
           :element="element"
           :recipe-key="recipeKey"
           @close="editImage = null"
-          @update="$emit('update')"
+          @update="emit('update')"
           @delete="(key) => deleteBlogImage(element[0])"
         />
       </div>
@@ -67,7 +67,7 @@
           :element="element"
           :recipe-key="recipeKey"
           @close="editText = null"
-          @update="$emit('update')"
+          @update="emit('update')"
           @delete="(key) => deleteBlogElementFromDB(key)"
         />
       </div>
@@ -78,7 +78,7 @@
       :content="content"
       :end-position="(content && content.length) || 0"
       :recipe-key="recipeKey"
-      @update="(payload) => $emit('update', payload)"
+      @update="(payload) => emit('update', payload)"
       class="new-blog-elements"
     />
 
@@ -89,12 +89,21 @@
 </template>
 
 <script setup>
-import { getDatabase, ref as dbRef, get } from "firebase/database";
-import { ref as storageRef, getStorage } from "firebase/storage";
+import {
+  getDatabase,
+  ref as dbRef,
+  orderByChild,
+  remove,
+  query,
+  get,
+  set,
+} from "firebase/database";
+import { ref as storageRef, getStorage, deleteObject } from "firebase/storage";
 import BlogImageInput from "./Editing/BlogImageInput.vue";
 import BlogTextInput from "./Editing/BlogTextInput.vue";
 import NewBlogElements from "./NewBlogElements.vue";
 
+const emit = defineEmits(["update"]);
 const props = defineProps({
   recipeTitle: {
     type: String,
@@ -153,7 +162,10 @@ function deleteBlogImage(key) {
         // Remove image from blog content
         deleteBlogElementFromDB(key);
       })
-      .catch((error) => console.error("[deleteBlogImage]", error.message));
+      .catch((error) => {
+        console.error("[deleteBlogImage]", error.message);
+        deleteBlogElementFromDB(key);
+      });
   }
 }
 
@@ -164,7 +176,7 @@ function deleteBlogElementFromDB(key) {
   remove(dbRef(db, `recipes/${props.recipeKey}/blog/${key}`))
     .then(() => {
       console.info(`[deleteBlogElementFromDB] Deleted ${key} from db`);
-      query(blogRef, orderByChild("position")).then((snapshot) => {
+      get(query(blogRef, orderByChild("position"))).then((snapshot) => {
         //Reindex elements
         const reIndexedElems = {};
         let index = 0;
@@ -176,8 +188,17 @@ function deleteBlogElementFromDB(key) {
             };
             index++;
           });
-        console.info("[deleteBlogElementFromDB] Reindexed elements");
-        set(blogRef, reIndexedElems);
+
+        set(blogRef, reIndexedElems)
+          .then(() =>
+            console.info("[deleteBlogElementFromDB] Reindex complete")
+          )
+          .catch((error) =>
+            console.error(
+              "[deleteBlogElementFromDB] Error writing data:",
+              error
+            )
+          );
       });
       emit("update");
     })

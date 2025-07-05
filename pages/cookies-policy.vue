@@ -183,31 +183,26 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: "cookies-policy",
-  head() {
-    return {
-      title: `Cookies policy | Kokebokami`,
-      meta: [
-        {
-          name: "robots" ,
-          content: "noindex"
-        }
-      ],
-      link: [
-        {
-          rel: "canonical",
-          href: "https://kokebokami.com/cookies-policy/"
-        }
-      ]
-    };
+<script setup>
+useHead({
+  title: `Cookies policy | Kokebokami`,
+  meta: [
+    {
+      name: "robots",
+      content: "noindex",
+    },
+  ],
+  link: [
+    {
+      rel: "canonical",
+      href: "https://kokebokami.com/cookies-policy/",
+    },
+  ],
+});
+const props = defineProps({
+  breadcrumbs: {
+    type: Array,
+    default: () => [{ name: "Home", link: "/" }, { name: "Cookies Policy" }],
   },
-  props: {
-    breadcrumbs: {
-      type: Array,
-      default: () => [{ name: "Home", link: "/" }, { name: "Cookies Policy" }]
-    }
-  }
-};
+});
 </script>

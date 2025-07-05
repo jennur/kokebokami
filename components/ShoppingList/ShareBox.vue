@@ -1,5 +1,5 @@
 <template>
-  <ModalBox :open="open" :dark-bg="false" @close="$emit('close-modal')">
+  <ModalBox :open="open" :dark-bg="false" @close="emit('close-modal')">
     <h4>
       {{
         `${$t("share")} '${listTitle}' ${$t(

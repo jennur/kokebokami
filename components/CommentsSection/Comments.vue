@@ -5,23 +5,22 @@
       {{ $t("comments.loadingComments") }}
     </div>
     <div
-      v-if="!loading && !comments.length"
+      v-if="!loading && !parsedComments.length"
       class="comments--empty margin-v-2xl"
     >
       {{ $t("comments.noCommentsNote") }}
     </div>
 
-    <div v-if="!loading && comments.length" class="comments">
+    <div v-if="!loading && parsedComments.length" class="comments">
       <Comment
-        v-for="comment in comments"
-        :key="comment[0]"
+        v-for="comment in parsedComments"
+        :key="comment.key"
         :recipeKey="recipeKey"
         :comment="comment"
         :isSubComment="false"
         :isRecipeOwner="isRecipeOwner"
         class="padding-v-lg"
         @update="getComments"
-        @subCommentSubmitted="(commentObj) => $emit('send-email', commentObj)"
       />
     </div>
 
@@ -60,10 +59,14 @@ const props = defineProps({
     type: Number,
     default: 0,
   },
+  comments: {
+    type: Object,
+    default: () => {},
+  },
 });
 
 const loading = ref(false);
-const comments = ref([]);
+const parsedComments = ref(parseComments(props.comments));
 const cutOffComments = ref([]);
 const updated = ref(0);
 
@@ -77,7 +80,39 @@ watch(update, (value) => {
 });
 
 function loadMoreComments() {
-  comments.value = comments.value.concat(cutOffComments.value.splice(0, 3));
+  parsedComments.value = parsedComments.value.concat(
+    cutOffComments.value.splice(0, 3)
+  );
+}
+
+function parseComments(items) {
+  const parsed = [];
+
+  for (const key in items) {
+    const comment = parseCommentObj(key, items[key]);
+    const subComments = items[key].subComments;
+
+    if (subComments) {
+      const parsedSubComments = [];
+      for (const subKey in subComments) {
+        parsedSubComments.push(parseCommentObj(subKey, subComments[subKey]));
+      }
+      comment.subComments = parsedSubComments;
+    }
+    parsed.push(comment);
+  }
+  return parsed;
+}
+
+function parseCommentObj(key, comment) {
+  return {
+    ...comment,
+    key,
+    username: comment.isAnonymous ? t("anonymous") : comment.username,
+    photoURL: comment.isAnonymous ? "" : comment.photoURL,
+    isMyComment: comment.userId === user.value.id,
+    submitDate: getDateString(comment.submitDate.replace(/"/g, "")),
+  };
 }
 
 async function getComments() {
@@ -88,43 +123,20 @@ async function getComments() {
       dbRef(db, `recipes/${props.recipeKey}/comments`)
     );
     if (snapshot.exists()) {
-      const dbComments = Object.entries(snapshot.val()).map((comment) => {
-        //Handle comment
-        comment[1] = createCommentObj(comment[1]);
+      const dbComments = parseComments(snapshot.val());
 
-        //Handle subcomments
-        if (comment[1].subComments) {
-          const subComments = Object.entries(comment[1].subComments);
-          comment[1].subComments = subComments.map((subComment) => {
-            subComment[1] = createCommentObj(subComment[1]);
-            return subComment;
-          });
-        }
-        return comment;
-      });
       if (dbComments.length > 2) {
         cutOffComments.value = dbComments.splice(2, dbComments.length - 1);
       }
-      comments.value = dbComments;
+
+      parsedComments.value = dbComments;
     } else {
-      comments.value = [];
+      parsedComments.value = [];
     }
   } catch (error) {
     console.error("[getComments]", error.message);
+  } finally {
+    loading.value = false;
   }
-  loading.value = false;
-}
-
-function createCommentObj(comment) {
-  comment.isMyComment = comment.userId === user.value.id;
-
-  if (comment.isAnonymous) {
-    comment.username = t("anonymous");
-    comment.photoURL = "";
-  }
-
-  const submitDate = comment.submitDate.replace(/"/g, "");
-  comment.submitDate = getDateString(submitDate);
-  return comment;
 }
 </script>

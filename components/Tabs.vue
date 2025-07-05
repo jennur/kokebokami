@@ -8,7 +8,7 @@
     >
       <span class="active-tab" v-if="isTablet">
         {{ activeTitle }}
-        <down-arrow class="icon icon-sm" />
+        <DownArrow class="icon icon-sm" />
       </span>
       <div v-if="!isTablet || dropdownOpen" class="dropdown">
         <span
@@ -17,7 +17,7 @@
           :data-tab-index="index"
           :class="{ 'tab--active': activeTabIndex === index }"
           :key="`tab-${title}`"
-          @click="event => switchTab(event, index)"
+          @click="(event) => switchTab(event, index)"
           >{{ title }}</span
         >
       </div>
@@ -26,53 +26,45 @@
   </div>
 </template>
 
-<script>
-import downArrow from "assets/graphics/icons/down-arrow.svg";
+<script setup>
+import DownArrow from "assets/graphics/icons/down-arrow.svg";
 
-export default {
-  name: "Tabs",
-  components: {
-    downArrow
+const emit = defineEmits(["switchTab"]);
+
+const props = defineProps({
+  tabTitles: {
+    type: Array,
+    default: () => [],
   },
-  props: {
-    tabTitles: {
-      type: Array,
-      default: () => []
-    },
-    activeTabIndexControl: {
-      type: Number,
-      default: null
-    }
+  activeTabIndexControl: {
+    type: Number,
+    default: null,
   },
-  data() {
-    return {
-      activeTabIndex: this.activeTabIndexControl || 0,
-      dropdownOpen: false
-    };
-  },
-  computed: {
-    isTablet() {
-      let width = window?.innerWidth > 0 ? window?.innerWidth : screen.width;
-      return width < 800;
-    },
-    activeTitle() {
-      let titles = this.tabTitles;
-      return titles[this.activeTabIndex];
-    }
-  },
-  methods: {
-    openDropdown() {
-      this.dropdownOpen = true;
-    },
-    closeDropdown() {
-      this.dropdownOpen = false;
-    },
-    switchTab(event, index) {
-      this.activeTabIndex = index;
-      this.closeDropdown();
-      this.$emit("switchTab", index);
-    }
-  },
-  
-};
+});
+
+const activeTabIndex = ref(props.activeTabIndexControl || 0);
+const dropdownOpen = ref(false);
+
+const isTablet = computed(() => {
+  let width = window?.innerWidth > 0 ? window?.innerWidth : screen.width;
+  return width < 800;
+});
+const activeTitle = computed(() => {
+  let titles = this.tabTitles;
+  return titles[this.activeTabIndex];
+});
+
+function openDropdown() {
+  dropdownOpen.value = true;
+}
+
+function closeDropdown() {
+  dropdownOpen.value = false;
+}
+
+function switchTab(event, index) {
+  activeTabIndex.value = index;
+  closeDropdown();
+  emit("switchTab", index);
+}
 </script>

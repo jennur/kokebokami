@@ -95,7 +95,7 @@
       <fieldset class="container container--center margin-top-2xl">
         <button
           class="button button-sm button--cancel"
-          @click.prevent="$emit('cancel')"
+          @click.prevent="emit('cancel')"
         >
           ✕ {{ $t("cancel") }}
         </button>

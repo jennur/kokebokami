@@ -8,13 +8,7 @@
     <ScrollButton />
   </div>
 </template>
-<script>
-import ScrollButton from "~/components/ScrollButton.vue";
 
-export default {
-  name: "fullwidth",
-  components: {
-    ScrollButton
-  }
-};
+<script setup>
+import ScrollButton from "~/components/ScrollButton.vue";
 </script>

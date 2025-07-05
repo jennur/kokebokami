@@ -22,7 +22,7 @@
         @update-servings="setServings"
         :isRecipeOwner="isRecipeOwner"
         :recipeKey="recipeKey"
-        @update="(payload) => $emit('update', payload)"
+        @update="(payload) => emit('update', payload)"
         :key="updated"
       />
       <div>

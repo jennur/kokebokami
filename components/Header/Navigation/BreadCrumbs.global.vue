@@ -12,51 +12,44 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: "breadcrumbs",
-  head() {
-    let structuredData = this.structuredData;
-    if (structuredData.itemListElement.length)
-      return {
-        script: [
-          {
-            type: "application/ld+json",
-            json: structuredData
-          }
-        ]
-      };
+<script setup>
+const props = defineProps({
+  routes: {
+    type: Array,
+    default: () => [],
   },
-  props: {
-    routes: {
-      type: Array,
-      default: () => []
-    }
-  },
-  computed: {
-    structuredData() {
-      let listElements = this.routes
-        .filter(route => route.name !== "Home")
-        .map((route, index) => {
-          let crumbObject = {
-            "@type": "ListItem",
-            position: index + 1,
-            name: route.name
-          };
-          if (route.link)
-            return {
-              ...crumbObject,
-              item: `https://kokebokami.com${route.link}`
-            };
-          return crumbObject;
-        });
+});
 
-      return {
-        "@context": "https://schema.org",
-        "@type": "BreadcrumbList",
-        itemListElement: listElements
+const structuredData = () => {
+  const listElements = props.routes
+    .filter((route) => route.name !== "Home")
+    .map((route, index) => {
+      const crumbObject = {
+        "@type": "ListItem",
+        position: index + 1,
+        name: route.name,
       };
-    }
-  }
+      if (route.link)
+        return {
+          ...crumbObject,
+          item: `https://kokebokami.com${route.link}`,
+        };
+      return crumbObject;
+    });
+
+  return JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: listElements,
+  });
 };
+
+useHead({
+  script: [
+    {
+      type: "application/ld+json",
+      json: structuredData(),
+    },
+  ],
+});
 </script>

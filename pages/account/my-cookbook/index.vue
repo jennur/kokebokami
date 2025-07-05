@@ -114,7 +114,7 @@ const breadcrumbs = computed(() => {
 });
 const emptyListMessage = computed(() => {
   if (activeTabIndex.value === 0)
-    return "You didn´t add any recipes yet 👩‍🍳 Your personal recipes will appear in this list";
+    return "You didn't add any recipes yet 👩‍🍳 Your personal recipes will appear in this list";
   else if (activeTabIndex.value === 1)
     return "You didnt add any recipes to this list yet. 🤷🏼‍♀️ The recipes you add from URL will appear in this list.";
   else if (activeTabIndex.value === 2)
@@ -122,12 +122,11 @@ const emptyListMessage = computed(() => {
 });
 
 const firstName = computed(() => {
-  let firstName = null;
   const { displayName: username } = authStore.user;
   if (username && username !== "User") {
-    firstName = /\s/.test(username) ? username.split(" ")[0] : username;
+    return /\s/.test(username) ? username.split(" ")[0] : username;
   }
-  return firstName;
+  return null;
 });
 
 const headlineText = computed(() => {
@@ -161,5 +160,5 @@ function handleTabSwitch(index) {
 
 onMounted(() => {
   recipeStore.REFRESH_USER_LINKS();
-})
+});
 </script>

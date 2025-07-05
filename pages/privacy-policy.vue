@@ -501,31 +501,27 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: "privacy-policy",
-  head() {
-    return {
-      title: `Privacy Policy | Kokebokami`,
-      meta: [
-        {
-          name: "robots" ,
-          content: "noindex"
-        }
-      ],
-      link: [
-        {
-          rel: "canonical",
-          href: "https://kokebokami.com/privacy-policy/"
-        }
-      ]
-    };
+<script setup>
+const props = defineProps({
+  breadcrumbs: {
+    type: Array,
+    default: () => [{ name: "Home", link: "/" }, { name: "Privacy Policy" }],
   },
-  props: {
-    breadcrumbs: {
-      type: Array,
-      default: () => [{ name: "Home", link: "/" }, { name: "Privacy Policy" }]
-    }
-  }
-};
+});
+
+useHead({
+  title: `Privacy Policy | Kokebokami`,
+  meta: [
+    {
+      name: "robots",
+      content: "noindex",
+    },
+  ],
+  link: [
+    {
+      rel: "canonical",
+      href: "https://kokebokami.com/privacy-policy/",
+    },
+  ],
+});
 </script>

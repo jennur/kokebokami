@@ -1,10 +1,10 @@
 <template>
   <div class="navigation_content-dropdown">
-    <shopping-list-preview
+    <ShoppingListPreview
       v-if="contentType === 'shoppingList'"
       :listItems="content"
     />
-    <recipes-list-preview
+    <RecipesListPreview
       v-if="contentType === 'recipeList'"
       :recipes="content"
     />
@@ -13,28 +13,22 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import ShoppingListPreview from "./DropdownContent/ShoppingListPreview.vue";
 import RecipesListPreview from "./DropdownContent/RecipesListPreview.vue";
-export default {
-  name: "icon-dropdown",
-  components: {
-    ShoppingListPreview,
-    RecipesListPreview
+
+const props = defineProps({
+  contentLink: {
+    type: String,
+    default: "",
   },
-  props: {
-    contentLink: {
-      type: String,
-      default: ""
-    },
-    contentType: {
-      type: String,
-      default: ""
-    },
-    content: {
-      type: Array,
-      default: () => []
-    }
-  }
-};
+  contentType: {
+    type: String,
+    default: "",
+  },
+  content: {
+    type: Array,
+    default: () => [],
+  },
+});
 </script>

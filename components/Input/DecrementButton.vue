@@ -3,13 +3,12 @@
     type="button"
     class="remove-icon"
     :title="$t('remove')"
-    @click="(event)=>{this.$emit('decrement', event)}"
+    @click="(event) => emit('decrement', event)"
   >
-    <slot />
+    <slot></slot>
   </button>
 </template>
-<script>
-export default {
-  name: "decrement-button"
-};
+
+<script setup>
+const emit = defineEmits(["decrement"]);
 </script>
